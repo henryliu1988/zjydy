@@ -5,7 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
-import com.zhjydy.app.ZhApplication;
+import com.zhjydy.app.zhjApplication;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -28,7 +28,7 @@ public class NetworkUtil {
      * check NetworkAvailable
      */
     public static boolean isNetworkAvailable() {
-        ConnectivityManager manager = (ConnectivityManager) ZhApplication.getInstance().getApplicationContext().getSystemService(
+        ConnectivityManager manager = (ConnectivityManager) zhjApplication.getInstance().getApplicationContext().getSystemService(
                 Context.CONNECTIVITY_SERVICE);
         if (null == manager)
             return false;

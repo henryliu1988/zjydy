@@ -8,7 +8,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.zhjydy.app.ZhApplication;
+import com.zhjydy.app.zhjApplication;
 
 /**
  * Created by liutao on 2016/6/21.
@@ -26,7 +26,7 @@ public class ScreenUtils
      */
     public static int getScreenWidth()
     {
-        Context context = ZhApplication.getInstance().getContext();
+        Context context = zhjApplication.getInstance().getContext();
         WindowManager wm = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -41,7 +41,7 @@ public class ScreenUtils
      */
     public static int getScreenHeight()
     {
-        Context context = ZhApplication.getInstance().getContext();
+        Context context = zhjApplication.getInstance().getContext();
 
         WindowManager wm = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
@@ -57,7 +57,7 @@ public class ScreenUtils
      */
     public static int getStatusHeight()
     {
-        Context context = ZhApplication.getInstance().getContext();
+        Context context = zhjApplication.getInstance().getContext();
 
         int statusHeight = -1;
         try

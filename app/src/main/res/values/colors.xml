@@ -3,4 +3,19 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="title_bg">#2298EF</color>
+    <color name="white_bg">#FFFFFF</color>
+
+    <color name="white_text">#FFFFFF</color>
+    <color name="black_text">#000000</color>
+    <color name="black_text1">#2B2B2B</color>
+    <color name="black_text2">#999999</color>
+
+
+    <color name="home_bar_text_normal">#6a6c6f</color>
+    <color name="home_bar_text_push">#ff5959</color>
+    <color name="textnormal">#adadad</color>
+
+    <color name="btn_bg_pressed_color">#ffacac</color>
+    <color name="btn_bg_color">#ff5959</color>
 </resources>

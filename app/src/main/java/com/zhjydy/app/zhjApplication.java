@@ -4,14 +4,15 @@ import android.app.Application;
 import android.content.Context;
 
 import com.tendcloud.tenddata.TCAgent;
+import com.zhjydy.util.ImageUtils;
 
 /**
  * Created by Administrator on 2016/9/10 0010.
  */
-public class ZhApplication extends Application {
+public class zhjApplication extends Application {
 
-    private static ZhApplication instance;
-    public static ZhApplication getInstance()
+    private static zhjApplication instance;
+    public static zhjApplication getInstance()
     {
         return instance;
     }
@@ -38,6 +39,7 @@ public class ZhApplication extends Application {
         TCAgent.LOG_ON = true;
         TCAgent.init(this);
         TCAgent.setReportUncaughtExceptions(true);
+        ImageUtils.getInstance().initImageLoader();
     }
 
 }
