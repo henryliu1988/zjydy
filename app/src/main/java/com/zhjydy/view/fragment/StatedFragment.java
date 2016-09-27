@@ -29,7 +29,6 @@ public abstract class StatedFragment extends Fragment {
         }
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (null == mRootView) {

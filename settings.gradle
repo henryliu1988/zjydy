@@ -1,2 +1,2 @@
-include ':app',':lib:pulltorefresh',":lib:calendarcomponent"
+include ':app',':lib:pulltorefresh',':lib:calendarcomponent',':lib:dropdownmenu'
 

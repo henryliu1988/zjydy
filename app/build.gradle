@@ -41,10 +41,10 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.6'
     compile project(':lib:pulltorefresh')
     compile project(':lib:calendarcomponent')
+    compile project(':lib:dropdownmenu')
     compile 'com.bigkoo:pickerview:2.1.1'
     compile 'com.jakewharton:butterknife:8.2.1'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
     compile 'homhomlin.lib:apsts:1.4.0'
     compile 'com.bigkoo:convenientbanner:2.0.5'
-
 }
