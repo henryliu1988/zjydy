@@ -18,7 +18,6 @@
         app:ddmenuSelectedIcon="@mipmap/drop_down_selected_icon"
         app:ddmenuUnselectedIcon="@mipmap/drop_down_unselected_icon" />
 
-
     <RelativeLayout
         android:id="@+id/m_content_layout"
         android:layout_width="match_parent"

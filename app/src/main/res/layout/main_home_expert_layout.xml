@@ -21,19 +21,19 @@
             android:textSize="16sp"
             android:textColor="@color/black_text" />
         <TextView
-            android:id="@+id/group"
+            android:id="@+id/hospital"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="@color/black_text1" />
         <TextView
-            android:id="@+id/profession"
+            android:id="@+id/office"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="@color/black_text1" />
         <TextView
-            android:id="@+id/level"
+            android:id="@+id/profess"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"

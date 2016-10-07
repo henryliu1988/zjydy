@@ -1,5 +1,6 @@
 package com.zhjydy.presenter.presenterImp;
 
+import com.zhjydy.model.entity.DocTorInfo;
 import com.zhjydy.presenter.contract.MainHomeContract;
 
 import java.util.ArrayList;
@@ -57,6 +58,18 @@ public class MainHomePresenterImp implements MainHomeContract.MainHomePresenter 
         });
     }
     private void loadExpert() {
+        List<DocTorInfo> docs = new ArrayList<>();
+        docs.add(new DocTorInfo("das","王XX","北京人民医院","内科","教授","擅长","93","5"));
+        docs.add(new DocTorInfo("das","王dsa","北京人民医院","内科","教授","擅长","93","5"));
+        docs.add(new DocTorInfo("das","王fds","北京人民医院","内科","教授","擅长","93","5"));
+        docs.add(new DocTorInfo("das","王fds","北京人民医院","内科","教授","擅长","93","5"));
+        docs.add(new DocTorInfo("das","王dfsad","北京人民医院","内科","教授","擅长","93","5"));
+        Observable.just(docs).subscribe(new Action1<List<DocTorInfo>>() {
+            @Override
+            public void call(List<DocTorInfo> docTorInfos) {
+                mView.updateMsg(docTorInfos);
+            }
+        });
 
     }
     @Override

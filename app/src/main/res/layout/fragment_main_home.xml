@@ -46,6 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
+                    android:background="@color/gray_bg"
                     android:padding="8dp">
                     <TextView
                         android:layout_width="wrap_content"
@@ -54,12 +55,14 @@
                         android:layout_alignParentLeft="true"
                         android:textSize="15sp" />
                     <TextView
-                        android:id="@+id/export_more"
+                        android:id="@+id/expert_more"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:drawableRight="@mipmap/ic_back_arrow"
-                        />
+                        android:gravity="center_vertical"
+                        android:text="更多>>"
+                        android:textSize="15sp"
+                        android:textColor="@color/title_bg_text" />
                 </RelativeLayout>
                 <com.bigkoo.convenientbanner.ConvenientBanner
                     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -69,6 +72,40 @@
                     app:canLoop="false" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:background="@color/gray_bg"
+                    android:padding="8dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="资讯推荐"
+                        android:layout_alignParentLeft="true"
+                        android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/info_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center_vertical"
+                        android:text="更多>>"
+                        android:textSize="15sp"
+                        android:textColor="@color/title_bg_text" />
+
+                    <com.zhjydy.view.zhview.ListViewForScrollView
+                        android:id="@+id/info_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>

@@ -9,14 +9,16 @@
     android:paddingTop="10dp">
 
     <ImageView
+        android:id="@+id/title_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
+        android:src="@mipmap/titlebar_back"
         />
     <TextView
-        android:id="@+id/center_tv"
+        android:id="@+id/title_center_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

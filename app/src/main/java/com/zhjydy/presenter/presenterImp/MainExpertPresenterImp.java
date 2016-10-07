@@ -5,6 +5,7 @@ import com.zhjydy.model.entity.DocTorInfo;
 import com.zhjydy.model.entity.NormalDicItem;
 import com.zhjydy.presenter.contract.MainExpertContract;
 import com.zhjydy.presenter.contract.MainHomeContract;
+import com.zhjydy.view.fragment.FragmentUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,6 +102,5 @@ public class MainExpertPresenterImp implements MainExpertContract.MainExpertPres
 
     @Override
     public void finish() {
-
     }
 }

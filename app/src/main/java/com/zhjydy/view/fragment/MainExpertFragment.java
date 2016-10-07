@@ -19,8 +19,10 @@ import com.zhjydy.model.entity.DocTorInfo;
 import com.zhjydy.model.entity.NormalDicItem;
 import com.zhjydy.presenter.contract.MainExpertContract;
 import com.zhjydy.presenter.presenterImp.MainExpertPresenterImp;
+import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.view.adapter.ExperListAdapter;
 import com.zhjydy.view.adapter.SimPleTextAdapter;
+import com.zhjydy.view.avtivity.PagerImpActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +31,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016/9/19 0019.
@@ -51,12 +54,12 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
     TextView titleSearchText;
     @BindView(R.id.title_search_ly)
     LinearLayout titleSearchLy;
-    private MainExpertContract.MainExpertPresenter mPresenter;
-    private String headers[] = {"全部地区", "科室", "职称"};
-    private String depart[] = {"内科", "外科", "五官科"};
-    private String proTitle[] = {"内科", "外科", "五官科"};
-    private List<View> dropViews = new ArrayList<>();
-    private ExperListAdapter mExpertListAdapter;
+    protected MainExpertContract.MainExpertPresenter mPresenter;
+    protected String headers[] = {"全部地区", "科室", "职称"};
+    protected String depart[] = {"内科", "外科", "五官科"};
+    protected String proTitle[] = {"内科", "外科", "五官科"};
+    protected List<View> dropViews = new ArrayList<>();
+    protected ExperListAdapter mExpertListAdapter;
 
     public static MainExpertFragment instance() {
         MainExpertFragment frag = new MainExpertFragment();
@@ -134,5 +137,20 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
         return rootView;
+    }
+
+    @OnClick({R.id.title_search_ly, R.id.right_img, R.id.right_l_img})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.title_search_ly:
+                Bundle bundle = new Bundle();
+                bundle.putInt("key",FragKey.search_expert_fragment);
+                ActivityUtils.transActivity(getActivity(), PagerImpActivity.class,bundle,false);
+                break;
+            case R.id.right_img:
+                break;
+            case R.id.right_l_img:
+                break;
+        }
     }
 }

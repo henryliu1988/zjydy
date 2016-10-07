@@ -35,8 +35,8 @@ public abstract class StatedFragment extends Fragment {
             mRootView = inflater.inflate(getLayoutId(), container, false);
             ButterKnife.bind(this, mRootView);
         }
-        afterViewCreate();
         initData();
+        afterViewCreate();
         return mRootView;
     }
     protected abstract void initData();

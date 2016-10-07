@@ -4,14 +4,14 @@ package com.zhjydy.model.entity;
  * Created by Administrator on 2016/9/21 0021.
  */
 public class DocTorInfo {
-    String photoUrl;
-    String name;
-    String hospital;
-    String office;
-    String profess;
-    String special;
-    String score;
-    String star;
+    String photoUrl; // 头像地址url
+    String name;  //医生姓名
+    String hospital; //所在医院
+    String office;// 所属科室
+    String profess;// 职称
+    String special; //特长
+    String score; //分数
+    String star; //评价 星级
 
 
     public DocTorInfo() {

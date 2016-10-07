@@ -10,12 +10,29 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.avtivity.MainTabsActivity">
+        <activity android:name=".view.avtivity.MainTabsActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+
+
+        <activity android:name=".view.avtivity.LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+        <activity android:name=".view.avtivity.ForgetPassWordActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".view.avtivity.RegisterActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".view.avtivity.PagerImpActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
