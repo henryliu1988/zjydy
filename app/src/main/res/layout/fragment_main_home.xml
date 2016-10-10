@@ -99,11 +99,12 @@
                         android:textSize="15sp"
                         android:textColor="@color/title_bg_text" />
 
-                    <com.zhjydy.view.zhview.ListViewForScrollView
-                        android:id="@+id/info_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
                 </RelativeLayout>
+                <com.zhjydy.view.zhview.ListViewForScrollView
+                    android:id="@+id/info_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
             </LinearLayout>
 
         </LinearLayout>

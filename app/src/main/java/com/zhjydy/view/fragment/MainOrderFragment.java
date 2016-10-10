@@ -1,6 +1,8 @@
 package com.zhjydy.view.fragment;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -12,11 +14,15 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhjydy.R;
 import com.zhjydy.presenter.contract.MainOrderContract;
 import com.zhjydy.presenter.presenterImp.MainOrderPresenterImp;
+import com.zhjydy.util.ActivityUtils;
+import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.OrderListAdapter;
+import com.zhjydy.view.avtivity.PagerImpActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import butterknife.BindView;
 
@@ -53,15 +59,7 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
         for (int i = 0 ; i < mTitles.length; i ++) {
             tabs.add(new TabEntity(mTitles[i]));
         }
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.fragment_main_order;
-    }
-
-    @Override
-    protected void afterViewCreate() {
+        centerTv.setText("订单");
         tabLayout.setTabData(tabs);
         tabLayout.setCurrentTab(0);
         tabLayout.setOnTabSelectListener(new OnTabSelectListener() {
@@ -77,6 +75,27 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
         });
         mAdapter = new OrderListAdapter(getActivity(),mOrderList);
         mList.setAdapter(mAdapter);
+        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Map<String,Object> item = (Map<String,Object>)adapterView.getAdapter().getItem(i);
+                if (item != null && item.size() > 0) {
+                    String id = Utils.toString(item.get("id"));
+                    id = "fdsk";
+                    ActivityUtils.transToFragPagerActivity(getActivity(),PagerImpActivity.class,FragKey.detail_order_fragment,id,false);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_main_order;
+    }
+
+    @Override
+    protected void afterViewCreate() {
+
         new MainOrderPresenterImp(this);
     }
 

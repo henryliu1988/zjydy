@@ -6,5 +6,7 @@ package com.zhjydy.view.avtivity;
 public class IntentKey {
 
     public static final String INTENT_BUNDLE = "intent_bundle";
+    public static final String FRAG_KEY = "key";
+    public static final String FRAG_INFO = "info";
 
 }

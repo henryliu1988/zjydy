@@ -16,12 +16,14 @@ import com.yyydjk.library.DropDownMenu;
 import com.zhjydy.R;
 import com.zhjydy.model.entity.District;
 import com.zhjydy.model.entity.DocTorInfo;
+import com.zhjydy.model.entity.Infomation;
 import com.zhjydy.model.entity.NormalDicItem;
 import com.zhjydy.presenter.contract.MainExpertContract;
 import com.zhjydy.presenter.presenterImp.MainExpertPresenterImp;
 import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.view.adapter.ExperListAdapter;
 import com.zhjydy.view.adapter.SimPleTextAdapter;
+import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.PagerImpActivity;
 
 import java.util.ArrayList;
@@ -77,11 +79,27 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
 
     @Override
     protected void afterViewCreate() {
-        new MainExpertPresenterImp(this);
+        initExpertList();
         titleSearchText.setText("搜索专家");
+
+        new MainExpertPresenterImp(this);
     }
 
 
+    private void initExpertList() {
+        mExpertListAdapter = new ExperListAdapter(getContext(), new ArrayList<DocTorInfo>());
+        mList.setAdapter(mExpertListAdapter);
+        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                DocTorInfo info = (DocTorInfo)adapterView.getAdapter().getItem(i);
+                if(info != null) {
+                    ActivityUtils.transToFragPagerActivity(getActivity(),PagerImpActivity.class,FragKey.detail_expert_fragment,"fsdf",false);
+                }
+            }
+        });
+
+    }
     @Override
     public void setPresenter(MainExpertContract.MainExpertPresenter presenter) {
         this.mPresenter = presenter;
@@ -127,8 +145,7 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
 
     @Override
     public void updateExperts(List<DocTorInfo> list) {
-        ExperListAdapter adapter = new ExperListAdapter(getContext(), list);
-        mList.setAdapter(adapter);
+        mExpertListAdapter.refreshData(list);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.zhjydy.presenter.contract;
 
 import com.zhjydy.model.entity.DocTorInfo;
+import com.zhjydy.model.entity.Infomation;
 import com.zhjydy.presenter.BasePresenter;
 import com.zhjydy.presenter.BaseView;
 
@@ -18,7 +19,7 @@ public interface MainHomeContract {
         void updateBanner(List<String> images);
         void updateMsg(Map<String,Object> msg);
         void updateMsg(List<DocTorInfo> experts);
-
+        void updateInfo(List<Infomation> infos);
     }
 
     interface MainHomePresenter extends BasePresenter

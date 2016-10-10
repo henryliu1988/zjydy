@@ -7,7 +7,8 @@
 
     <include layout="@layout/titlebar_layout_main" />
 
-    <LinearLayout style="@style/mine_item_layout">
+    <LinearLayout style="@style/mine_item_layout"
+        android:id="@+id/mine_info_layout">
         <ImageView
             android:id="@+id/mine_image"
             android:paddingRight="10dp"
@@ -32,7 +33,7 @@
     </LinearLayout>
 
     <LinearLayout style="@style/mine_item_layout"
-        android:id="@+id/account_safe"
+        android:id="@+id/account_safe_layout"
         android:layout_marginTop="15dp">
         <ImageView
             android:paddingRight="10dp"
@@ -60,7 +61,7 @@
         android:layout_marginLeft="15dp"
         android:background="@color/div_line"/>
     <LinearLayout style="@style/mine_item_layout"
-        android:id="@+id/mine_confirm_msg"
+        android:id="@+id/mine_confirm_msg_layout"
         >
         <ImageView
             android:paddingRight="10dp"
@@ -89,7 +90,7 @@
         android:background="@color/div_line"/>
 
     <LinearLayout style="@style/mine_item_layout"
-        android:id="@+id/mine_history"
+        android:id="@+id/mine_history_layout"
         >
         <ImageView
             android:paddingRight="10dp"
@@ -117,7 +118,7 @@
         android:layout_marginLeft="15dp"
         android:background="@color/div_line"/>
     <LinearLayout style="@style/mine_item_layout"
-        android:id="@+id/mine_normal"
+        android:id="@+id/mine_common_layout"
         >
         <ImageView
             android:paddingRight="10dp"
@@ -141,7 +142,7 @@
     </LinearLayout>
     <LinearLayout style="@style/mine_item_layout"
         android:layout_marginTop="15dp"
-        android:id="@+id/mine_about">
+        android:id="@+id/mine_about_layout">
         <ImageView
             android:paddingRight="10dp"
             android:layout_width="0dp"

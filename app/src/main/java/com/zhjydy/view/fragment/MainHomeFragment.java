@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -15,12 +16,15 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.zhjydy.R;
 import com.zhjydy.model.entity.DocTorInfo;
+import com.zhjydy.model.entity.Infomation;
 import com.zhjydy.presenter.contract.MainHomeContract;
 import com.zhjydy.presenter.presenterImp.MainHomePresenterImp;
 import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.util.ViewFindUtils;
+import com.zhjydy.view.adapter.MainInfoListAdapter;
+import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.PagerImpActivity;
 import com.zhjydy.view.zhview.ListViewForScrollView;
 
@@ -68,6 +72,7 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
 
     private MainHomeContract.MainHomePresenter mPresenter;
 
+    private MainInfoListAdapter mInfoListAdapter;
     public static MainHomeFragment instance() {
         MainHomeFragment frag = new MainHomeFragment();
         return frag;
@@ -155,6 +160,25 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
     }
 
     @Override
+    public void updateInfo(List<Infomation> infos) {
+        mInfoListAdapter = new MainInfoListAdapter(getContext(),new ArrayList<Infomation>());
+        infoList.setAdapter(mInfoListAdapter);
+        infoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Infomation info = (Infomation)adapterView.getAdapter().getItem(i);
+                if(info != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(IntentKey.FRAG_KEY, FragKey.detail_info_fragment);
+                    bundle.putString(IntentKey.FRAG_INFO, info.getId());
+                    ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+                }
+            }
+        });
+        mInfoListAdapter.refreshData(infos);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
@@ -207,7 +231,6 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
             mView.setOrientation(LinearLayout.HORIZONTAL);
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             mView.setLayoutParams(param);
-            mView.setPadding(5, 5, 5, 20);
             return mView;
         }
 
@@ -238,7 +261,6 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
                 officeTv.setText(office);
                 professTv.setText(profess);
                 mView.addView(child);
-                mView.invalidate();
             }
 
         }

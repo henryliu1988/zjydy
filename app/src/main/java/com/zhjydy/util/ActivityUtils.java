@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.LoginActivity;
 import com.zhjydy.view.avtivity.MainTabsActivity;
+import com.zhjydy.view.fragment.FragKey;
 
 import java.util.Stack;
 
@@ -146,6 +147,13 @@ public class ActivityUtils
         {
             context1.finish();
         }
+    }
+
+    public static void transToFragPagerActivity(Activity context1, Class des,int key,String info,boolean finish) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(IntentKey.FRAG_KEY, key);
+        bundle.putString(IntentKey.FRAG_INFO, info);
+        transActivity(context1,des,bundle,finish);
     }
     public static View getRootView(Activity context)
     {

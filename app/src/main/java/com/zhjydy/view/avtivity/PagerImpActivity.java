@@ -3,17 +3,16 @@ package com.zhjydy.view.avtivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.widget.FrameLayout;
+import android.text.TextUtils;
 
 import com.zhjydy.R;
-import com.zhjydy.presenter.FragmentFactory;
+import com.zhjydy.view.fragment.FragmentFactory;
 import com.zhjydy.presenter.contract.PageImpContract;
 import com.zhjydy.presenter.presenterImp.PageImpPresenter;
 import com.zhjydy.view.fragment.FragKey;
 import com.zhjydy.view.fragment.FragmentUtils;
 import com.zhjydy.view.fragment.StatedFragment;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -30,7 +29,7 @@ public class PagerImpActivity extends BaseActivity implements PageImpContract.Vi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getBundleExtra(IntentKey.INTENT_BUNDLE);
-        int key = bundle.getInt("key");
+        int key = bundle.getInt(IntentKey.FRAG_KEY);
         if (!FragKey.FragMap.containsKey(key)) {
             finish();
             return;
@@ -39,6 +38,15 @@ public class PagerImpActivity extends BaseActivity implements PageImpContract.Vi
         setContentView(R.layout.activity_pager_imp);
         ButterKnife.bind(this);
         StatedFragment fragment = FragmentFactory.createFragment(key);
+        if (fragment == null) {
+            return;
+        }
+        String fragInfo =bundle.getString(IntentKey.FRAG_INFO);
+        if (!TextUtils.isEmpty(fragInfo)) {
+            Bundle fragBundle = new Bundle();
+            fragBundle.putString(IntentKey.FRAG_INFO,fragInfo);
+            fragment.setArguments(fragBundle);
+        }
         fragManager = getSupportFragmentManager();
         FragmentUtils.addNewFragment(this,fragment,FragKey.FragMap.get(key),R.id.fragment_content);
     }

@@ -4,6 +4,7 @@ package com.zhjydy.model.entity;
  * Created by Administrator on 2016/9/21 0021.
  */
 public class DocTorInfo {
+    String id;
     String photoUrl; // 头像地址url
     String name;  //医生姓名
     String hospital; //所在医院
@@ -27,6 +28,14 @@ public class DocTorInfo {
         this.special = special;
         this.score = score;
         this.star = star;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getPhotoUrl() {

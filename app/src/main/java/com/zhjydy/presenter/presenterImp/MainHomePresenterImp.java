@@ -1,6 +1,7 @@
 package com.zhjydy.presenter.presenterImp;
 
 import com.zhjydy.model.entity.DocTorInfo;
+import com.zhjydy.model.entity.Infomation;
 import com.zhjydy.presenter.contract.MainHomeContract;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class MainHomePresenterImp implements MainHomeContract.MainHomePresenter 
         loadBanner();
         loadExpert();
         loadNewMsg();
+        loadInfomation();
     }
 
     private void loadBanner() {
@@ -68,6 +70,22 @@ public class MainHomePresenterImp implements MainHomeContract.MainHomePresenter 
             @Override
             public void call(List<DocTorInfo> docTorInfos) {
                 mView.updateMsg(docTorInfos);
+            }
+        });
+
+    }
+
+    private void loadInfomation() {
+        List<Infomation> infos = new ArrayList<>();
+        infos.add( new Infomation("怎么样通过饮食控制糖尿病1","2016/09/16","dasldsakjfhdsjkfhsdhfkdjsfh","www.baidu.com"));
+        infos.add( new Infomation("怎么样通过饮食控制糖尿病2","2016/09/16","dasldsakjfhdsjkfhsdhfkdjsfh","www.baidu.com"));
+        infos.add( new Infomation("怎么样通过饮食控制糖尿病3","2016/09/16","dasldsakjfhdsjkfhsdhfkdjsfh","www.baidu.com"));
+        infos.add( new Infomation("怎么样通过饮食控制糖尿病4","2016/09/16","dasldsakjfhdsjkfhsdhfkdjsfh","www.baidu.com"));
+        infos.add( new Infomation("怎么样通过饮食控制糖尿病5","2016/09/16","dasldsakjfhdsjkfhsdhfkdjsfh","www.baidu.com"));
+        Observable.just(infos).subscribe(new Action1<List<Infomation>>() {
+            @Override
+            public void call(List<Infomation> infos) {
+                mView.updateInfo(infos);
             }
         });
 

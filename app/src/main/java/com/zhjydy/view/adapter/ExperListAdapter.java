@@ -15,8 +15,8 @@ import java.util.List;
  */
 public class ExperListAdapter extends ListViewAdapter<DocTorInfo> {
 
-
     public ExperListAdapter(Context context, List<DocTorInfo> datas) {
+
         super(context, datas, R.layout.listview_expert_info_item);
     }
 
