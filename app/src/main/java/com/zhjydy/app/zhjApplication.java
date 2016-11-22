@@ -36,9 +36,6 @@ public class zhjApplication extends Application {
     private void init()
     {
         instance = this;
-        TCAgent.LOG_ON = true;
-        TCAgent.init(this);
-        TCAgent.setReportUncaughtExceptions(true);
         ImageUtils.getInstance().initImageLoader();
     }
 

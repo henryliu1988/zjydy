@@ -11,4 +11,12 @@
         <attr name="rightBtnTextSize" format="dimension"/>
         <attr name="rightBtnBackground" format="reference|color"/>
     </declare-styleable>
+
+    <declare-styleable name="ArrowTextView">
+        <attr name="radius" format="dimension" />
+        <attr name="arrowWidth" format="dimension" />
+        <attr name="arrowInHeight" format="dimension" />
+        <attr name="bg" format="color" />
+    </declare-styleable>
+
 </resources>

@@ -5,24 +5,24 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.zhjydy.R;
 import com.zhjydy.presenter.contract.ExpertDetailContract;
 import com.zhjydy.presenter.presenterImp.ExpertDetailPresenterImp;
+import com.zhjydy.util.ImageUtils;
+import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.ExperDetaiCommentListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
+import com.zhjydy.view.zhview.ScoreView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,12 +31,12 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/9/26 0026.
  */
-public class ExpertDetailFragment extends StatedFragment implements ExpertDetailContract.View {
+public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertDetailContract.View {
 
     @BindView(R.id.comment_make_edit)
     EditText commentMakeEdit;
     @BindView(R.id.comment_make_btn)
-    Button commentMakeBtn;
+    TextView commentMakeBtn;
     @BindView(R.id.write_words)
     LinearLayout writeWords;
     @BindView(R.id.bottom_div)
@@ -66,7 +66,7 @@ public class ExpertDetailFragment extends StatedFragment implements ExpertDetail
     @BindView(R.id.score_text)
     TextView scoreText;
     @BindView(R.id.score_star)
-    RatingBar scoreStar;
+    ScoreView scoreStar;
     @BindView(R.id.reason)
     LinearLayout reason;
     @BindView(R.id.specical)
@@ -74,11 +74,17 @@ public class ExpertDetailFragment extends StatedFragment implements ExpertDetail
     @BindView(R.id.word_listview)
     ListView wordListview;
     @BindView(R.id.subscribe_expert)
-    Button subscribeExpert;
+    TextView subscribeExpert;
+    @BindView(R.id.reason_tv)
+    TextView reasonTv;
+    @BindView(R.id.specical_tv)
+    TextView specicalTv;
     private ExpertDetailContract.Presenter mPresenter;
 
     private ExperDetaiCommentListAdapter mCommentListAdapter;
     private View mCommentListHeaderView;
+
+    private String id;
 
     @Override
     protected void initData() {
@@ -92,12 +98,18 @@ public class ExpertDetailFragment extends StatedFragment implements ExpertDetail
 
     @Override
     protected void afterViewCreate() {
-        String id = getArguments().getString(IntentKey.FRAG_INFO);
+        id = getArguments().getString(IntentKey.FRAG_INFO);
         if (TextUtils.isEmpty(id)) {
             return;
         }
         initCommentListView();
         new ExpertDetailPresenterImp(this, id);
+        titleBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                back();
+            }
+        });
     }
 
     private void initCommentListView() {
@@ -109,7 +121,13 @@ public class ExpertDetailFragment extends StatedFragment implements ExpertDetail
 
     @Override
     public void updateExpertInfos(Map<String, Object> expertInfo) {
-
+        name.setText(Utils.toString(expertInfo.get("realname")));
+        depart.setText(Utils.toString(expertInfo.get("office")));
+        hospital.setText(Utils.toString(expertInfo.get("hospital")));
+        profession.setText(Utils.toString(expertInfo.get("business")));
+        reasonTv.setText(Utils.toString(expertInfo.get("reason")));
+        specicalTv.setText(Utils.toString(expertInfo.get("adept")));
+        ImageUtils.getInstance().displayFromRemote(Utils.toString(expertInfo.get("path")), image);
     }
 
     @Override
@@ -135,14 +153,16 @@ public class ExpertDetailFragment extends StatedFragment implements ExpertDetail
         return rootView;
     }
 
-    @OnClick({R.id.comment_make_btn, R.id.title_back, R.id.save_text, R.id.subscribe_expert})
+    @OnClick({R.id.comment_make_btn, R.id.title_back, R.id.save_layout, R.id.subscribe_expert})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.comment_make_btn:
                 break;
             case R.id.title_back:
+                back();
                 break;
-            case R.id.save_text:
+            case R.id.save_layout:
+                mPresenter.saveExpert(id);
                 break;
         }
     }

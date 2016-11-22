@@ -3,6 +3,8 @@ package com.zhjydy.presenter.presenterImp;
 import com.zhjydy.presenter.contract.AccountSafeContract;
 import com.zhjydy.presenter.contract.IdentityInfoContract;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2016/9/20 0020.
  */
@@ -29,4 +31,8 @@ public class IdentityInfoPresenterImp implements IdentityInfoContract.Presenter 
     }
 
 
+    @Override
+    public void uploadImageFiles(List<String> urls) {
+
+    }
 }

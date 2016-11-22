@@ -18,6 +18,7 @@ import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.OrderListAdapter;
 import com.zhjydy.view.avtivity.PagerImpActivity;
+import com.zhjydy.view.zhview.BadgImage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
     @BindView(R.id.center_tv)
     TextView centerTv;
     @BindView(R.id.right_img)
-    ImageView rightImg;
+    BadgImage rightImg;
     @BindView(R.id.right_l_img)
     ImageView rightLImg;
     @BindView(R.id.tab_layout)

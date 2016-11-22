@@ -15,7 +15,7 @@ public interface MainExpertContract {
     interface MainExpertView extends BaseView<MainExpertPresenter>
     {
         void updateFilters(Map<String,Object> data);
-        void updateExperts(List<DocTorInfo> list);
+        void updateExperts(List<Map<String, Object>> maps);
     }
 
     interface MainExpertPresenter extends BasePresenter

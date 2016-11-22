@@ -39,6 +39,9 @@ public abstract class StatedFragment extends Fragment {
         afterViewCreate();
         return mRootView;
     }
+
+
+
     protected abstract void initData();
 
     protected abstract int getLayoutId();

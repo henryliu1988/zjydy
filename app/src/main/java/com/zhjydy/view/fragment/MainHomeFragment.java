@@ -2,30 +2,33 @@ package com.zhjydy.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.zhjydy.R;
-import com.zhjydy.model.entity.DocTorInfo;
-import com.zhjydy.model.entity.Infomation;
 import com.zhjydy.presenter.contract.MainHomeContract;
 import com.zhjydy.presenter.presenterImp.MainHomePresenterImp;
 import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.ImageUtils;
+import com.zhjydy.util.ScreenUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.util.ViewFindUtils;
-import com.zhjydy.view.adapter.MainInfoListAdapter;
+import com.zhjydy.view.adapter.MainHomeInfoListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
+import com.zhjydy.view.avtivity.MainTabsActivity;
 import com.zhjydy.view.avtivity.PagerImpActivity;
+import com.zhjydy.view.zhview.BadgImage;
 import com.zhjydy.view.zhview.ListViewForScrollView;
 
 import java.util.ArrayList;
@@ -35,8 +38,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observable;
-import rx.functions.Action1;
 
 /**
  * Created by Administrator on 2016/9/19 0019.
@@ -48,8 +49,6 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
     ImageView leftImg;
     @BindView(R.id.center_tv)
     TextView centerTv;
-    @BindView(R.id.right_img)
-    ImageView rightImg;
     @BindView(R.id.right_l_img)
     ImageView rightLImg;
     @BindView(R.id.banner_home)
@@ -59,20 +58,26 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
     @BindView(R.id.m_new_msg_title)
     TextView mNewMsgTitle;
     @BindView(R.id.news_msg)
-    RelativeLayout newsMsg;
+    LinearLayout newsMsg;
     @BindView(R.id.expert_more)
     TextView expertMore;
-    @BindView(R.id.banner_expert)
-    ConvenientBanner bannerExpert;
     @BindView(R.id.info_more)
     TextView infoMore;
     @BindView(R.id.info_list)
     ListViewForScrollView infoList;
-
+    @BindView(R.id.right_img)
+    BadgImage rightImg;
+    @BindView(R.id.scroll_view)
+    ScrollView scrollView;
+    @BindView(R.id.scorll_expert)
+    HorizontalScrollView scorllExpert;
+    @BindView(R.id.scorll_expert_layout)
+    LinearLayout scorllExpertLayout;
 
     private MainHomeContract.MainHomePresenter mPresenter;
 
-    private MainInfoListAdapter mInfoListAdapter;
+    private MainHomeInfoListAdapter mInfoListAdapter;
+
     public static MainHomeFragment instance() {
         MainHomeFragment frag = new MainHomeFragment();
         return frag;
@@ -86,8 +91,14 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
 
     @Override
     protected void afterViewCreate() {
+        ButterKnife.bind(this, mRootView);
         new MainHomePresenterImp(this);
+        leftImg.setVisibility(View.VISIBLE);
+        leftImg.setImageResource(R.mipmap.titlebar_search);
         centerTv.setText("专家医对壹");
+        rightImg.setImageSrc(R.mipmap.title_msg);
+        rightImg.setText("1");
+        scrollView.scrollTo(0, 0);
     }
 
     @Override
@@ -130,47 +141,84 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
     }
 
     @Override
-    public void updateMsg(List<DocTorInfo> experts) {
-            int bannerCount = experts.size() / 3;
-            if (experts.size() % 3 != 0) {
-                bannerCount++;
-            }
-        List<List<DocTorInfo>> bannerList = new ArrayList<>();
-        List<DocTorInfo> list = new ArrayList<>();
-        List<DocTorInfo> list1 = new ArrayList<>();
-
-        for (int i = 0; i < 3; i++) {
-            list.add(experts.get(i));
-            list1.add(experts.get(i));
-
+    public void updateExpert(List<Map<String, Object>> experts) {
+          /*int countAll = experts.size();
+        int dx = countAll % 3;
+        int rowCount = countAll / 3;
+        if (dx > 0) {
+            rowCount += 1;
         }
+        List<List<Map<String, Object>>> rowExperts = new ArrayList<>();
+        for (int i = 0; i < rowCount; i++) {
+            List<Map<String, Object>> list = new ArrayList<>();
+            if ((i + 1) * 3 > countAll) {
+                for (int j = i * 3; j < countAll; j++) {
+                    list.add(experts.get(j));
+                }
+            } else {
+                for (int j = i * 3; j < (i + 1) * 3; j++) {
+                    list.add(experts.get(j));
+                }
+            }
+            rowExperts.add(list);
+        }
+        bannerExpert.setPages(new CBViewHolderCreator<ExpertHolderView>() {
+            @Override
+            public ExpertHolderView createHolder() {
+                return new ExpertHolderView();
+            }
+        }, rowExperts).setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused});
+        */
+        scorllExpertLayout.removeAllViews();
+        for (int i = 0; i < experts.size(); i++) {
+            View childView = LayoutInflater.from(getContext()).inflate(R.layout.main_home_expert_item,null);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ScreenUtils.getScreenWidth()/3, ViewGroup.LayoutParams.WRAP_CONTENT);
+            childView.setLayoutParams(params);
+            Map<String,Object> item = experts.get(i);
+            String photoUrl = Utils.toString(item.get("path"));
+            String name = Utils.toString(item.get("realname"));
+            String hospital = Utils.toString(item.get("hospital"));
+            String office = Utils.toString(item.get("office"));
+            String profess = Utils.toString(item.get("business"));
+            String id = Utils.toString(item.get("id"));
+            childView.setTag(id);
+            ImageView imageView = ViewFindUtils.find(childView, R.id.image);
+            TextView nameTv = ViewFindUtils.find(childView, R.id.name);
+            TextView hospitalTv = ViewFindUtils.find(childView, R.id.hospital);
+            TextView officeTv = ViewFindUtils.find(childView, R.id.office);
+            TextView professTv = ViewFindUtils.find(childView, R.id.profess);
+            ImageUtils.getInstance().displayFromRemote(photoUrl, imageView);
+            nameTv.setText(name);
+            hospitalTv.setText(hospital);
+            officeTv.setText(office);
+            professTv.setText(profess);
+            childView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String id= Utils.toString(view.getTag());
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(IntentKey.FRAG_KEY, FragKey.detail_expert_fragment);
+                    bundle.putString(IntentKey.FRAG_INFO, id);
+                    ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
 
-        bannerList.add(list);
-        bannerList.add(list1);
-
-        bannerExpert.setPages(
-                new CBViewHolderCreator<ExpertHolderView>() {
-                    @Override
-                    public ExpertHolderView createHolder() {
-                        return new ExpertHolderView();
-                    }
-                }, bannerList)
-                .setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused});
-
+                }
+            });
+            scorllExpertLayout.addView(childView);
+        }
     }
 
     @Override
-    public void updateInfo(List<Infomation> infos) {
-        mInfoListAdapter = new MainInfoListAdapter(getContext(),new ArrayList<Infomation>());
+    public void updateInfo(List<Map<String, Object>> infos) {
+        mInfoListAdapter = new MainHomeInfoListAdapter(getContext(), new ArrayList<Map<String, Object>>());
         infoList.setAdapter(mInfoListAdapter);
         infoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Infomation info = (Infomation)adapterView.getAdapter().getItem(i);
-                if(info != null) {
+                Map<String, Object> info = (Map<String, Object>) adapterView.getAdapter().getItem(i);
+                if (info != null) {
                     Bundle bundle = new Bundle();
                     bundle.putInt(IntentKey.FRAG_KEY, FragKey.detail_info_fragment);
-                    bundle.putString(IntentKey.FRAG_INFO, info.getId());
+                    bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
                     ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
                 }
             }
@@ -186,21 +234,26 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
         return rootView;
     }
 
-    @OnClick({R.id.news_msg, R.id.expert_more, R.id.info_more})
+    @OnClick({R.id.news_msg, R.id.expert_more, R.id.info_more, R.id.right_img, R.id.left_img})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.news_msg:
                 break;
             case R.id.expert_more:
-                Bundle bundle = new Bundle();
-                bundle.putInt("key", FragKey.search_expert_fragment);
-                ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+                ((MainTabsActivity) getActivity()).gotoTab(MainTabsActivity.VIEW_SECOND);
                 break;
             case R.id.info_more:
-                Bundle bundleInfo = new Bundle();
-                bundleInfo.putInt("key", FragKey.search_info_fragment);
-                ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundleInfo, false);
-
+                ((MainTabsActivity) getActivity()).gotoTab(MainTabsActivity.VIEW_THIRD);
+                break;
+            case R.id.right_img:
+                Bundle bundleMsg = new Bundle();
+                bundleMsg.putInt("key", FragKey.msg_all_fragment);
+                ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundleMsg, false);
+                break;
+            case R.id.left_img:
+                Bundle bundleSearch = new Bundle();
+                bundleSearch.putInt("key", FragKey.search_home_fragment);
+                ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundleSearch, false);
                 break;
         }
     }
@@ -222,49 +275,55 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
         }
     }
 
-    class ExpertHolderView implements Holder<List<DocTorInfo>> {
-        private LinearLayout mView;
+    /*
+    class ExpertHolderView implements Holder<List<Map<String, Object>>> {
+        private ImageView mView;
 
         @Override
         public View createView(Context context) {
-            mView = new LinearLayout(context);
-            mView.setOrientation(LinearLayout.HORIZONTAL);
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            mView.setLayoutParams(param);
+            mView = new ImageView(getContext());
             return mView;
         }
 
         @Override
-        public void UpdateUI(Context context, int position, List<DocTorInfo> data) {
+        public void UpdateUI(Context context, int position, List<Map<String, Object>> data) {
             if (data == null || data.size() < 1) {
                 return;
             }
+            ImageUtils.getInstance().displayFromRemote(Utils.toString(data.get(0).get()));
+            /*
             for (int i = 0; i < data.size(); i++) {
-                DocTorInfo item = data.get(i);
-                String photoUrl = item.getPhotoUrl();
-                String name = item.getName();
-                String hospital = item.getHospital();
-                String office = item.getOffice();
-                String profess = item.getProfess();
-                LinearLayout child = (LinearLayout)LayoutInflater.from(context).inflate(R.layout.main_home_expert_layout, null);
-                child.setOrientation(LinearLayout.HORIZONTAL);
-                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,1);
-                child.setLayoutParams(param);
-                ImageView imageView = ViewFindUtils.find(child, R.id.image);
-                TextView nameTv = ViewFindUtils.find(child, R.id.name);
-                TextView hospitalTv = ViewFindUtils.find(child, R.id.hospital);
-                TextView officeTv =  ViewFindUtils.find(child, R.id.office);
-                TextView professTv = ViewFindUtils.find(child, R.id.profess);
+                View childView = mView.findViewWithTag(i);
+                if (! (childView instanceof  LinearLayout)) {
+                    break;
+                }
+                Map<String, Object> item = data.get(i);
+                String photoUrl = Utils.toString(item.get("path"));
+                String name = Utils.toString(item.get("realname"));
+                String hospital = Utils.toString(item.get("hospital"));
+                String office = Utils.toString(item.get("office"));
+                String profess = Utils.toString(item.get("business"));
+                ImageView imageView = ViewFindUtils.find(childView, R.id.image);
+                TextView nameTv = ViewFindUtils.find(childView, R.id.name);
+                TextView hospitalTv = ViewFindUtils.find(childView, R.id.hospital);
+                TextView officeTv = ViewFindUtils.find(childView, R.id.office);
+                TextView professTv = ViewFindUtils.find(childView, R.id.profess);
                 ImageUtils.getInstance().displayFromRemote(photoUrl, imageView);
                 nameTv.setText(name);
                 hospitalTv.setText(hospital);
                 officeTv.setText(office);
                 professTv.setText(profess);
-                mView.addView(child);
+                childView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int i = 0;
+                    }
+                });
             }
 
         }
 
 
     }
+       */
 }

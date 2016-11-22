@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="25dp"
+        android:layout_height="35dp"
         android:gravity="center_vertical"
         android:paddingBottom="3dp"
         android:paddingLeft="5dp"
@@ -16,13 +16,16 @@
         <ImageView
             android:id="@+id/photo"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/photo" />
 
         <TextView
             android:id="@+id/doc_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/photo"
+            android:layout_centerVertical="true"
             android:textColor="@color/black_text"
             android:textSize="16sp" />
 
@@ -30,7 +33,9 @@
             android:id="@+id/status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textSize="14sp" />
     </RelativeLayout>
 
     <View

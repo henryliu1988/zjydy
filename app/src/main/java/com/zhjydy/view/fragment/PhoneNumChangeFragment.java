@@ -8,7 +8,7 @@ import com.zhjydy.presenter.presenterImp.PhoneNumChangePresenterImp;
 /**
  * Created by Administrator on 2016/10/9 0009.
  */
-public class PhoneNumChangeFragment extends  StatedFragment implements PhoneNumChangContract.View {
+public class PhoneNumChangeFragment extends  PageImpBaseFragment implements PhoneNumChangContract.View {
 
     private PhoneNumChangContract.Presenter mPresenter;
     @Override

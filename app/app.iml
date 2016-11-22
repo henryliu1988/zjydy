@@ -97,6 +97,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.bigkoo/convenientbanner/2.0.5/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.bigkoo/pickerview/2.1.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.jakewharton/butterknife/8.2.1/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/de.hdodenhof/circleimageview/2.1.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/homhomlin.lib/apsts/1.4.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/io.reactivex/rxandroid/1.2.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
@@ -123,12 +124,15 @@
     <orderEntry type="library" exported="" name="recyclerview-v7-24.1.1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-24.1.1" level="project" />
     <orderEntry type="library" exported="" name="rxjava-1.1.6" level="project" />
+    <orderEntry type="library" exported="" name="android-json-rpc-0.3.4" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-24.1.1" level="project" />
     <orderEntry type="library" exported="" name="universal-image-loader-1.9.5" level="project" />
     <orderEntry type="library" exported="" name="convenientbanner-2.0.5" level="project" />
     <orderEntry type="library" exported="" name="fastjson-1.2.9" level="project" />
     <orderEntry type="library" exported="" name="rxandroid-1.2.1" level="project" />
+    <orderEntry type="library" exported="" name="circleimageview-2.1.0" level="project" />
     <orderEntry type="library" exported="" name="TalkingdataAnalytics" level="project" />
+    <orderEntry type="library" exported="" name="android-viewbadger" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-24.1.1" level="project" />
     <orderEntry type="library" exported="" name="animated-vector-drawable-24.1.1" level="project" />
     <orderEntry type="library" exported="" name="support-vector-drawable-24.1.1" level="project" />

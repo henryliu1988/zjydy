@@ -15,6 +15,7 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.zhjydy.app.zhjApplication;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,10 +48,17 @@ public class Utils
             return false;
         } else
         {
+            if (ob instanceof String) {
+                String s = (String )ob;
+                return "true".equals(s) || "True".equals(s) || "TRUE".equals(s) || "ture".equals(s);
+            }
+            if (ob instanceof Integer) {
+                int i = (int)ob;
+                return i > 0;
+            }
             try
             {
                 return (Boolean) ob;
-
             } catch (Exception e)
             {
                 return false;
@@ -395,8 +403,8 @@ public class Utils
     }
 
     @SuppressLint("NewApi")
-    public static String getPath(final Context context, final Uri uri) {
-
+    public static String getPath( final Uri uri) {
+        final Context context = zhjApplication.getInstance().getContext();
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
         // DocumentProvider

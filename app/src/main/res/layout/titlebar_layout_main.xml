@@ -10,10 +10,10 @@
         android:id="@+id/left_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
+        android:visibility="gone"
         android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
-        android:src="@mipmap/titlebar_back" />
+        android:layout_marginLeft="10dp" />
 
     <TextView
         android:id="@+id/center_tv"
@@ -23,14 +23,13 @@
         android:textColor="@color/white_text"
         android:textSize="16sp" />
 
-    <ImageView
+
+    <com.zhjydy.view.zhview.BadgImage
         android:id="@+id/right_img"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+        android:layout_height="match_parent"
         android:layout_marginRight="10dp"
-        android:src="@mipmap/titlebar_back" />
+        android:layout_alignParentRight="true" />
 
     <ImageView
         android:id="@+id/right_l_img"
@@ -39,6 +38,5 @@
         android:layout_toLeftOf="@id/right_img"
         android:visibility="gone"
         android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
-        android:src="@mipmap/titlebar_back" />
+        android:layout_marginRight="10dp" />
 </RelativeLayout>

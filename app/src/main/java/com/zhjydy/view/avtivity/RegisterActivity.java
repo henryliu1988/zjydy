@@ -1,5 +1,6 @@
 package com.zhjydy.view.avtivity;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -45,6 +46,8 @@ public class RegisterActivity extends BaseActivity {
         setContentView(R.layout.activity_rigister);
         ButterKnife.bind(this);
         titleCenterTv.setText("注册");
+        legend.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+
     }
 
     @OnClick({R.id.title_back, R.id.register_now, R.id.confirm_code_get, R.id.legend})

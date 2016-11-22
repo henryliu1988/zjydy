@@ -2,7 +2,13 @@ package com.zhjydy.presenter.presenterImp;
 
 import com.zhjydy.model.entity.DocTorInfo;
 import com.zhjydy.model.entity.Infomation;
+import com.zhjydy.model.net.BaseSubscriber;
+import com.zhjydy.model.net.WebCall;
+import com.zhjydy.model.net.WebKey;
+import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.presenter.contract.MainHomeContract;
+import com.zhjydy.util.ImageUtils;
+import com.zhjydy.util.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +17,7 @@ import java.util.Map;
 
 import rx.Observable;
 import rx.functions.Action1;
+import rx.functions.Func1;
 
 /**
  * Created by Administrator on 2016/9/20 0020.
@@ -18,11 +25,13 @@ import rx.functions.Action1;
 public class MainHomePresenterImp implements MainHomeContract.MainHomePresenter {
 
     private MainHomeContract.MainHomeView mView;
-    public  MainHomePresenterImp(MainHomeContract.MainHomeView view) {
+
+    public MainHomePresenterImp(MainHomeContract.MainHomeView view) {
         this.mView = view;
         view.setPresenter(this);
         start();
     }
+
     @Override
     public void start() {
         loadBanner();
@@ -32,34 +41,62 @@ public class MainHomePresenterImp implements MainHomeContract.MainHomePresenter 
     }
 
     private void loadBanner() {
-        List<String> image = new ArrayList<>();
-        image.add("http://f.hiphotos.baidu.com/image/pic/item/09fa513d269759ee50f1971ab6fb43166c22dfba.jpg");
-        image.add("http://f.hiphotos.baidu.com/image/h%3D200/sign=1478eb74d5a20cf45990f9df460b4b0c/d058ccbf6c81800a5422e5fdb43533fa838b4779.jpg");
-        image.add("http://f.hiphotos.baidu.com/image/pic/item/09fa513d269759ee50f1971ab6fb43166c22dfba.jpg");
 
-        Observable.just(image).subscribe(new Action1<List<String>>() {
+        WebCall.getInstance().call(WebKey.func_banner, new HashMap<String, Object>()).flatMap(new Func1<WebResponse, Observable<List<String>>>() {
             @Override
-            public void call(List<String> images) {
-                if (mView != null){
-                    mView.updateBanner(images);
+            public Observable<List<String>> call(WebResponse webResponse) {
+                String data = webResponse.getData();
+                List<Map<String, Object>> list = Utils.parseObjectToListMapString(data);
+                return Observable.from(list).map(new Func1<Map<String, Object>, String>() {
+                    @Override
+                    public String call(Map<String, Object> map) {
+                        String image = Utils.toString(map.get("path"));
+                        return image;
+                    }
+                }).buffer(list.size());
+            }
+        }).subscribe(new BaseSubscriber<List<String>>() {
+            @Override
+            public void onNext(List<String> strings) {
+                if (mView != null) {
+                    mView.updateBanner(strings);
                 }
             }
         });
     }
+
     private void loadNewMsg() {
-        Map<String,Object> mes = new HashMap<>();
-        mes.put("url","http://sports.sina.com.cn/");
-        mes.put("title","新浪新闻");
+        Map<String, Object> mes = new HashMap<>();
+        mes.put("url", "http://sports.sina.com.cn/");
+        mes.put("title", "新浪新闻");
         Observable.just(mes).subscribe(new Action1<Map<String, Object>>() {
             @Override
             public void call(Map<String, Object> stringStringMap) {
-                if (mView != null){
+                if (mView != null) {
                     mView.updateMsg(stringStringMap);
                 }
             }
         });
     }
+
     private void loadExpert() {
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("num", 9);
+        WebCall.getInstance().call(WebKey.func_getRecommendZhuan, params).map(new Func1<WebResponse, List<Map<String, Object>>>() {
+            @Override
+            public List<Map<String, Object>> call(WebResponse webResponse) {
+                String data = webResponse.getData();
+                List<Map<String, Object>> list = Utils.parseObjectToListMapString(data);
+                return list;
+            }
+        }).subscribe(new BaseSubscriber<List<Map<String, Object>>>() {
+            @Override
+            public void onNext(List<Map<String, Object>> maps) {
+                mView.updateExpert(maps);
+            }
+        });
+        /*
         List<DocTorInfo> docs = new ArrayList<>();
         docs.add(new DocTorInfo("das","王XX","北京人民医院","内科","教授","擅长","93","5"));
         docs.add(new DocTorInfo("das","王dsa","北京人民医院","内科","教授","擅长","93","5"));
@@ -69,27 +106,28 @@ public class MainHomePresenterImp implements MainHomeContract.MainHomePresenter 
         Observable.just(docs).subscribe(new Action1<List<DocTorInfo>>() {
             @Override
             public void call(List<DocTorInfo> docTorInfos) {
-                mView.updateMsg(docTorInfos);
             }
         });
-
+        */
     }
 
     private void loadInfomation() {
-        List<Infomation> infos = new ArrayList<>();
-        infos.add( new Infomation("怎么样通过饮食控制糖尿病1","2016/09/16","dasldsakjfhdsjkfhsdhfkdjsfh","www.baidu.com"));
-        infos.add( new Infomation("怎么样通过饮食控制糖尿病2","2016/09/16","dasldsakjfhdsjkfhsdhfkdjsfh","www.baidu.com"));
-        infos.add( new Infomation("怎么样通过饮食控制糖尿病3","2016/09/16","dasldsakjfhdsjkfhsdhfkdjsfh","www.baidu.com"));
-        infos.add( new Infomation("怎么样通过饮食控制糖尿病4","2016/09/16","dasldsakjfhdsjkfhsdhfkdjsfh","www.baidu.com"));
-        infos.add( new Infomation("怎么样通过饮食控制糖尿病5","2016/09/16","dasldsakjfhdsjkfhsdhfkdjsfh","www.baidu.com"));
-        Observable.just(infos).subscribe(new Action1<List<Infomation>>() {
+
+        WebCall.getInstance().call(WebKey.func_getNews, new HashMap<String, Object>()).map(new Func1<WebResponse, List<Map<String, Object>>>() {
             @Override
-            public void call(List<Infomation> infos) {
+            public List<Map<String, Object>> call(WebResponse webResponse) {
+                List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+                list = Utils.parseObjectToListMapString(webResponse.getData());
+                return list;
+            }
+        }).subscribe(new BaseSubscriber<List<Map<String, Object>>>() {
+            @Override
+            public void onNext(List<Map<String, Object>> infos) {
                 mView.updateInfo(infos);
             }
         });
-
     }
+
     @Override
     public void finish() {
 

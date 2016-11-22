@@ -18,7 +18,7 @@ public interface InfoDetailContract {
 
     interface Presenter extends BasePresenter
     {
-        void markInfo(String id);
+        void saveInfo(String id);
         void shareInfo(String url);
     }
 }

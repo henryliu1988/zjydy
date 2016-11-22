@@ -1,6 +1,7 @@
 package com.zhjydy.view.fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,15 @@ import com.zhjydy.model.entity.Infomation;
 import com.zhjydy.presenter.contract.MainInfoContract;
 import com.zhjydy.presenter.presenterImp.MainInfoPresenterImp;
 import com.zhjydy.util.ActivityUtils;
+import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.MainInfoListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.PagerImpActivity;
+import com.zhjydy.view.zhview.BadgImage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,9 +40,9 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
     @BindView(R.id.title_search_ly)
     LinearLayout titleSearchLy;
     @BindView(R.id.right_img)
-    ImageView rightImg;
+    BadgImage rightImg;
     @BindView(R.id.right_l_img)
-    ImageView rightLImg;
+    BadgImage rightLImg;
     @BindView(R.id.m_list)
     PullToRefreshListView mList;
 
@@ -65,19 +69,50 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
     protected void afterViewCreate() {
         initView();
         new MainInfoPresenterImp(this);
+        titleSearchText.setText("搜索资讯");
+        rightLImg.setImageSrc(R.mipmap.title_msg);
+        rightImg.setImageSrc(R.mipmap.shoucang);
+        rightLImg.setText("1");
+        rightImg.setText("1");
+        rightImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("key", FragKey.fave_info_list_fragment);
+                ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+            }
+        });
+        rightLImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundleMsg = new Bundle();
+                bundleMsg.putInt("key", FragKey.msg_all_fragment);
+                ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundleMsg, false);
+            }
+        });
+        titleSearchText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundleMsg = new Bundle();
+                bundleMsg.putInt("key", FragKey.search_info_fragment);
+                ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundleMsg, false);
+
+            }
+        });
+
     }
 
     private void initView() {
-        infoListAdapter = new MainInfoListAdapter(getContext(),new ArrayList<Infomation>());
+        infoListAdapter = new MainInfoListAdapter(getContext(),new ArrayList<Map<String,Object>>());
         mList.setAdapter(infoListAdapter);
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Infomation info = (Infomation)adapterView.getAdapter().getItem(i);
-                if(info != null) {
+                Map<String,Object> info = (Map<String,Object>)adapterView.getAdapter().getItem(i);
+                if(info != null && !TextUtils.isEmpty(Utils.toString(info.get("id")))) {
                     Bundle bundle = new Bundle();
                     bundle.putInt(IntentKey.FRAG_KEY, FragKey.detail_info_fragment);
-                    bundle.putString(IntentKey.FRAG_INFO, "fsdf");
+                    bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
                     ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
                 }
             }
@@ -95,8 +130,7 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
 
 
     @Override
-    public void updateInfoList(List<Infomation> infos) {
-        MainInfoListAdapter adapter = new MainInfoListAdapter(getContext(),infos);
-        mList.setAdapter(adapter);
+    public void updateInfoList(List<Map<String,Object>> infos) {
+        infoListAdapter.refreshData(infos);
     }
 }

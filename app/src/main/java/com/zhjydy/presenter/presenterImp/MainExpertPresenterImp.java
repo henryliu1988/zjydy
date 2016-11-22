@@ -3,8 +3,13 @@ package com.zhjydy.presenter.presenterImp;
 import com.zhjydy.model.entity.District;
 import com.zhjydy.model.entity.DocTorInfo;
 import com.zhjydy.model.entity.NormalDicItem;
+import com.zhjydy.model.net.BaseSubscriber;
+import com.zhjydy.model.net.WebCall;
+import com.zhjydy.model.net.WebKey;
+import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.presenter.contract.MainExpertContract;
 import com.zhjydy.presenter.contract.MainHomeContract;
+import com.zhjydy.util.Utils;
 import com.zhjydy.view.fragment.FragmentUtils;
 
 import java.util.ArrayList;
@@ -15,6 +20,7 @@ import java.util.Objects;
 
 import rx.Observable;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.functions.Func3;
 
 /**
@@ -86,16 +92,20 @@ public class MainExpertPresenterImp implements MainExpertContract.MainExpertPres
     }
 
     private void loadExperts() {
-        List<DocTorInfo> docs = new ArrayList<>();
-        docs.add(new DocTorInfo("das","王XX","北京人民医院","内科","教授","擅长","93","5"));
-        docs.add(new DocTorInfo("das","王dsa","北京人民医院","内科","教授","擅长","93","5"));
-        docs.add(new DocTorInfo("das","王fds","北京人民医院","内科","教授","擅长","93","5"));
-        docs.add(new DocTorInfo("das","王fds","北京人民医院","内科","教授","擅长","93","5"));
-        docs.add(new DocTorInfo("das","王dfsad","北京人民医院","内科","教授","擅长","93","5"));
-        Observable.just(docs).subscribe(new Action1<List<DocTorInfo>>() {
+
+        HashMap<String,Object> params = new HashMap<>();
+
+        WebCall.getInstance().call(WebKey.func_getExpertsList,params).map(new Func1<WebResponse, List<Map<String,Object>>>() {
             @Override
-            public void call(List<DocTorInfo> docTorInfos) {
-                mView.updateExperts(docTorInfos);
+            public List<Map<String, Object>> call(WebResponse webResponse) {
+                String data = webResponse.getData();
+                List<Map<String,Object>> list = Utils.parseObjectToListMapString(data);
+                return list;
+            }
+        }).subscribe(new BaseSubscriber<List<Map<String, Object>>>() {
+            @Override
+            public void onNext(List<Map<String, Object>> maps) {
+                mView.updateExperts(maps);
             }
         });
     }

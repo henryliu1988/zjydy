@@ -18,8 +18,8 @@ public interface MainHomeContract {
 
         void updateBanner(List<String> images);
         void updateMsg(Map<String,Object> msg);
-        void updateMsg(List<DocTorInfo> experts);
-        void updateInfo(List<Infomation> infos);
+        void updateExpert(List<Map<String, Object>> maps);
+        void updateInfo(List<Map<String, Object>> infos);
     }
 
     interface MainHomePresenter extends BasePresenter

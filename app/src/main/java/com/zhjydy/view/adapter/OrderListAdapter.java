@@ -26,7 +26,7 @@ public class OrderListAdapter extends  ListViewAdapter<Map<String,Object>> {
     @Override
     public void convert(ViewHolder holder, Map<String, Object> map) {
         String url = Utils.toString(map.get("url"));
-        ImageUtils.getInstance().displayFromRemote(url,(ImageView)holder.getView(R.id.photo));
+     //   ImageUtils.getInstance().displayFromRemote(url,(ImageView)holder.getView(R.id.photo));
         ( (TextView)holder.getView(R.id.doc_name)).setText(Utils.toString(map.get("docName")));
         ( (TextView)holder.getView(R.id.status)).setText(Utils.toString(map.get("status")));
         ( (TextView)holder.getView(R.id.serialNum)).setText("预约单号：" +Utils.toString(map.get("serialNum")));

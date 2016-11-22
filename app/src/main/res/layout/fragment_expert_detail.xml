@@ -7,7 +7,7 @@
     <LinearLayout
         android:id="@+id/write_words"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -15,12 +15,20 @@
         <EditText
             android:id="@+id/comment_make_edit"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="7" />
-        <Button
+            android:layout_height="match_parent"
+            android:textSize="14sp"
+            android:background="@drawable/bg_grayee_corner"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:text="dd"
+            android:layout_weight="4" />
+        <TextView
             android:id="@+id/comment_make_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
             android:textColor="@color/white_text"
             android:textSize="15sp"
             android:text="留言"
@@ -42,6 +50,11 @@
         <include layout="@layout/titlebar_layout_back" />
         <include layout="@layout/child_fragment_expert_detail_msgtitle"/>
         <include layout="@layout/child_fragment_expert_detail_content"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:background="#EEEEEE"
+            />
         <ListView
             android:id="@+id/word_listview"
             android:cacheColorHint="#00000000"

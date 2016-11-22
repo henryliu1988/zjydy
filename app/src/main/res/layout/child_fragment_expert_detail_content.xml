@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     android:background="@color/white_bg"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
     android:orientation="vertical">
 
 
@@ -12,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:paddingBottom="5dp"
         android:paddingTop="5dp">
 
@@ -20,33 +23,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:src="@mipmap/ic_back_arrow" />
+            android:src="@mipmap/like" />
 
         <TextView
             android:id="@+id/score_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/black_text1"
             android:layout_marginLeft="5dp"
+            android:text="推荐分数"
             android:layout_toRightOf="@id/score_image" />
 
-        <RatingBar
+        <com.zhjydy.view.zhview.ScoreView
             android:id="@+id/score_star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/score_text"
-            android:numStars="5" />
+            android:layout_toRightOf="@id/score_text" />
 
-        <Button
+        <TextView
             android:id="@+id/subscribe_expert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:background="@drawable/bg_red_corner"
-            android:paddingBottom="2dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="2dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="5dp"
             android:textColor="@color/white_text"
             android:textSize="15sp"
             android:text="马上预约"
@@ -67,15 +72,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="推荐理由"
-            android:textColor="@color/black_text1"
-            android:textSize="16sp" />
+            android:textColor="@color/black_text"
+            android:textSize="14sp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:id="@+id/reason"
             android:orientation="vertical"
-            ></LinearLayout>
+            >
+            <TextView
+                android:id="@+id/reason_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/black_text1" />
+
+        </LinearLayout>
 
     </LinearLayout>
     <LinearLayout
@@ -87,15 +100,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="专业擅长"
-            android:textColor="@color/black_text1"
-            android:textSize="16sp" />
+            android:textColor="@color/black_text"
+            android:textSize="14sp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:id="@+id/specical"
-            android:orientation="vertical"
-            ></LinearLayout>
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/specical_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/black_text1" />
+
+
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016/10/9 0009.
  */
-public class PasswordChangeFragment extends  StatedFragment implements PasswordChangContract.View {
+public class PasswordChangeFragment extends  PageImpBaseFragment implements PasswordChangContract.View {
 
     private PasswordChangContract.Presenter mPresenter;
     @Override

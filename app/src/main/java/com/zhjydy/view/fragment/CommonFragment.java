@@ -19,7 +19,7 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/10/9 0009.
  */
-public class CommonFragment extends StatedFragment implements CommonContract.View {
+public class CommonFragment extends PageImpBaseFragment implements CommonContract.View {
 
     @BindView(R.id.title_back)
     ImageView titleBack;
@@ -46,6 +46,12 @@ public class CommonFragment extends StatedFragment implements CommonContract.Vie
     @Override
     protected void afterViewCreate() {
         new CommonPresenterImp(this);
+        titleBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                back();
+            }
+        });
     }
 
 
@@ -71,7 +77,7 @@ public class CommonFragment extends StatedFragment implements CommonContract.Vie
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_back:
-                mPresenter.finish();
+                back();
                 break;
             case R.id.clear_layout:
                 break;

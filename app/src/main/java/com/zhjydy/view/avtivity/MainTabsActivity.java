@@ -18,7 +18,7 @@ import com.zhjydy.view.fragment.MainOrderFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageChangeListener{
+public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
     @BindView(R.id.main_tabs)
     AdvancedPagerSlidingTabStrip mainTabs;
@@ -26,11 +26,11 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
     ViewPager mainViewpager;
 
 
-    private static final int VIEW_FIRST = 0;
-    private static final int VIEW_SECOND = 1;
-    private static final int VIEW_THIRD = 2;
-    private static final int VIEW_FOURTH = 3;
-    private static final int VIEW_FIVE = 4;
+    public static final int VIEW_FIRST = 0;
+    public static final int VIEW_SECOND = 1;
+    public static final int VIEW_THIRD = 2;
+    public static final int VIEW_FOURTH = 3;
+    public static final int VIEW_FIVE = 4;
 
     private static final int VIEW_SIZE = 5;
     private MainHomeFragment mFirstFragment = null;
@@ -56,6 +56,14 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
         mainTabs.setOnPageChangeListener(this);
         mainViewpager.setCurrentItem(VIEW_FIRST);
 
+    }
+
+
+    public void gotoTab(int index) {
+        if (index > VIEW_SIZE - 1) {
+            return;
+        }
+        mainViewpager.setCurrentItem(index);
     }
 
     @Override
@@ -145,15 +153,15 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
             if (index >= 0 && index < VIEW_SIZE) {
                 switch (index) {
                     case VIEW_FIRST:
-                        return R.mipmap.titlebar_back;
+                        return R.mipmap.main_tab_home_off;
                     case VIEW_SECOND:
-                        return R.mipmap.titlebar_back;
+                        return R.mipmap.main_tab_expert_off;
                     case VIEW_THIRD:
-                        return R.mipmap.titlebar_back;
+                        return R.mipmap.main_tab_info_off;
                     case VIEW_FOURTH:
-                        return R.mipmap.titlebar_back;
+                        return R.mipmap.main_tab_order_off;
                     case VIEW_FIVE:
-                        return R.mipmap.titlebar_back;
+                        return R.mipmap.main_tab_mine_off;
 
                     default:
                         break;
@@ -167,13 +175,16 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
             if (index >= 0 && index < VIEW_SIZE) {
                 switch (index) {
                     case VIEW_FIRST:
-                        return R.mipmap.titlebar_back;
+                        return R.mipmap.main_tab_home_on;
                     case VIEW_SECOND:
-                        return R.mipmap.titlebar_back;
+                        return R.mipmap.main_tab_expert_on;
                     case VIEW_THIRD:
-                        return R.mipmap.titlebar_back;
+                        return R.mipmap.main_tab_info_on;
                     case VIEW_FOURTH:
-                        return R.mipmap.titlebar_back;
+                        return R.mipmap.main_tab_order_on;
+                    case VIEW_FIVE:
+                        return R.mipmap.main_tab_mine_on;
+
                     default:
                         break;
                 }

@@ -3,42 +3,65 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white_bg"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
+    android:paddingBottom="10dp"
     android:paddingTop="10dp">
 
-    <CheckBox
-        android:id="@+id/item_check"
+    <RelativeLayout
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
-        />
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <CheckBox
+            android:id="@+id/item_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_vertical"
+            android:button="@drawable/checkbox_radio"
+            android:gravity="center_vertical" />
+    </RelativeLayout>
+
 
     <LinearLayout
+        android:id="@+id/content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="8">
-        <TextView
-            android:id="@+id/item_name_sex_age"
-            android:layout_width="wrap_content"
+        android:layout_weight="9"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black_text" />
-        <TextView
-            android:id="@+id/item_domain_hos_departs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black_text1"
-            />
+            android:layout_weight="8"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_name_sex_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_text"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/item_domain_hos_departs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black_text2"
+                android:textSize="14sp" />
         </LinearLayout>
-    <ImageView
-        android:id="@+id/more"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:src="@mipmap/ic_back_arrow"
-        android:scaleType="fitCenter" />
+
+        <ImageView
+            android:id="@+id/more"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/item_more" />
+
+    </LinearLayout>
+
 </LinearLayout>

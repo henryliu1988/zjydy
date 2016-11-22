@@ -24,5 +24,7 @@ public interface ExpertDetailContract {
         void subscribeExpert();
 
         void makeNewComment(String commentId);
+
+        void saveExpert(String id);
     }
 }

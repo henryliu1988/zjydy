@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2016/9/26 0026.
  */
-public class InfoDetailFragment extends StatedFragment implements InfoDetailContract.View {
+public class InfoDetailFragment extends PageImpBaseFragment implements InfoDetailContract.View {
 
 
     @BindView(R.id.title_back)
@@ -40,6 +40,7 @@ public class InfoDetailFragment extends StatedFragment implements InfoDetailCont
     WebView mInfoWebview;
     private InfoDetailContract.Presenter mPresenter;
 
+    String id;
     @Override
     public void setPresenter(InfoDetailContract.Presenter presenter) {
         mPresenter = presenter;
@@ -56,9 +57,7 @@ public class InfoDetailFragment extends StatedFragment implements InfoDetailCont
         titleBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mPresenter != null) {
-                    mPresenter.finish();
-                }
+                    back();
             }
         });
     }
@@ -73,11 +72,17 @@ public class InfoDetailFragment extends StatedFragment implements InfoDetailCont
         if (getArguments() == null) {
             return;
         }
-        String id = getArguments().getString(IntentKey.FRAG_INFO);
+         id = getArguments().getString(IntentKey.FRAG_INFO);
         if (TextUtils.isEmpty(id)) {
             return;
         }
-        new InfoDetailPresenterImp(this,id);
+        new InfoDetailPresenterImp(this, id);
+        mSaveInfoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.saveInfo(id);
+            }
+        });
     }
 
     @Override

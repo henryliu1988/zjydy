@@ -8,7 +8,7 @@ import com.zhjydy.presenter.presenterImp.PhoneNumChangePresenterImp;
 /**
  * Created by Administrator on 2016/10/9 0009.
  */
-public class PayPasswordChangeFragment extends  StatedFragment implements PayPasswordChangContract.View {
+public class PayPasswordChangeFragment extends  PageImpBaseFragment implements PayPasswordChangContract.View {
 
     private PayPasswordChangContract.Presenter mPresenter;
     @Override

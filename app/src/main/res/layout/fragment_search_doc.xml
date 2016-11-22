@@ -3,40 +3,18 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/titlebar_layout_back_search"/>
-    <com.yyydjk.library.DropDownMenu
-        android:id="@+id/dropDownMenu"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/m_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:ddmenuTextSize="13sp"
-        app:ddtextUnselectedColor="@color/drop_down_unselected"
-        app:ddtextSelectedColor="@color/drop_down_selected"
-        app:dddividerColor="@color/gray"
-        app:ddunderlineColor="@color/gray"
-        app:ddmaskColor="@color/mask_color"
-        app:ddmenuBackgroundColor="@color/white"
-        app:ddmenuSelectedIcon="@mipmap/drop_down_selected_icon"
-        app:ddmenuUnselectedIcon="@mipmap/drop_down_unselected_icon" />
-
-    <RelativeLayout
-        android:id="@+id/m_content_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.handmark.pulltorefresh.library.PullToRefreshListView
-            android:id="@+id/m_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:cacheColorHint="#00000000"
-            android:divider="#00000000"
-            android:dividerHeight="10dp"
-            android:fadingEdge="none"
-            android:fastScrollEnabled="false"
-            android:footerDividersEnabled="false"
-            android:headerDividersEnabled="false"
-            android:smoothScrollbar="true" />
-
-    </RelativeLayout>
+        android:layout_height="match_parent"
+        android:layout_marginTop = "10dp"
+        android:cacheColorHint="#00000000"
+        android:divider="#00000000"
+        android:dividerHeight="10dp"
+        android:fadingEdge="none"
+        android:fastScrollEnabled="false"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:smoothScrollbar="true" />
 
 </LinearLayout>

@@ -9,13 +9,13 @@
     android:paddingTop="10dp">
 
     <ImageView
+        android:id="@+id/title_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
-        android:src="@mipmap/titlebar_back"
-        />
+        android:src="@mipmap/titlebar_back" />
     <TextView
         android:id="@+id/center_tv"
         android:layout_width="wrap_content"
@@ -29,6 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
+        android:textColor="@color/white_text"
+        android:textSize="14sp"
         android:layout_centerVertical="true"
         />
 

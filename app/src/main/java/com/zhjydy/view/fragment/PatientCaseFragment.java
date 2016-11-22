@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +27,7 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/9/26 0026.
  */
-public class PatientCaseFragment extends StatedFragment implements PatientCaseContract.View {
+public class PatientCaseFragment extends PageImpBaseFragment implements PatientCaseContract.View {
 
 
     @BindView(R.id.title_back)
@@ -36,10 +37,8 @@ public class PatientCaseFragment extends StatedFragment implements PatientCaseCo
     @BindView(R.id.m_case_list)
     ListViewForScrollView mCaseList;
     @BindView(R.id.m_case_add_button)
-    Button mCaseAddButton;
+    TextView mCaseAddButton;
     private PatientCaseContract.Presenter mPresenter;
-
-
 
     private PatientCaseListAdapter mPatientCaseListAdapter;
     @Override
@@ -47,6 +46,15 @@ public class PatientCaseFragment extends StatedFragment implements PatientCaseCo
         titleCenterTv.setText("患者病例");
         mPatientCaseListAdapter = new PatientCaseListAdapter(getContext(),new ArrayList<Map<String,Object>>());
         mCaseList.setAdapter(mPatientCaseListAdapter);
+        mPatientCaseListAdapter.setOnClickListener(new PatientCaseListAdapter.OnClickListener() {
+            @Override
+            public void OnClick(Map<String, Object> item) {
+                Bundle bundle = new Bundle();
+                bundle.putString("id","1");
+                gotoFragment(FragKey.patient_case_detail_fragment,bundle);
+
+            }
+        });
     }
 
     @Override
@@ -79,13 +87,13 @@ public class PatientCaseFragment extends StatedFragment implements PatientCaseCo
     }
 
     private void addNewPatienteCase() {
-
+        gotoFragment(FragKey.patient_case_edit_fragment);
     }
     @OnClick({R.id.title_back, R.id.m_case_add_button})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_back:
-                mPresenter.finish();
+                back();
                 break;
             case R.id.m_case_add_button:
                 addNewPatienteCase();

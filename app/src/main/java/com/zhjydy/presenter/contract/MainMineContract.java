@@ -6,6 +6,8 @@ import com.zhjydy.presenter.BaseView;
 import java.util.List;
 import java.util.Map;
 
+import rx.Observable;
+
 /**
  * Created by Administrator on 2016/9/20 0020.
  */
@@ -17,5 +19,6 @@ public interface MainMineContract {
 
     interface MainMinePresenter extends BasePresenter
     {
+        Observable<Map<String,Object>> loadIdentifyInfo();
     }
 }

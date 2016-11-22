@@ -14,6 +14,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.zhjydy.app.zhjApplication;
+import com.zhjydy.model.net.WebKey;
 
 import java.io.File;
 
@@ -131,13 +132,13 @@ public class ImageUtils
 
     public void displayFromRemote(String imageurl, ImageView imageView)
     {
-        String encodedUrl = imageurl;
+        String encodedUrl = WebKey.WEBKEY_BASE + transition(imageurl);
         ImageLoader.getInstance().displayImage(encodedUrl, imageView, getSimpleOptions());
     }
 
-    public File getSimsImageFilePath(String name)
+    public File getAppImageFilePath(String name)
     {
-        File file = getSimsAppFilePath();
+        File file = getAppFilePath();
         if (file == null)
         {
             return null;
@@ -153,8 +154,7 @@ public class ImageUtils
                 + name);
         return imageFile;
     }
-
-    public File getSimsAppFilePath()
+    public File getAppFilePath()
     {
         File sdDir = null;
         boolean sdCardExist = Environment.getExternalStorageState().equals(
@@ -163,7 +163,7 @@ public class ImageUtils
         {
             // 这里可以修改为你的路径
             sdDir = new File(Environment.getExternalStorageDirectory()
-                    + "/Sims");
+                    + "/zhjydy");
             if (!sdDir.exists())
             {
                 sdDir.mkdir();
@@ -172,6 +172,5 @@ public class ImageUtils
         }
         return sdDir;
     }
-
 
 }

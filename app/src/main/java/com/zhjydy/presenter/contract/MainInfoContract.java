@@ -15,7 +15,7 @@ public interface MainInfoContract {
 
     interface MainInfoView extends BaseView<MainInfoPresenter>
     {
-        void updateInfoList(List<Infomation> infos);
+        void updateInfoList(List<Map<String, Object>> infos);
     }
 
     interface MainInfoPresenter extends BasePresenter

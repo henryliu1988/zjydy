@@ -1,6 +1,7 @@
 package com.zhjydy.view.fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -16,15 +16,16 @@ import com.yyydjk.library.DropDownMenu;
 import com.zhjydy.R;
 import com.zhjydy.model.entity.District;
 import com.zhjydy.model.entity.DocTorInfo;
-import com.zhjydy.model.entity.Infomation;
 import com.zhjydy.model.entity.NormalDicItem;
 import com.zhjydy.presenter.contract.MainExpertContract;
 import com.zhjydy.presenter.presenterImp.MainExpertPresenterImp;
 import com.zhjydy.util.ActivityUtils;
-import com.zhjydy.view.adapter.ExperListAdapter;
+import com.zhjydy.util.Utils;
+import com.zhjydy.view.adapter.FavExpertListAdapter;
+import com.zhjydy.view.adapter.MainExpertListAdapter;
 import com.zhjydy.view.adapter.SimPleTextAdapter;
-import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.PagerImpActivity;
+import com.zhjydy.view.zhview.BadgImage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,28 +42,33 @@ import butterknife.OnClick;
 public class MainExpertFragment extends StatedFragment implements MainExpertContract.MainExpertView {
 
     @BindView(R.id.right_img)
-    ImageView rightImg;
+    BadgImage rightImg;
     @BindView(R.id.right_l_img)
-    ImageView rightLImg;
+    BadgImage rightLImg;
     @BindView(R.id.dropDownMenu)
     DropDownMenu dropDownMenu;
-    @BindView(R.id.m_list)
-    PullToRefreshListView mList;
-    @BindView(R.id.m_content_layout)
-    RelativeLayout mContentLayout;
     @BindView(R.id.title_search_img)
     ImageView titleSearchImg;
     @BindView(R.id.title_search_text)
     TextView titleSearchText;
     @BindView(R.id.title_search_ly)
     LinearLayout titleSearchLy;
+
+    private View mListContainerView;
+    private PullToRefreshListView mExpertListView;
+
+    private ListView mDropDomainListView;
+    private ListView mDropDepartListView;
+    private ListView mDropProfessListView;
+
+    private SimPleTextAdapter mDropDomainAdapter;
+    private SimPleTextAdapter mDropDepartAdapter;private SimPleTextAdapter mDropProfessAdapter;
     protected MainExpertContract.MainExpertPresenter mPresenter;
     protected String headers[] = {"全部地区", "科室", "职称"};
     protected String depart[] = {"内科", "外科", "五官科"};
     protected String proTitle[] = {"内科", "外科", "五官科"};
     protected List<View> dropViews = new ArrayList<>();
-    protected ExperListAdapter mExpertListAdapter;
-
+    protected MainExpertListAdapter mExpertListAdapter;
     public static MainExpertFragment instance() {
         MainExpertFragment frag = new MainExpertFragment();
         return frag;
@@ -80,21 +86,58 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
     @Override
     protected void afterViewCreate() {
         initExpertList();
+        initDropMenuViews();
         titleSearchText.setText("搜索专家");
-
+        rightLImg.setImageSrc(R.mipmap.title_msg);
+        rightImg.setImageSrc(R.mipmap.shoucang);
+        rightLImg.setText("1");
+        rightImg.setText("1");
         new MainExpertPresenterImp(this);
     }
 
 
-    private void initExpertList() {
-        mExpertListAdapter = new ExperListAdapter(getContext(), new ArrayList<DocTorInfo>());
-        mList.setAdapter(mExpertListAdapter);
-        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    private void initDropMenuViews() {
+        mDropDomainListView = new ListView(getContext());
+        mDropDomainAdapter = new SimPleTextAdapter(getContext(), new ArrayList<NormalDicItem>());
+        mDropDomainListView.setAdapter(mDropDomainAdapter);
+        dropViews.add(mDropDomainListView);
+
+
+        mDropDepartListView = new ListView(getContext());
+        mDropDepartAdapter = new SimPleTextAdapter(getContext(),  new ArrayList<NormalDicItem>());
+        mDropDepartListView.setAdapter(mDropDepartAdapter);
+        dropViews.add(mDropDepartListView);
+        mDropDepartListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                DocTorInfo info = (DocTorInfo)adapterView.getAdapter().getItem(i);
-                if(info != null) {
-                    ActivityUtils.transToFragPagerActivity(getActivity(),PagerImpActivity.class,FragKey.detail_expert_fragment,"fsdf",false);
+                dropDownMenu.closeMenu();
+            }
+        });
+
+        mDropProfessListView = new ListView(getContext());
+        mDropProfessAdapter = new SimPleTextAdapter(getContext(),  new ArrayList<NormalDicItem>());
+        mDropProfessListView.setAdapter(mDropProfessAdapter);
+        dropViews.add(mDropProfessListView);
+        mDropProfessListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                dropDownMenu.closeMenu();
+            }
+        });
+        dropDownMenu.setDropDownMenu(Arrays.asList(headers), dropViews, mListContainerView);
+
+    }
+    private void initExpertList() {
+        mListContainerView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_expert_list,null);
+        mExpertListView = (PullToRefreshListView)mListContainerView.findViewById(R.id.m_list);
+        mExpertListAdapter = new MainExpertListAdapter(getContext(), new ArrayList<Map<String,Object>>());
+        mExpertListView.setAdapter(mExpertListAdapter);
+        mExpertListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Map<String,Object> info = (Map<String,Object>)adapterView.getAdapter().getItem(i);
+                if(info != null && !TextUtils.isEmpty(Utils.toString(info.get("id")))) {
+                    ActivityUtils.transToFragPagerActivity(getActivity(),PagerImpActivity.class,FragKey.detail_expert_fragment,Utils.toString(info.get("id")),false);
                 }
             }
         });
@@ -113,39 +156,17 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
 
     @Override
     public void updateFilters(Map<String, Object> data) {
-        dropViews.clear();
         List<District> districts = (List<District>) data.get(headers[0]);
         List<NormalDicItem> depart = (List<NormalDicItem>) data.get(headers[1]);
         List<NormalDicItem> profe = (List<NormalDicItem>) data.get(headers[2]);
-
-
-        ListView listView0 = new ListView(getContext());
-        SimPleTextAdapter adapter0 = new SimPleTextAdapter(getContext(), depart);
-        listView0.setAdapter(adapter0);
-        dropViews.add(listView0);
-
-
-        ListView listView1 = new ListView(getContext());
-        SimPleTextAdapter adapter1 = new SimPleTextAdapter(getContext(), profe);
-        listView1.setAdapter(adapter1);
-        dropViews.add(listView1);
-        listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                dropDownMenu.closeMenu();
-            }
-        });
-        ListView listView2 = new ListView(getContext());
-        SimPleTextAdapter adapter2 = new SimPleTextAdapter(getContext(), profe);
-        listView2.setAdapter(adapter2);
-        dropViews.add(listView2);
-        dropDownMenu.setDropDownMenu(Arrays.asList(headers), dropViews, new TextView(getContext()));
-
+        mDropDomainAdapter.refreshData(depart);
+        mDropDepartAdapter.refreshData(depart);
+        mDropProfessAdapter.refreshData(profe);
     }
 
     @Override
-    public void updateExperts(List<DocTorInfo> list) {
-        mExpertListAdapter.refreshData(list);
+    public void updateExperts(List<Map<String, Object>> maps) {
+        mExpertListAdapter.refreshData(maps);
     }
 
     @Override
@@ -165,8 +186,14 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
                 ActivityUtils.transActivity(getActivity(), PagerImpActivity.class,bundle,false);
                 break;
             case R.id.right_img:
+                Bundle bundleFave = new Bundle();
+                bundleFave.putInt("key", FragKey.fave_expert_list_fragment);
+                ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundleFave, false);
                 break;
             case R.id.right_l_img:
+                Bundle bundleMsg = new Bundle();
+                bundleMsg.putInt("key", FragKey.msg_all_fragment);
+                ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundleMsg, false);
                 break;
         }
     }

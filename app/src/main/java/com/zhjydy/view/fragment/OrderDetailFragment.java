@@ -31,7 +31,7 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/9/26 0026.
  */
-public class OrderDetailFragment extends StatedFragment implements OrderDetailContract.View {
+public class OrderDetailFragment extends PageImpBaseFragment implements OrderDetailContract.View {
 
 
     private OrderDetailContract.Presenter mPresenter;

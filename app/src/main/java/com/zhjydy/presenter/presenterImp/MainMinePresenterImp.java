@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rx.Observable;
+
 /**
  * Created by Administrator on 2016/9/20 0020.
  */
@@ -42,5 +44,12 @@ public class MainMinePresenterImp implements MainMineContract.MainMinePresenter 
     @Override
     public void finish() {
 
+    }
+
+    @Override
+    public Observable<Map<String, Object>> loadIdentifyInfo() {
+        Map<String,Object> map = new HashMap<>();
+        map.put("1",1);
+        return Observable.just(map);
     }
 }

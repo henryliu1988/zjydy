@@ -14,16 +14,24 @@ public class FragmentUtils {
         FragmentManager fManager = context.getSupportFragmentManager();
         FragmentTransaction fTransaction = fManager.beginTransaction();
         fTransaction.add(containerId, fragment, tag);
-        fTransaction.addToBackStack(tag); fTransaction.commit();
+        fTransaction.addToBackStack(tag);
+        fTransaction.commit();
+    }
+
+    public static void changeFragment(FragmentActivity context, Fragment current, Fragment fragment, String tag, int viewId) {
+        FragmentManager fManager = context.getSupportFragmentManager();
+        FragmentTransaction transaction = fManager.beginTransaction();
+        transaction.hide(current);
+        transaction.add(viewId, fragment, tag);
+        transaction.addToBackStack(tag);
+        transaction.commit();
     }
 
     public static void back(FragmentActivity context) {
         FragmentManager fManager = context.getSupportFragmentManager();
-        if (fManager.getBackStackEntryCount() > 1)
-        {
+        if (fManager.getBackStackEntryCount() > 1) {
             fManager.popBackStack();
-        } else
-        {
+        } else {
             context.finish();
         }
     }

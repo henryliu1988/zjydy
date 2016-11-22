@@ -13,10 +13,15 @@ import com.zhjydy.presenter.contract.MainMineContract;
 import com.zhjydy.presenter.presenterImp.MainMinePresenterImp;
 import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.view.avtivity.PagerImpActivity;
+import com.zhjydy.view.zhview.BadgImage;
+
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 /**
  * Created by Administrator on 2016/9/19 0019.
@@ -28,7 +33,7 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
     @BindView(R.id.center_tv)
     TextView centerTv;
     @BindView(R.id.right_img)
-    ImageView rightImg;
+    BadgImage rightImg;
     @BindView(R.id.right_l_img)
     ImageView rightLImg;
     @BindView(R.id.mine_image)
@@ -95,11 +100,9 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
                 break;
             case R.id.account_safe_layout:
                 ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.account_safe_fragment,null,false);
-
                 break;
             case R.id.mine_confirm_msg_layout:
-                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.common_fragment,null,false);
-
+                loadIdentifyInfo();
                 break;
             case R.id.mine_history_layout:
                 ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.patient_case_fragment,null,false);
@@ -110,9 +113,23 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
 
                 break;
             case R.id.mine_about_layout:
-                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.common_fragment,null,false);
+                //ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.common_fragment,null,false);
 
                 break;
+        }
+    }
+    private void loadIdentifyInfo() {
+        if (mPresenter != null) {
+            mPresenter.loadIdentifyInfo().subscribe(new Action1<Map<String, Object>>() {
+                @Override
+                public void call(Map<String, Object> map) {
+                    if (map .size() < 1) {
+                        ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.identify_new_fragment,null,false);
+                    } else {
+                        ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.identify_info_fragment,null,false);
+                    }
+                }
+            });
         }
     }
 }
