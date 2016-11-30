@@ -26,6 +26,8 @@ public class AppData {
 
     public void initData() {
         DicData.getInstance().init();
+        MsgData.getInstance().initData();
+        PatientData.getInstance().loadPatientData();
     }
     private TokenInfo mToken;
     public void setToken(TokenInfo token) {

@@ -1,5 +1,7 @@
 package com.zhjydy.view.fragment;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,6 +14,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zhjydy.R;
+import com.zhjydy.model.data.AppData;
+import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.presenter.contract.ExpertDetailContract;
 import com.zhjydy.presenter.presenterImp.ExpertDetailPresenterImp;
 import com.zhjydy.util.ImageUtils;
@@ -19,8 +23,11 @@ import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.ExperDetaiCommentListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.zhview.ScoreView;
+import com.zhjydy.view.zhview.zhToast;
+import com.zhl.cbdialog.CBDialogBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -86,6 +93,8 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
 
     private String id;
 
+
+    private boolean isCollect = false;
     @Override
     protected void initData() {
 
@@ -104,12 +113,7 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
         }
         initCommentListView();
         new ExpertDetailPresenterImp(this, id);
-        titleBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                back();
-            }
-        });
+        updateFavStatus();
     }
 
     private void initCommentListView() {
@@ -119,6 +123,15 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
         wordListview.addHeaderView(mCommentListHeaderView);
     }
 
+
+    private void updateFavStatus() {
+        String collect = AppData.getInstance().getToken().getCollectExperts();
+        List<String> coList = new ArrayList<String>();
+        if (!TextUtils.isEmpty(collect)) {
+            coList = Arrays.asList(collect.split(","));
+        }
+
+    }
     @Override
     public void updateExpertInfos(Map<String, Object> expertInfo) {
         name.setText(Utils.toString(expertInfo.get("realname")));
@@ -127,12 +140,52 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
         profession.setText(Utils.toString(expertInfo.get("business")));
         reasonTv.setText(Utils.toString(expertInfo.get("reason")));
         specicalTv.setText(Utils.toString(expertInfo.get("adept")));
+
+        int score = Utils.toInteger(expertInfo.get("stars"));
+        if (score > 100) {
+            score = 100;
+        }
+        if (score < 0) {
+            score = 0;
+        }
+        scoreText.setText("推荐分数：" + score + "分");
+        scoreStar.setScore(score,100);
         ImageUtils.getInstance().displayFromRemote(Utils.toString(expertInfo.get("path")), image);
+
     }
 
     @Override
     public void updateComments(List<Map<String, Object>> comments) {
         mCommentListAdapter.refreshData(comments);
+        if (comments.size() < 1) {
+            wordListview.setVisibility(View.GONE);
+            return;
+        }
+        TextView commentCoutTv = (TextView)mCommentListHeaderView.findViewById(R.id.comment_count);
+        commentCoutTv.setText("留言（" + comments.size() + "）");
+    }
+
+    @Override
+    public void updateFavStatus(boolean isCollect) {
+        if (isCollect) {
+            saveText.setText("取消收藏");
+            ImageUtils.getInstance().displayFromDrawable(R.mipmap.save_cancel,saveImage);
+            saveLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.cancelSaveExpert();
+                }
+            });
+        } else{
+            saveText.setText("收藏");
+            ImageUtils.getInstance().displayFromDrawable(R.mipmap.save_start,saveImage);
+            saveLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.saveExpert();
+                }
+            });
+        }
     }
 
     @Override
@@ -146,6 +199,25 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
     }
 
     @Override
+    public void makeCommentSuccess() {
+        commentMakeEdit.setText("");
+    }
+
+
+    private void trySubsribExpert() {
+        mPresenter.getAllExpert().subscribe(new BaseSubscriber<List<Map<String, Object>>>() {
+            @Override
+            public void onNext(List<Map<String, Object>> maps) {
+                if (maps == null || maps.size()< 1) {
+                    gotoFragment(FragKey.patient_case_fragment);
+                } else {
+
+                }
+            }
+        });
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
@@ -153,17 +225,22 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
         return rootView;
     }
 
-    @OnClick({R.id.comment_make_btn, R.id.title_back, R.id.save_layout, R.id.subscribe_expert})
+    @OnClick({R.id.comment_make_btn, R.id.title_back,R.id.subscribe_expert})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.comment_make_btn:
+                String commentNew = commentMakeEdit.getText().toString();
+                if (TextUtils.isEmpty(commentNew)) {
+                    zhToast.showToast("留言内容不能为空");
+                    return;
+                }
+                mPresenter.makeNewComment(commentNew);
                 break;
             case R.id.title_back:
                 back();
                 break;
-            case R.id.save_layout:
-                mPresenter.saveExpert(id);
-                break;
+            case R.id.subscribe_expert:
+                trySubsribExpert();
         }
     }
 }

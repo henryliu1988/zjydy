@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zhjydy.R;
 import com.zhjydy.presenter.contract.MainMineContract;
 import com.zhjydy.presenter.presenterImp.MainMinePresenterImp;
@@ -120,16 +121,18 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
     }
     private void loadIdentifyInfo() {
         if (mPresenter != null) {
-            mPresenter.loadIdentifyInfo().subscribe(new Action1<Map<String, Object>>() {
-                @Override
-                public void call(Map<String, Object> map) {
-                    if (map .size() < 1) {
-                        ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.identify_new_fragment,null,false);
-                    } else {
-                        ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.identify_info_fragment,null,false);
-                    }
-                }
-            });
+            Map<String,Object> map=  mPresenter.getIdentifyInfo(getContext());
+            if (map == null) {
+                return;
+            }
+            if (map .size() < 1) {
+                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.identify_new_fragment,null,false);
+            } else {
+                String info = JSONObject.toJSONString(map);
+                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.identify_info_fragment,info,false);
+            }
         }
     }
+
+
 }

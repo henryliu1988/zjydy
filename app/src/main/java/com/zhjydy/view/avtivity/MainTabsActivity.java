@@ -1,5 +1,6 @@
 package com.zhjydy.view.avtivity;
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,8 @@ import android.support.v4.view.ViewPager;
 
 import com.lhh.apst.library.AdvancedPagerSlidingTabStrip;
 import com.zhjydy.R;
+import com.zhjydy.presenter.contract.MainTabsContract;
+import com.zhjydy.presenter.presenterImp.MainTabsPrensenter;
 import com.zhjydy.view.fragment.MainExpertFragment;
 import com.zhjydy.view.fragment.MainHomeFragment;
 import com.zhjydy.view.fragment.MainInfoFragment;
@@ -18,7 +21,7 @@ import com.zhjydy.view.fragment.MainOrderFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
+public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageChangeListener,MainTabsContract.View {
 
     @BindView(R.id.main_tabs)
     AdvancedPagerSlidingTabStrip mainTabs;
@@ -40,11 +43,14 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
     private MainMineFragment mFifthFragment = null;
 
 
+
+    private MainTabsContract.Presenter mPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tabs);
         ButterKnife.bind(this);
+        new MainTabsPrensenter(this);
         initView();
     }
 
@@ -79,6 +85,29 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public void updateMsgCount(int count) {
+        if (mFirstFragment != null) {
+            mFirstFragment.updateUnReadMsgCount(count);
+        }
+        if (mSecondFragment != null) {
+            mSecondFragment.updateUnReadMsgCount(count);
+        }
+        if (mThirdFragment != null) {
+            mThirdFragment.updateUnReadMsgCount(count);
+        }
+    }
+
+    @Override
+    public void setPresenter(MainTabsContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public Context getContext() {
+        return null;
     }
 
     public class FragmentAdapter extends FragmentStatePagerAdapter implements AdvancedPagerSlidingTabStrip.IconTabProvider {

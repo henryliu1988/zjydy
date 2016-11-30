@@ -95,7 +95,8 @@
         android:layout_height="wrap_content"
         android:paddingBottom="3dp"
         android:paddingRight="5dp"
-        android:paddingTop="3dp">
+        android:paddingTop="3dp"
+        android:id="@+id/operate_layout">
         <Button
             android:id="@+id/operate"
             android:layout_width="wrap_content"
@@ -103,8 +104,8 @@
             android:layout_alignParentRight="true"
             android:paddingBottom="3dp"
             android:paddingLeft="5dp"
+            android:text="马上支付"
             android:paddingRight="5dp"
-            android:visibility="gone"
             android:paddingTop="3dp" />
     </RelativeLayout>
 

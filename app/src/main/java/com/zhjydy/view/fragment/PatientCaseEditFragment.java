@@ -9,12 +9,31 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
+import com.bigkoo.pickerview.OptionsPickerView;
+import com.bigkoo.pickerview.TimePickerView;
 import com.zhjydy.R;
+import com.zhjydy.model.data.AppData;
+import com.zhjydy.model.data.DicData;
+import com.zhjydy.model.entity.DistricPickViewData;
+import com.zhjydy.model.entity.District;
+import com.zhjydy.model.entity.HosipitalPickViewData;
+import com.zhjydy.model.entity.HospitalDicItem;
+import com.zhjydy.model.entity.NormalDicItem;
+import com.zhjydy.model.entity.NormalPickViewData;
+import com.zhjydy.model.entity.PickViewData;
 import com.zhjydy.presenter.contract.PatientCaseEditContract;
 import com.zhjydy.presenter.presenterImp.PatientCaseEditPresenterImp;
+import com.zhjydy.util.DateUtil;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.avtivity.IntentKey;
+import com.zhjydy.view.zhview.MapTextView;
+import com.zhjydy.view.zhview.zhToast;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -40,7 +59,7 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
     @BindView(R.id.sex_title)
     TextView sexTitle;
     @BindView(R.id.sex_value)
-    TextView sexValue;
+    MapTextView sexValue;
     @BindView(R.id.sex_flag)
     ImageView sexFlag;
     @BindView(R.id.tel_title)
@@ -58,19 +77,19 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
     @BindView(R.id.domain_title)
     TextView domainTitle;
     @BindView(R.id.domain_value)
-    TextView domainValue;
+    MapTextView domainValue;
     @BindView(R.id.domain_flag)
     ImageView domainFlag;
     @BindView(R.id.hospital_title)
     TextView hospitalTitle;
     @BindView(R.id.hospital_value)
-    TextView hospitalValue;
+    MapTextView hospitalValue;
     @BindView(R.id.hospital_flag)
     ImageView hospitalFlag;
     @BindView(R.id.depart_title)
     TextView departTitle;
     @BindView(R.id.depart_value)
-    TextView departValue;
+    MapTextView departValue;
     @BindView(R.id.depart_flag)
     ImageView departFlag;
     @BindView(R.id.doc_title)
@@ -96,11 +115,28 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
     @BindView(R.id.next_station)
     TextView nextStation;
     private PatientCaseEditContract.Presenter mPresenter;
+    private int editType = 0;
+    private Map<String, Object> mEditList;
 
-    private Map<String,Object> mEditList;
+
+    private TimePickerView mDayPicker;
+    private OptionsPickerView<PickViewData> mSexPicker;
+    private OptionsPickerView mDistricePicker;
+    private OptionsPickerView mHospitalPicker;
+    private OptionsPickerView mOfficePicker;
+
+
+    private ArrayList<DistricPickViewData> mProPickViewData = new ArrayList<>();
+
+    private ArrayList<PickViewData> mSexPickViewData = new ArrayList<>();
+    private ArrayList<ArrayList<DistricPickViewData>> mCityPickViewData = new ArrayList<>();
+    private ArrayList<ArrayList<ArrayList<DistricPickViewData>>> mQuPickViewData = new ArrayList<>();
+
+    private ArrayList<HosipitalPickViewData> mHospitalPickViewData = new ArrayList<>();
+    private ArrayList<NormalPickViewData> mDepartPickViewData = new ArrayList<>();
+
     @Override
     protected void initData() {
-
     }
 
     @Override
@@ -110,16 +146,177 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
 
     @Override
     protected void afterViewCreate() {
-        String info =  getArguments().getString(IntentKey.FRAG_INFO);
-        if (TextUtils.isEmpty(info)) {
+        Bundle bundle = getArguments();
+        if (bundle == null || TextUtils.isEmpty(bundle.getString(IntentKey.FRAG_INFO))) {
             titleCenterTv.setText("添加患者");
-        }
-        else{
+            editType = 0;
+        } else {
+            String info = bundle.getString(IntentKey.FRAG_INFO);
             titleCenterTv.setText("修改患者信息");
-            mEditList= Utils.parseObjectToMapString(info);
+            mEditList = Utils.parseObjectToMapString(info);
+            editType = 1;
         }
+        mSexPicker = new OptionsPickerView<PickViewData>(getContext());
+        mDistricePicker = new OptionsPickerView<DistricPickViewData>(getContext());
+        mHospitalPicker = new OptionsPickerView<HosipitalPickViewData>(getContext());
+        mOfficePicker = new OptionsPickerView<NormalDicItem>(getContext());
+        initDatePickView();
         new PatientCaseEditPresenterImp(this);
 
+        initView();
+
+    }
+
+    private void initView(){
+        if (mEditList== null || mEditList.size() < 1){
+            return;
+        }
+        String realName = Utils.toString(mEditList.get("realname"));
+        String sexName = DicData.getInstance().getSexById(Utils.toString(mEditList.get("sex"))).getName();
+        String sexId = DicData.getInstance().getSexById(Utils.toString(mEditList.get("sex"))).getId();
+        String sec = Utils.toString(mEditList.get("age"));
+        String phoneNum = Utils.toString(mEditList.get("mobile"));
+        String doctor = Utils.toString(mEditList.get("doctor"));
+        String comment = Utils.toString(mEditList.get("comment"));
+        String descript = Utils.toString(mEditList.get("condition"));
+
+        long ageLong = Utils.toLong(mEditList.get("age"));
+        String birth = "";
+        if (ageLong > 0) {
+            birth = DateUtil.dateToString(DateUtil.getDateBySeconds(ageLong),DateUtil.LONG_DATE_FORMAT);
+        }
+        String distrcit = "";
+        String hospital = "";
+        String depart = "";
+        String disCode = Utils.toString(mEditList.get("address"));
+        String hosCode =  Utils.toString(mEditList.get("hospital"));
+        String depCode = Utils.toString(mEditList.get("office"));
+
+        if (!TextUtils.isEmpty(disCode)) {
+            List<District> list = DicData.getInstance().getDistrictById(disCode);
+            if (list.size() > 0){
+                for (int i = list.size()-1;i>=0;i--) {
+                    distrcit += list.get(i).getName() + " ";
+                }
+            }
+        }
+        if (!TextUtils.isEmpty(hosCode)) {
+            hospital = DicData.getInstance().getHospitalById(hosCode).getHospital();
+        }
+        if (!TextUtils.isEmpty(depCode)) {
+            depart = DicData.getInstance().getOfficeById(depCode).getName();
+        }
+
+        nameValue.setText(realName);
+        sexValue.setMap(sexId,sexName);
+        telValue.setText(phoneNum);
+        birthValue.setText(birth);
+        domainValue.setMap(disCode,distrcit);
+        hospitalValue.setMap(hosCode,hospital);
+        departValue.setMap(depCode,depart);
+        docValue.setText(doctor);
+
+        sickValue.setText("");
+        sickDiscriptValue.setText(descript);
+        commentValue.setText(comment);
+
+    }
+
+    private void initDatePickView() {
+        mDayPicker = new TimePickerView(getContext(), TimePickerView.Type.YEAR_MONTH_DAY);
+        mDayPicker.setTime(new Date());
+        mDayPicker.setCyclic(false);
+        mDayPicker.setCancelable(true);
+        mDayPicker.setOnTimeSelectListener(new TimePickerView.OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date) {
+                String dateStr = DateUtil.dateToString(date, DateUtil.LONG_DATE_FORMAT);
+                birthValue.setText(dateStr);
+            }
+        });
+    }
+
+    private void initSexPickView() {
+        mSexPicker.setCyclic(false);
+        mSexPicker.setSelectOptions(0);
+        mSexPicker.setCancelable(true);
+        mSexPicker.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3) {
+                String sexName = mSexPickViewData.get(options1).getName();
+                String sexId = mSexPickViewData.get(options1).getId();
+
+                sexValue.setMap(sexId,sexName);
+            }
+        });
+    }
+
+    private void initDistricePicker() {
+        mDistricePicker.setCyclic(false);
+        mDistricePicker.setCancelable(true);
+        mDistricePicker.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3) {
+                District pro = mProPickViewData.get(options1).getDistrict();
+                District city = mCityPickViewData.get(options1).get(option2).getDistrict();
+                District qu = mQuPickViewData.get(options1).get(option2).get(options3).getDistrict();
+                domainValue.setMap(qu.getId(), pro.getName() + " " + city.getName() + " " + qu.getName());
+                mHospitalPickViewData.clear();
+                mPresenter.updateHospitalList(qu.getId());
+            }
+        });
+    }
+
+    @Override
+    public void updateSexPick(ArrayList<PickViewData> sexData) {
+        mSexPickViewData = sexData;
+        mSexPicker.setPicker(sexData);
+        initSexPickView();
+    }
+
+    @Override
+    public void updateDistrict(Map<String, ArrayList> distrctData) {
+        mProPickViewData = (ArrayList<DistricPickViewData>) distrctData.get("pro");
+        mCityPickViewData = (ArrayList<ArrayList<DistricPickViewData>>) distrctData.get("city");
+        mQuPickViewData = (ArrayList<ArrayList<ArrayList<DistricPickViewData>>>) distrctData.get("qu");
+        mDistricePicker.setPicker(mProPickViewData, mCityPickViewData, mQuPickViewData, true);
+        initDistricePicker();
+    }
+
+    @Override
+    public void updateOffice(ArrayList<NormalPickViewData> officeData) {
+        mDepartPickViewData = officeData;
+        mOfficePicker.setPicker(mDepartPickViewData);
+        mOfficePicker.setCyclic(false);
+        mOfficePicker.setSelectOptions(0);
+        mOfficePicker.setCancelable(true);
+        mOfficePicker.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3) {
+                String officeName = mDepartPickViewData.get(options1).getmItem().getName();
+                String officeId = mDepartPickViewData.get(options1).getmItem().getId();
+                departValue.setMap(officeId, officeName);
+            }
+        });
+
+    }
+
+    @Override
+    public void updateHospitalByAddress(final ArrayList<HosipitalPickViewData> hosData) {
+        if (hosData == null || hosData.size() < 1) {
+            return;
+        }
+        mHospitalPickViewData = hosData;
+        mHospitalPicker.setPicker(hosData);
+        mHospitalPicker.setCyclic(false);
+        mHospitalPicker.setCancelable(true);
+        mHospitalPicker.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3) {
+                HospitalDicItem hos = hosData.get(options1).getHospitalDicItem();
+                hospitalValue.setMap(hos.getId(), hos.getHospital());
+            }
+        });
     }
 
     @Override
@@ -142,16 +339,54 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
 
     private void checkMsg() {
         String name = nameValue.getText().toString();
-        String sex = sexValue.getText().toString();
+        String sex = sexValue.getTextId();
         String phone = telValue.getText().toString();
+        String date = birthValue.getText().toString();
+        String districtId = domainValue.getTextId();
+        String hosId = hospitalValue.getTextId();
+        String officeId = departValue.getTextId();
+        String docName = docValue.getText().toString();
+        String patientName = sickValue.getText().toString();
+        String discript = sickDiscriptValue.getText().toString();
+        String comment = commentValue.getText().toString();
+
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(sex) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(districtId)
+                || TextUtils.isEmpty(hosId) || TextUtils.isEmpty(officeId) ||
+                TextUtils.isEmpty(docName) || TextUtils.isEmpty(patientName)
+                || TextUtils.isEmpty(hosId) || TextUtils.isEmpty(officeId)) {
+            zhToast.showToast("字段为空");
+            return;
+        }
+
+
+        Map<String,Object> params = new HashMap<>();
+        params.put("realname",name);
+        params.put("sex",sex);
+        params.put("mobile",phone);
+        params.put("age",DateUtil.getDiffOfBaseTime(date));
+        params.put("address",districtId);
+        params.put("hospital",hosId);
+        params.put("address",districtId);
+        params.put("office",officeId);
+        params.put("doctor",docName);
+        params.put("name",patientName);
+        params.put("condition",discript);
+        params.put("memberid",AppData.getInstance().getToken().getId());
+
+
+
       /*
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(sex) || TextUtils.isEmpty(phone)) {
             return;
         }
 */
         Bundle bundle = new Bundle();
-        gotoFragment(FragKey.patient_case_edit_attach_fragment,bundle);
+        bundle.putString("param", JSONObject.toJSONString(params));
+        bundle.putInt("type", editType);
+
+        gotoFragment(FragKey.patient_case_edit_attach_fragment, bundle);
     }
+
     @OnClick({R.id.title_back, R.id.sex_value, R.id.sex_flag, R.id.birth_value, R.id.birth_flag, R.id.domain_value, R.id.domain_flag, R.id.hospital_value, R.id.hospital_flag, R.id.depart_value, R.id.depart_flag, R.id.next_station})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -160,22 +395,37 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
                 break;
             case R.id.sex_value:
             case R.id.sex_flag:
+                if (mSexPickViewData.size() > 0) {
+                    mSexPicker.show();
+                }
                 break;
             case R.id.birth_value:
             case R.id.birth_flag:
+                mDayPicker.show();
                 break;
             case R.id.domain_value:
             case R.id.domain_flag:
+                if (mProPickViewData.size() > 0) {
+                    mDistricePicker.show();
+                }
                 break;
             case R.id.hospital_value:
             case R.id.hospital_flag:
+                if (mHospitalPickViewData.size() > 0) {
+                    mHospitalPicker.show();
+                }
                 break;
             case R.id.depart_value:
             case R.id.depart_flag:
+                if (mDepartPickViewData.size() > 0) {
+                    mOfficePicker.show();
+                }
                 break;
             case R.id.next_station:
                 checkMsg();
                 break;
         }
     }
+
+
 }

@@ -5,9 +5,12 @@ import android.text.TextUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.zhjydy.model.entity.DistricPickViewData;
 import com.zhjydy.model.entity.District;
 import com.zhjydy.model.entity.HospitalDicItem;
 import com.zhjydy.model.entity.NormalDicItem;
+import com.zhjydy.model.entity.NormalItem;
+import com.zhjydy.model.entity.NormalPickViewData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
@@ -21,9 +24,12 @@ import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.functions.Func3;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Administrator on 2016/9/23 0023.
@@ -47,6 +53,7 @@ public class DicData {
     private String prosListData;
     private String cityListData;
     private String quListData;
+
     public void init() {
         loadOffice();
         loadBusiness();
@@ -59,8 +66,10 @@ public class DicData {
         if (TextUtils.isEmpty(officeListData)) {
             officeListData = (String) SPUtils.get("office_dic", "");
         }
+        if (TextUtils.isEmpty(officeListData)) {
+            return new ArrayList<>();
+        }
         list = JSON.parseObject(officeListData, new TypeReference<List<NormalDicItem>>() {
-
         });
         return list;
 
@@ -70,6 +79,9 @@ public class DicData {
         List<NormalDicItem> list = new ArrayList<>();
         if (TextUtils.isEmpty(businessListData)) {
             businessListData = (String) SPUtils.get("business_dic", "");
+        }
+        if (TextUtils.isEmpty(businessListData)) {
+            return new ArrayList<>();
         }
         list = JSON.parseObject(businessListData, new TypeReference<List<NormalDicItem>>() {
 
@@ -82,7 +94,10 @@ public class DicData {
     public List<HospitalDicItem> getHospitals() {
         List<HospitalDicItem> list = new ArrayList<>();
         if (TextUtils.isEmpty(hospitalListData)) {
-            businessListData = (String) SPUtils.get("hospital_dic", "");
+            hospitalListData = (String) SPUtils.get("hospital_dic", "");
+        }
+        if (TextUtils.isEmpty(hospitalListData)) {
+            return new ArrayList<>();
         }
         list = JSON.parseObject(hospitalListData, new TypeReference<List<HospitalDicItem>>() {
         });
@@ -92,31 +107,194 @@ public class DicData {
 
     public List<District> getAllPros() {
         List<District> pros = new ArrayList<>();
-        if(TextUtils.isEmpty(prosListData)) {
-            prosListData = (String)SPUtils.get("pro_dic","");
+        if (TextUtils.isEmpty(prosListData)) {
+            prosListData = (String) SPUtils.get("pro_dic", "");
         }
-        pros =JSON.parseObject(prosListData, new TypeReference<List<District>>() {
+        if (TextUtils.isEmpty(prosListData)) {
+            return new ArrayList<>();
+        }
+        pros = JSON.parseObject(prosListData, new TypeReference<List<District>>() {
         });
         return pros;
     }
+
     public List<District> getAllCities() {
         List<District> city = new ArrayList<>();
-        if(TextUtils.isEmpty(cityListData)) {
-            cityListData = (String)SPUtils.get("city_dic","");
+        if (TextUtils.isEmpty(cityListData)) {
+            cityListData = (String) SPUtils.get("city_dic", "");
         }
-        city =JSON.parseObject(cityListData, new TypeReference<List<District>>() {
+        if (TextUtils.isEmpty(cityListData)) {
+            return new ArrayList<>();
+        }
+        city = JSON.parseObject(cityListData, new TypeReference<List<District>>() {
         });
         return city;
     }
+
+
     public List<District> getAllQus() {
         List<District> qus = new ArrayList<>();
-        if(TextUtils.isEmpty(quListData)) {
-            quListData = (String)SPUtils.get("qu_dic","");
+        if (TextUtils.isEmpty(quListData)) {
+            quListData = (String) SPUtils.get("qu_dic", "");
         }
-        qus =JSON.parseObject(quListData, new TypeReference<List<District>>() {
+        if (TextUtils.isEmpty(quListData)) {
+            return new ArrayList<>();
+        }
+        qus = JSON.parseObject(quListData, new TypeReference<List<District>>() {
         });
         return qus;
     }
+
+
+    public List<NormalItem> getSex() {
+        List<NormalItem> list = new ArrayList<>();
+        list.add(new NormalItem("1","男"));
+        list.add(new NormalItem("2","女"));
+        return list;
+    }
+
+    public NormalItem getSexById(String id) {
+        List<NormalItem> list = getSex();
+        for (NormalItem item:list) {
+            if (item.getId().equals(id)){
+                return item;
+            }
+        }
+        return new NormalItem(id,id);
+    }
+
+    public HospitalDicItem getHospitalById(String id) {
+        List<HospitalDicItem> hosList = getHospitals();
+        for (HospitalDicItem hos:hosList ) {
+            if (hos.getId().equals(id)){
+                return hos;
+            }
+        }
+        return new HospitalDicItem();
+    }
+
+    public NormalDicItem getOfficeById(String id) {
+        List<NormalDicItem> offList = getOffice();
+        for (NormalDicItem off:offList ) {
+            if (off.getId().equals(id)){
+                return off;
+            }
+        }
+        return new NormalDicItem();
+    }
+
+
+    public List<District> getDistrictById(String id) {
+        List<District> list = new ArrayList<>();
+        if (TextUtils.isEmpty(id)) {
+            District d = new District();
+            d.setName("未知地区");
+            list.add(d);
+            return list;
+        }
+        List<District> pros = getAllPros();
+        List<District> cities = getAllCities();
+        List<District> qus = getAllQus();
+        boolean isQu = false;
+        for (District qu:qus) {
+            String quId = qu.getId();
+            if(id.equals(quId)) {
+                list.add(qu);
+                String parent = qu.getParentid();
+                for (District city:cities) {
+                    String cityId= city.getId();
+                    if (parent.equals(cityId)) {
+                        list.add(city);
+                        for (District pro:pros){
+                            if(pro.getId().equals(city.getParentid())){
+                                list.add(pro);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                isQu = true;
+                break;
+            }
+        }
+        boolean isCity = false;
+        if (!isQu) {
+            for (District city:cities) {
+                String cityId= city.getId();
+                if (id.equals(cityId)) {
+                    isCity = true;
+                    list.add(city);
+                    for (District pro:pros){
+                        if(pro.getId().equals(city.getParentid())){
+                            list.add(pro);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        if (!isQu && !isCity) {
+            for(District pro:pros) {
+                String proId = pro.getId();
+                if (id.equals(proId)) {
+                    list.add(pro);
+                    break;
+                }
+            }
+        }
+        return list;
+
+    }
+    public Observable<Map<String, ArrayList>> getAllDistrictForPicker() {
+        return Observable.create(new Observable.OnSubscribe<Map<String, ArrayList>>() {
+            @Override
+            public void call(Subscriber<? super Map<String, ArrayList>> subscriber) {
+                ArrayList<DistricPickViewData> mProPickViewData;
+                ArrayList<ArrayList<DistricPickViewData>> mCityPickViewData;
+                ArrayList<ArrayList<ArrayList<DistricPickViewData>>> mQuPickViewData;
+                mProPickViewData = new ArrayList<>();
+                mCityPickViewData = new ArrayList<>();
+                mQuPickViewData = new ArrayList<>();
+                List<District> pros = new ArrayList<>();
+                pros.addAll(DicData.getInstance().getAllPros());
+                List<District> citys = new ArrayList<>();
+                citys.addAll(DicData.getInstance().getAllCities());
+                List<District> qus = new ArrayList<>();
+                qus.addAll(DicData.getInstance().getAllQus());
+                for (District pro : pros) {
+                    mProPickViewData.add(new DistricPickViewData(pro));
+                    ArrayList<DistricPickViewData> cityPickList = new ArrayList<>();
+                    ArrayList<ArrayList<DistricPickViewData>> cityQuPickList = new ArrayList<>();
+                    for (District city : citys) {
+                        ArrayList<DistricPickViewData> quPickList = new ArrayList<>();
+                        if (!TextUtils.isEmpty(city.getParentid()) && city.getParentid().equals(pro.getId())) {
+                            cityPickList.add(new DistricPickViewData(city));
+                            for (District qu : qus) {
+                                if (!TextUtils.isEmpty(qu.getParentid()) && qu.getParentid().equals(city.getId())) {
+                                    quPickList.add(new DistricPickViewData(qu));
+                                }
+                            }
+                            cityQuPickList.add(quPickList);
+                        }
+                    }
+                    mCityPickViewData.add(cityPickList);
+                    mQuPickViewData.add(cityQuPickList);
+                }
+                Map<String, ArrayList> map = new HashMap<String, ArrayList>();
+                map.put("pro", mProPickViewData);
+                map.put("city", mCityPickViewData);
+                map.put("qu", mQuPickViewData);
+                subscriber.onNext(map);
+                subscriber.onCompleted();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+
+    }
+
     private void loadOffice() {
         WebCall.getInstance().call(WebKey.func_getoffice, new HashMap<String, Object>()).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
@@ -131,6 +309,7 @@ public class DicData {
             }
         });
     }
+
 
     private void loadBusiness() {
         WebCall.getInstance().call(WebKey.func_getbusiness, new HashMap<String, Object>()).subscribe(new BaseSubscriber<WebResponse>() {
@@ -148,11 +327,11 @@ public class DicData {
     }
 
     private void loadDistrict() {
-        WebCall.getInstance().call(WebKey.func_getpro,new HashMap<String, Object>()).map(new Func1<WebResponse, List<District>>() {
+        WebCall.getInstance().call(WebKey.func_getpro, new HashMap<String, Object>()).map(new Func1<WebResponse, List<District>>() {
             @Override
             public List<District> call(WebResponse webResponse) {
                 String data = webResponse.getData();
-                SPUtils.put("pro_dic",data);
+                SPUtils.put("pro_dic", data);
                 prosListData = data;
                 List<District> pros = JSON.parseObject(data, new TypeReference<List<District>>() {
                 });
@@ -164,29 +343,30 @@ public class DicData {
 
             }
         });
-         WebCall.getInstance().call(WebKey.func_getCity,new HashMap<String, Object>()).map(new Func1<WebResponse, List<District>>() {
+        WebCall.getInstance().call(WebKey.func_getCity, new HashMap<String, Object>()).map(new Func1<WebResponse, List<District>>() {
             @Override
             public List<District> call(WebResponse webResponse) {
                 String data = webResponse.getData();
                 cityListData = data;
-                SPUtils.put("city_dic",data);
+                SPUtils.put("city_dic", data);
                 List<District> citys = JSON.parseObject(data, new TypeReference<List<District>>() {
-                });;
+                });
+                ;
                 return citys;
             }
         }).subscribe(new BaseSubscriber<List<District>>() {
-             @Override
-             public void onNext(List<District> districts) {
+            @Override
+            public void onNext(List<District> districts) {
 
-             }
-         });
-        WebCall.getInstance().call(WebKey.func_getQu,new HashMap<String, Object>()).map(new Func1<WebResponse, List<District>>() {
+            }
+        });
+        WebCall.getInstance().call(WebKey.func_getQu, new HashMap<String, Object>()).map(new Func1<WebResponse, List<District>>() {
             @Override
             public List<District> call(WebResponse webResponse) {
                 String data = webResponse.getData();
                 quListData = data;
-                SPUtils.put("qu_dic",data);
-                List<District> qus =JSON.parseObject(data, new TypeReference<List<District>>() {
+                SPUtils.put("qu_dic", data);
+                List<District> qus = JSON.parseObject(data, new TypeReference<List<District>>() {
                 });
                 return qus;
             }
@@ -237,7 +417,7 @@ public class DicData {
                 break;
 
         }
-        return new NormalDicItem("", "");
+        return new NormalDicItem();
     }
 
     public List<HospitalDicItem> getHospitalByAddress(String addessId) {
@@ -252,7 +432,42 @@ public class DicData {
         return selList;
     }
 
+
+    public List<NormalItem> getAllOrderStatus() {
+        List<NormalItem> items = new ArrayList<>();
+        items.add(new NormalItem("1","预约"));
+        items.add(new NormalItem("2","专家确认"));
+        items.add(new NormalItem("3","患者支付"));
+        items.add(new NormalItem("4","申请退单"));
+        items.add(new NormalItem("5","完成"));
+        items.add(new NormalItem("6","患者取消预约"));
+        items.add(new NormalItem("7","专家未接受预约"));
+        return  items;
+    }
+
+    public NormalItem getOrderStatuById(String id) {
+        List<NormalItem> items = getAllOrderStatus();
+        for (NormalItem item:items) {
+            if (item.getId().equals(id)) {
+                return item;
+            }
+        }
+        return new NormalItem(id,id);
+    }
     private boolean checkDicItem(NormalDicItem item) {
         return item != null && !TextUtils.isEmpty(item.getId());
+    }
+
+    public String getDisStatusById(String id) {
+        int idInt = Utils.toInteger(id);
+        switch (idInt) {
+            case 1:
+                return "预约中";
+            case 2:
+                return "已确认预约";
+            case 3:
+                return "订单进行中";
+        }
+        return "";
     }
 }

@@ -3,21 +3,92 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/titlebar_layout_main_search"/>
-    <com.yyydjk.library.DropDownMenu
-        android:id="@+id/dropDownMenu"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:ddmenuTextSize="13sp"
-        app:ddtextUnselectedColor="@color/drop_down_unselected"
-        app:ddtextSelectedColor="@color/drop_down_selected"
-        app:dddividerColor="@color/gray"
-        app:ddunderlineColor="@color/gray"
-        app:ddmaskColor="@color/mask_color"
-        app:ddmenuBackgroundColor="@color/white"
-        app:ddmenuSelectedIcon="@mipmap/dropmenu_down"
-        app:ddmenuUnselectedIcon="@mipmap/dropmenu_up" />
+        android:orientation="horizontal">
+            <com.zhjydy.view.zhview.MapTextView
+                android:id="@+id/filter_dis_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:text="全部地区"
+                android:gravity="center"
+                android:maxLines="1"
+                android:lines="1"
+                android:drawableRight="@mipmap/dropmenu_down"
+                android:drawablePadding="5dp"
+                android:textColor="@color/black_text" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/div_line"/>
+        <com.zhjydy.view.zhview.MapTextView
+            android:id="@+id/filter_office_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="科室"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:maxLines="1"
+            android:lines="1"
 
+            android:gravity="center"
+            android:drawableRight="@mipmap/dropmenu_down"
+            android:drawablePadding="5dp"
+            android:textColor="@color/black_text" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/div_line"/>
 
+        <com.zhjydy.view.zhview.MapTextView
+            android:id="@+id/filter_business_tv"
+            android:layout_width="0dp"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="职称"
+            android:maxLines="1"
+            android:lines="1"
+            android:gravity="center"
+            android:drawableRight="@mipmap/dropmenu_down"
+            android:drawablePadding="5dp"
+            android:textColor="@color/black_text" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/div_line"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/div_line" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_bg">
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/m_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="#00000000"
+        android:divider="#00000000"
+        android:dividerHeight="10dp"
+        android:fadingEdge="none"
+        android:fastScrollEnabled="false"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:smoothScrollbar="true" />
+
+    </RelativeLayout>
 
 </LinearLayout>

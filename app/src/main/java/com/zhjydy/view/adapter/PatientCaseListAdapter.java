@@ -1,10 +1,15 @@
 package com.zhjydy.view.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.zhjydy.R;
+import com.zhjydy.model.data.AppData;
+import com.zhjydy.model.data.DicData;
+import com.zhjydy.model.entity.District;
+import com.zhjydy.util.DateUtil;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.zhview.ViewHolder;
 
@@ -26,12 +31,42 @@ public class PatientCaseListAdapter extends ListViewAdapter<Map<String, Object>>
     @Override
     public void convert(ViewHolder holder, final Map<String, Object> comment) {
         // ((TextView) holder.getView(R.id.photo)).setText(info.getPhotoUrl());
-        String nameSexAge = Utils.toString(comment.get("name")) + " " + Utils.toString(comment.get("sex")) + " " + Utils.toString(comment.get("age"));
-        String domain = Utils.toString(comment.get("domain")) + " " + Utils.toString(comment.get("hospital")) + " " + Utils.toString(comment.get("depart"));
+        String realName = Utils.toString(comment.get("realname"));
+        String sexName = DicData.getInstance().getSexById(Utils.toString(comment.get("sex"))).getName();
+        String sec = Utils.toString(comment.get("age"));
+        long ageLong = DateUtil.getYearDiffBySeconds(Utils.toLong(comment.get("age")));
+        String age = "";
+        if (ageLong > 0) {
+            age = ageLong + "岁";
+        }
+        String nameSexAge =realName + " " +sexName + " " + age;
+
+        String distrcit = "";
+        String hospital = "";
+        String depart = "";
+        String disCode = Utils.toString(comment.get("address"));
+        String hosCode =  Utils.toString(comment.get("hospital"));
+        String depCode = Utils.toString(comment.get("office"));
+
+        if (!TextUtils.isEmpty(disCode)) {
+            List<District> list = DicData.getInstance().getDistrictById(disCode);
+            if (list.size() > 0){
+                for (int i = list.size()-1;i>=0;i--) {
+                    distrcit += list.get(i).getName() + " ";
+                }
+            }
+        }
+        if (!TextUtils.isEmpty(hosCode)) {
+            hospital = DicData.getInstance().getHospitalById(hosCode).getHospital();
+        }
+        if (!TextUtils.isEmpty(depCode)) {
+            depart = DicData.getInstance().getOfficeById(depCode).getName();
+        }
+        String domain =distrcit + " " +hospital + " " +depart;
 
         ((TextView) holder.getView(R.id.item_name_sex_age)).setText(nameSexAge);
-        ((TextView) holder.getView(R.id.item_domain_hos_departs)).setText(domain);
         //((TextView) holder.getView(R.id.star)).setText(info.getStar());
+        ((TextView) holder.getView(R.id.item_domain_hos_departs)).setText(domain);
         View contentView = holder.getView(R.id.content);
         if (contentView != null) {
             contentView.setOnClickListener(new View.OnClickListener() {
@@ -44,11 +79,14 @@ public class PatientCaseListAdapter extends ListViewAdapter<Map<String, Object>>
             });
         }
     }
+
     private OnClickListener mListener;
+
     public void setOnClickListener(OnClickListener listener) {
         this.mListener = listener;
     }
-    public interface OnClickListener{
+
+    public interface OnClickListener {
         public void OnClick(Map<String, Object> item);
     }
 }

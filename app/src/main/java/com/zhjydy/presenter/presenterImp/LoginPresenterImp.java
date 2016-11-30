@@ -48,7 +48,7 @@ public class LoginPresenterImp implements LoginContract.Presenter {
         String paswordMd5 = MD5.GetMD5Code(password);
         map.put("mobile", phoneNum);
         map.put("password", paswordMd5);
-        WebCall.getInstance().call(WebKey.func_login, map).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), true) {
+        WebCall.getInstance().call(WebKey.func_login, map).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), "正在登录") {
             @Override
             public void onError(Throwable e) {
                 closeLoadingProgress();

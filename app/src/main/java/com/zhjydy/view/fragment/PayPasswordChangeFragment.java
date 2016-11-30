@@ -1,5 +1,6 @@
 package com.zhjydy.view.fragment;
 
+import com.zhjydy.R;
 import com.zhjydy.presenter.contract.PayPasswordChangContract;
 import com.zhjydy.presenter.contract.PhoneNumChangContract;
 import com.zhjydy.presenter.presenterImp.PayPasswordChangePresenterImp;
@@ -18,7 +19,7 @@ public class PayPasswordChangeFragment extends  PageImpBaseFragment implements P
 
     @Override
     protected int getLayoutId() {
-        return 0;
+        return R.layout.fragment_phonenum_change;
     }
 
     @Override

@@ -36,10 +36,10 @@ public class InfoDetailPresenterImp implements InfoDetailContract.Presenter {
         if (TextUtils.isEmpty(infoId)) {
             return;
         }
-        loadInfoContent(infoId);
+        loadInfoContent();
     }
 
-    private void loadInfoContent(String id) {
+    private void loadInfoContent() {
         HashMap<String, Object> params = new HashMap<>();
         params.put("id", infoId);
         WebCall.getInstance().call(WebKey.func_getNewsById, params).map(new Func1<WebResponse, Map<String, Object>>() {
@@ -52,6 +52,7 @@ public class InfoDetailPresenterImp implements InfoDetailContract.Presenter {
         }).subscribe(new BaseSubscriber<Map<String, Object>>() {
             @Override
             public void onNext(Map<String, Object> map) {
+
             }
         });
     }

@@ -6,10 +6,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhjydy.R;
+import com.zhjydy.util.DateUtil;
 import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.zhview.ViewHolder;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +30,8 @@ public class MsgSystemListAdapter extends ListViewAdapter<Map<String,Object>> {
         int imageId = Utils.toInteger(data.get("image"));
         String title = Utils.toString(data.get("title"));
         String content = Utils.toString(data.get("content"));
-        String time = Utils.toString(data.get("time"));
+        String time = DateUtil.getTimeDiffDayCurrent(Utils.toLong(data.get("time")));
+
         if (imageId > 0) {
             ImageView imageView = (ImageView) holder.getView(R.id.image);
             ImageUtils.getInstance().displayFromDrawable(imageId,imageView);
@@ -36,7 +39,6 @@ public class MsgSystemListAdapter extends ListViewAdapter<Map<String,Object>> {
             ((TextView)holder.getView(R.id.msg_content)).setText(content);
             if(!TextUtils.isEmpty(time)) {
                 ((TextView)holder.getView(R.id.msg_time)).setText(time);
-
             }
         }
     }

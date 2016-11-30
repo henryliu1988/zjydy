@@ -1,6 +1,7 @@
 package com.zhjydy.view.fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhjydy.R;
-import com.zhjydy.presenter.contract.AccountSafeContract;
 import com.zhjydy.presenter.contract.IdentityInfoContract;
-import com.zhjydy.presenter.presenterImp.AccountSafePresenterImp;
 import com.zhjydy.presenter.presenterImp.IdentityInfoPresenterImp;
-import com.zhjydy.view.zhview.IdentifyInfoStatusView;
+import com.zhjydy.util.ImageUtils;
+import com.zhjydy.util.UserEvent;
+import com.zhjydy.util.Utils;
+import com.zhjydy.view.avtivity.IntentKey;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,10 +44,35 @@ public class IdentityInfoFragment extends PageImpBaseFragment implements Identit
     TextView stepVerify;
     @BindView(R.id.edit_info)
     TextView editInfo;
+    @BindView(R.id.photo1)
+    ImageView photo1;
+    @BindView(R.id.photo2)
+    ImageView photo2;
     private IdentityInfoContract.Presenter mPresenter;
+
+    private int status = 1;
+    private List<String> path = new ArrayList<>();
 
     @Override
     protected void initData() {
+        Bundle bundle = getArguments();
+        if (bundle == null) {
+            back();
+            return;
+        }
+        String info = bundle.getString(IntentKey.FRAG_INFO);
+        if (TextUtils.isEmpty(info)) {
+            back();
+            return;
+        }
+        Map<String, Object> data = Utils.parseObjectToMapString(info);
+        if (data == null || data.size() < 1) {
+            back();
+            return;
+        }
+        status = Utils.toInteger(data.get("msg"));
+        path = Utils.parseObjectToListString(data.get("path"));
+
 
     }
 
@@ -60,7 +91,19 @@ public class IdentityInfoFragment extends PageImpBaseFragment implements Identit
             }
         });
         titleCenterTv.setText("认证信息");
-
+        editInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoFragment(FragKey.identify_new_fragment);
+            }
+        });
+        int size = path.size();
+        if (size == 1) {
+            ImageUtils.getInstance().displayFromRemote(path.get(0),photo1);
+        } else if (size > 1) {
+            ImageUtils.getInstance().displayFromRemote(path.get(0),photo1);
+            ImageUtils.getInstance().displayFromRemote(path.get(1),photo2);
+        }
     }
 
     @Override

@@ -12,6 +12,7 @@ public interface AccountSafeContract {
 
     interface View extends BaseView<Presenter>
     {
+        void updatePhoneNum(String phoneNum);
     }
 
     interface Presenter extends BasePresenter

@@ -74,10 +74,7 @@ public class PagerImpActivity extends BaseActivity implements PageImpContract.Vi
         this.mPresenter = presenter;
     }
 
-    @Override
-    public void refreshView() {
 
-    }
 
     @Override
     public Context getContext() {

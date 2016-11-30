@@ -78,4 +78,9 @@ public class OrderMsgListFragment extends PageImpBaseFragment implements OrderMs
         ButterKnife.bind(this, rootView);
         return rootView;
     }
+
+    @Override
+    public void updateOrderList(List<Map<String, Object>> list) {
+        mAdapter.refreshData(list);
+    }
 }

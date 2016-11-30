@@ -1,5 +1,6 @@
 package com.zhjydy.presenter.presenterImp;
 
+import com.zhjydy.model.data.AppData;
 import com.zhjydy.presenter.contract.MineInfoContract;
 import com.zhjydy.presenter.contract.PatientCaseContract;
 
@@ -21,10 +22,16 @@ public class MineInfoPresenterImp implements MineInfoContract.Presenter {
 
     @Override
     public void start() {
-
+        loadPersonInfo();
     }
 
 
+    private void loadPersonInfo() {
+        if (mView !=null){
+            mView.updateInfo( AppData.getInstance().getToken());
+        }
+       ;
+    }
 
     @Override
     public void finish() {

@@ -29,11 +29,13 @@
                 android:text="修改手机号码"
                 android:layout_alignParentLeft="true" />
             <TextView
+                android:id="@+id/phoneNum_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="@color/black_text2"
                 android:layout_marginRight="8dp"
+                android:drawablePadding="8dp"
                 android:drawableRight="@mipmap/item_turn"
                 android:layout_alignParentRight="true" />
         </RelativeLayout>

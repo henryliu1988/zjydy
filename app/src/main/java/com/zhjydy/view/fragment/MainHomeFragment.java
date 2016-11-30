@@ -97,7 +97,6 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
         leftImg.setImageResource(R.mipmap.titlebar_search);
         centerTv.setText("专家医对壹");
         rightImg.setImageSrc(R.mipmap.title_msg);
-        rightImg.setText("1");
         scrollView.scrollTo(0, 0);
     }
 
@@ -140,6 +139,11 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
         });
     }
 
+
+    public void updateUnReadMsgCount(int count) {
+        rightImg.setText(count + "");
+    }
+
     @Override
     public void updateExpert(List<Map<String, Object>> experts) {
           /*int countAll = experts.size();
@@ -171,10 +175,10 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
         */
         scorllExpertLayout.removeAllViews();
         for (int i = 0; i < experts.size(); i++) {
-            View childView = LayoutInflater.from(getContext()).inflate(R.layout.main_home_expert_item,null);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ScreenUtils.getScreenWidth()/3, ViewGroup.LayoutParams.WRAP_CONTENT);
+            View childView = LayoutInflater.from(getContext()).inflate(R.layout.main_home_expert_item, null);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ScreenUtils.getScreenWidth() / 3, ViewGroup.LayoutParams.WRAP_CONTENT);
             childView.setLayoutParams(params);
-            Map<String,Object> item = experts.get(i);
+            Map<String, Object> item = experts.get(i);
             String photoUrl = Utils.toString(item.get("path"));
             String name = Utils.toString(item.get("realname"));
             String hospital = Utils.toString(item.get("hospital"));
@@ -195,7 +199,7 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
             childView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String id= Utils.toString(view.getTag());
+                    String id = Utils.toString(view.getTag());
                     Bundle bundle = new Bundle();
                     bundle.putInt(IntentKey.FRAG_KEY, FragKey.detail_expert_fragment);
                     bundle.putString(IntentKey.FRAG_INFO, id);

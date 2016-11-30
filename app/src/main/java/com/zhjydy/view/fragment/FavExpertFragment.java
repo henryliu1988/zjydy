@@ -97,6 +97,7 @@ public class FavExpertFragment extends PageImpBaseFragment implements FavExpertC
         mListContainerView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_expert_list, null);
         mExpertListView = (PullToRefreshListView) mListContainerView.findViewById(R.id.m_list);
         mExpertListAdapter = new FavExpertListAdapter(getContext(), new ArrayList<Map<String,Object>>());
+        mExpertListAdapter.setPresenter(mPresenter);
         mExpertListView.setAdapter(mExpertListAdapter);
         mExpertListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -172,7 +173,7 @@ public class FavExpertFragment extends PageImpBaseFragment implements FavExpertC
         switch (view.getId()) {
             case R.id.title_back:
                 mPresenter.finish();
-                FragmentUtils.back(getActivity());
+                back();
                 break;
         }
     }

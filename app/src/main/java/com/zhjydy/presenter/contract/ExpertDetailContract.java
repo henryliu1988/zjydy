@@ -7,6 +7,8 @@ import com.zhjydy.presenter.BaseView;
 import java.util.List;
 import java.util.Map;
 
+import rx.Observable;
+
 /**
  * Created by Administrator on 2016/9/20 0020.
  */
@@ -16,6 +18,8 @@ public interface ExpertDetailContract {
         void updateExpertInfos(Map<String, Object> expertInfo);
 
         void updateComments(List<Map<String, Object>> comments);
+        void updateFavStatus(boolean isCollect);
+        void makeCommentSuccess();
     }
 
     interface Presenter extends BasePresenter {
@@ -25,6 +29,8 @@ public interface ExpertDetailContract {
 
         void makeNewComment(String commentId);
 
-        void saveExpert(String id);
+        void saveExpert();
+        void cancelSaveExpert();
+        Observable<List<Map<String,Object>>> getAllExpert();
     }
 }

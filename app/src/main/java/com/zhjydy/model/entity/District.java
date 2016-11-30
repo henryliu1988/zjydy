@@ -15,22 +15,7 @@ public class District {
     String listorder;
     String aid;
 
-    public District(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
-    public District(String spell, String id, String name, String path, String parentid, String depth, String spellShort, String listorder, String aid) {
-        Spell = spell;
-        this.id = id;
-        this.name = name;
-        Path = path;
-        this.parentid = parentid;
-        Depth = depth;
-        SpellShort = spellShort;
-        this.listorder = listorder;
-        this.aid = aid;
-    }
 
     public String getSpell() {
         return Spell;

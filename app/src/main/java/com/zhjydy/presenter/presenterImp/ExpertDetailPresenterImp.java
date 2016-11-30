@@ -3,17 +3,22 @@ package com.zhjydy.presenter.presenterImp;
 import android.text.TextUtils;
 
 import com.zhjydy.model.data.AppData;
+import com.zhjydy.model.data.PatientData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.presenter.contract.ExpertDetailContract;
 import com.zhjydy.util.Utils;
+import com.zhjydy.view.zhview.zhToast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rx.Observable;
 import rx.functions.Func1;
 
 /**
@@ -39,6 +44,7 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
         }
         loadExpertInfo(expertId);
         loadComments(expertId);
+        loadFavStatus();
     }
 
     private void loadExpertInfo(String id) {
@@ -51,9 +57,12 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
                 Map<String, Object> map = Utils.parseObjectToMapString(data);
                 return map;
             }
-        }).subscribe(new BaseSubscriber<Map<String, Object>>() {
+        }).subscribe(new BaseSubscriber<Map<String, Object>>(mView.getContext(),true) {
             @Override
             public void onNext(Map<String, Object> map) {
+                String collect = AppData.getInstance().getToken().getCollectExperts();
+
+                map.put("collect",collect);
                 mView.updateExpertInfos(map);
             }
         });
@@ -92,20 +101,87 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
     }
 
     @Override
-    public void makeNewComment(String commentId) {
+    public void makeNewComment(String comment) {
+        HashMap<String,Object> params = new HashMap<>();
+        params.put("userId",AppData.getInstance().getToken());
+        params.put("expertId",expertId);
+        params.put("comment",comment);
+        WebCall.getInstance().call(WebKey.func_makeComment,params).subscribe(new BaseSubscriber<WebResponse>() {
+            @Override
+            public void onNext(WebResponse webResponse) {
+                loadComments(expertId);
+                mView.makeCommentSuccess();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                zhToast.showToast("发布留言失败");
+                super.onError(e);
+            }
+        });
+    }
+
+
+    private void loadFavStatus() {
+        List<String> collecs = AppData.getInstance().getToken().getCollectExpertList();
+        mView.updateFavStatus(collecs.contains(expertId));
+    }
+    @Override
+    public void saveExpert() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("expertid", expertId);
+        params.put("userid", AppData.getInstance().getToken().getId());
+        WebCall.getInstance().call(WebKey.func_collectExpert, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"请稍后，正在收藏！") {
+            @Override
+            public void onNext(WebResponse webResponse) {
+                List<String> collect = AppData.getInstance().getToken().getCollectExpertList();
+                if (!collect.contains(expertId)) {
+                    collect.add(expertId);
+                }
+                AppData.getInstance().getToken().setCollectExpertAsList(collect);
+                loadFavStatus();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                zhToast.showToast("收藏失败");
+                super.onError(e);
+            }
+        });
+    }
+
+    @Override
+    public void cancelSaveExpert() {
+        HashMap<String, Object> params = new HashMap<>();
+        List<String> collect = new ArrayList<>();
+        collect.addAll(AppData.getInstance().getToken().getCollectExpertList())  ;
+        if (collect.contains(expertId)) {
+            collect.remove(expertId);
+        }
+        params.put("collectexpert","");
+        params.put("userid", AppData.getInstance().getToken().getId());
+        WebCall.getInstance().call(WebKey.func_cancelCollectExpert, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"取消收藏！") {
+            @Override
+            public void onNext(WebResponse webResponse) {
+                List<String> collect = new ArrayList<String>();
+                collect.addAll(AppData.getInstance().getToken().getCollectExpertList());
+                if (collect.contains(expertId)) {
+                    collect.remove(expertId);
+                }
+                AppData.getInstance().getToken().setCollectExpertAsList(collect);
+                loadFavStatus();
+            }
+            @Override
+            public void onError(Throwable e) {
+                zhToast.showToast("取消收藏失败  " + e.getMessage());
+                onCompleted();
+            }
+        });
 
     }
 
     @Override
-    public void saveExpert(String id) {
-        HashMap<String, Object> params = new HashMap<>();
-        params.put("expertid", id);
-        params.put("userid", AppData.getInstance().getToken().getId());
-        WebCall.getInstance().call(WebKey.func_collectExpert, params).subscribe(new BaseSubscriber<WebResponse>() {
-            @Override
-            public void onNext(WebResponse webResponse) {
-                String data = webResponse.getData();
-            }
-        });
+    public Observable<List<Map<String, Object>>> getAllExpert() {
+        return PatientData.getInstance().getAllPatientList();
     }
 }

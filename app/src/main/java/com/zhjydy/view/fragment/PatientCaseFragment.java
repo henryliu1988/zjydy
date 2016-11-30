@@ -4,21 +4,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhjydy.R;
 import com.zhjydy.presenter.contract.PatientCaseContract;
 import com.zhjydy.presenter.presenterImp.PatientCasePresenterImp;
+import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.PatientCaseListAdapter;
 import com.zhjydy.view.zhview.ListViewForScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,20 +36,23 @@ public class PatientCaseFragment extends PageImpBaseFragment implements PatientC
     ListViewForScrollView mCaseList;
     @BindView(R.id.m_case_add_button)
     TextView mCaseAddButton;
+    @BindView(R.id.empty_patient_tv)
+    TextView emptyPatientTv;
     private PatientCaseContract.Presenter mPresenter;
 
     private PatientCaseListAdapter mPatientCaseListAdapter;
+
     @Override
     protected void initData() {
         titleCenterTv.setText("患者病例");
-        mPatientCaseListAdapter = new PatientCaseListAdapter(getContext(),new ArrayList<Map<String,Object>>());
+        mPatientCaseListAdapter = new PatientCaseListAdapter(getContext(), new ArrayList<Map<String, Object>>());
         mCaseList.setAdapter(mPatientCaseListAdapter);
         mPatientCaseListAdapter.setOnClickListener(new PatientCaseListAdapter.OnClickListener() {
             @Override
             public void OnClick(Map<String, Object> item) {
                 Bundle bundle = new Bundle();
-                bundle.putString("id","1");
-                gotoFragment(FragKey.patient_case_detail_fragment,bundle);
+                bundle.putString("id", Utils.toString(item.get("id")));
+                gotoFragment(FragKey.patient_case_detail_fragment, bundle);
 
             }
         });
@@ -89,6 +90,7 @@ public class PatientCaseFragment extends PageImpBaseFragment implements PatientC
     private void addNewPatienteCase() {
         gotoFragment(FragKey.patient_case_edit_fragment);
     }
+
     @OnClick({R.id.title_back, R.id.m_case_add_button})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -103,6 +105,13 @@ public class PatientCaseFragment extends PageImpBaseFragment implements PatientC
 
     @Override
     public void updatePatient(List<Map<String, Object>> list) {
+        if (list.size() >0) {
+            emptyPatientTv.setVisibility(View.GONE);
+            mCaseList.setVisibility(View.VISIBLE);
+        } else {
+            emptyPatientTv.setVisibility(View.VISIBLE);
+            mCaseList.setVisibility(View.GONE);
+        }
         mPatientCaseListAdapter.refreshData(list);
     }
 }

@@ -7,7 +7,7 @@
     <LinearLayout
         android:id="@+id/write_words"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:layout_alignParentBottom="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -20,9 +20,8 @@
             android:background="@drawable/bg_grayee_corner"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="6dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:text="dd"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_weight="4" />
         <TextView
             android:id="@+id/comment_make_btn"
@@ -52,9 +51,8 @@
         <include layout="@layout/child_fragment_expert_detail_content"/>
         <View
             android:layout_width="match_parent"
-            android:layout_height="6dp"
-            android:background="#EEEEEE"
-            />
+            android:layout_height="2dp"
+            android:background="#EEEEEE" />
         <ListView
             android:id="@+id/word_listview"
             android:cacheColorHint="#00000000"

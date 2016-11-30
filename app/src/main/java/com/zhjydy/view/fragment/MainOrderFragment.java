@@ -12,6 +12,8 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhjydy.R;
+import com.zhjydy.model.data.DicData;
+import com.zhjydy.model.entity.NormalItem;
 import com.zhjydy.presenter.contract.MainOrderContract;
 import com.zhjydy.presenter.presenterImp.MainOrderPresenterImp;
 import com.zhjydy.util.ActivityUtils;
@@ -50,6 +52,10 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
     private ArrayList<CustomTabEntity> tabs = new ArrayList<>();
     private OrderListAdapter mAdapter;
     private List<Map<String,Object>> mOrderList = new ArrayList<>();
+    private List<Map<String,Object>> mOnGoOrderList = new ArrayList<>();
+    private List<Map<String,Object>> mOkOrderList = new ArrayList<>();
+    private List<Map<String,Object>> mRetrackOrderList = new ArrayList<>();
+
     public static MainOrderFragment instance() {
         MainOrderFragment frag = new MainOrderFragment();
         return frag;
@@ -81,14 +87,31 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Map<String,Object> item = (Map<String,Object>)adapterView.getAdapter().getItem(i);
                 if (item != null && item.size() > 0) {
-                    String id = Utils.toString(item.get("id"));
-                    id = "fdsk";
+                    String id = Utils.toString(item.get("orderid"));
                     ActivityUtils.transToFragPagerActivity(getActivity(),PagerImpActivity.class,FragKey.detail_order_fragment,id,false);
                 }
             }
         });
+        mAdapter.setOperateListener(new OrderListAdapter.OperateListener() {
+            @Override
+            public void onOperate(Map<String, Object> item,String operate) {
+                int status = Utils.toInteger(Utils.toString(item.get("status")));
+                if("取消预约".equals(operate)) {
+
+                } else if("马上支付".equals(operate)) {
+
+                }else if("查看详情".equals(operate)) {
+
+                }
+
+            }
+        });
     }
 
+
+    private void onOperateClick(){
+
+    }
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_main_order;
@@ -105,6 +128,20 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
     @Override
     public void update(List<Map<String, Object>> orders) {
         mOrderList = orders;
+        for(Map<String,Object> order:mOrderList) {
+            int status = Utils.toInteger(order.get("status"));
+            switch (status){
+                case 1:
+                case 2:
+                case 3:
+                    mOnGoOrderList.add(order);
+                    break;
+                case 5:
+                    mOkOrderList.add(order);
+                case 4:
+                    mRetrackOrderList.add(order);
+            }
+        }
         updateAdapter();
     }
 
@@ -116,13 +153,14 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
                 list.addAll(mOrderList);
                 break;
             case 1:
-                list.addAll(mOrderList);
+
+                list.addAll(mOnGoOrderList);
                 break;
             case 2:
-                list.addAll(mOrderList);
+                list.addAll(mOkOrderList);
                 break;
             case 3:
-                list.addAll(mOrderList);
+                list.addAll(mRetrackOrderList);
                 break;
             default:
                 break;

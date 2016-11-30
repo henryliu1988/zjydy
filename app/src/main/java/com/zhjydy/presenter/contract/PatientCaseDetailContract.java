@@ -13,7 +13,7 @@ public interface PatientCaseDetailContract {
 
     interface View extends BaseView<Presenter>
     {
-
+        void updateInfo(Map<String,Object> info);
     }
 
     interface Presenter extends BasePresenter

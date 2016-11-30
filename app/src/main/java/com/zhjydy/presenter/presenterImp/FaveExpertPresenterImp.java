@@ -45,29 +45,12 @@ public class FaveExpertPresenterImp implements FavExpertContract.Presenter {
 
 
         List<District> districts = new ArrayList<>();
-        districts.add(new District("000", "北京"));
-        districts.add(new District("000", "北京"));
-        districts.add(new District("000", "北京"));
-        districts.add(new District("000", "北京"));
-        districts.add(new District("000", "北京"));
-        districts.add(new District("000", "北京"));
-        districts.add(new District("000", "北京"));
 
 
         List<NormalDicItem> offices = new ArrayList<>();
-        offices.add(new NormalDicItem("000", "内科"));
-        offices.add(new NormalDicItem("000", "内科"));
-        offices.add(new NormalDicItem("000", "内科"));
-        offices.add(new NormalDicItem("000", "内科"));
-        offices.add(new NormalDicItem("000", "内科"));
 
 
         List<NormalDicItem> profess = new ArrayList<>();
-        profess.add(new NormalDicItem("000", "教授"));
-        profess.add(new NormalDicItem("000", "住院医师"));
-        profess.add(new NormalDicItem("000", "住院医师"));
-        profess.add(new NormalDicItem("000", "住院医师"));
-        profess.add(new NormalDicItem("000", "住院医师"));
 
         Observable<List<District>> districob = Observable.just(districts);
         Observable<List<NormalDicItem>> officeob = Observable.just(offices);
@@ -111,5 +94,29 @@ public class FaveExpertPresenterImp implements FavExpertContract.Presenter {
 
     @Override
     public void finish() {
+    }
+
+    @Override
+    public void cancelFavExpert(final String id) {
+        HashMap<String,Object> params = new HashMap();
+        List<String> collect = new ArrayList<>();
+        collect.addAll(AppData.getInstance().getToken().getCollectExpertList())  ;
+        if (collect.contains(id)) {
+            collect.remove(id);
+        }
+        params.put("userid",AppData.getInstance().getToken().getId());
+        params.put("collectexpert",collect);
+        WebCall.getInstance().call(WebKey.func_cancelCollectExpert,params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"") {
+            @Override
+            public void onNext(WebResponse webResponse) {
+                List<String> collect = AppData.getInstance().getToken().getCollectExpertList();
+                if (collect.contains(id)) {
+                    collect.remove(id);
+                }
+                AppData.getInstance().getToken().setCollectExpertAsList(collect);
+
+                loadExperts();
+            }
+        });
     }
 }

@@ -170,15 +170,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_marginTop="40dp"
         android:orientation="horizontal"
         android:paddingLeft="35dp"
         android:paddingRight="35dp">
 
         <ImageView
+            android:id="@+id/photo1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@mipmap/camera_outline"
             android:padding="2dp"
             android:scaleType="fitCenter"
@@ -189,8 +190,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
         <ImageView
+            android:id="@+id/photo2"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@mipmap/camera_outline"
             android:padding="2dp"
             android:src="@mipmap/photo"

@@ -20,7 +20,7 @@
         android:background="@color/gray_bg1"
         android:textColor="@color/white_bg"
         android:textSize="12sp"
-        android:text="12:13" />
+        android:text="" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,21 +50,21 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:gravity="left|center_vertical"
+            android:orientation="vertical"
             android:paddingLeft="10dp">
-
             <TextView
+                android:id="@+id/order_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                />
+                android:textColor="#46C9EF" />
             <TextView
+                android:id="@+id/content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:textColor="@color/black_text1"
-                android:layout_marginTop="5dp"
-                android:text="订单详情内容"
-                />
+                android:textColor="@color/black_text2"
+                android:layout_marginTop="5dp" />
         </LinearLayout>
 
     </LinearLayout>

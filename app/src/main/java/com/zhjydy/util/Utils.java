@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by liutao on 2016/6/20.
@@ -84,7 +86,23 @@ public class Utils
             }
         }
     }
+    public static Long toLong(Object ob)
+    {
 
+        if (ob == null)
+        {
+            return -1L;
+        } else
+        {
+            try
+            {
+                return Long.parseLong(toString(ob));
+            } catch (NumberFormatException e)
+            {
+                return -1L;
+            }
+        }
+    }
     public static String[] toStringArray(Object ob)
     {
 
@@ -529,5 +547,42 @@ public class Utils
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri
                 .getAuthority());
+    }
+
+
+    public static Map<String,String> getMapByValue(String ids[],String values[]){
+        Map<String,String> map = new HashMap<>();
+        for (int i = 0 ; i < ids.length; i ++) {
+            String id = ids[i];
+            if (values.length <=i + 1){
+                map.put(id,values[i]);
+            } else {
+                map.put(id,"");
+            }
+        }
+        return map;
+    }
+
+    public static int getCountOfString(String str,String target) {
+        if (TextUtils.isEmpty(str)){
+            return 0;
+        }
+        int count = 0;
+        int index = 0;
+        while (true) {
+            index = str.indexOf(target, index + 1);
+            if (index > 0) {
+                count++;
+            } else {
+                break;
+            }
+        }
+        return count;
+    }
+
+    public static boolean isPhone(String inputText) {
+        Pattern p = Pattern.compile("^((14[0-9])|(13[0-9])|(15[0-9])|(18[0-9])|(17[0-9]))\\d{8}$");
+        Matcher m = p.matcher(inputText);
+        return m.matches();
     }
 }

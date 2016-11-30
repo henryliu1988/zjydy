@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.zhjydy.app.zhjApplication;
+import com.zhjydy.view.avtivity.BaseActivity;
 import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.LoginActivity;
 import com.zhjydy.view.avtivity.MainTabsActivity;
@@ -90,6 +92,15 @@ public class ActivityUtils
         activityStack.clear();
     }
 
+    public static void finishActivityExceptOne(Class<?> cls) {
+        for (Activity activity : activityStack)
+        {
+            if (!activity.getClass().equals(cls))
+            {
+                finishActivity(activity);
+            }
+        }
+    }
     /**
      * 退出应用程序
      */
@@ -124,10 +135,9 @@ public class ActivityUtils
         context.startActivity(intent);
         if (finish)
         {
-            context.finish();
+            finishActivityExceptOne(LoginActivity.class);
         }
     }
-
 
     public static void transActivity(Activity context1, Class des, boolean finish)
     {

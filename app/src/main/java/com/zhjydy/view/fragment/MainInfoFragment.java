@@ -47,6 +47,7 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
     PullToRefreshListView mList;
 
     MainInfoListAdapter infoListAdapter;
+
     public static MainInfoFragment instance() {
         MainInfoFragment frag = new MainInfoFragment();
         return frag;
@@ -72,8 +73,6 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
         titleSearchText.setText("搜索资讯");
         rightLImg.setImageSrc(R.mipmap.title_msg);
         rightImg.setImageSrc(R.mipmap.shoucang);
-        rightLImg.setText("1");
-        rightImg.setText("1");
         rightImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,13 +102,13 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
     }
 
     private void initView() {
-        infoListAdapter = new MainInfoListAdapter(getContext(),new ArrayList<Map<String,Object>>());
+        infoListAdapter = new MainInfoListAdapter(getContext(), new ArrayList<Map<String, Object>>());
         mList.setAdapter(infoListAdapter);
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Map<String,Object> info = (Map<String,Object>)adapterView.getAdapter().getItem(i);
-                if(info != null && !TextUtils.isEmpty(Utils.toString(info.get("id")))) {
+                Map<String, Object> info = (Map<String, Object>) adapterView.getAdapter().getItem(i);
+                if (info != null && !TextUtils.isEmpty(Utils.toString(info.get("id")))) {
                     Bundle bundle = new Bundle();
                     bundle.putInt(IntentKey.FRAG_KEY, FragKey.detail_info_fragment);
                     bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
@@ -118,9 +117,14 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
             }
         });
     }
+
     @Override
     public void setPresenter(MainInfoContract.MainInfoPresenter presenter) {
         mPresenter = presenter;
+    }
+
+    public void updateUnReadMsgCount(int count) {
+        rightLImg.setText(count + "");
     }
 
     @Override
@@ -130,7 +134,15 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
 
 
     @Override
-    public void updateInfoList(List<Map<String,Object>> infos) {
+    public void updateInfoList(List<Map<String, Object>> infos) {
         infoListAdapter.refreshData(infos);
+    }
+
+    @Override
+    public void updateFavInfoCount(int count) {
+        if (count > 0) {
+            rightImg.setText(count + "");
+
+        }
     }
 }

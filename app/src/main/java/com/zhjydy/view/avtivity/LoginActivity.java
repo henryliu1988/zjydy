@@ -98,10 +98,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View{
         mPresenter = presenter;
     }
 
-    @Override
-    public void refreshView() {
-
-    }
 
     @Override
     public Context getContext() {

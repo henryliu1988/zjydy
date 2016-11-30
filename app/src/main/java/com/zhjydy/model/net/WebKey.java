@@ -47,9 +47,20 @@ public class WebKey {
     public static final int func_getQu = 1028;  //医院字典
     public static final int func_getCollectExpert = 1031;  //医院字典
     public static final int func_getCollectNews = 1032;  //医院字典
+    public static final int func_updateHuan = 1033;  //医院字典
+    public static final int func_getOrders = 1034;  //全部订单
+    public static final int func_getOrdersById = 1035;  //订单详情
+    public static final int func_getOrdersMsg = 1036;  //订单详情
+    public static final int func_updateOrdersMsg = 1037;  //订单详情
+    public static final int func_cancelCollectExpert = 1038;  //订单详情
+    public static final int func_cancelCollectNews = 1039;  //订单详情
+    public static final int func_makeComment = 1040;  //订单详情
+    public static final int func_updatePassword = 1041;  //订单详情
 
     public static final Map<Integer, String> WEBKEY_FUNC_COMMON_MAP = new HashMap<Integer, String>();
     static {
+        WEBKEY_FUNC_COMMON_MAP.put(func_cancelCollectExpert, "cancelCollectExpert");
+        WEBKEY_FUNC_COMMON_MAP.put(func_cancelCollectNews, "cancelCollectNews");
         WEBKEY_FUNC_COMMON_MAP.put(func_getoffice, "getoffice");
         WEBKEY_FUNC_COMMON_MAP.put(func_getbusiness, "getbusiness");
         WEBKEY_FUNC_COMMON_MAP.put(func_getHospital, "getHospital");
@@ -74,6 +85,7 @@ public class WebKey {
         WEBKEY_FUNC_COMMON_MAP.put(func_collectExpert, "collectExpert");
         WEBKEY_FUNC_COMMON_MAP.put(func_collectNews, "collectNews");
         WEBKEY_FUNC_COMMON_MAP.put(func_getCollectNews, "getCollectNews");
+        WEBKEY_FUNC_COMMON_MAP.put(func_makeComment, "getCollectNews");
 
     }
 
@@ -85,5 +97,12 @@ public class WebKey {
         WEBKEY_FUNC_HUAN_MAP.put(func_addPatient, "addPatient");
         WEBKEY_FUNC_HUAN_MAP.put(func_updatePatient, "updatePatient");
         WEBKEY_FUNC_HUAN_MAP.put(func_patient, "patient");
+        WEBKEY_FUNC_HUAN_MAP.put(func_updateHuan, "updateHuan");
+        WEBKEY_FUNC_HUAN_MAP.put(func_getOrders, "getOrders");
+        WEBKEY_FUNC_HUAN_MAP.put(func_getOrdersById, "getOrdersById");
+        WEBKEY_FUNC_HUAN_MAP.put(func_getOrdersMsg, "getOrdersMsg");
+        WEBKEY_FUNC_HUAN_MAP.put(func_updateOrdersMsg, "updateOrdersMsg");
+        WEBKEY_FUNC_HUAN_MAP.put(func_updatePassword, "updatePassword");
+
     }
 }

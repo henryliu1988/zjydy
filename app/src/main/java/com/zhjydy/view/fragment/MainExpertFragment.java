@@ -8,27 +8,27 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.yyydjk.library.DropDownMenu;
 import com.zhjydy.R;
+import com.zhjydy.model.entity.DistricPickViewData;
 import com.zhjydy.model.entity.District;
-import com.zhjydy.model.entity.DocTorInfo;
+import com.zhjydy.model.entity.HosipitalPickViewData;
 import com.zhjydy.model.entity.NormalDicItem;
+import com.zhjydy.model.entity.NormalPickViewData;
 import com.zhjydy.presenter.contract.MainExpertContract;
 import com.zhjydy.presenter.presenterImp.MainExpertPresenterImp;
 import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.Utils;
-import com.zhjydy.view.adapter.FavExpertListAdapter;
 import com.zhjydy.view.adapter.MainExpertListAdapter;
-import com.zhjydy.view.adapter.SimPleTextAdapter;
 import com.zhjydy.view.avtivity.PagerImpActivity;
 import com.zhjydy.view.zhview.BadgImage;
+import com.zhjydy.view.zhview.MapTextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,30 +45,35 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
     BadgImage rightImg;
     @BindView(R.id.right_l_img)
     BadgImage rightLImg;
-    @BindView(R.id.dropDownMenu)
-    DropDownMenu dropDownMenu;
     @BindView(R.id.title_search_img)
     ImageView titleSearchImg;
     @BindView(R.id.title_search_text)
     TextView titleSearchText;
     @BindView(R.id.title_search_ly)
     LinearLayout titleSearchLy;
+    @BindView(R.id.filter_dis_tv)
+    MapTextView filterDisTv;
+    @BindView(R.id.filter_office_tv)
+    MapTextView filterOfficeTv;
+    @BindView(R.id.filter_business_tv)
+    MapTextView filterBusinessTv;
+    @BindView(R.id.m_list)
+    PullToRefreshListView mList;
 
-    private View mListContainerView;
-    private PullToRefreshListView mExpertListView;
 
-    private ListView mDropDomainListView;
-    private ListView mDropDepartListView;
-    private ListView mDropProfessListView;
+    private OptionsPickerView mDistricePicker;
+    private OptionsPickerView mBusinessPicker;
+    private OptionsPickerView mOfficePicker;
 
-    private SimPleTextAdapter mDropDomainAdapter;
-    private SimPleTextAdapter mDropDepartAdapter;private SimPleTextAdapter mDropProfessAdapter;
+    private ArrayList<DistricPickViewData> mProPickViewData = new ArrayList<>();
+    private ArrayList<ArrayList<DistricPickViewData>> mCityPickViewData = new ArrayList<>();
+    private ArrayList<ArrayList<ArrayList<DistricPickViewData>>> mQuPickViewData = new ArrayList<>();
+    private ArrayList<NormalPickViewData> mDepartPickViewData = new ArrayList<>();
+    private ArrayList<NormalPickViewData> mBusinessPickViewData = new ArrayList<>();
+
     protected MainExpertContract.MainExpertPresenter mPresenter;
-    protected String headers[] = {"全部地区", "科室", "职称"};
-    protected String depart[] = {"内科", "外科", "五官科"};
-    protected String proTitle[] = {"内科", "外科", "五官科"};
-    protected List<View> dropViews = new ArrayList<>();
     protected MainExpertListAdapter mExpertListAdapter;
+
     public static MainExpertFragment instance() {
         MainExpertFragment frag = new MainExpertFragment();
         return frag;
@@ -86,63 +91,35 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
     @Override
     protected void afterViewCreate() {
         initExpertList();
-        initDropMenuViews();
         titleSearchText.setText("搜索专家");
         rightLImg.setImageSrc(R.mipmap.title_msg);
         rightImg.setImageSrc(R.mipmap.shoucang);
-        rightLImg.setText("1");
-        rightImg.setText("1");
+
+        mDistricePicker = new OptionsPickerView<DistricPickViewData>(getContext());
+        mBusinessPicker = new OptionsPickerView<NormalDicItem>(getContext());
+        mOfficePicker = new OptionsPickerView<NormalDicItem>(getContext());
+
         new MainExpertPresenterImp(this);
+
+
     }
 
 
-    private void initDropMenuViews() {
-        mDropDomainListView = new ListView(getContext());
-        mDropDomainAdapter = new SimPleTextAdapter(getContext(), new ArrayList<NormalDicItem>());
-        mDropDomainListView.setAdapter(mDropDomainAdapter);
-        dropViews.add(mDropDomainListView);
-
-
-        mDropDepartListView = new ListView(getContext());
-        mDropDepartAdapter = new SimPleTextAdapter(getContext(),  new ArrayList<NormalDicItem>());
-        mDropDepartListView.setAdapter(mDropDepartAdapter);
-        dropViews.add(mDropDepartListView);
-        mDropDepartListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                dropDownMenu.closeMenu();
-            }
-        });
-
-        mDropProfessListView = new ListView(getContext());
-        mDropProfessAdapter = new SimPleTextAdapter(getContext(),  new ArrayList<NormalDicItem>());
-        mDropProfessListView.setAdapter(mDropProfessAdapter);
-        dropViews.add(mDropProfessListView);
-        mDropProfessListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                dropDownMenu.closeMenu();
-            }
-        });
-        dropDownMenu.setDropDownMenu(Arrays.asList(headers), dropViews, mListContainerView);
-
-    }
     private void initExpertList() {
-        mListContainerView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_expert_list,null);
-        mExpertListView = (PullToRefreshListView)mListContainerView.findViewById(R.id.m_list);
-        mExpertListAdapter = new MainExpertListAdapter(getContext(), new ArrayList<Map<String,Object>>());
-        mExpertListView.setAdapter(mExpertListAdapter);
-        mExpertListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mExpertListAdapter = new MainExpertListAdapter(getContext(), new ArrayList<Map<String, Object>>());
+        mList.setAdapter(mExpertListAdapter);
+        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Map<String,Object> info = (Map<String,Object>)adapterView.getAdapter().getItem(i);
-                if(info != null && !TextUtils.isEmpty(Utils.toString(info.get("id")))) {
-                    ActivityUtils.transToFragPagerActivity(getActivity(),PagerImpActivity.class,FragKey.detail_expert_fragment,Utils.toString(info.get("id")),false);
+                Map<String, Object> info = (Map<String, Object>) adapterView.getAdapter().getItem(i);
+                if (info != null && !TextUtils.isEmpty(Utils.toString(info.get("id")))) {
+                    ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.detail_expert_fragment, Utils.toString(info.get("id")), false);
                 }
             }
         });
 
     }
+
     @Override
     public void setPresenter(MainExpertContract.MainExpertPresenter presenter) {
         this.mPresenter = presenter;
@@ -153,15 +130,8 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
 
     }
 
-
-    @Override
-    public void updateFilters(Map<String, Object> data) {
-        List<District> districts = (List<District>) data.get(headers[0]);
-        List<NormalDicItem> depart = (List<NormalDicItem>) data.get(headers[1]);
-        List<NormalDicItem> profe = (List<NormalDicItem>) data.get(headers[2]);
-        mDropDomainAdapter.refreshData(depart);
-        mDropDepartAdapter.refreshData(depart);
-        mDropProfessAdapter.refreshData(profe);
+    public void updateUnReadMsgCount(int count) {
+        rightLImg.setText(count + "");
     }
 
     @Override
@@ -177,13 +147,105 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
         return rootView;
     }
 
-    @OnClick({R.id.title_search_ly, R.id.right_img, R.id.right_l_img})
+    @Override
+    public void updateDistrict(Map<String, ArrayList> distrctData) {
+        mProPickViewData = (ArrayList<DistricPickViewData>) distrctData.get("pro");
+        mCityPickViewData = (ArrayList<ArrayList<DistricPickViewData>>) distrctData.get("city");
+        mQuPickViewData = (ArrayList<ArrayList<ArrayList<DistricPickViewData>>>) distrctData.get("qu");
+        mDistricePicker.setPicker(mProPickViewData, mCityPickViewData, mQuPickViewData, true);
+        initDistricePicker();
+
+    }
+    private void initDistricePicker() {
+        mDistricePicker.setCyclic(false);
+        mDistricePicker.setCancelable(true);
+        mDistricePicker.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3) {
+                District pro = mProPickViewData.get(options1).getDistrict();
+                District city = mCityPickViewData.get(options1).get(option2).getDistrict();
+                District qu = mQuPickViewData.get(options1).get(option2).get(options3).getDistrict();
+                if (qu != null && !TextUtils.isEmpty(qu.getId())) {
+                    filterDisTv.setMap(qu.getId(),qu.getName());
+                } else if (city != null && !TextUtils.isEmpty(city.getId())) {
+                    filterDisTv.setMap(city.getId(),city.getName());
+                } else if (pro != null) {
+                    filterDisTv.setMap(pro.getId(),pro.getName());
+                }
+                mPresenter.reloadExperts();
+            }
+        });
+    }
+    @Override
+    public void updateOffice(ArrayList<NormalPickViewData> officeData) {
+        mDepartPickViewData = officeData;
+        mOfficePicker.setPicker(mDepartPickViewData);
+        mOfficePicker.setCyclic(false);
+        mOfficePicker.setSelectOptions(0);
+        mOfficePicker.setCancelable(true);
+        mOfficePicker.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3) {
+                String officeName = mDepartPickViewData.get(options1).getmItem().getName();
+                String officeId = mDepartPickViewData.get(options1).getmItem().getId();
+                filterOfficeTv.setMap(officeId, officeName);
+                mPresenter.reloadExperts();
+            }
+        });
+
+    }
+
+    @Override
+    public void updateBusiness(ArrayList<NormalPickViewData> officeData) {
+        mBusinessPickViewData = officeData;
+        mBusinessPicker.setPicker(mBusinessPickViewData);
+        mBusinessPicker.setCyclic(false);
+        mBusinessPicker.setSelectOptions(0);
+        mBusinessPicker.setCancelable(true);
+        mBusinessPicker.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3) {
+                String busName = mBusinessPickViewData.get(options1).getmItem().getName();
+                String busId = mBusinessPickViewData.get(options1).getmItem().getId();
+                filterBusinessTv.setMap(busId, busName);
+                mPresenter.reloadExperts();
+            }
+        });
+
+    }
+
+    @Override
+    public Map<String, Object> getFilterConditions() {
+        String disId = filterDisTv.getTextId();
+        String officeId = filterOfficeTv.getTextId();
+        String businessId = filterBusinessTv.getTextId();
+        Map<String,Object> params = new HashMap<>();
+        if (!TextUtils.isEmpty(disId)) {
+            params.put("address",disId);
+        }
+        if (!TextUtils.isEmpty(officeId)) {
+            params.put("office",officeId);
+        } if (!TextUtils.isEmpty(businessId)) {
+            params.put("business",businessId);
+        }
+        return  params;
+    }
+
+    @Override
+    public void updateFavExpertCount(int count) {
+        if (count > 0) {
+            rightImg.setText(count + "");
+        }
+    }
+
+
+    @OnClick({R.id.title_search_ly, R.id.right_img, R.id.right_l_img,R.id.filter_dis_tv,R.id.filter_business_tv,R.id.filter_office_tv})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_search_ly:
                 Bundle bundle = new Bundle();
-                bundle.putInt("key",FragKey.search_expert_fragment);
-                ActivityUtils.transActivity(getActivity(), PagerImpActivity.class,bundle,false);
+                bundle.putInt("key", FragKey.search_expert_fragment);
+                ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
                 break;
             case R.id.right_img:
                 Bundle bundleFave = new Bundle();
@@ -195,6 +257,22 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
                 bundleMsg.putInt("key", FragKey.msg_all_fragment);
                 ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundleMsg, false);
                 break;
+            case R.id.filter_business_tv:
+                if (mBusinessPickViewData.size() > 0) {
+                    mBusinessPicker.show();
+                }
+                break;
+            case R.id.filter_dis_tv:
+                if (mProPickViewData != null && mCityPickViewData != null && mQuPickViewData != null
+                        &&mProPickViewData.size() > 0 &&mCityPickViewData.size() > 0  &&mQuPickViewData.size() > 0  ) {
+                    mDistricePicker.show();
+                }
+                break;
+            case R.id.filter_office_tv:
+                if (mDepartPickViewData.size() >0) {
+                    mOfficePicker.show();
+                }
+
         }
     }
 }

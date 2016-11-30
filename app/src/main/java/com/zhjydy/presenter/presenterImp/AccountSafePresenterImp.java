@@ -2,6 +2,7 @@ package com.zhjydy.presenter.presenterImp;
 
 import android.text.TextUtils;
 
+import com.zhjydy.model.data.AppData;
 import com.zhjydy.presenter.contract.AccountSafeContract;
 import com.zhjydy.presenter.contract.ExpertDetailContract;
 
@@ -20,8 +21,9 @@ public class AccountSafePresenterImp implements AccountSafeContract.Presenter {
 
     @Override
     public void start() {
-
+        mView.updatePhoneNum(AppData.getInstance().getToken().getMobile());
     }
+
 
 
 

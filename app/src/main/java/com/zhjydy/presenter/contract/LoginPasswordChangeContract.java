@@ -13,9 +13,11 @@ public interface LoginPasswordChangeContract {
 
     interface View extends BaseView<Presenter>
     {
+        void updatePassWordOk();
     }
 
     interface Presenter extends BasePresenter
     {
+        void confirmUpdate(String oldPw,String newPw);
     }
 }

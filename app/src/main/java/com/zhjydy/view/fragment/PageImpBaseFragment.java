@@ -52,6 +52,7 @@ public abstract class PageImpBaseFragment extends StatedFragment {
         String tag = FragKey.FragMap.get(key);
         PageImpBaseFragment newFragment = PagerFragmentFactory.createFragment(key);
         if (!TextUtils.isEmpty(tag) && newFragment != null) {
+            newFragment.setArguments(bundle);
             FragmentUtils.changeFragment(getActivity(), this, newFragment, tag, getViewId());
         }
     }
@@ -63,7 +64,19 @@ public abstract class PageImpBaseFragment extends StatedFragment {
         }
         FragmentUtils.back((PagerImpActivity) activity);
     }
-
+    protected void back(int step) {
+        while (step > 0) {
+            back();
+            step--;
+        }
+    }
+    protected void back(int[] fragkey){
+        Activity activity = getActivity();
+        if (!(activity instanceof PagerImpActivity)) {
+            return;
+        }
+        FragmentUtils.back((PagerImpActivity) activity,fragkey);
+    }
     protected void addOnActivityResultView(ActivityResultView view) {
         if (!(getActivity() instanceof PagerImpActivity)) {
             return;

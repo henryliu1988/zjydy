@@ -1,5 +1,7 @@
 package com.zhjydy.presenter.contract;
 
+import android.content.Context;
+
 import com.zhjydy.presenter.BasePresenter;
 import com.zhjydy.presenter.BaseView;
 
@@ -19,6 +21,7 @@ public interface MainMineContract {
 
     interface MainMinePresenter extends BasePresenter
     {
-        Observable<Map<String,Object>> loadIdentifyInfo();
+        void loadIdentifyInfo();
+        Map<String,Object> getIdentifyInfo(Context context);
     }
 }

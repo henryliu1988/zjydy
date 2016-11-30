@@ -1,5 +1,8 @@
 package com.zhjydy.presenter.presenterImp;
 
+import android.text.TextUtils;
+
+import com.zhjydy.model.data.AppData;
 import com.zhjydy.model.entity.District;
 import com.zhjydy.model.entity.DocTorInfo;
 import com.zhjydy.model.entity.Infomation;
@@ -38,6 +41,7 @@ public class MainInfoPresenterImp implements MainInfoContract.MainInfoPresenter 
     @Override
     public void start() {
         loadMsg();
+        loadFavMsgCount();
     }
 
     private void loadMsg() {
@@ -57,6 +61,18 @@ public class MainInfoPresenterImp implements MainInfoContract.MainInfoPresenter 
         });
     }
 
+    private void loadFavMsgCount() {
+        String collect = AppData.getInstance().getToken().getCollectNews();
+        int count = 0;
+        if (!TextUtils.isEmpty(collect) && collect.length() > 0) {
+             count = Utils.getCountOfString(collect,",");
+            count ++;
+        }
+        if (mView != null) {
+            mView.updateFavInfoCount(count);
+        }
+
+    }
     @Override
     public void finish() {
 

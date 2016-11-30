@@ -1,6 +1,7 @@
 package com.zhjydy.view.fragment;
 
 import android.content.Intent;
+import android.graphics.YuvImage;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,17 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhjydy.R;
-import com.zhjydy.presenter.contract.IdentityInfoContract;
-import com.zhjydy.presenter.contract.PatientCaseDetailContract;
 import com.zhjydy.presenter.contract.PatientCaseEditAttachContract;
-import com.zhjydy.presenter.presenterImp.IdentityInfoPresenterImp;
 import com.zhjydy.presenter.presenterImp.PatientCaseEditAttachPresenterImp;
 import com.zhjydy.util.Utils;
 import com.zhjydy.util.ViewKey;
 import com.zhjydy.view.ActivityResultView;
-import com.zhjydy.view.adapter.HorizontalScrollViewAdapter;
 import com.zhjydy.view.zhview.ItemImageAddView;
-import com.zhjydy.view.zhview.MyHorizontalScrollView;
+import com.zhjydy.view.zhview.zhToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,8 +48,18 @@ public class PatientCaseEditAttachFragment extends PageImpBaseFragment implement
 
     private PatientCaseEditAttachContract.Presenter mPresenter;
 
+    private int type = 0;
+    private HashMap<String,Object> params = new HashMap<>();
     @Override
     protected void initData() {
+        Bundle bundle = getArguments();
+        if (bundle == null || bundle.getString("param") == null) {
+            back();
+            return;
+        }
+        Map<String,Object> params = Utils.parseObjectToMapString(bundle.getString("param"));
+        type = bundle.getInt("type");
+        this.params.putAll(params);
     }
 
     @Override
@@ -80,7 +87,7 @@ public class PatientCaseEditAttachFragment extends PageImpBaseFragment implement
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               mPresenter.uploadFiles(mImageList);
+               mPresenter.submitMsg(params,mImageList,getContext(),type);
             }
         });
     }
@@ -127,7 +134,6 @@ public class PatientCaseEditAttachFragment extends PageImpBaseFragment implement
                     item1.put(ViewKey.FILE_KEY_URL,p);
                     mImageList.add(item1);
                     horizontalImageView.setItems(mImageList);
-
                 }
                 break;
             default:
@@ -139,5 +145,11 @@ public class PatientCaseEditAttachFragment extends PageImpBaseFragment implement
     @Override
     public void onPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         toGetCameraImage();
+    }
+
+    @Override
+    public void sumbitOk() {
+        zhToast.showToast("添加患者成功");
+        back(2);
     }
 }

@@ -2,6 +2,7 @@ package com.zhjydy.model.net;
 
 
 import com.zhjydy.util.Utils;
+import com.zhjydy.util.ViewKey;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -14,6 +15,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 /**
@@ -49,7 +52,78 @@ public class FileUpLoad
     private static final int TIME_OUT = 10 * 1000;   //超时时间
     private static final String CHARSET = "UTF-8"; //设置编码
 
+    public static Observable<String> uploadFiles(List<Map<String, Object>> files) {
+        if (files == null &&files.size() < 1) {
+            String ids = "";
+            return Observable.just(ids);
+        }
+        List<Map<String, Object>> existFile = new ArrayList<>();
+        List<String> newFile = new ArrayList<>();
+        for (int i = 0; i < files.size(); i++) {
+            int imageType = Utils.toInteger(files.get(i).get(ViewKey.FILE_KEY_TYPE));
+            if (imageType == ViewKey.TYPE_FILE_PATH) {
+                String path = Utils.toString(files.get(i).get(ViewKey.FILE_KEY_URL));
+                newFile.add(path);
+            } else {
+                existFile.add(files.get(i));
+            }
+        }
+        Observable<List<Map<String, Object>>> obExist = Observable.just(existFile);
+        if (newFile.size() > 0) {
+            Observable<List<Map<String, Object>>> obNew =   Observable.from(newFile).map(new Func1<String, File>() {
+                @Override
+                public File call(String s) {
+                    return new File(s);
+                }
+            }).flatMap(new Func1<File, Observable<Map<String,Object>>>() {
+                @Override
+                public Observable<Map<String, Object>> call(File file) {
+                    HashMap<String,Object> params = new HashMap<String, Object>();
+                    params.put("X_FILENAME",".jpg");
+                    return FileUpLoad.getInstance().uploadFile(file, params);
+                }
+            }).buffer(newFile.size());
+            return Observable.zip(obExist, obNew, new Func2<List<Map<String,Object>>, List<Map<String,Object>>, String>() {
+                @Override
+                public String call(List<Map<String, Object>> oldFile, List<Map<String, Object>> newFile) {
+                    List<String> idList = new ArrayList<String>();
+                    String ids = "";
+                    for (Map<String,Object> file:oldFile) {
+                        idList.add(Utils.toString(file.get("id")));
+                    }
+                    for (Map<String,Object> file:newFile) {
+                        idList.add(Utils.toString(file.get("id")));
+                    }
+                    for (int i = 0 ; i <idList.size(); i ++) {
+                        ids += idList.get(i);
+                        if (i < idList.size() -1) {
+                            ids +=",";
+                        }
+                    }
+                    return  ids;
+                }
+            });
+        } else {
+            return obExist.map(new Func1<List<Map<String, Object>>, String>() {
+                @Override
+                public String call(List<Map<String, Object>> oldFile) {
+                    List<String> idList = new ArrayList<String>();
+                    String ids = "";
+                    for (Map<String,Object> file:oldFile) {
+                        idList.add(Utils.toString(file.get("id")));
+                    }
 
+                    for (int i = 0 ; i <idList.size(); i ++) {
+                        ids += idList.get(i);
+                        if (i < idList.size() -1) {
+                            ids +=",";
+                        }
+                    }
+                    return ids;
+                }
+            });
+        }
+    }
 
 
     public Observable<Map<String, Object>> uploadFile(final File file, final Map<String,Object> params)
@@ -61,9 +135,8 @@ public class FileUpLoad
             public void call(final Subscriber<? super Map<String, Object>> subscriber)
             {
                 Map<String, Object> result = uploadFileService(file, params);
-                if (result.size() > 0 && Utils.toInteger(result.get("error")) == 0)
+                if (result.size() > 0 && Utils.toBoolean(result.get("status")))
                 {
-                    result.put("name",file.getName());
                     subscriber.onNext(result);
                 } else
                 {

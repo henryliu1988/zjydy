@@ -20,5 +20,6 @@ public interface FavExpertContract {
 
     interface Presenter extends BasePresenter
     {
+       void cancelFavExpert(String id);
     }
 }

@@ -67,8 +67,6 @@ public abstract class BaseSubscriber<T> extends Subscriber<T>
         {
             closeLoadingProgress();
         }
-
-
     }
 
     @Override

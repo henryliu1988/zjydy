@@ -80,12 +80,15 @@ public class WebService {
                     }
                     if (status) {
                         String data = Utils.toString(m.get("data"));
+                        if (TextUtils.isEmpty(data)) {
+                            data= Utils.toString(m.get("msg"))
+                        }
                         response.setData(data);
                         response.setError(0);
                         response.setFuncName(method);
                     } else {
-                        response.setData("");
-                        response.setError(1);
+                        response.setData(Utils.toString(status));
+                        response.setError(2);
                         response.setFuncName(method);
                         response.setInfo("返回数据错误");
                     }

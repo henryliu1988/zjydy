@@ -24,6 +24,17 @@
             android:footerDividersEnabled="false"
             android:headerDividersEnabled="false"
             android:smoothScrollbar="true" />
+            <TextView
+                android:id="@+id/empty_patient_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_text2"
+                android:textSize="16sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone"
+                android:text="您还没有添加患者病例，请先添加患者病例" />
         <TextView
             android:id="@+id/m_case_add_button"
             android:layout_width="match_parent"

@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 
 /**
  * Created by Administrator on 2016/10/6 0006.
@@ -27,6 +28,7 @@ public class FragmentUtils {
         transaction.commit();
     }
 
+
     public static void back(FragmentActivity context) {
         FragmentManager fManager = context.getSupportFragmentManager();
         if (fManager.getBackStackEntryCount() > 1) {
@@ -34,5 +36,27 @@ public class FragmentUtils {
         } else {
             context.finish();
         }
+    }
+
+    public static void back(FragmentActivity context,int[] fragkey) {
+        FragmentManager fManager = context.getSupportFragmentManager();
+        if (fManager.getBackStackEntryCount() > 1) {
+            fManager.popBackStack();
+        } else {
+            context.finish();
+        }
+        if (fragkey.length > 0) {
+            for (int i = 0 ; i < fragkey.length; i ++) {
+                String key = FragKey.FragMap.get(fragkey);
+                if (!TextUtils.isEmpty(key)) {
+                    Fragment fragment = fManager.findFragmentByTag(key);
+                    if (fragment != null && fragment instanceof StatedFragment) {
+                        StatedFragment statedFragment = (StatedFragment)fragment;
+                        statedFragment.refreshView();
+                    }
+                }
+            }
+        }
+
     }
 }

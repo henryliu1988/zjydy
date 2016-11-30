@@ -14,6 +14,7 @@ import com.zhjydy.presenter.presenterImp.AccountSafePresenterImp;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016/9/26 0026.
@@ -31,6 +32,8 @@ public class AccountSafeFragment extends PageImpBaseFragment implements AccountS
     RelativeLayout layoutChangePayword;
     @BindView(R.id.layout_change_loginpass)
     RelativeLayout layoutChangeLoginpass;
+    @BindView(R.id.phoneNum_tv)
+    TextView phoneNumTv;
     private AccountSafeContract.Presenter mPresenter;
 
     @Override
@@ -70,5 +73,25 @@ public class AccountSafeFragment extends PageImpBaseFragment implements AccountS
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
         return rootView;
+    }
+
+    @OnClick({R.id.layout_change_phonenum, R.id.layout_change_payword, R.id.layout_change_loginpass})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.layout_change_phonenum:
+                gotoFragment(FragKey.phone_num_change_fragment);
+                break;
+            case R.id.layout_change_payword:
+                gotoFragment(FragKey.pay_password_change_fragment);
+                break;
+            case R.id.layout_change_loginpass:
+                gotoFragment(FragKey.login_password_change_fragment);
+                break;
+        }
+    }
+
+    @Override
+    public void updatePhoneNum(String phoneNum) {
+        phoneNumTv.setText(phoneNum);
     }
 }

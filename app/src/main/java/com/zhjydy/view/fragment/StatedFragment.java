@@ -52,6 +52,7 @@ public abstract class StatedFragment extends Fragment {
 
     }
 
+    public  abstract  void refreshView();
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
