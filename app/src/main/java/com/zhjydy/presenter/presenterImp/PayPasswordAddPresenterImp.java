@@ -5,19 +5,20 @@ import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
+import com.zhjydy.presenter.contract.PayPasswordAddContract;
 import com.zhjydy.presenter.contract.PayPasswordChangContract;
-import com.zhjydy.presenter.contract.PhoneNumChangContract;
+import com.zhjydy.util.MD5;
 
 import java.util.HashMap;
 
 /**
  * Created by Administrator on 2016/9/20 0020.
  */
-public class PayPasswordChangePresenterImp implements PayPasswordChangContract.Presenter {
+public class PayPasswordAddPresenterImp implements PayPasswordAddContract.Presenter {
 
-    private PayPasswordChangContract.View mView;
+    private PayPasswordAddContract.View mView;
 
-    public PayPasswordChangePresenterImp(PayPasswordChangContract.View view) {
+    public PayPasswordAddPresenterImp(PayPasswordAddContract.View view) {
         this.mView = view;
         view.setPresenter(this);
         start();
@@ -37,21 +38,16 @@ public class PayPasswordChangePresenterImp implements PayPasswordChangContract.P
 
 
     @Override
-    public void confirm(String oldPw, final String newPw) {
-        String tokenPass = AppData.getInstance().getToken().getPaypass();
-        if (!oldPw.equals(tokenPass)) {
-            mView.confirmResult(false,"原密码不正确！");
-            return;
-        }
+    public void confirm(final String newPw) {
         HashMap<String,Object> parasm = new HashMap<>();
-        parasm.put("addPayPass",newPw);
+        String password = MD5.GetMD5Code(newPw);
+        parasm.put("paypass",password);
         WebCall.getInstance().call(WebKey.func_addPayPass,parasm).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
             public void onNext(WebResponse webResponse) {
-                AppData.getInstance().getToken().setPaypass(newPw);
                 mView.confirmResult(true,"修改支付密码成功");
+                AppData.getInstance().getToken().setPaypass(newPw);
             }
-
             @Override
             public void onError(Throwable e) {
                 mView.confirmResult(false,e.getMessage());

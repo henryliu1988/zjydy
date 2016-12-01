@@ -105,7 +105,7 @@ public class FaveExpertPresenterImp implements FavExpertContract.Presenter {
             collect.remove(id);
         }
         params.put("userid",AppData.getInstance().getToken().getId());
-        params.put("collectexpert",collect);
+        params.put("collectexpert",Utils.strListToString(collect));
         WebCall.getInstance().call(WebKey.func_cancelCollectExpert,params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"") {
             @Override
             public void onNext(WebResponse webResponse) {

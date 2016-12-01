@@ -52,8 +52,6 @@ public class LoginPresenterImp implements LoginContract.Presenter {
             @Override
             public void onError(Throwable e) {
                 closeLoadingProgress();
-            //    mView.onLoginSucess();
-
                 super.onError(e);
             }
 
@@ -76,10 +74,11 @@ public class LoginPresenterImp implements LoginContract.Presenter {
             info.setId(Utils.toString(token.get("id")));
             info.setMobile(Utils.toString(token.get("mobile")));
             info.setNickname(Utils.toString(token.get("nickname")));
-            info.setLoginTime(Utils.toString(token.get("login_time")));
             info.setCollectExperts(Utils.toString(token.get("collectexpert")));
             info.setCollectNews(Utils.toString(token.get("collectnews")));
-
+            info.setIdcard(Utils.toString(token.get("idcard")));
+            info.setPaypass(Utils.toString(token.get("paypass")));
+            info.setStatus(Utils.toString(token.get("status")));
             AppData.getInstance().setToken(info);
             AppData.getInstance().initData();
         }

@@ -81,7 +81,7 @@ public class WebService {
                     if (status) {
                         String data = Utils.toString(m.get("data"));
                         if (TextUtils.isEmpty(data)) {
-                            data= Utils.toString(m.get("msg"))
+                            data= Utils.toString(m.get("msg"));
                         }
                         response.setData(data);
                         response.setError(0);

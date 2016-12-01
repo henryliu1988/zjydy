@@ -16,9 +16,11 @@ public class TokenInfo {
     String id;
     String mobile;
     String nickname;
-    String loginTime;
     String collectExperts;
     String collectNews;
+    String paypass;
+    String idcard;
+    String status;
     public String getId() {
         return id;
     }
@@ -43,13 +45,6 @@ public class TokenInfo {
         this.nickname = nickname;
     }
 
-    public String getLoginTime() {
-        return loginTime;
-    }
-
-    public void setLoginTime(String loginTime) {
-        this.loginTime = loginTime;
-    }
 
 
     public String getCollectExperts() {
@@ -66,6 +61,30 @@ public class TokenInfo {
 
     public void setCollectNews(String collectNews) {
         this.collectNews = collectNews;
+    }
+
+    public String getPaypass() {
+        return paypass;
+    }
+
+    public void setPaypass(String paypass) {
+        this.paypass = paypass;
+    }
+
+    public String getIdcard() {
+        return idcard;
+    }
+
+    public void setIdcard(String idcard) {
+        this.idcard = idcard;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public List<String> getCollectExpertList(){

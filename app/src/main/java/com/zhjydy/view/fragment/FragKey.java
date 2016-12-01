@@ -34,6 +34,7 @@ public class FragKey {
     public static final int fave_expert_list_fragment = 1023;
     public static final int fave_info_list_fragment = 1024;
     public static final int search_home_fragment = 1025;
+    public static final int pay_password_add_fragment = 1026;
 
     public static final Map<Integer,String> FragMap = new HashMap<>();
     static
@@ -46,6 +47,8 @@ public class FragKey {
         FragMap.put(detail_info_fragment, "detail_info_fragment");
         FragMap.put(account_safe_fragment, "account_safe_fragment");
         FragMap.put(pay_password_change_fragment, "pay_password_change_fragment");
+        FragMap.put(pay_password_add_fragment, "pay_password_add_fragment");
+
         FragMap.put(common_fragment, "common_fragment");
         FragMap.put(phone_num_change_fragment, "phone_num_change_fragment");
         FragMap.put(identify_info_fragment, "identify_info_fragment");

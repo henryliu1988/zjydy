@@ -30,6 +30,10 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
 
     private String expertId;
 
+
+    private Map<String, Object> mExpertInfo = new HashMap<>();
+    private List<Map<String, Object>> mComments = new ArrayList<>();
+
     public ExpertDetailPresenterImp(ExpertDetailContract.View view, String id) {
         this.mView = view;
         view.setPresenter(this);
@@ -57,12 +61,12 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
                 Map<String, Object> map = Utils.parseObjectToMapString(data);
                 return map;
             }
-        }).subscribe(new BaseSubscriber<Map<String, Object>>(mView.getContext(),true) {
+        }).subscribe(new BaseSubscriber<Map<String, Object>>(mView.getContext(), true) {
             @Override
             public void onNext(Map<String, Object> map) {
                 String collect = AppData.getInstance().getToken().getCollectExperts();
-
-                map.put("collect",collect);
+                map.put("collect", collect);
+                mExpertInfo = map;
                 mView.updateExpertInfos(map);
             }
         });
@@ -80,6 +84,7 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
         }).subscribe(new BaseSubscriber<List<Map<String, Object>>>() {
             @Override
             public void onNext(List<Map<String, Object>> maps) {
+                mComments = maps;
                 mView.updateComments(maps);
             }
         });
@@ -96,17 +101,60 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
     }
 
     @Override
-    public void subscribeExpert() {
+    public void subscribeExpert(Map<String, Object> patient) {
+        String patientId = Utils.toString(patient.get("id"));
+        String experturl = Utils.toString(mExpertInfo.get("path"));
+        String expertName = Utils.toString(mExpertInfo.get("realname"));
+        String expertid = Utils.toString(expertId);
+        String hos = Utils.toString(patient.get("hospital"));
+        String name = Utils.toString(patient.get("realname"));
+        String memberId = AppData.getInstance().getToken().getId();
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("patientid",patientId);
+        params.put("experturl",experturl);
+        params.put("expertname",expertName);
+        params.put("expertid",expertid);
+        params.put("patienthospital",hos);
+        params.put("patientname",name);
+        params.put("memberid",memberId);
+        WebCall.getInstance().call(WebKey.func_makeOrder,params).subscribe(new BaseSubscriber<WebResponse>() {
+            @Override
+            public void onNext(WebResponse webResponse) {
+                mView.subsribExpertResult(true,"成功预约专家");
+            }
 
+            @Override
+            public void onError(Throwable e) {
+                mView.subsribExpertResult(false,"预约失败  " + e.getMessage());
+                super.onError(e);
+            }
+        });
     }
 
     @Override
-    public void makeNewComment(String comment) {
-        HashMap<String,Object> params = new HashMap<>();
-        params.put("userId",AppData.getInstance().getToken());
-        params.put("expertId",expertId);
-        params.put("comment",comment);
-        WebCall.getInstance().call(WebKey.func_makeComment,params).subscribe(new BaseSubscriber<WebResponse>() {
+    public void makeNewComment(String content) {
+        HashMap<String, Object> params = new HashMap<>();
+        String getName = Utils.toString(mExpertInfo.get("realname"));
+
+        String mark = null;
+
+        if (mComments != null && mComments.size() > 0) {
+            Map<String, Object> item = mComments.get(0);
+            mark = Utils.toString(item.get("mark"));
+        }
+        params.put("sendid", AppData.getInstance().getToken().getId());
+        params.put("sendname", AppData.getInstance().getToken().getNickname());
+
+        params.put("getid", expertId);
+        params.put("getname", getName);
+
+        params.put("content", content);
+        params.put("expertid", expertId);
+
+        if (!TextUtils.isEmpty(mark)) {
+            params.put("mark", mark);
+        }
+        WebCall.getInstance().call(WebKey.func_addComment, params).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
             public void onNext(WebResponse webResponse) {
                 loadComments(expertId);
@@ -126,12 +174,13 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
         List<String> collecs = AppData.getInstance().getToken().getCollectExpertList();
         mView.updateFavStatus(collecs.contains(expertId));
     }
+
     @Override
     public void saveExpert() {
         HashMap<String, Object> params = new HashMap<>();
         params.put("expertid", expertId);
         params.put("userid", AppData.getInstance().getToken().getId());
-        WebCall.getInstance().call(WebKey.func_collectExpert, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"请稍后，正在收藏！") {
+        WebCall.getInstance().call(WebKey.func_collectExpert, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), "请稍后，正在收藏！") {
             @Override
             public void onNext(WebResponse webResponse) {
                 List<String> collect = AppData.getInstance().getToken().getCollectExpertList();
@@ -154,13 +203,13 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
     public void cancelSaveExpert() {
         HashMap<String, Object> params = new HashMap<>();
         List<String> collect = new ArrayList<>();
-        collect.addAll(AppData.getInstance().getToken().getCollectExpertList())  ;
+        collect.addAll(AppData.getInstance().getToken().getCollectExpertList());
         if (collect.contains(expertId)) {
             collect.remove(expertId);
         }
-        params.put("collectexpert","");
+        params.put("collectexpert",Utils.strListToString(collect));
         params.put("userid", AppData.getInstance().getToken().getId());
-        WebCall.getInstance().call(WebKey.func_cancelCollectExpert, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"取消收藏！") {
+        WebCall.getInstance().call(WebKey.func_cancelCollectExpert, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), "取消收藏！") {
             @Override
             public void onNext(WebResponse webResponse) {
                 List<String> collect = new ArrayList<String>();
@@ -171,6 +220,7 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
                 AppData.getInstance().getToken().setCollectExpertAsList(collect);
                 loadFavStatus();
             }
+
             @Override
             public void onError(Throwable e) {
                 zhToast.showToast("取消收藏失败  " + e.getMessage());
@@ -181,7 +231,7 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
     }
 
     @Override
-    public Observable<List<Map<String, Object>>> getAllExpert() {
+    public Observable<List<Map<String, Object>>> getAllPatientCase() {
         return PatientData.getInstance().getAllPatientList();
     }
 }

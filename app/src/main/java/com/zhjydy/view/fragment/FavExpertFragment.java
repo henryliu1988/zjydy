@@ -114,6 +114,9 @@ public class FavExpertFragment extends PageImpBaseFragment implements FavExpertC
     @Override
     public void setPresenter(FavExpertContract.Presenter presenter) {
         this.mPresenter = presenter;
+        if (mExpertListAdapter != null) {
+            mExpertListAdapter.setPresenter(presenter);
+        }
     }
 
     @Override

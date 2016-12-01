@@ -60,7 +60,7 @@ public class MainExpertPresenterImp implements MainExpertContract.MainExpertPres
         ArrayList<NormalPickViewData> officeData = new ArrayList<>();
         NormalDicItem itemDefualt = new NormalDicItem();
         itemDefualt.setId("");
-        itemDefualt.setName("科室");
+        itemDefualt.setName("全部");
         NormalPickViewData defaul = new NormalPickViewData(itemDefualt);
         officeData.add(defaul);
         List<NormalDicItem> items = DicData.getInstance().getOffice();
@@ -100,7 +100,7 @@ public class MainExpertPresenterImp implements MainExpertContract.MainExpertPres
         ArrayList<NormalPickViewData> businessData = new ArrayList<>();
         NormalDicItem itemDefualt = new NormalDicItem();
         itemDefualt.setId("");
-        itemDefualt.setName("职称");
+        itemDefualt.setName("全部");
         NormalPickViewData defaul = new NormalPickViewData(itemDefualt);
 
         businessData.add(defaul);

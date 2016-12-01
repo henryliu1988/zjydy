@@ -58,6 +58,8 @@ public class PagerFragmentFactory
                 return new FaveInfoFragment();
             case FragKey.search_home_fragment:
                 return new SearchHomeFragment();
+            case FragKey.pay_password_add_fragment:
+                return new PayPasswordAddFragment();
 
         }
       return null;

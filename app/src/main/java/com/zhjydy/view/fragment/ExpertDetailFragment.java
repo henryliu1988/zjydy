@@ -155,6 +155,14 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
     }
 
     @Override
+    public void subsribExpertResult(boolean result, String msg) {
+        zhToast.showToast(msg);
+        if (result) {
+            subscribeExpert.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
     public void updateComments(List<Map<String, Object>> comments) {
         mCommentListAdapter.refreshData(comments);
         if (comments.size() < 1) {
@@ -205,13 +213,14 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
 
 
     private void trySubsribExpert() {
-        mPresenter.getAllExpert().subscribe(new BaseSubscriber<List<Map<String, Object>>>() {
+        mPresenter.getAllPatientCase().subscribe(new BaseSubscriber<List<Map<String, Object>>>() {
             @Override
             public void onNext(List<Map<String, Object>> maps) {
                 if (maps == null || maps.size()< 1) {
                     gotoFragment(FragKey.patient_case_fragment);
                 } else {
-
+                    Map<String, Object> patientCase = maps.get(0);
+                    mPresenter.subscribeExpert(patientCase);
                 }
             }
         });

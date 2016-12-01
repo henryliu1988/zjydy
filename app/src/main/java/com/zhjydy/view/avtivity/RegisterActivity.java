@@ -103,11 +103,6 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
             zhToast.showToast("请输入验证码");
             return;
         }
-
-        if (!confirmCode.equals(mConfirSmsCode)) {
-            zhToast.showToast("验证码输入错误");
-            return;
-        }
         String passoword = passwordEdit.getText().toString();
         if (TextUtils.isEmpty(passoword)) {
             zhToast.showToast("请输入密码");
@@ -124,7 +119,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
         HashMap<String,Object> param = new HashMap<>();
         param.put("mobile",phoneNum);
         param.put("password", MD5.GetMD5Code(passoword));
-        param.put("sms",confirmCode);
+        param.put("yanzheng",confirmCode);
 
         mPresenter.register(param);
     }
@@ -139,10 +134,11 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
             return;
         }
         if (mPresenter != null) {
-            mPresenter.getConfirmCode(phoneNum).subscribe(new BaseSubscriber<WebResponse>() {
+            mPresenter.getConfirmCode(phoneNum).subscribe(new BaseSubscriber<WebResponse>(this,"") {
                 @Override
                 public void onNext(WebResponse webResponse) {
                     mConfirSmsCode = webResponse.getData();
+                    zhToast.showToast(mConfirSmsCode);
                     mCountTimer.start();
                 }
             });

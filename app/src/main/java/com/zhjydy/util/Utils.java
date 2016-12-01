@@ -158,6 +158,21 @@ public class Utils
         return str;
     }
 
+    public static String strListToString(List<String> list) {
+        String str = "";
+        if (list == null || list.size() < 1) {
+            return str;
+        }
+        for (int i = 0; i < list.size(); i++)
+        {
+            str += list.get(i);
+            if (i < list.size() - 1)
+            {
+                str += ",";
+            }
+        }
+        return str;
+    }
     public static List<String> mapListValueToList(Object ob, final String key)
     {
         List<Map<String, String>> list = toStringMapList(ob);

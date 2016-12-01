@@ -188,7 +188,11 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
             public void onOptionsSelect(int options1, int option2, int options3) {
                 String officeName = mDepartPickViewData.get(options1).getmItem().getName();
                 String officeId = mDepartPickViewData.get(options1).getmItem().getId();
-                filterOfficeTv.setMap(officeId, officeName);
+                if(TextUtils.isEmpty(officeId)) {
+                    filterOfficeTv.setMap("", "科室");
+                } else {
+                    filterOfficeTv.setMap(officeId, officeName);
+                }
                 mPresenter.reloadExperts();
             }
         });
@@ -207,7 +211,11 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
             public void onOptionsSelect(int options1, int option2, int options3) {
                 String busName = mBusinessPickViewData.get(options1).getmItem().getName();
                 String busId = mBusinessPickViewData.get(options1).getmItem().getId();
-                filterBusinessTv.setMap(busId, busName);
+                if(TextUtils.isEmpty(busId)) {
+                    filterBusinessTv.setMap("", "职称");
+                } else {
+                    filterBusinessTv.setMap(busId, busName);
+                }
                 mPresenter.reloadExperts();
             }
         });

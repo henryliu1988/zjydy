@@ -121,8 +121,7 @@ public class MineIndoFragment extends PageImpBaseFragment implements MineInfoCon
     @Override
     public void updateInfo(TokenInfo info) {
         String realNameText = info.getNickname();
-        String userNameText = info.getLoginTime();
-        realName.setText(userNameText);
+        realName.setText(realNameText);
         userNameValue.setText(realNameText);
     }
 }
