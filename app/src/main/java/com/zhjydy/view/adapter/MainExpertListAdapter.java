@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.shizhefei.mvc.IDataAdapter;
 import com.zhjydy.R;
 import com.zhjydy.model.entity.DocTorInfo;
 import com.zhjydy.util.ImageUtils;
@@ -17,8 +18,8 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016/9/22 0022.
  */
-public class MainExpertListAdapter extends ListViewAdapter<Map<String,Object>> {
-
+public class MainExpertListAdapter extends PageLoadListAdapter
+{
     public MainExpertListAdapter(Context context, List<Map<String, Object>> datas) {
         super(context, datas, R.layout.listview_main_expert_info_item);
     }
@@ -38,4 +39,5 @@ public class MainExpertListAdapter extends ListViewAdapter<Map<String,Object>> {
 
         ImageUtils.getInstance().displayFromRemote(Utils.toString(info.get("path")),(ImageView)holder.getView(R.id.photo));
     }
+
 }

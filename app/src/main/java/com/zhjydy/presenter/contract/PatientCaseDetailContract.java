@@ -18,5 +18,6 @@ public interface PatientCaseDetailContract {
 
     interface Presenter extends BasePresenter
     {
+        void refreshData();
     }
 }

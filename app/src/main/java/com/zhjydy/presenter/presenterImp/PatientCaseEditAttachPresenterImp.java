@@ -2,6 +2,7 @@ package com.zhjydy.presenter.presenterImp;
 
 import android.content.Context;
 
+import com.zhjydy.model.data.PatientData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.FileUpLoad;
 import com.zhjydy.model.net.WebCall;
@@ -53,12 +54,13 @@ public class PatientCaseEditAttachPresenterImp implements PatientCaseEditAttachC
             FileUpLoad.uploadFiles(files).flatMap(new Func1<String, Observable<WebResponse>>() {
                 @Override
                 public Observable<WebResponse> call(String s) {
-                    params.put("idcard",s);
+                    params.put("case",s);
                     return WebCall.getInstance().call(WebKey.func_updatePatient,params);
                 }
             }).subscribe(new BaseSubscriber<WebResponse>(context,"正在保存数据") {
                 @Override
                 public void onNext(WebResponse webResponse) {
+                    PatientData.getInstance().loadPatientData();
                     mView.sumbitOk();
                 }
             });
@@ -66,12 +68,13 @@ public class PatientCaseEditAttachPresenterImp implements PatientCaseEditAttachC
             FileUpLoad.uploadFiles(files).flatMap(new Func1<String, Observable<WebResponse>>() {
                 @Override
                 public Observable<WebResponse> call(String s) {
-                    params.put("idcard",s);
+                    params.put("case",s);
                     return WebCall.getInstance().call(WebKey.func_addPatient,params);
                 }
             }).subscribe(new BaseSubscriber<WebResponse>(context,"正在保存数据") {
                 @Override
                 public void onNext(WebResponse webResponse) {
+                    PatientData.getInstance().loadPatientData();
                     mView.sumbitOk();
                 }
             });

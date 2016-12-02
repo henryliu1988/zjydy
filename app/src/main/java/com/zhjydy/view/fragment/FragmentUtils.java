@@ -38,16 +38,12 @@ public class FragmentUtils {
         }
     }
 
-    public static void back(FragmentActivity context,int[] fragkey) {
+
+    public static void refreshFragments(FragmentActivity context,int[] fragkey) {
         FragmentManager fManager = context.getSupportFragmentManager();
-        if (fManager.getBackStackEntryCount() > 1) {
-            fManager.popBackStack();
-        } else {
-            context.finish();
-        }
         if (fragkey.length > 0) {
             for (int i = 0 ; i < fragkey.length; i ++) {
-                String key = FragKey.FragMap.get(fragkey);
+                String key = FragKey.FragMap.get(fragkey[i]);
                 if (!TextUtils.isEmpty(key)) {
                     Fragment fragment = fManager.findFragmentByTag(key);
                     if (fragment != null && fragment instanceof StatedFragment) {
@@ -57,6 +53,6 @@ public class FragmentUtils {
                 }
             }
         }
-
     }
+
 }

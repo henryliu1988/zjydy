@@ -17,10 +17,12 @@ import com.zhjydy.presenter.presenterImp.PatientCaseDetailPresenterImp;
 import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.DateUtil;
 import com.zhjydy.util.Utils;
+import com.zhjydy.view.adapter.HorizontalScrollViewAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.PagerImpActivity;
 import com.zhjydy.view.zhview.MyHorizontalScrollView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -85,7 +87,7 @@ public class PatientCaseDetailFragment extends PageImpBaseFragment implements Pa
     @BindView(R.id.image_horizontal)
     MyHorizontalScrollView imageHorizontal;
     private PatientCaseDetailContract.Presenter mPresenter;
-
+    private HorizontalScrollViewAdapter mImageCaseAdapter;
 
     private String mCaseId;
 
@@ -139,7 +141,9 @@ public class PatientCaseDetailFragment extends PageImpBaseFragment implements Pa
 
     @Override
     public void refreshView() {
-
+        if (mPresenter != null) {
+            mPresenter.refreshData();
+        }
     }
 
     @Override
@@ -155,7 +159,6 @@ public class PatientCaseDetailFragment extends PageImpBaseFragment implements Pa
         mInfo = info;
         String realName = Utils.toString(info.get("realname"));
         String sexName = DicData.getInstance().getSexById(Utils.toString(info.get("sex"))).getName();
-        String sec = Utils.toString(info.get("age"));
         String phoneNum = Utils.toString(info.get("mobile"));
         String doctor = Utils.toString(info.get("doctor"));
         String comment = Utils.toString(info.get("comment"));
@@ -205,6 +208,10 @@ public class PatientCaseDetailFragment extends PageImpBaseFragment implements Pa
     }
 
     private void initImageList(String imageIds){
+        List<String> url = new ArrayList<>();
+        url.add("/Uploads/Picture/2016-10-28/5812b3368e6ea.jpg");
+        mImageCaseAdapter = new HorizontalScrollViewAdapter(getContext(),url);
+        imageHorizontal.initDatas(mImageCaseAdapter);
 
     }
 }

@@ -54,56 +54,38 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
     TextView nameTitle;
     @BindView(R.id.name_value)
     EditText nameValue;
-    @BindView(R.id.name_flag)
-    ImageView nameFlag;
     @BindView(R.id.sex_title)
     TextView sexTitle;
     @BindView(R.id.sex_value)
     MapTextView sexValue;
-    @BindView(R.id.sex_flag)
-    ImageView sexFlag;
     @BindView(R.id.tel_title)
     TextView telTitle;
     @BindView(R.id.tel_value)
     EditText telValue;
-    @BindView(R.id.tel_flag)
-    ImageView telFlag;
     @BindView(R.id.birth_title)
     TextView birthTitle;
     @BindView(R.id.birth_value)
     TextView birthValue;
-    @BindView(R.id.birth_flag)
-    ImageView birthFlag;
     @BindView(R.id.domain_title)
     TextView domainTitle;
     @BindView(R.id.domain_value)
     MapTextView domainValue;
-    @BindView(R.id.domain_flag)
-    ImageView domainFlag;
     @BindView(R.id.hospital_title)
     TextView hospitalTitle;
     @BindView(R.id.hospital_value)
     MapTextView hospitalValue;
-    @BindView(R.id.hospital_flag)
-    ImageView hospitalFlag;
     @BindView(R.id.depart_title)
     TextView departTitle;
     @BindView(R.id.depart_value)
     MapTextView departValue;
-    @BindView(R.id.depart_flag)
-    ImageView departFlag;
     @BindView(R.id.doc_title)
     TextView docTitle;
     @BindView(R.id.doc_value)
     EditText docValue;
-    @BindView(R.id.doc_flag)
-    ImageView docFlag;
     @BindView(R.id.sick_title)
     TextView sickTitle;
     @BindView(R.id.sick_value)
     EditText sickValue;
-    @BindView(R.id.sick_flag)
-    ImageView sickFlag;
     @BindView(R.id.sick_discript_title)
     TextView sickDiscriptTitle;
     @BindView(R.id.sick_discript_value)
@@ -174,7 +156,6 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
         String realName = Utils.toString(mEditList.get("realname"));
         String sexName = DicData.getInstance().getSexById(Utils.toString(mEditList.get("sex"))).getName();
         String sexId = DicData.getInstance().getSexById(Utils.toString(mEditList.get("sex"))).getId();
-        String sec = Utils.toString(mEditList.get("age"));
         String phoneNum = Utils.toString(mEditList.get("mobile"));
         String doctor = Utils.toString(mEditList.get("doctor"));
         String comment = Utils.toString(mEditList.get("comment"));
@@ -199,6 +180,7 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
                     distrcit += list.get(i).getName() + " ";
                 }
             }
+            mPresenter.updateHospitalList(disCode);
         }
         if (!TextUtils.isEmpty(hosCode)) {
             hospital = DicData.getInstance().getHospitalById(hosCode).getHospital();
@@ -360,6 +342,9 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
 
 
         Map<String,Object> params = new HashMap<>();
+        if (mEditList != null && mEditList.size() > 0) {
+            params.putAll(mEditList);
+        }
         params.put("realname",name);
         params.put("sex",sex);
         params.put("mobile",phone);
@@ -387,36 +372,31 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
         gotoFragment(FragKey.patient_case_edit_attach_fragment, bundle);
     }
 
-    @OnClick({R.id.title_back, R.id.sex_value, R.id.sex_flag, R.id.birth_value, R.id.birth_flag, R.id.domain_value, R.id.domain_flag, R.id.hospital_value, R.id.hospital_flag, R.id.depart_value, R.id.depart_flag, R.id.next_station})
+    @OnClick({R.id.title_back, R.id.sex_value, R.id.birth_value, R.id.domain_value, R.id.hospital_value, R.id.depart_value, R.id.next_station})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_back:
                 back();
                 break;
             case R.id.sex_value:
-            case R.id.sex_flag:
                 if (mSexPickViewData.size() > 0) {
                     mSexPicker.show();
                 }
                 break;
             case R.id.birth_value:
-            case R.id.birth_flag:
                 mDayPicker.show();
                 break;
             case R.id.domain_value:
-            case R.id.domain_flag:
                 if (mProPickViewData.size() > 0) {
                     mDistricePicker.show();
                 }
                 break;
             case R.id.hospital_value:
-            case R.id.hospital_flag:
                 if (mHospitalPickViewData.size() > 0) {
                     mHospitalPicker.show();
                 }
                 break;
             case R.id.depart_value:
-            case R.id.depart_flag:
                 if (mDepartPickViewData.size() > 0) {
                     mOfficePicker.show();
                 }

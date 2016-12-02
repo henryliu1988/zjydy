@@ -41,7 +41,7 @@ public class PatientCaseDetailPresenterImp implements PatientCaseDetailContract.
         }
         HashMap<String,Object> params = new HashMap<>();
         params.put("id",mCaseId);
-        WebCall.getInstance().call(WebKey.func_getPatientById,params).subscribe(new BaseSubscriber<WebResponse>() {
+        WebCall.getInstance().call(WebKey.func_getPatientById,params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),true) {
             @Override
             public void onNext(WebResponse webResponse) {
                 String data = webResponse.getData();
@@ -57,4 +57,9 @@ public class PatientCaseDetailPresenterImp implements PatientCaseDetailContract.
     }
 
 
+    @Override
+    public void refreshData()
+    {
+        loadPatientCase();
+    }
 }

@@ -117,6 +117,7 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
 
     @Override
     public void updateBanner(List<String> images) {
+
         bannerHome.setPages(
                 new CBViewHolderCreator<NetworkImageHolderView>() {
                     @Override

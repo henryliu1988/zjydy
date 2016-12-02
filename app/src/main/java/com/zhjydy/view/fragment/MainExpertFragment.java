@@ -12,12 +12,14 @@ import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.shizhefei.mvc.MVCHelper;
 import com.zhjydy.R;
 import com.zhjydy.model.entity.DistricPickViewData;
 import com.zhjydy.model.entity.District;
 import com.zhjydy.model.entity.HosipitalPickViewData;
 import com.zhjydy.model.entity.NormalDicItem;
 import com.zhjydy.model.entity.NormalPickViewData;
+import com.zhjydy.model.pageload.PageLoadDataSource;
 import com.zhjydy.presenter.contract.MainExpertContract;
 import com.zhjydy.presenter.presenterImp.MainExpertPresenterImp;
 import com.zhjydy.util.ActivityUtils;
@@ -74,6 +76,9 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
     protected MainExpertContract.MainExpertPresenter mPresenter;
     protected MainExpertListAdapter mExpertListAdapter;
 
+    private MVCHelper<List<Map<String, Object>>> mvcPiHelper;
+    private PageLoadDataSource mDataSource;
+
     public static MainExpertFragment instance() {
         MainExpertFragment frag = new MainExpertFragment();
         return frag;
@@ -94,20 +99,15 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
         titleSearchText.setText("搜索专家");
         rightLImg.setImageSrc(R.mipmap.title_msg);
         rightImg.setImageSrc(R.mipmap.shoucang);
-
         mDistricePicker = new OptionsPickerView<DistricPickViewData>(getContext());
         mBusinessPicker = new OptionsPickerView<NormalDicItem>(getContext());
         mOfficePicker = new OptionsPickerView<NormalDicItem>(getContext());
-
-        new MainExpertPresenterImp(this);
-
-
+        new MainExpertPresenterImp(this,mList,mExpertListAdapter);
     }
 
 
     private void initExpertList() {
         mExpertListAdapter = new MainExpertListAdapter(getContext(), new ArrayList<Map<String, Object>>());
-        mList.setAdapter(mExpertListAdapter);
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -132,11 +132,6 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
 
     public void updateUnReadMsgCount(int count) {
         rightLImg.setText(count + "");
-    }
-
-    @Override
-    public void updateExperts(List<Map<String, Object>> maps) {
-        mExpertListAdapter.refreshData(maps);
     }
 
     @Override

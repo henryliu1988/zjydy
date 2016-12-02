@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.zhjydy.R;
 import com.zhjydy.util.ImageUtils;
 
-public class HorizontalScrollViewAdapter {
+public class HorizontalScrollViewAdapter extends  BaseAdapter{
 
     private Context mContext;
     private LayoutInflater mInflater;

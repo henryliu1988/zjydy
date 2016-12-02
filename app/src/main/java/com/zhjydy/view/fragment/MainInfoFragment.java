@@ -45,9 +45,6 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
     BadgImage rightLImg;
     @BindView(R.id.m_list)
     PullToRefreshListView mList;
-
-    MainInfoListAdapter infoListAdapter;
-
     public static MainInfoFragment instance() {
         MainInfoFragment frag = new MainInfoFragment();
         return frag;
@@ -69,7 +66,7 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
     @Override
     protected void afterViewCreate() {
         initView();
-        new MainInfoPresenterImp(this);
+        new MainInfoPresenterImp(this,mList);
         titleSearchText.setText("搜索资讯");
         rightLImg.setImageSrc(R.mipmap.title_msg);
         rightImg.setImageSrc(R.mipmap.shoucang);
@@ -102,8 +99,6 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
     }
 
     private void initView() {
-        infoListAdapter = new MainInfoListAdapter(getContext(), new ArrayList<Map<String, Object>>());
-        mList.setAdapter(infoListAdapter);
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -132,11 +127,6 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
 
     }
 
-
-    @Override
-    public void updateInfoList(List<Map<String, Object>> infos) {
-        infoListAdapter.refreshData(infos);
-    }
 
     @Override
     public void updateFavInfoCount(int count) {

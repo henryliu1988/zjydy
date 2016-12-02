@@ -11,7 +11,7 @@ public class WebResponse
     private String mInfo;
     private String mData;
     private String funName;
-
+    private String returnData;
     public WebResponse()
     {
         mError = -1;
@@ -75,6 +75,15 @@ public class WebResponse
             return true;
         }
         return false;
+    }
 
+    public String getReturnData()
+    {
+        return returnData;
+    }
+
+    public void setReturnData(String returnData)
+    {
+        this.returnData = returnData;
     }
 }

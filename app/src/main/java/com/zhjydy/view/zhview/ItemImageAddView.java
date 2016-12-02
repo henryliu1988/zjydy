@@ -40,10 +40,6 @@ public class ItemImageAddView extends BaseItemView {
     private Context context;
     private boolean isShowDelete = false;
     private ImageViewPopWindow mPopView;
-    private static final int SELECT_PICTURE = 1;
-    private static final int SELECT_CAMER = 2;
-
-    private File mCameraPath = null;
 
     public List<String> getAddFileList() {
         List<String> list = new ArrayList<>();
@@ -102,6 +98,14 @@ public class ItemImageAddView extends BaseItemView {
         mAdapter.setList(items);
     }
 
+    public void addImage(String path,int type) {
+        Map<String,Object> item = new HashMap<>();
+        item.put(ViewKey.FILE_KEY_TYPE,type);
+        item.put(ViewKey.FILE_KEY_URL,path);
+        items.add(item);
+        mAdapter.setList(items);
+
+    }
 
     private void initView() {
         LayoutInflater.from(context).inflate(R.layout.image_add_view, this);
@@ -120,7 +124,6 @@ public class ItemImageAddView extends BaseItemView {
                 } else {
 
                     showPopWindow(position);
-
                     mAdapter.notifyDataSetChanged();
                 }
             }

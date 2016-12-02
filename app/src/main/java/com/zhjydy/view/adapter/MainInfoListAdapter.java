@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016/9/22 0022.
  */
-public class MainInfoListAdapter extends ListViewAdapter<Map<String,Object>> {
+public class MainInfoListAdapter  extends PageLoadListAdapter {
 
 
     public MainInfoListAdapter(Context context, List<Map<String,Object>> datas) {

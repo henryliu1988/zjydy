@@ -16,7 +16,6 @@ public interface MainExpertContract {
 
     interface MainExpertView extends BaseView<MainExpertPresenter>
     {
-        void updateExperts(List<Map<String, Object>> maps);
         void updateDistrict(Map<String,ArrayList> distrctData);
         void updateOffice(ArrayList<NormalPickViewData> officeData);
         void updateBusiness(ArrayList<NormalPickViewData> officeData);

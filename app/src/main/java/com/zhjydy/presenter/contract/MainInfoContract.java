@@ -15,7 +15,6 @@ public interface MainInfoContract {
 
     interface MainInfoView extends BaseView<MainInfoPresenter>
     {
-        void updateInfoList(List<Map<String, Object>> infos);
         void updateFavInfoCount(int count);
 
     }

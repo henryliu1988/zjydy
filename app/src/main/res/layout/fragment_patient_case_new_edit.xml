@@ -29,10 +29,6 @@
         <EditText
             android:id="@+id/name_value"
             style="@style/item_info_edit_singleline_value" />
-
-        <ImageView
-            android:id="@+id/name_flag"
-            style="@style/item_info_edit_singleline_flagimag" />
     </LinearLayout>
     <View style="@style/item_info_div_line" />
 
@@ -43,11 +39,8 @@
             style="@style/item_info_read_singleline_title" />
         <com.zhjydy.view.zhview.MapTextView
             android:id="@+id/sex_value"
-            style="@style/item_info_edit_singleline_value" />
+            style="@style/item_info_read_click_singleline_value" />
 
-        <ImageView
-            android:id="@+id/sex_flag"
-            style="@style/item_info_edit_singleline_flagimag" />
     </LinearLayout>
 
 
@@ -62,9 +55,6 @@
             android:id="@+id/tel_value"
             android:inputType="phone"
             style="@style/item_info_edit_singleline_value" />
-        <ImageView
-            android:id="@+id/tel_flag"
-            style="@style/item_info_edit_singleline_flagimag" />
     </LinearLayout>
 
 
@@ -77,10 +67,7 @@
             style="@style/item_info_read_singleline_title" />
         <TextView
             android:id="@+id/birth_value"
-            style="@style/item_info_read_singleline_value" />
-        <ImageView
-            android:id="@+id/birth_flag"
-            style="@style/item_info_edit_singleline_flagimag" />
+            style="@style/item_info_read_click_singleline_value" />
     </LinearLayout>
 
     <View style="@style/item_info_div_line" />
@@ -97,10 +84,7 @@
             style="@style/item_info_read_singleline_title" />
         <com.zhjydy.view.zhview.MapTextView
             android:id="@+id/domain_value"
-            style="@style/item_info_read_singleline_value" />
-        <ImageView
-            android:id="@+id/domain_flag"
-            style="@style/item_info_edit_singleline_flagimag" />
+            style="@style/item_info_read_click_singleline_value" />
     </LinearLayout>
 
     <View style="@style/item_info_div_line" />
@@ -113,10 +97,7 @@
             style="@style/item_info_read_singleline_title" />
         <com.zhjydy.view.zhview.MapTextView
             android:id="@+id/hospital_value"
-            style="@style/item_info_read_singleline_value" />
-        <ImageView
-            android:id="@+id/hospital_flag"
-            style="@style/item_info_edit_singleline_flagimag" />
+            style="@style/item_info_read_click_singleline_value" />
     </LinearLayout>
 
     <View style="@style/item_info_div_line" />
@@ -129,10 +110,7 @@
             style="@style/item_info_read_singleline_title" />
         <com.zhjydy.view.zhview.MapTextView
             android:id="@+id/depart_value"
-            style="@style/item_info_edit_singleline_value" />
-        <ImageView
-            android:id="@+id/depart_flag"
-            style="@style/item_info_edit_singleline_flagimag" />
+            style="@style/item_info_read_click_singleline_value" />
     </LinearLayout>
 
     <View style="@style/item_info_div_line" />
@@ -146,9 +124,6 @@
         <EditText
             android:id="@+id/doc_value"
             style="@style/item_info_edit_singleline_value" />
-        <ImageView
-            android:id="@+id/doc_flag"
-            style="@style/item_info_edit_singleline_flagimag" />
     </LinearLayout>
 
     <View style="@style/item_info_div_line" />
@@ -161,9 +136,6 @@
         <EditText
             android:id="@+id/sick_value"
             style="@style/item_info_edit_singleline_value" />
-        <ImageView
-            android:id="@+id/sick_flag"
-            style="@style/item_info_edit_singleline_flagimag" />
     </LinearLayout>
 
     <View style="@style/item_info_div_line"
@@ -171,8 +143,7 @@
 
             <LinearLayout style="@style/item_info_read_mutiline"
                 android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                >
+                android:paddingRight="0dp">
                 <TextView
                     android:id="@+id/sick_discript_title"
                     android:text="疾病描述"
@@ -189,7 +160,6 @@
             </LinearLayout>
             <View style="@style/item_info_div_line"
                 android:layout_marginTop="10dp" />
-
 
             <LinearLayout style="@style/item_info_read_mutiline"
                 android:paddingLeft="0dp"

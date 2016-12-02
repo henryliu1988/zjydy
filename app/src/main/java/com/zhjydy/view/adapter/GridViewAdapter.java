@@ -44,7 +44,7 @@ public class GridViewAdapter extends android.widget.BaseAdapter
     public int getCount()
     {
         //需要额外多出一个用于添加图片
-        return imgList.size() + 1;
+        return imgList.size();
 
     }
 
@@ -80,24 +80,19 @@ public class GridViewAdapter extends android.widget.BaseAdapter
         ImageView delete = (ImageView) convertView
                 .findViewById(R.id.img_delete);
 
-        //默认的添加图片的那个item是不需要显示删除图片的
-        if (imgList.size() >= 1)
+
+        ll_picparent.setVisibility(View.GONE);
+        img_pic.setVisibility(View.VISIBLE);
+        if (Utils.toInteger(imgList.get(position).get(ViewKey.FILE_KEY_TYPE)) == ViewKey.TYPE_FILE_PATH)
         {
-            if (position <= imgList.size() - 1)
-            {
-                ll_picparent.setVisibility(View.GONE);
-                img_pic.setVisibility(View.VISIBLE);
-                if (Utils.toInteger(imgList.get(position).get(ViewKey.FILE_KEY_TYPE)) == ViewKey.TYPE_FILE_PATH)
-                {
-                    ImageUtils.getInstance().displayFromSDCard(Utils.toString(imgList.get(position).get(ViewKey.FILE_KEY_URL)), img_pic);
-                } else if (Utils.toInteger(imgList.get(position).get(ViewKey.FILE_KEY_TYPE)) == ViewKey.TYPE_FILE_URL)
-                {
-                    ImageUtils.getInstance().displayFromRemote(Utils.toString(imgList.get(position).get(ViewKey.FILE_KEY_URL)), img_pic);
-                }
-                // 设置删除按钮是否显示
-                delete.setVisibility(isDelete ? View.VISIBLE : View.GONE);
-            }
+            ImageUtils.getInstance().displayFromSDCard(Utils.toString(imgList.get(position).get(ViewKey.FILE_KEY_URL)), img_pic);
+        } else if (Utils.toInteger(imgList.get(position).get(ViewKey.FILE_KEY_TYPE)) == ViewKey.TYPE_FILE_URL)
+        {
+            ImageUtils.getInstance().displayFromRemote(Utils.toString(imgList.get(position).get(ViewKey.FILE_KEY_URL)), img_pic);
         }
+        // 设置删除按钮是否显示
+        delete.setVisibility(isDelete ? View.VISIBLE : View.GONE);
+
 
         //当处于删除状态时，删除事件可用
         //注意：必须放到getView这个方法中，放到onitemClick中是不起作用的。
