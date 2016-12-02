@@ -20,6 +20,7 @@ import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.HorizontalScrollViewAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.PagerImpActivity;
+import com.zhjydy.view.zhview.HorizontalListView;
 import com.zhjydy.view.zhview.MyHorizontalScrollView;
 
 import java.util.ArrayList;
@@ -84,8 +85,8 @@ public class PatientCaseDetailFragment extends PageImpBaseFragment implements Pa
     TextView commentTitle;
     @BindView(R.id.comment_value)
     TextView commentValue;
-    @BindView(R.id.image_horizontal)
-    MyHorizontalScrollView imageHorizontal;
+    @BindView(R.id.iamge_horizontal_list)
+    HorizontalListView imageHorizontal;
     private PatientCaseDetailContract.Presenter mPresenter;
     private HorizontalScrollViewAdapter mImageCaseAdapter;
 
@@ -163,7 +164,7 @@ public class PatientCaseDetailFragment extends PageImpBaseFragment implements Pa
         String doctor = Utils.toString(info.get("doctor"));
         String comment = Utils.toString(info.get("comment"));
         String descript = Utils.toString(info.get("condition"));
-
+        String name = Utils.toString(info.get("name"));
         long ageLong = Utils.toLong(info.get("age"));
         String birth = "";
         if (ageLong > 0) {
@@ -200,18 +201,23 @@ public class PatientCaseDetailFragment extends PageImpBaseFragment implements Pa
         departValue.setText(depart);
         docValue.setText(doctor);
 
+        sickValue.setText(name);
         sickDiscriptValue.setText(descript);
         commentValue.setText(comment);
 
-        String imageIds = Utils.toString(info.get("idcard"));
-        initImageList(imageIds);
+        List<Map<String,Object>> cases = Utils.parseObjectToListMapString(info.get("case"));
+        initImageList(cases);
     }
 
-    private void initImageList(String imageIds){
+    private void initImageList( List<Map<String,Object>> cases){
         List<String> url = new ArrayList<>();
         url.add("/Uploads/Picture/2016-10-28/5812b3368e6ea.jpg");
+        url.add("/Uploads/Picture/2016-10-28/5812b3368e6ea.jpg");
+        url.add("/Uploads/Picture/2016-10-28/5812b3368e6ea.jpg");
+        url.add("/Uploads/Picture/2016-10-28/5812b3368e6ea.jpg");
+
         mImageCaseAdapter = new HorizontalScrollViewAdapter(getContext(),url);
-        imageHorizontal.initDatas(mImageCaseAdapter);
+        imageHorizontal.setAdapter(mImageCaseAdapter);
 
     }
 }

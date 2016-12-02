@@ -60,12 +60,6 @@ public class HorizontalScrollViewAdapter extends  BaseAdapter{
             viewHolder = (ViewHolder) convertView.getTag();
         }
         ImageUtils.getInstance().displayFromRemote(mUrls.get(position), viewHolder.mImg);
-        viewHolder.mImg.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                return false;
-            }
-        });
         return convertView;
     }
 
@@ -74,8 +68,4 @@ public class HorizontalScrollViewAdapter extends  BaseAdapter{
         TextView mText;
     }
 
-    public static class Image{
-        private int type;
-        private String path;
-    }
 }  
