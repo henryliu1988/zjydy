@@ -14,6 +14,7 @@ import com.zhjydy.model.preference.SPUtils;
 import com.zhjydy.presenter.contract.LoginContract;
 import com.zhjydy.util.MD5;
 import com.zhjydy.util.Utils;
+import com.zhjydy.view.zhview.zhToast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,6 +54,7 @@ public class LoginPresenterImp implements LoginContract.Presenter {
             public void onError(Throwable e) {
                 closeLoadingProgress();
                 super.onError(e);
+                zhToast.showToast("登录失败" + e.getMessage());
             }
 
             @Override
@@ -79,6 +81,7 @@ public class LoginPresenterImp implements LoginContract.Presenter {
             info.setIdcard(Utils.toString(token.get("idcard")));
             info.setPaypass(Utils.toString(token.get("paypass")));
             info.setStatus(Utils.toString(token.get("status")));
+            info.setPassoword(Utils.toString(token.get("password")));
             AppData.getInstance().setToken(info);
             AppData.getInstance().initData();
         }

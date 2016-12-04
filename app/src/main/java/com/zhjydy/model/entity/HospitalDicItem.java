@@ -4,9 +4,9 @@ package com.zhjydy.model.entity;
  * Created by Administrator on 2016/11/21 0021.
  */
 public class HospitalDicItem {
-    String id;
-    String hospital;
-    String address;
+    String id = "";
+    String hospital = "";
+    String address = "";
 
     public String getId() {
         return id;

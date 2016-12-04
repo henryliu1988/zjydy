@@ -8,6 +8,7 @@ import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.presenter.contract.MainInfoContract;
 import com.zhjydy.presenter.contract.MainOrderContract;
+import com.zhjydy.util.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,11 +36,13 @@ public class MainOrderPresenterImp implements MainOrderContract.MainOrderPresent
 
     private void loadOrders() {
         HashMap<String,Object> params = new HashMap<>();
-        params.put("id", AppData.getInstance().getToken().getId());
+        params.put("memberid", AppData.getInstance().getToken().getId());
         WebCall.getInstance().call(WebKey.func_getOrders,params).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
             public void onNext(WebResponse webResponse) {
                 String data = webResponse.getData();
+                List<Map<String,Object>> list = Utils.parseObjectToListMapString(data);
+                mView.update(list);
             }
         });
     }
@@ -47,5 +50,10 @@ public class MainOrderPresenterImp implements MainOrderContract.MainOrderPresent
     @Override
     public void finish() {
 
+    }
+
+    @Override
+    public void reloadOrders() {
+        loadOrders();
     }
 }

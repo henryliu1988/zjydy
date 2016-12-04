@@ -15,22 +15,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <com.zhjydy.view.zhview.ListViewForScrollView
-                android:id="@+id/msg_list_view_order"
+            <LinearLayout
+                android:id="@+id/msg_order_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="@color/div_line"
-                android:dividerHeight="1dp" />
-
-            <com.zhjydy.view.zhview.ListViewForScrollView
-                android:id="@+id/msg_list_view_chat"
+                android:orientation="vertical"></LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/div_line"/>
+            <LinearLayout
+                android:id="@+id/msg_comment_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:orientation="vertical"></LinearLayout>
 
-                android:divider="@color/div_line"
-                android:dividerHeight="1dp" />
         </LinearLayout>
 
     </ScrollView>

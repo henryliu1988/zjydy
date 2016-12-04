@@ -20,18 +20,14 @@ public interface ExpertDetailContract {
         void updateComments(List<Map<String, Object>> comments);
         void updateFavStatus(boolean isCollect);
         void makeCommentSuccess();
-        void subsribExpertResult(boolean result,String msg);
     }
 
     interface Presenter extends BasePresenter {
-        void markExpert();
-
-        void subscribeExpert(Map<String,Object> patient);
-
         void makeNewComment(String commentId);
-
+        void reloadData();
         void saveExpert();
         void cancelSaveExpert();
         Observable<List<Map<String,Object>>> getAllPatientCase();
+        Map<String,Object> getExpertSubScribInfo();
     }
 }

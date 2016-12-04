@@ -5,15 +5,15 @@ package com.zhjydy.model.entity;
  */
 public class District {
 
-    String Spell;
-    String id;
-    String name;
-    String Path;
-    String parentid;
-    String Depth;
-    String SpellShort;
-    String listorder;
-    String aid;
+    String Spell = "";
+    String id = "";
+    String name = "";
+    String Path = "";
+    String parentid = "";
+    String Depth = "";
+    String SpellShort = "";
+    String listorder = "";
+    String aid = "";
 
 
 

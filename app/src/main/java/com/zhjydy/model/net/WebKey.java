@@ -58,9 +58,14 @@ public class WebKey {
     public static final int func_updatePassword = 1041;  //修改登录密码
     public static final int func_addPayPass = 1042;  //修改支付密码
     public static final int func_makeOrder = 1043;  //预约专家
+    public static final int func_getNewCommentList = 1044;  //预约专家
+    public static final int func_getComment = 1045;  //预约专家
+    public static final int func_cancelOrder = 1046;  //预约专家
 
     public static final Map<Integer, String> WEBKEY_FUNC_COMMON_MAP = new HashMap<Integer, String>();
     static {
+        WEBKEY_FUNC_COMMON_MAP.put(func_getComment, "getComment");
+        WEBKEY_FUNC_COMMON_MAP.put(func_getNewCommentList, "getNewCommentList");
         WEBKEY_FUNC_COMMON_MAP.put(func_cancelCollectExpert, "cancelCollectExpert");
         WEBKEY_FUNC_COMMON_MAP.put(func_cancelCollectNews, "cancelCollectNews");
         WEBKEY_FUNC_COMMON_MAP.put(func_getoffice, "getoffice");
@@ -107,6 +112,7 @@ public class WebKey {
         WEBKEY_FUNC_HUAN_MAP.put(func_updateOrdersMsg, "updateOrdersMsg");
         WEBKEY_FUNC_HUAN_MAP.put(func_updatePassword, "updatePassword");
         WEBKEY_FUNC_HUAN_MAP.put(func_makeOrder, "makeOrder");
+        WEBKEY_FUNC_HUAN_MAP.put(func_cancelOrder, "cancelOrder");
 
 
     }

@@ -21,6 +21,7 @@
             android:layout_centerInParent="true"
             android:layout_gravity="center_vertical"
             android:button="@drawable/checkbox_radio"
+            android:clickable="false"
             android:gravity="center_vertical" />
     </RelativeLayout>
 

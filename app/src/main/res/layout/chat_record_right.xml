@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="10dp">
@@ -24,19 +25,22 @@
         android:paddingLeft="40dp"
         android:layout_marginTop="10dp"
         android:gravity="right|center_vertical">
-        <TextView
+        <com.github.library.bubbleview.BubbleTextVew
             android:id="@+id/msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/chat_msg_right_bg"
-            android:textColor="@color/black_text"
-            android:padding="4dp"
-            android:textSize="14sp"
-            android:text="fjkdsfh"
-            android:gravity="left" />
+            android:padding="10dp"
+            android:textColor="@color/black_text1"
+            android:layout_marginRight="4dp"
+            app:arrowWidth="8dp"
+            app:angle="8dp"
+            app:arrowHeight="10dp"
+            app:arrowPosition="14dp"
+            app:arrowLocation="right"
+            app:bubbleColor="@color/white_bg"/>
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@mipmap/photo"
             android:id="@+id/photo"
             android:scaleType="fitCenter"

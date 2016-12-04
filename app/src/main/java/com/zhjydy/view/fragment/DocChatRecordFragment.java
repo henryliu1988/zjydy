@@ -1,6 +1,7 @@
 package com.zhjydy.view.fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +10,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhjydy.R;
+import com.zhjydy.model.data.AppData;
 import com.zhjydy.presenter.contract.ChatRecordContract;
 import com.zhjydy.presenter.presenterImp.ChatRecordPresenterImp;
-import com.zhjydy.view.zhview.ArrowTextView;
+import com.zhjydy.util.DateUtil;
+import com.zhjydy.util.ImageUtils;
+import com.zhjydy.util.Utils;
+import com.zhjydy.view.avtivity.IntentKey;
+
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +36,7 @@ public class DocChatRecordFragment extends PageImpBaseFragment implements ChatRe
     @BindView(R.id.chat_layout)
     LinearLayout chatLayout;
     private ChatRecordContract.Presenter mPresenter;
+
 
     @Override
     protected void initData() {
@@ -48,8 +57,14 @@ public class DocChatRecordFragment extends PageImpBaseFragment implements ChatRe
                 back();
             }
         });
-        new ChatRecordPresenterImp(this);
-        initChatLayout();
+        if (getArguments() == null) {
+            return;
+        }
+        if (TextUtils.isEmpty(getArguments().getString(IntentKey.FRAG_INFO))) {
+            return;
+        }
+        Map<String, Object> item = Utils.parseObjectToMapString(getArguments().getString(IntentKey.FRAG_INFO));
+        new ChatRecordPresenterImp(this, item);
     }
 
     @Override
@@ -63,43 +78,46 @@ public class DocChatRecordFragment extends PageImpBaseFragment implements ChatRe
     }
 
 
-    private void initChatLayout() {
-       // String msg = getArguments().getString("msg");
-        String name = "王医生";
-        String time1 = "20:12";
-        String time2 = "210dfsad";
 
-        String ms1 = "fdhsjkffsdkfds";
-        String ms2 = "房价开始对房价肯定是粉红色产生的反感的是否收到对方给好友度的人官方刚刚灌灌灌灌灌灌灌灌灌灌灌灌灌灌灌";
-
-
-        for(int i = 0 ; i < 4; i ++) {
-            LinearLayout right =(LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.chat_record_right,null);
-            TextView timeR = (TextView)right.findViewById(R.id.time);
-            TextView msgR = (TextView)right.findViewById(R.id.msg);
-            ImageView photoR = (ImageView) right.findViewById(R.id.photo);
-
-            timeR.setText(time1);
-            msgR.setText(ms1);
-
-            LinearLayout left =(LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.chat_record_left,null);
-            TextView timeL = (TextView)left.findViewById(R.id.time);
-            ArrowTextView msgL = (ArrowTextView)left.findViewById(R.id.msg);
-            ImageView photoL = (ImageView) left.findViewById(R.id.photo);
-
-            timeL.setText(time2);
-            msgL.setText(ms2);
-
-            chatLayout.addView(right);
-            chatLayout.addView(left);
-        }
-
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
         return rootView;
+    }
+
+    @Override
+    public void setChatMsgs(List<Map<String, Object>> msg) {
+        for (Map<String, Object> item : msg) {
+            String sendId = Utils.toString(item.get("sendid"));
+            String userId = AppData.getInstance().getToken().getId();
+            boolean isUser = (!TextUtils.isEmpty(userId) && userId.equals(sendId));
+            View view;
+            if (isUser) {
+                view =  LayoutInflater.from(getContext()).inflate(R.layout.chat_record_right, null);
+            } else {
+                view =  LayoutInflater.from(getContext()).inflate(R.layout.chat_record_left, null);
+            }
+            ImageView photImage = (ImageView)view.findViewById(R.id.photo);
+            TextView timeTv = (TextView)view.findViewById(R.id.time);
+            TextView contentTv = (TextView)view.findViewById(R.id.msg);
+
+            String photoUrl = Utils.toString(item.get("url"));
+            if (TextUtils.isEmpty(photoUrl)) {
+                ImageUtils.getInstance().displayFromDrawable(R.mipmap.photo,photImage);
+            } else {
+                ImageUtils.getInstance().displayFromRemote(photoUrl,photImage);
+            }
+            timeTv.setText(DateUtil.getTimeDiffDayCurrent(Utils.toLong(item.get("addtime"))));
+            contentTv.setText(Utils.toString(item.get("content")));
+
+            chatLayout.addView(view);
+        }
+    }
+
+    @Override
+    public void updateExpertName(String name) {
+        titleCenterTv.setText(name);
     }
 }

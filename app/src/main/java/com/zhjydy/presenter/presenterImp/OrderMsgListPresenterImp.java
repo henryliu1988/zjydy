@@ -3,6 +3,7 @@ package com.zhjydy.presenter.presenterImp;
 import android.text.TextUtils;
 
 import com.zhjydy.model.data.MsgData;
+import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.presenter.contract.OrderDetailContract;
 import com.zhjydy.presenter.contract.OrderMsgListContract;
 
@@ -30,10 +31,12 @@ public class OrderMsgListPresenterImp implements OrderMsgListContract.Presenter 
     }
 
     private void loadOrderList() {
-        List<Map<String,Object>> orderLit = MsgData.getInstance().getAllOrderMsgList();
-        if(mView != null) {
-            mView.updateOrderList(orderLit);
-        }
+        MsgData.getInstance().getAllOrderMsgList().subscribe(new BaseSubscriber<List<Map<String, Object>>>() {
+            @Override
+            public void onNext(List<Map<String, Object>> orderLit) {
+                mView.updateOrderList(orderLit);
+            }
+        });
     }
 
     @Override

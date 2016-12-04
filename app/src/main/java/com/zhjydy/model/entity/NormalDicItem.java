@@ -5,8 +5,8 @@ package com.zhjydy.model.entity;
  */
 public class NormalDicItem {
 
-    private String id;
-    private String name;
+    private String id = "";
+    private String name = "";
 
 
 

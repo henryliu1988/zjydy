@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rx.Observable;
 import rx.functions.Func1;
 
 /**
@@ -20,9 +21,13 @@ public class MsgData {
 
     private static MsgData instance;
 
-    private WebResponse mOrderMsgData;
 
     private List<Map<String, Object>> mOrderList = new ArrayList<>();
+    private List<Map<String,Object>> mNewCommentList = new ArrayList<>();
+
+
+    private WebResponse mOrderMsgData;
+    private WebResponse mCommentNewData;
 
     public MsgData() {
     }
@@ -34,8 +39,10 @@ public class MsgData {
         return instance;
     }
 
-    public void initData() {
-      //  loadOrderMsgData();
+    public void loadData() {
+        loadOrderMsgData();
+        loadSystemList();
+        loadNewCommentList();
     }
 
 
@@ -49,18 +56,55 @@ public class MsgData {
                 }
             }
         }
+        /*
+        if (mNewCommentList != null && mNewCommentList.size() > 0) {
+            count +=mNewCommentList.size();
+        }
+        */
         return count;
     }
 
 
-    public List<Map<String, Object>> getAllOrderMsgList() {
-        return mOrderList;
+    public Observable<List<Map<String,Object>>> getAllOrderMsgList() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("userid", AppData.getInstance().getToken().getId());
+        return WebCall.getInstance().callCache(WebKey.func_getOrdersMsg,params,mOrderMsgData).map(new Func1<WebResponse, List<Map<String, Object>>>() {
+            @Override
+            public List<Map<String, Object>> call(WebResponse webResponse) {
+                mOrderMsgData = webResponse;
+                String data = webResponse.getData();
+                mOrderList = Utils.parseObjectToListMapString(data);
+                for (onDataCountChangeListener l:mListeners) {
+                    l.onChange(getUnReadMsgCount());
+                }
+                return  mOrderList;
+            }
+        });
+    }
+    public Observable<List<Map<String,Object>>> getAllCommentNewList() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("userid", AppData.getInstance().getToken().getId());
+        params.put("pagesize", 30);
+       return WebCall.getInstance().callCache(WebKey.func_getNewCommentList, params,mCommentNewData).map(new Func1<WebResponse, List<Map<String,Object>>>() {
+           @Override
+           public List<Map<String, Object>> call(WebResponse webResponse) {
+               String data = webResponse.getData();
+               mCommentNewData = webResponse;
+               mNewCommentList = Utils.parseObjectToListMapString(data);
+               for (onDataCountChangeListener l:mListeners) {
+                   l.onChange(getUnReadMsgCount());
+               }
+               return mNewCommentList;
+           }
+       });
+    }
+
+    public Observable<List<Map<String,Object>>> getAllSystemMsgList() {
+          List<Map<String,Object>> list  = new ArrayList<>();
+        return Observable.just(list);
     }
 
 
-    public void updateOrderMsgData() {
-        loadOrderMsgData();
-    }
 
     private void loadOrderMsgData() {
         HashMap<String, Object> params = new HashMap<>();
@@ -69,6 +113,7 @@ public class MsgData {
             @Override
             public void onNext(WebResponse webResponse) {
                 String data = webResponse.getData();
+                mOrderMsgData = webResponse;
                 mOrderList = Utils.parseObjectToListMapString(data);
                 for (onDataCountChangeListener l:mListeners) {
                     l.onChange(getUnReadMsgCount());
@@ -76,6 +121,39 @@ public class MsgData {
             }
         });
     }
+    private void loadNewCommentList(){
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("userid", AppData.getInstance().getToken().getId());
+        params.put("pagesize", 30);
+        WebCall.getInstance().call(WebKey.func_getNewCommentList, params).subscribe(new BaseSubscriber<WebResponse>() {
+            @Override
+            public void onNext(WebResponse webResponse) {
+                String data = webResponse.getData();
+                mCommentNewData = webResponse;
+                mNewCommentList = Utils.parseObjectToListMapString(data);
+                for (onDataCountChangeListener l:mListeners) {
+                    l.onChange(getUnReadMsgCount());
+                }
+            }
+        });
+
+    }
+
+    private void loadSystemList() {
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public void addOnCountChangeListener(onDataCountChangeListener listener) {

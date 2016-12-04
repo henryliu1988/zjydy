@@ -17,6 +17,7 @@ import com.zhjydy.view.fragment.MainHomeFragment;
 import com.zhjydy.view.fragment.MainInfoFragment;
 import com.zhjydy.view.fragment.MainMineFragment;
 import com.zhjydy.view.fragment.MainOrderFragment;
+import com.zhjydy.view.zhview.NoScrollViewPager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +27,7 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
     @BindView(R.id.main_tabs)
     AdvancedPagerSlidingTabStrip mainTabs;
     @BindView(R.id.main_viewpager)
-    ViewPager mainViewpager;
+    NoScrollViewPager mainViewpager;
 
 
     public static final int VIEW_FIRST = 0;
@@ -74,7 +75,6 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
     }
 
     @Override
@@ -169,7 +169,6 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
                         return "订单";
                     case VIEW_FIVE:
                         return "个人";
-
                     default:
                         break;
                 }

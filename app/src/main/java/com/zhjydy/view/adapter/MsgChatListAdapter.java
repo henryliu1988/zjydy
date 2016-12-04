@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.zhjydy.R;
 import com.zhjydy.model.entity.NormalDicItem;
+import com.zhjydy.util.DateUtil;
 import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.zhview.ViewHolder;
@@ -26,19 +27,20 @@ public class MsgChatListAdapter extends ListViewAdapter<Map<String, Object>> {
 
     @Override
     public void convert(ViewHolder holder, Map<String, Object> data) {
-        int imageId = Utils.toInteger(data.get("image"));
-        String title = Utils.toString(data.get("title"));
+        String photo = Utils.toString(data.get("url"));
+        String name = Utils.toString(data.get("sendname"));
         String content = Utils.toString(data.get("content"));
-        String time = Utils.toString(data.get("time"));
-        if (imageId > 0) {
-            ImageView imageView = (ImageView) holder.getView(R.id.image);
-            ImageUtils.getInstance().displayFromDrawable(imageId, imageView);
-            ((TextView) holder.getView(R.id.msg_title)).setText(title);
-            ((TextView) holder.getView(R.id.msg_content)).setText(content);
-            if (!TextUtils.isEmpty(time)) {
-                ((TextView) holder.getView(R.id.msg_time)).setText(time);
-
-            }
+        String time = DateUtil.getTimeDiffDayCurrent(Utils.toLong(data.get("addtime")));;
+        ImageView imageView = (ImageView) holder.getView(R.id.image);
+        ((TextView) holder.getView(R.id.msg_title)).setText(name);
+        ((TextView) holder.getView(R.id.msg_content)).setText(content);
+        if (!TextUtils.isEmpty(time)) {
+            ((TextView) holder.getView(R.id.msg_time)).setText(time);
+        }
+        if (!TextUtils.isEmpty(photo)) {
+            ImageUtils.getInstance().displayFromRemote(photo,imageView);
+        } else {
+            ImageUtils.getInstance().displayFromDrawable(R.mipmap.photo,imageView);
         }
     }
 }

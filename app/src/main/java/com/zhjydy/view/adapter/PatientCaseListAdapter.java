@@ -24,9 +24,16 @@ import butterknife.OnClick;
 public class PatientCaseListAdapter extends ListViewAdapter<Map<String, Object>> {
 
 
+    private Map<String,Object> mSelectItem;
+    private boolean canSelect = false;
+
+    public void setIsSelect(boolean canSelect) {
+        canSelect  = canSelect;
+    }
     public PatientCaseListAdapter(Context context, List<Map<String, Object>> datas) {
         super(context, datas, R.layout.listview_patient_case_item);
     }
+
 
     @Override
     public void convert(ViewHolder holder, final Map<String, Object> comment) {
@@ -64,6 +71,11 @@ public class PatientCaseListAdapter extends ListViewAdapter<Map<String, Object>>
         }
         String domain =distrcit + " " +hospital + " " +depart;
 
+        if (canSelect) {
+            holder.getView(R.id.item_check).setVisibility(View.VISIBLE);
+        } else {
+            holder.getView(R.id.item_check).setVisibility(View.GONE);
+        }
         ((TextView) holder.getView(R.id.item_name_sex_age)).setText(nameSexAge);
         //((TextView) holder.getView(R.id.star)).setText(info.getStar());
         ((TextView) holder.getView(R.id.item_domain_hos_departs)).setText(domain);

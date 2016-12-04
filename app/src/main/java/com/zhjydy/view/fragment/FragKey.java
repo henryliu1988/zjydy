@@ -35,10 +35,18 @@ public class FragKey {
     public static final int fave_info_list_fragment = 1024;
     public static final int search_home_fragment = 1025;
     public static final int pay_password_add_fragment = 1026;
+    public static final int order_confirm_fragment = 1027;
+    public static final int patient_case_select_fragment = 1028;
+    public static final int order_cancel_fragment = 1029;
 
     public static final Map<Integer,String> FragMap = new HashMap<>();
     static
     {
+        FragMap.put(patient_case_select_fragment, "patient_case_select_fragment");
+        FragMap.put(order_cancel_fragment, "order_cancel_fragment");
+
+        FragMap.put(order_confirm_fragment, "order_confirm_fragment");
+        FragMap.put(detail_order_fragment, "detail_order_fragment");
         FragMap.put(fave_expert_list_fragment, "fave_expert_list_fragment");
         FragMap.put(fave_info_list_fragment, "fave_info_list_fragment");
         FragMap.put(search_expert_fragment, "search_expert_fragment");

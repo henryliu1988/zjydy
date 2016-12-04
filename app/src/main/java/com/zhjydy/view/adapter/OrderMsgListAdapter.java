@@ -26,7 +26,7 @@ public class OrderMsgListAdapter extends ListViewAdapter<Map<String, Object>> {
 
     @Override
     public void convert(ViewHolder holder, Map<String, Object> data) {
-        ((TextView) holder.getView(R.id.time)).setText(DateUtil.dateToString(DateUtil.getDateBySeconds(Utils.toLong(data.get("addtime"))), DateUtil.FORMAT_TWO));
+        ((TextView) holder.getView(R.id.time)).setText(DateUtil.getTimeDiffDayCurrent(Utils.toLong(data.get("addtime"))));
         String orderStatus = Utils.toString(data.get("orderstatus"));
         NormalItem status =  DicData.getInstance().getOrderStatuById(orderStatus);
         ((TextView) holder.getView(R.id.order_status)).setText(status.getName());

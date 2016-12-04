@@ -1,6 +1,7 @@
 package com.zhjydy.view.fragment;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhjydy.R;
 import com.zhjydy.model.data.DicData;
@@ -19,6 +21,7 @@ import com.zhjydy.presenter.presenterImp.MainOrderPresenterImp;
 import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.OrderListAdapter;
+import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.PagerImpActivity;
 import com.zhjydy.view.zhview.BadgImage;
 
@@ -82,28 +85,38 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
         });
         mAdapter = new OrderListAdapter(getActivity(),mOrderList);
         mList.setAdapter(mAdapter);
+        mList.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                mPresenter.reloadOrders();
+            }
+        });
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Map<String,Object> item = (Map<String,Object>)adapterView.getAdapter().getItem(i);
                 if (item != null && item.size() > 0) {
                     String id = Utils.toString(item.get("orderid"));
-                    ActivityUtils.transToFragPagerActivity(getActivity(),PagerImpActivity.class,FragKey.detail_order_fragment,id,false);
+                 //   ActivityUtils.transToFragPagerActivity(getActivity(),PagerImpActivity.class,FragKey.detail_order_fragment,id,false);
                 }
             }
         });
         mAdapter.setOperateListener(new OrderListAdapter.OperateListener() {
             @Override
-            public void onOperate(Map<String, Object> item,String operate) {
-                int status = Utils.toInteger(Utils.toString(item.get("status")));
-                if("取消预约".equals(operate)) {
+            public void onOperate(Map<String, Object> item,int operate) {
+                String id = Utils.toString(item.get("id"));
+                switch (operate) {
+                    case OrderListAdapter.OPERATE_DETAIL:
+                        ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.detail_order_fragment, id, false);
+                        break;
+                    case OrderListAdapter.OPERATE_CANCEL:
+                        ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.order_cancel_fragment, id, false);
+                        break;
 
-                } else if("马上支付".equals(operate)) {
-
-                }else if("查看详情".equals(operate)) {
+                    case OrderListAdapter.OPERATE_PAY:
+                        break;
 
                 }
-
             }
         });
     }

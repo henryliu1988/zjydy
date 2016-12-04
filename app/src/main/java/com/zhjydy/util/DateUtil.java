@@ -16,16 +16,16 @@ public class DateUtil {
 //    protected static Log logger = LogFactory.getLog(DateUtil.class);
 
     // 格式：年－月－日 小时：分钟：秒
-    public static final String FORMAT_ONE = "yyyy-MM-dd HH:mm:ss";
+    public static final String FORMAT_ONE = "yyyy年MM月dd日 HH:mm:ss";
 
     // 格式：年－月－日 小时：分钟
-    public static final String FORMAT_TWO = "yyyy-MM-dd HH:mm";
+    public static final String FORMAT_TWO = "yyyy年MM月dd日 HH:mm";
 
     // 格式：年月日 小时分钟秒
     public static final String FORMAT_THREE = "yyyyMMdd-HHmmss";
 
     // 格式：年－月－日
-    public static final String LONG_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String LONG_DATE_FORMAT = "yyyy年MM月dd日";
 
     // 格式：月－日
     public static final String SHORT_DATE_FORMAT = "MM-dd";
@@ -373,7 +373,7 @@ public class DateUtil {
         return new Date(seconds*1000);
     }
     public static long getDiffOfBaseTime(String current) {
-        String base = "1970-01-01";
+        String base = "1970年01月01日";
         Date currDate = DateUtil.stringtoDate(current, LONG_DATE_FORMAT);
         Date baseDate = stringtoDate(base, LONG_DATE_FORMAT);
         return (currDate.getTime() - baseDate.getTime()) / 1000;
@@ -672,5 +672,11 @@ public class DateUtil {
             time = dateToString(date,LONG_DATE_FORMAT);
         }
         return time;
+    }
+
+    public static String getFullTimeDiffDayCurrent(long seconds)
+    {
+        Date date = getDateBySeconds(seconds);
+        return dateToString(date,FORMAT_TWO);
     }
 }

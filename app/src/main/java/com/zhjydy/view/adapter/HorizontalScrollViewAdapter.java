@@ -1,6 +1,7 @@
 package com.zhjydy.view.adapter;
 
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,19 +13,20 @@ import android.widget.TextView;
 
 import com.zhjydy.R;
 import com.zhjydy.util.ImageUtils;
+import com.zhjydy.util.Utils;
 
 public class HorizontalScrollViewAdapter extends  BaseAdapter{
 
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<String> mUrls;
+    private List<Map<String,Object>> mUrls;
 
     public HorizontalScrollViewAdapter(Context context) {
         this.mContext = context;
         mInflater = LayoutInflater.from(context);
     }
 
-    public HorizontalScrollViewAdapter(Context context, List<String> urls) {
+    public HorizontalScrollViewAdapter(Context context, List<Map<String,Object>> urls) {
         this.mContext = context;
         mInflater = LayoutInflater.from(context);
         this.mUrls = urls;
@@ -59,7 +61,7 @@ public class HorizontalScrollViewAdapter extends  BaseAdapter{
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        ImageUtils.getInstance().displayFromRemote(mUrls.get(position), viewHolder.mImg);
+        ImageUtils.getInstance().displayFromRemote(Utils.toString(mUrls.get(position).get("url")), viewHolder.mImg);
         return convertView;
     }
 

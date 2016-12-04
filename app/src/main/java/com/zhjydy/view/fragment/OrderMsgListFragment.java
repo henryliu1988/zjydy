@@ -4,14 +4,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhjydy.R;
 import com.zhjydy.presenter.contract.OrderMsgListContract;
 import com.zhjydy.presenter.presenterImp.OrderMsgListPresenterImp;
+import com.zhjydy.util.ActivityUtils;
+import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.OrderMsgListAdapter;
+import com.zhjydy.view.avtivity.IntentKey;
+import com.zhjydy.view.avtivity.PagerImpActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +38,7 @@ public class OrderMsgListFragment extends PageImpBaseFragment implements OrderMs
     @BindView(R.id.title_center_tv)
     TextView titleCenterTv;
     @BindView(R.id.m_list)
-    PullToRefreshListView mList;
+    ListView mList;
 
     private OrderMsgListAdapter mAdapter;
     private OrderMsgListContract.Presenter mPresenter;
@@ -59,6 +66,19 @@ public class OrderMsgListFragment extends PageImpBaseFragment implements OrderMs
             }
         });
         new OrderMsgListPresenterImp(this);
+        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Map<String,Object> order = (Map<String,Object>)parent.getAdapter().getItem(position);
+                if (order != null) {
+                    String orderId = Utils.toString(order.get("orderid"));
+                    Bundle bundle = new Bundle();
+                    bundle.putString(IntentKey.FRAG_INFO,orderId);
+                    bundle.putInt("key", FragKey.detail_order_fragment);
+                    gotoFragment(FragKey.detail_order_fragment,bundle);
+                }
+            }
+        });
     }
 
     @Override

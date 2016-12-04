@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -168,6 +169,21 @@ public class ActivityUtils
     public static View getRootView(Activity context)
     {
         return ((ViewGroup)context.findViewById(android.R.id.content)).getChildAt(0);
+    }
+
+    public static void refreshFragment(Class activityCl,Class FragmentCl) {
+        Activity activity = null;
+        for (Activity ac : activityStack)
+        {
+            if (ac.getClass().equals(activityCl))
+            {
+                activity = ac;
+            }
+        }
+        if (activity == null && !(activity instanceof FragmentActivity)) {
+            return;
+        }
+
     }
 
 

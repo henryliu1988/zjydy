@@ -19,5 +19,6 @@ public interface MainOrderContract {
 
     interface MainOrderPresenter extends BasePresenter
     {
+        void reloadOrders();
     }
 }

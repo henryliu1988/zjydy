@@ -119,7 +119,11 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
     }
 
     public void updateUnReadMsgCount(int count) {
-        rightLImg.setText(count + "");
+        String text = "";
+        if (count != 0) {
+            text = count + "";
+        }
+        rightImg.setText(text);
     }
 
     @Override

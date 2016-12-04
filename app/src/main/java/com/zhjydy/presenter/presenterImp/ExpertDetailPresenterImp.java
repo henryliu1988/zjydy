@@ -95,41 +95,13 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
 
     }
 
-    @Override
-    public void markExpert() {
-
-    }
 
     @Override
-    public void subscribeExpert(Map<String, Object> patient) {
-        String patientId = Utils.toString(patient.get("id"));
-        String experturl = Utils.toString(mExpertInfo.get("path"));
-        String expertName = Utils.toString(mExpertInfo.get("realname"));
-        String expertid = Utils.toString(expertId);
-        String hos = Utils.toString(patient.get("hospital"));
-        String name = Utils.toString(patient.get("realname"));
-        String memberId = AppData.getInstance().getToken().getId();
-        HashMap<String, Object> params = new HashMap<>();
-        params.put("patientid",patientId);
-        params.put("experturl",experturl);
-        params.put("expertname",expertName);
-        params.put("expertid",expertid);
-        params.put("patienthospital",hos);
-        params.put("patientname",name);
-        params.put("memberid",memberId);
-        WebCall.getInstance().call(WebKey.func_makeOrder,params).subscribe(new BaseSubscriber<WebResponse>() {
-            @Override
-            public void onNext(WebResponse webResponse) {
-                mView.subsribExpertResult(true,"成功预约专家");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                mView.subsribExpertResult(false,"预约失败  " + e.getMessage());
-                super.onError(e);
-            }
-        });
+    public Map<String, Object> getExpertSubScribInfo() {
+        return mExpertInfo;
     }
+
+
 
     @Override
     public void makeNewComment(String content) {
@@ -167,6 +139,13 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
                 super.onError(e);
             }
         });
+    }
+
+    @Override
+    public void reloadData() {
+        loadExpertInfo(expertId);
+        loadComments(expertId);
+        loadFavStatus();
     }
 
 

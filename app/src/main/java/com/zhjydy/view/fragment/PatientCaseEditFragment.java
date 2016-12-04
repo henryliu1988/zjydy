@@ -160,7 +160,7 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
         String doctor = Utils.toString(mEditList.get("doctor"));
         String comment = Utils.toString(mEditList.get("comment"));
         String descript = Utils.toString(mEditList.get("condition"));
-
+        String name = Utils.toString(mEditList.get("name"));
         long ageLong = Utils.toLong(mEditList.get("age"));
         String birth = "";
         if (ageLong > 0) {
@@ -198,7 +198,7 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
         departValue.setMap(depCode,depart);
         docValue.setText(doctor);
 
-        sickValue.setText("");
+        sickValue.setText(name);
         sickDiscriptValue.setText(descript);
         commentValue.setText(comment);
 
@@ -320,7 +320,7 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
     }
 
     private void checkMsg() {
-        String name = nameValue.getText().toString();
+        String reacName = nameValue.getText().toString();
         String sex = sexValue.getTextId();
         String phone = telValue.getText().toString();
         String date = birthValue.getText().toString();
@@ -331,8 +331,8 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
         String patientName = sickValue.getText().toString();
         String discript = sickDiscriptValue.getText().toString();
         String comment = commentValue.getText().toString();
-
-        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(sex) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(districtId)
+        String name = sickValue.getText().toString();
+        if (TextUtils.isEmpty(reacName) || TextUtils.isEmpty(sex) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(districtId)
                 || TextUtils.isEmpty(hosId) || TextUtils.isEmpty(officeId) ||
                 TextUtils.isEmpty(docName) || TextUtils.isEmpty(patientName)
                 || TextUtils.isEmpty(hosId) || TextUtils.isEmpty(officeId)) {
@@ -345,7 +345,7 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
         if (mEditList != null && mEditList.size() > 0) {
             params.putAll(mEditList);
         }
-        params.put("realname",name);
+        params.put("realname",reacName);
         params.put("sex",sex);
         params.put("mobile",phone);
         params.put("age",DateUtil.getDiffOfBaseTime(date));
@@ -355,11 +355,9 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
         params.put("office",officeId);
         params.put("doctor",docName);
         params.put("name",patientName);
+        params.put("comment",comment);
         params.put("condition",discript);
         params.put("memberid",AppData.getInstance().getToken().getId());
-
-
-
       /*
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(sex) || TextUtils.isEmpty(phone)) {
             return;

@@ -206,7 +206,7 @@
                         xmlns:widget="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/iamge_horizontal_list"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="150dp"
                         android:divider="@color/white"
                         widget:dividerWidth="5dp"/>
                 </LinearLayout>

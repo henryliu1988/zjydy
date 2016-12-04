@@ -114,7 +114,6 @@ public class FaveExpertPresenterImp implements FavExpertContract.Presenter {
                     collect.remove(id);
                 }
                 AppData.getInstance().getToken().setCollectExpertAsList(collect);
-
                 loadExperts();
             }
         });

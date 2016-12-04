@@ -21,6 +21,16 @@ public class TokenInfo {
     String paypass;
     String idcard;
     String status;
+    String passoword;
+
+    public String getPassoword() {
+        return passoword;
+    }
+
+    public void setPassoword(String passoword) {
+        this.passoword = passoword;
+    }
+
     public String getId() {
         return id;
     }

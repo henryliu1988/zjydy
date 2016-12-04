@@ -12,12 +12,8 @@ import android.widget.LinearLayout;
 
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhjydy.R;
-import com.zhjydy.model.entity.Infomation;
 import com.zhjydy.presenter.contract.FavInfoContract;
-import com.zhjydy.presenter.contract.MainInfoContract;
-import com.zhjydy.presenter.presenterImp.FaveExpertPresenterImp;
 import com.zhjydy.presenter.presenterImp.FaveInfoPresenterImp;
-import com.zhjydy.presenter.presenterImp.MainInfoPresenterImp;
 import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.FaveInfoListAdapter;

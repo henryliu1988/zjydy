@@ -17,6 +17,7 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.zhjydy.R;
+import com.zhjydy.model.data.DicData;
 import com.zhjydy.presenter.contract.MainHomeContract;
 import com.zhjydy.presenter.presenterImp.MainHomePresenterImp;
 import com.zhjydy.util.ActivityUtils;
@@ -142,38 +143,15 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
 
 
     public void updateUnReadMsgCount(int count) {
-        rightImg.setText(count + "");
+        String text = "";
+        if (count != 0) {
+            text = count + "";
+        }
+        rightImg.setText(text);
     }
 
     @Override
     public void updateExpert(List<Map<String, Object>> experts) {
-          /*int countAll = experts.size();
-        int dx = countAll % 3;
-        int rowCount = countAll / 3;
-        if (dx > 0) {
-            rowCount += 1;
-        }
-        List<List<Map<String, Object>>> rowExperts = new ArrayList<>();
-        for (int i = 0; i < rowCount; i++) {
-            List<Map<String, Object>> list = new ArrayList<>();
-            if ((i + 1) * 3 > countAll) {
-                for (int j = i * 3; j < countAll; j++) {
-                    list.add(experts.get(j));
-                }
-            } else {
-                for (int j = i * 3; j < (i + 1) * 3; j++) {
-                    list.add(experts.get(j));
-                }
-            }
-            rowExperts.add(list);
-        }
-        bannerExpert.setPages(new CBViewHolderCreator<ExpertHolderView>() {
-            @Override
-            public ExpertHolderView createHolder() {
-                return new ExpertHolderView();
-            }
-        }, rowExperts).setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused});
-        */
         scorllExpertLayout.removeAllViews();
         for (int i = 0; i < experts.size(); i++) {
             View childView = LayoutInflater.from(getContext()).inflate(R.layout.main_home_expert_item, null);
@@ -182,9 +160,9 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
             Map<String, Object> item = experts.get(i);
             String photoUrl = Utils.toString(item.get("path"));
             String name = Utils.toString(item.get("realname"));
-            String hospital = Utils.toString(item.get("hospital"));
-            String office = Utils.toString(item.get("office"));
-            String profess = Utils.toString(item.get("business"));
+            String hospitaId = Utils.toString(item.get("hospital"));
+            String officeId = Utils.toString(item.get("office"));
+            String professId = Utils.toString(item.get("business"));
             String id = Utils.toString(item.get("id"));
             childView.setTag(id);
             ImageView imageView = ViewFindUtils.find(childView, R.id.image);
@@ -194,9 +172,9 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
             TextView professTv = ViewFindUtils.find(childView, R.id.profess);
             ImageUtils.getInstance().displayFromRemote(photoUrl, imageView);
             nameTv.setText(name);
-            hospitalTv.setText(hospital);
-            officeTv.setText(office);
-            professTv.setText(profess);
+            hospitalTv.setText(DicData.getInstance().getHospitalById(hospitaId).getHospital());
+            officeTv.setText(DicData.getInstance().getOfficeById(officeId).getName());
+            professTv.setText(DicData.getInstance().getBusinessById(professId).getName());
             childView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

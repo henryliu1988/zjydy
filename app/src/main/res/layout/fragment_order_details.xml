@@ -25,8 +25,8 @@
         android:layout_marginLeft="12dp"
         android:layout_marginTop="10dp"
         android:text="患者信息"
-        android:textColor="@color/black_text"
-        android:textSize="17sp" />
+        android:textColor="@color/black_text2"
+        android:textSize="15sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black_text1"
-                android:textSize="16sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/patient_hospital"
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/black_text1"
-                android:textSize="16sp" />
+                android:textSize="13sp" />
         </LinearLayout>
 
         <View
@@ -74,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black_text1"
-                android:textSize="16sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/patient_time"
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/black_text1"
-                android:textSize="16sp" />
+                android:textSize="13sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -92,18 +92,21 @@
         android:layout_marginLeft="12dp"
         android:layout_marginTop="10dp"
         android:text="专家信息"
-        android:textColor="@color/black_text"
-        android:textSize="17sp" />
+        android:textColor="@color/black_text2"
+        android:textSize="15sp" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="3dp"
+        android:id="@+id/expert_info_layout"
         android:background="@color/white_bg"
         android:padding="15dp">
 
         <ImageView
+            android:id="@+id/dic_photo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -113,6 +116,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
+            android:paddingLeft="15dp"
             android:orientation="vertical"
             android:gravity="center_vertical|left">
 
@@ -121,7 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black_text"
-                android:textSize="17sp" />
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -132,26 +136,23 @@
                     android:id="@+id/doc_hospital"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="北京大学人民医院"
-                    android:textColor="@color/black_text1"
-                    android:textSize="15sp" />
+                    android:textColor="@color/black_text2"
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/doc_depart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:text="心血管内科"
-                    android:textColor="@color/black_text1"
-                    android:textSize="15sp" />
+                    android:textColor="@color/black_text2"
+                    android:textSize="13sp" />
             </LinearLayout>
             <TextView
                 android:id="@+id/doc_profession"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="教授、主任医生"
-                android:textColor="@color/black_text1"
-                android:textSize="15sp" />
+                android:textColor="@color/black_text2"
+                android:textSize="13sp" />
 
         </LinearLayout>
 

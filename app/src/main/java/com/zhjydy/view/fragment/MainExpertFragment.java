@@ -131,7 +131,12 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
     }
 
     public void updateUnReadMsgCount(int count) {
-        rightLImg.setText(count + "");
+        String text = "";
+        if (count != 0) {
+            text = count + "";
+        }
+        rightImg.setText(text);
+
     }
 
     @Override

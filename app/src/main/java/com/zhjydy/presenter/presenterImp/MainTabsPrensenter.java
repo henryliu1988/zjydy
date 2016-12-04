@@ -19,7 +19,7 @@ public class MainTabsPrensenter implements MainTabsContract.Presenter,MsgData.on
     @Override
     public void start() {
         MsgData.getInstance().addOnCountChangeListener(this);
-        MsgData.getInstance().updateOrderMsgData();
+        MsgData.getInstance().loadData();
         loadFavList();
     }
 

@@ -17,5 +17,6 @@ public interface OrderDetailContract {
 
     interface Presenter extends BasePresenter
     {
+        String getExpertId();
     }
 }

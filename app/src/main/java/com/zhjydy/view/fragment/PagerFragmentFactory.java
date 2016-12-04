@@ -60,6 +60,12 @@ public class PagerFragmentFactory
                 return new SearchHomeFragment();
             case FragKey.pay_password_add_fragment:
                 return new PayPasswordAddFragment();
+            case FragKey.order_confirm_fragment:
+                return new OrderConfirmFragment();
+            case FragKey.patient_case_select_fragment:
+                return new PatientCaseSelectFragment();
+            case FragKey.order_cancel_fragment:
+                return new OrderCancelFragment();
 
         }
       return null;

@@ -182,7 +182,15 @@ public class DicData {
         }
         return new NormalDicItem();
     }
-
+    public NormalDicItem getBusinessById(String id) {
+        List<NormalDicItem> busList = getBusiness();
+        for (NormalDicItem bus:busList ) {
+            if (bus.getId().equals(id)){
+                return bus;
+            }
+        }
+        return new NormalDicItem();
+    }
 
     public List<District> getDistrictById(String id) {
         List<District> list = new ArrayList<>();

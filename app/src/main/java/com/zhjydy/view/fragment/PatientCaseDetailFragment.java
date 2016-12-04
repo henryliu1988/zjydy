@@ -208,15 +208,9 @@ public class PatientCaseDetailFragment extends PageImpBaseFragment implements Pa
         List<Map<String,Object>> cases = Utils.parseObjectToListMapString(info.get("case"));
         initImageList(cases);
     }
-
     private void initImageList( List<Map<String,Object>> cases){
-        List<String> url = new ArrayList<>();
-        url.add("/Uploads/Picture/2016-10-28/5812b3368e6ea.jpg");
-        url.add("/Uploads/Picture/2016-10-28/5812b3368e6ea.jpg");
-        url.add("/Uploads/Picture/2016-10-28/5812b3368e6ea.jpg");
-        url.add("/Uploads/Picture/2016-10-28/5812b3368e6ea.jpg");
 
-        mImageCaseAdapter = new HorizontalScrollViewAdapter(getContext(),url);
+        mImageCaseAdapter = new HorizontalScrollViewAdapter(getContext(),cases);
         imageHorizontal.setAdapter(mImageCaseAdapter);
 
     }

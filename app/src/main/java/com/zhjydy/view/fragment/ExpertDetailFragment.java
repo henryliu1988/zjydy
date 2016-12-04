@@ -13,8 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zhjydy.R;
 import com.zhjydy.model.data.AppData;
+import com.zhjydy.model.data.DicData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.presenter.contract.ExpertDetailContract;
 import com.zhjydy.presenter.presenterImp.ExpertDetailPresenterImp;
@@ -135,9 +137,9 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
     @Override
     public void updateExpertInfos(Map<String, Object> expertInfo) {
         name.setText(Utils.toString(expertInfo.get("realname")));
-        depart.setText(Utils.toString(expertInfo.get("office")));
-        hospital.setText(Utils.toString(expertInfo.get("hospital")));
-        profession.setText(Utils.toString(expertInfo.get("business")));
+        depart.setText( DicData.getInstance().getOfficeById(Utils.toString(expertInfo.get("office"))).getName());
+        hospital.setText(DicData.getInstance().getHospitalById(Utils.toString(expertInfo.get("hospital"))).getHospital());
+        profession.setText(DicData.getInstance().getOfficeById(Utils.toString(expertInfo.get("business"))).getName());
         reasonTv.setText(Utils.toString(expertInfo.get("reason")));
         specicalTv.setText(Utils.toString(expertInfo.get("adept")));
 
@@ -154,13 +156,6 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
 
     }
 
-    @Override
-    public void subsribExpertResult(boolean result, String msg) {
-        zhToast.showToast(msg);
-        if (result) {
-            subscribeExpert.setVisibility(View.GONE);
-        }
-    }
 
     @Override
     public void updateComments(List<Map<String, Object>> comments) {
@@ -203,7 +198,7 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
 
     @Override
     public void refreshView() {
-
+        mPresenter.reloadData();
     }
 
     @Override
@@ -219,8 +214,11 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
                 if (maps == null || maps.size()< 1) {
                     gotoFragment(FragKey.patient_case_fragment);
                 } else {
-                    Map<String, Object> patientCase = maps.get(0);
-                    mPresenter.subscribeExpert(patientCase);
+                    Map<String,Object> expertInfo = mPresenter.getExpertSubScribInfo();
+                    String fragInfo = JSONObject.toJSONString(expertInfo);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(IntentKey.FRAG_INFO,fragInfo);
+                    gotoFragment(FragKey.patient_case_select_fragment,bundle);
                 }
             }
         });
