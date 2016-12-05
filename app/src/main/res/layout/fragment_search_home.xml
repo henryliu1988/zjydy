@@ -4,18 +4,110 @@
     android:layout_height="match_parent">
     <include layout="@layout/titlebar_layout_back_search"/>
 
-    <com.handmark.pulltorefresh.library.PullToRefreshListView
-        android:id="@+id/m_list"
+
+    <LinearLayout
+        android:id="@+id/expert_all_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop = "10dp"
-        android:cacheColorHint="#00000000"
-        android:divider="#00000000"
-        android:dividerHeight="10dp"
-        android:fadingEdge="none"
-        android:fastScrollEnabled="false"
-        android:footerDividersEnabled="false"
-        android:headerDividersEnabled="false"
-        android:smoothScrollbar="true" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="12dp"
+        android:paddingLeft="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="专家"
+            android:textSize="14sp"
+            android:textColor="@color/black_text2"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+        <LinearLayout
+            android:id="@+id/expert_list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/expert_more_layout"
+            android:paddingLeft="5dp"
+            android:paddingRight="13dp"
+            android:paddingBottom="8dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/div_line"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查看更多专家"
+                android:drawableLeft="@mipmap/search_1"
+                android:layout_centerVertical="true"
+                android:drawablePadding="6dp"
+                android:textSize="14sp"
+                android:layout_alignParentLeft="true"
+                android:textColor="#4264C8" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/right_1"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/info_all_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="12dp"
+        android:paddingLeft="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="资讯"
+            android:textSize="14sp"
+            android:textColor="@color/black_text2"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+        <LinearLayout
+            android:id="@+id/info_list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/info_more_layout"
+            android:paddingLeft="5dp"
+            android:paddingRight="13dp"
+            android:paddingBottom="8dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/div_line"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查看更多资讯"
+                android:drawableLeft="@mipmap/search_1"
+                android:layout_centerVertical="true"
+                android:drawablePadding="6dp"
+                android:textSize="14sp"
+                android:layout_alignParentLeft="true"
+                android:textColor="#4264C8" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/right_1"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <include layout="@layout/null_data_layout"/>
 
 </LinearLayout>

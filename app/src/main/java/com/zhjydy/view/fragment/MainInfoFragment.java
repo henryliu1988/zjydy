@@ -46,6 +46,7 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
     ImageTipsView rightLImg;
     @BindView(R.id.m_list)
     PullToRefreshListView mList;
+
     public static MainInfoFragment instance() {
         MainInfoFragment frag = new MainInfoFragment();
         return frag;
@@ -67,7 +68,7 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
     @Override
     protected void afterViewCreate() {
         initView();
-        new MainInfoPresenterImp(this,mList);
+        new MainInfoPresenterImp(this, mList);
         titleSearchText.setText("搜索资讯");
         rightImg.setImageResource(R.mipmap.title_msg);
         rightLImg.setImageResource(R.mipmap.shoucang);

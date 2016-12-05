@@ -44,6 +44,11 @@ public class MainOrderPresenterImp implements MainOrderContract.MainOrderPresent
                 List<Map<String,Object>> list = Utils.parseObjectToListMapString(data);
                 mView.update(list);
             }
+
+            @Override
+            public void onError(Throwable e) {
+                mView.onNetError();
+            }
         });
     }
 

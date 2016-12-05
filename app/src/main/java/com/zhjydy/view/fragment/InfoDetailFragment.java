@@ -10,11 +10,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
 import com.zhjydy.R;
+import com.zhjydy.model.data.AppData;
 import com.zhjydy.presenter.contract.InfoDetailContract;
 import com.zhjydy.presenter.presenterImp.InfoDetailPresenterImp;
+import com.zhjydy.util.ImageUtils;
+import com.zhjydy.util.Utils;
 import com.zhjydy.view.avtivity.IntentKey;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -39,8 +49,9 @@ public class InfoDetailFragment extends PageImpBaseFragment implements InfoDetai
     @BindView(R.id.m_info_webview)
     WebView mInfoWebview;
     private InfoDetailContract.Presenter mPresenter;
-
+    private  ShareAction mShareAction;
     String id;
+
     @Override
     public void setPresenter(InfoDetailContract.Presenter presenter) {
         mPresenter = presenter;
@@ -57,7 +68,7 @@ public class InfoDetailFragment extends PageImpBaseFragment implements InfoDetai
         titleBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    back();
+                back();
             }
         });
     }
@@ -72,21 +83,74 @@ public class InfoDetailFragment extends PageImpBaseFragment implements InfoDetai
         if (getArguments() == null) {
             return;
         }
-         id = getArguments().getString(IntentKey.FRAG_INFO);
+        id = getArguments().getString(IntentKey.FRAG_INFO);
         if (TextUtils.isEmpty(id)) {
             return;
         }
         new InfoDetailPresenterImp(this, id);
-        mSaveInfoButton.setOnClickListener(new View.OnClickListener() {
+        mShareInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                mPresenter.saveInfo(id);
+            public void onClick(View v) {
+                shareInfo();
             }
         });
+        initShareAction();
+
+    }
+
+    private void initShareAction(){
+        mShareAction =   new ShareAction(getActivity())
+                .setDisplayList(SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,SHARE_MEDIA.SINA).withText("分享资讯")
+                .setCallback(new UMShareListener() {
+                    @Override
+                    public void onResult(SHARE_MEDIA share_media) {
+
+                    }
+
+                    @Override
+                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onCancel(SHARE_MEDIA share_media) {
+
+                    }
+                });
+
+    }
+    private void shareInfo() {
+        ShareBoardConfig config = new ShareBoardConfig();
+        config.setShareboardPostion(ShareBoardConfig.SHAREBOARD_POSITION_CENTER);
+        config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+        mShareAction.open(config);
+
+    }
+    @Override
+    public void update(Map<String, Object> info) {
+        String url = Utils.toString(info.get("url"));
+        mInfoWebview.loadUrl(url);
     }
 
     @Override
-    public void update(Map<String, Object> info) {
+    public void updateFavStatus(boolean isCollect) {
+        if (isCollect) {
+            ImageUtils.getInstance().displayFromDrawable(R.mipmap.save_cancel_text,mSaveInfoButton);
+            mSaveInfoButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.cancelSaveInfo();
+                }
+            });
+        } else{
+            ImageUtils.getInstance().displayFromDrawable(R.mipmap.save_text_green,mSaveInfoButton);
+            mSaveInfoButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.saveInfo();
+                }
+            });
+        }
     }
 
     @Override

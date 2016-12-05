@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.umeng.socialize.UMShareAPI;
 import com.zhjydy.R;
 import com.zhjydy.view.ActivityResultView;
 import com.zhjydy.view.fragment.PagerFragmentFactory;
@@ -100,6 +101,7 @@ public class PagerImpActivity extends BaseActivity implements PageImpContract.Vi
                 view.onActivityResult1(requestCode, resultCode, data);
             }
         }
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
     public void addOnActivityResultView(ActivityResultView view) {

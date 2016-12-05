@@ -20,6 +20,7 @@ import com.zhjydy.view.adapter.FaveInfoListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.PagerImpActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +41,7 @@ public class FaveInfoFragment extends PageImpBaseFragment implements FavInfoCont
     @BindView(R.id.m_list)
     PullToRefreshListView mList;
 
+    private FaveInfoListAdapter mAdapter;
     public static FaveInfoFragment instance() {
         FaveInfoFragment frag = new FaveInfoFragment();
         return frag;
@@ -62,6 +64,7 @@ public class FaveInfoFragment extends PageImpBaseFragment implements FavInfoCont
     protected void afterViewCreate() {
         titleSearchEdit.setHint("搜索资讯");
         new FaveInfoPresenterImp(this);
+        mAdapter = new FaveInfoListAdapter(getContext(),new ArrayList<Map<String,Object>>());
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -89,8 +92,8 @@ public class FaveInfoFragment extends PageImpBaseFragment implements FavInfoCont
 
     @Override
     public void updateInfoList(List<Map<String,Object>> infos) {
-        FaveInfoListAdapter adapter = new FaveInfoListAdapter(getContext(), infos);
-        mList.setAdapter(adapter);
+        mAdapter.refreshData(infos);
+        mList.setAdapter(mAdapter);
     }
 
     @Override

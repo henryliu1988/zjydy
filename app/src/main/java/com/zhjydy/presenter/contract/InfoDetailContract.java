@@ -14,11 +14,13 @@ public interface InfoDetailContract {
     interface View extends BaseView<Presenter>
     {
         void update(Map<String,Object> info);
+        void updateFavStatus(boolean isCollect);
     }
 
     interface Presenter extends BasePresenter
     {
-        void saveInfo(String id);
+        void saveInfo();
+        void cancelSaveInfo();
         void shareInfo(String url);
     }
 }

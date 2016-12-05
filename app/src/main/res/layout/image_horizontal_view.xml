@@ -2,11 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="horizontal"
-              android:paddingBottom="5dp"
-              android:paddingLeft="8dp"
-              android:paddingRight="8dp"
-              android:paddingTop="5dp">
+              android:orientation="horizontal">
 
 
     <ImageView
@@ -15,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|left"
         android:scaleType="fitCenter"
-        android:src="@mipmap/left_arrow"/>
+        android:src="@mipmap/left"/>
 
     <HorizontalScrollView
         android:id="@+id/sroll_view"
@@ -31,6 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|right"
         android:scaleType="fitCenter"
-        android:src="@mipmap/left_arrow"/>
+        android:src="@mipmap/right"/>
 
 </LinearLayout>

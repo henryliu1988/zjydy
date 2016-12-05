@@ -15,6 +15,7 @@ public interface MainOrderContract {
     interface MainOrderView extends BaseView<MainOrderPresenter>
     {
         void update(List<Map<String,Object>> orders);
+        void onNetError();
     }
 
     interface MainOrderPresenter extends BasePresenter

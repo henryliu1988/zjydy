@@ -25,6 +25,7 @@ import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.PagerImpActivity;
 import com.zhjydy.view.zhview.BadgImage;
 import com.zhjydy.view.zhview.ImageTipsView;
+import com.zhjydy.view.zhview.zhToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,6 +143,7 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
     @Override
     public void update(List<Map<String, Object>> orders) {
         mOrderList = orders;
+        mList.onRefreshComplete();
         for(Map<String,Object> order:mOrderList) {
             int status = Utils.toInteger(order.get("status"));
             switch (status){
@@ -157,6 +159,12 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
             }
         }
         updateAdapter();
+    }
+
+    @Override
+    public void onNetError() {
+        mList.onRefreshComplete();
+        zhToast.showToast("网络访问错误");
     }
 
     public void updateAdapter() {

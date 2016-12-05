@@ -90,8 +90,13 @@ public class ImageHorizontalView extends LinearLayout
             String url = Utils.toString(image.get(ViewKey.FILE_KEY_URL));
             ImageView imageView = new ImageView(getContext());
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            ViewGroup.LayoutParams imageParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            int imageHeight = this.getHeight()*4/5;
+            int imageWidth = (int)(imageHeight*1.3);
+            ViewGroup.LayoutParams imageParams = new ViewGroup.LayoutParams(imageWidth, imageHeight);
             imageView.setLayoutParams(imageParams);
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) imageView.getLayoutParams();
+            p.setMargins(5,0,5,0);
+            imageView.requestLayout();
             if (imageType == ViewKey.TYPE_FILE_PATH)
             {
                 ImageUtils.getInstance().displayFromSDCard(url, imageView);

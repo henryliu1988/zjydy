@@ -142,8 +142,6 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
         profession.setText(DicData.getInstance().getOfficeById(Utils.toString(expertInfo.get("business"))).getName());
         reasonTv.setText(Utils.toString(expertInfo.get("reason")));
         specicalTv.setText(Utils.toString(expertInfo.get("adept")));
-        reasonTv.setText("dhsajkfhaskf");
-        specicalTv.setText("dfsdddddddddddd");
         int score = Utils.toInteger(expertInfo.get("stars"));
         if (score > 100) {
             score = 100;

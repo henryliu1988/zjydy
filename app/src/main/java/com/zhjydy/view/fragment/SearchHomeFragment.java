@@ -10,15 +10,21 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhjydy.R;
+import com.zhjydy.model.data.DicData;
 import com.zhjydy.presenter.contract.SearchHomeContract;
 import com.zhjydy.presenter.presenterImp.SearchHomePresenterImp;
 import com.zhjydy.util.ActivityUtils;
+import com.zhjydy.util.DateUtil;
+import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.PagerImpActivity;
+import com.zhjydy.view.zhview.ScoreView;
+import com.zhjydy.view.zhview.ViewHolderAdd;
 
 import java.util.List;
 import java.util.Map;
@@ -37,8 +43,24 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
     EditText titleSearchEdit;
     @BindView(R.id.title_search_ly)
     LinearLayout titleSearchLy;
-    @BindView(R.id.m_list)
-    PullToRefreshListView mList;
+    @BindView(R.id.expert_list_layout)
+    LinearLayout expertListLayout;
+    @BindView(R.id.expert_more_layout)
+    RelativeLayout expertMoreLayout;
+    @BindView(R.id.expert_all_layout)
+    LinearLayout expertAllLayout;
+    @BindView(R.id.info_list_layout)
+    LinearLayout infoListLayout;
+    @BindView(R.id.info_more_layout)
+    RelativeLayout infoMoreLayout;
+    @BindView(R.id.info_all_layout)
+    LinearLayout infoAllLayout;
+    @BindView(R.id.null_data_text)
+    TextView nullDataText;
+    @BindView(R.id.null_data_retrye)
+    TextView nullDataRetrye;
+    @BindView(R.id.null_data_layout)
+    RelativeLayout nullDataLayout;
     private SearchHomeContract.Presenter mPresenter;
 
     @Override
@@ -64,6 +86,9 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
     @Override
     protected void afterViewCreate() {
         new SearchHomePresenterImp(this);
+        expertAllLayout.setVisibility(View.GONE);
+        infoAllLayout.setVisibility(View.GONE);
+        nullDataLayout.setVisibility(View.GONE);
         titleBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,11 +111,13 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
             }
         });
     }
+
     private void search() {
         String condition = titleSearchEdit.getText().toString();
         mPresenter.searchExpertAndInfo(condition);
 
     }
+
     private void moreSeachExpert() {
         String seach = titleSearchEdit.getText().toString();
         Bundle bundle = new Bundle();
@@ -99,14 +126,15 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
         ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
 
     }
+
     private void moreSeachInfo() {
         String seach = titleSearchEdit.getText().toString();
         Bundle bundle = new Bundle();
         bundle.putInt(IntentKey.FRAG_KEY, FragKey.search_info_fragment);
         bundle.putString(IntentKey.FRAG_INFO, seach);
         ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
-
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
@@ -116,8 +144,103 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
     }
 
     @Override
-    public void onSearchResult(List<Map<String, Object>> experts, List<Map<String, Object>> infos)
-    {
+    public void onSearchResult(List<Map<String, Object>> experts, List<Map<String, Object>> infos) {
 
+        if (experts.size() <1 && infos.size() <1) {
+            nullDataLayout.setVisibility(View.VISIBLE);
+            nullDataRetrye.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    search();
+                }
+            });
+        } else {
+            nullDataLayout.setVisibility(View.GONE);
+        }
+        if (experts.size() < 1) {
+            expertAllLayout.setVisibility(View.GONE);
+        } else if (experts.size() < 3) {
+            expertAllLayout.setVisibility(View.VISIBLE);
+            expertMoreLayout.setVisibility(View.GONE);
+        } else {
+            expertAllLayout.setVisibility(View.VISIBLE);
+            expertMoreLayout.setVisibility(View.VISIBLE);
+            expertMoreLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    moreSeachExpert();
+                }
+            });
+        }
+        initExpertListLayout(experts);
+
+
+        if (infos.size() < 1) {
+            infoAllLayout.setVisibility(View.GONE);
+        } else if (infos.size() < 3) {
+            infoAllLayout.setVisibility(View.VISIBLE);
+            infoMoreLayout.setVisibility(View.GONE);
+        } else {
+            infoAllLayout.setVisibility(View.VISIBLE);
+            infoMoreLayout.setVisibility(View.VISIBLE);
+            infoMoreLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    moreSeachInfo();
+                }
+            });
+        }
+        initInfoListLayout(infos);
     }
+
+    private void initExpertListLayout(List<Map<String, Object>> experts) {
+        expertListLayout.removeAllViews();
+        int size = experts.size();
+        if (size > 2) {
+            size = 2;
+        }
+        for (int i = 0; i < size; i++) {
+            Map<String, Object> expert = experts.get(i);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.listview_main_expert_info_item, null);
+            ViewHolderAdd holder = ViewHolderAdd.get(getContext(), R.layout.listview_main_expert_info_item);
+            ((TextView) holder.getView(R.id.name)).setText(Utils.toString(expert.get("realname")));
+            ((TextView) holder.getView(R.id.depart)).setText(DicData.getInstance().getOfficeById(Utils.toString(expert.get("office"))).getName());
+            ((TextView) holder.getView(R.id.profession)).setText(DicData.getInstance().getOfficeById(Utils.toString(expert.get("business"))).getName());
+            ((TextView) holder.getView(R.id.hospital)).setText(DicData.getInstance().getHospitalById(Utils.toString(expert.get("hospital"))).getHospital());
+
+            ((TextView) holder.getView(R.id.special)).setText(Utils.toString(expert.get("adept")));
+            ((TextView) holder.getView(R.id.score)).setText("推荐分数：");
+            //((TextView) holder.getView(R.id.star)).setText(info.getStar());
+            ScoreView starView = (ScoreView) holder.getView(R.id.star);
+            int score = Utils.toInteger(expert.get("stars"));
+            if (score > 100) {
+                score = 100;
+            }
+            if (score < 0) {
+                score = 0;
+            }
+            starView.setScore(score, 100);
+            ImageUtils.getInstance().displayFromRemote(Utils.toString(expert.get("path")), (ImageView) holder.getView(R.id.photo));
+        }
+    }
+
+    private void initInfoListLayout(List<Map<String, Object>> infos) {
+        expertListLayout.removeAllViews();
+        int size = infos.size();
+        if (size > 2) {
+            size = 2;
+        }
+        for (int i = 0; i < size; i++) {
+            Map<String, Object> info = infos.get(i);
+            ViewHolderAdd holder = ViewHolderAdd.get(getContext(), R.layout.listview_main_info_item);
+
+            ((TextView) holder.getView(R.id.title)).setText(Utils.toString(info.get("title")));
+            ((TextView) holder.getView(R.id.outline)).setText(Utils.toString(info.get("introduction")));
+            ((TextView) holder.getView(R.id.date)).setText(DateUtil.getFullTimeDiffDayCurrent(Utils.toLong(info.get("add_time")), DateUtil.LONG_DATE_FORMAT_1));
+            //((TextView) holder.getView(R.id.star)).setText(info.getStar());
+            ImageUtils.getInstance().displayFromRemote(Utils.toString(info.get("path")), (ImageView) holder.getView(R.id.image));
+
+        }
+    }
+
 }
