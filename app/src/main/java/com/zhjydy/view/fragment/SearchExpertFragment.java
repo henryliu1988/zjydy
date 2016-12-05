@@ -2,6 +2,7 @@ package com.zhjydy.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.zhjydy.presenter.presenterImp.SearchExpertPresenterImp;
 import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.view.adapter.FavExpertListAdapter;
 import com.zhjydy.view.adapter.MainExpertListAdapter;
+import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.PagerImpActivity;
 
 import java.util.ArrayList;
@@ -85,8 +87,19 @@ public class SearchExpertFragment extends PageImpBaseFragment implements SearchE
                 return false;
             }
         });
+        initSearchInfo();
     }
 
+    private void initSearchInfo() {
+        if (getArguments() == null) {
+            return;
+        }
+        String search = getArguments().getString(IntentKey.FRAG_KEY,"");
+        if (!TextUtils.isEmpty(search)) {
+            titleSearchEdit.setText(search);
+            mPresenter.searchExpert(search);
+        }
+    }
     private void search() {
         String condition = titleSearchEdit.getText().toString();
         mPresenter.searchExpert(condition);

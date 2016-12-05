@@ -15,6 +15,7 @@ import com.zhjydy.presenter.presenterImp.MainMinePresenterImp;
 import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.view.avtivity.PagerImpActivity;
 import com.zhjydy.view.zhview.BadgImage;
+import com.zhjydy.view.zhview.ImageTipsView;
 
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
     @BindView(R.id.center_tv)
     TextView centerTv;
     @BindView(R.id.right_img)
-    BadgImage rightImg;
+    ImageTipsView rightImg;
     @BindView(R.id.right_l_img)
     ImageView rightLImg;
     @BindView(R.id.mine_image)

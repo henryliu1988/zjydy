@@ -17,5 +17,6 @@ public interface AccountSafeContract {
 
     interface Presenter extends BasePresenter
     {
+        void reloadData();
     }
 }

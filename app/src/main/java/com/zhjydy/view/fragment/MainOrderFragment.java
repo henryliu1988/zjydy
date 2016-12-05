@@ -24,6 +24,7 @@ import com.zhjydy.view.adapter.OrderListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.PagerImpActivity;
 import com.zhjydy.view.zhview.BadgImage;
+import com.zhjydy.view.zhview.ImageTipsView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
     @BindView(R.id.center_tv)
     TextView centerTv;
     @BindView(R.id.right_img)
-    BadgImage rightImg;
+    ImageTipsView rightImg;
     @BindView(R.id.right_l_img)
     ImageView rightLImg;
     @BindView(R.id.tab_layout)

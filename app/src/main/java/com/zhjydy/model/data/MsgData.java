@@ -56,11 +56,7 @@ public class MsgData {
                 }
             }
         }
-        /*
-        if (mNewCommentList != null && mNewCommentList.size() > 0) {
-            count +=mNewCommentList.size();
-        }
-        */
+        int a= count;
         return count;
     }
 

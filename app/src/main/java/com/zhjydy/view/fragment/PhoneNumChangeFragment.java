@@ -67,7 +67,12 @@ public class PhoneNumChangeFragment extends PageImpBaseFragment implements Phone
         titleBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                back();
+                if (mCurrentStep >0) {
+                    mCurrentStep --;
+                    switchStep(mCurrentStep);
+                } else {
+                    back();
+                }
             }
         });
         titleCenterTv.setText("修改手机号码");
@@ -101,6 +106,11 @@ public class PhoneNumChangeFragment extends PageImpBaseFragment implements Phone
             }
         });
     }
+    private void initConfirmLayout() {
+        mConfirmView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_phone_change_confirm, null);
+        mConfirmCodeEdit = (EditText)mConfirmView.findViewById(R.id.edit_confirm_code);
+    }
+
     private void tryGetConfirmCode() {
         String phoneNum = mNewPhoneEdit.getText().toString();
         if (TextUtils.isEmpty(phoneNum)) {
@@ -122,26 +132,26 @@ public class PhoneNumChangeFragment extends PageImpBaseFragment implements Phone
             });
         }
     }
-    private void initConfirmLayout() {
-        mConfirmView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_phone_change_confirm, null);
-        mConfirmCodeEdit = (EditText)mConfirmView.findViewById(R.id.edit_confirm_code);
-    }
 
 
     private void switchStep(int step) {
         mCurrentStep = step;
         inputLayout.removeAllViews();
+        LinearLayout.LayoutParams parasm = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         switch (step) {
             case 0:
                 inputLayout.addView(mLoginPsView);
+                mLoginPsView.setLayoutParams(parasm);
                 confirm.setText("下一步");
                 break;
             case 1:
                 inputLayout.addView(mPhoneView);
+                mPhoneView.setLayoutParams(parasm);
                 confirm.setText("下一步");
                 break;
             case 2:
                 inputLayout.addView(mConfirmView);
+                mConfirmView.setLayoutParams(parasm);
                 confirm.setText("确认");
                 break;
 
@@ -184,22 +194,34 @@ public class PhoneNumChangeFragment extends PageImpBaseFragment implements Phone
         if (mNewPhoneEdit == null) {
             return;
         }
+
         String newPhone = mNewPhoneEdit.getText().toString();
         if (TextUtils.isEmpty(newPhone)) {
             zhToast.showToast("请输入手机号码并获取验证码");
             return;
         }
+        if(!Utils.isPhone(newPhone)) {
+            zhToast.showToast("请输入正确的手机号");
+            return;
+        }
+
         switchStep(2);
     }
     private void allConfirm() {
-        if (mConfirmCodeEdit == null) {
+        if (mConfirmCodeEdit == null || mNewPhoneEdit == null) {
             return;
         }
         String confirmCode = mConfirmCodeEdit.getText().toString();
+        String phoneNum = mNewPhoneEdit.getText().toString();
         if (TextUtils.isEmpty(confirmCode)) {
             zhToast.showToast("请输入验证码");
             return;
         }
+        if (TextUtils.isEmpty(phoneNum)) {
+            zhToast.showToast("请返回上一步输入手机号码");
+            return;
+        }
+        mPresenter.submitChangeConfirm(phoneNum,confirmCode);
 
     }
     @Override
@@ -218,5 +240,22 @@ public class PhoneNumChangeFragment extends PageImpBaseFragment implements Phone
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
         return rootView;
+    }
+
+    @Override
+    public void submitResult(boolean result, String msg,String phoneNum)
+    {
+        if (result) {
+            AppData.getInstance().getToken().setMobile(phoneNum);
+            int key[] = {FragKey.account_safe_fragment};
+            back(key);
+        }
+        if (!TextUtils.isEmpty(msg)) {
+            zhToast.showToast(msg);
+        } else {
+            zhToast.showToast(result? "修改手机号码成功":"修改手机号码失败");
+        }
+
+
     }
 }

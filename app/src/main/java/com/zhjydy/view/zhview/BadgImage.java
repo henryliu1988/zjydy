@@ -36,7 +36,7 @@ public class BadgImage extends RelativeLayout {
 
     private void initImageView() {
         image = new ImageView(context);
-        RelativeLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
         image.setPadding(0,0,15,0);
         image.setLayoutParams(params);

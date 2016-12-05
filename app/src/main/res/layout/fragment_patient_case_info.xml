@@ -201,14 +201,10 @@
                     android:paddingBottom="4dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp">
-                    <com.zhjydy.view.zhview.HorizontalListView
-                        xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:widget="http://schemas.android.com/apk/res-auto"
+                    <com.zhjydy.view.zhview.ImageHorizontalView
                         android:id="@+id/iamge_horizontal_list"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:divider="@color/white"
-                        widget:dividerWidth="5dp"/>
+                        android:layout_height="120dp"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

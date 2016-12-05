@@ -1,6 +1,7 @@
 package com.zhjydy.view.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
+import com.readystatesoftware.viewbadger.BadgeView;
 import com.zhjydy.R;
 import com.zhjydy.model.data.DicData;
 import com.zhjydy.presenter.contract.MainHomeContract;
@@ -30,6 +32,7 @@ import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.MainTabsActivity;
 import com.zhjydy.view.avtivity.PagerImpActivity;
 import com.zhjydy.view.zhview.BadgImage;
+import com.zhjydy.view.zhview.ImageTipsView;
 import com.zhjydy.view.zhview.ListViewForScrollView;
 
 import java.util.ArrayList;
@@ -67,7 +70,7 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
     @BindView(R.id.info_list)
     ListViewForScrollView infoList;
     @BindView(R.id.right_img)
-    BadgImage rightImg;
+    ImageTipsView rightImg;
     @BindView(R.id.scroll_view)
     ScrollView scrollView;
     @BindView(R.id.scorll_expert)
@@ -97,10 +100,14 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
         leftImg.setVisibility(View.VISIBLE);
         leftImg.setImageResource(R.mipmap.titlebar_search);
         centerTv.setText("专家医对壹");
-        rightImg.setImageSrc(R.mipmap.title_msg);
+        initMsgCountImage();
         scrollView.scrollTo(0, 0);
     }
 
+    private void initMsgCountImage() {
+        rightImg.setImageResource(R.mipmap.title_msg);
+
+    }
     @Override
     protected void initData() {
     }
@@ -118,7 +125,6 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
 
     @Override
     public void updateBanner(List<String> images) {
-
         bannerHome.setPages(
                 new CBViewHolderCreator<NetworkImageHolderView>() {
                     @Override
@@ -147,7 +153,9 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
         if (count != 0) {
             text = count + "";
         }
-        rightImg.setText(text);
+        rightImg.setTipText(text);
+
+
     }
 
     @Override

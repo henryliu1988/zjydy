@@ -16,10 +16,12 @@ public interface PhoneNumChangContract {
 
     interface View extends BaseView<Presenter>
     {
+        void submitResult(boolean result,String msg,String phone);
     }
 
     interface Presenter extends BasePresenter
     {
         Observable<WebResponse> getConfirmCode(String phone);
+        void submitChangeConfirm(String phone,String confirmCode);
     }
 }

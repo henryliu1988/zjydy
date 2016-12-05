@@ -1,9 +1,12 @@
 package com.zhjydy.presenter.presenterImp;
 
+import com.shizhefei.mvc.RequestHandle;
+import com.shizhefei.mvc.ResponseSender;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
+import com.zhjydy.model.pageload.PageLoadDataSource;
 import com.zhjydy.presenter.contract.SearchExpertContract;
 import com.zhjydy.util.Utils;
 
@@ -17,7 +20,7 @@ import rx.functions.Func1;
 /**
  * Created by Administrator on 2016/11/6 0006.
  */
-public class SearchExpertPresenterImp implements SearchExpertContract.Presenter {
+public class SearchExpertPresenterImp extends PageLoadDataSource implements SearchExpertContract.Presenter {
 
     private SearchExpertContract.View mView;
     public SearchExpertPresenterImp(SearchExpertContract.View view) {
@@ -60,5 +63,11 @@ public class SearchExpertPresenterImp implements SearchExpertContract.Presenter 
                 mView.updateExpertList(list);
             }
         });
+    }
+
+    @Override
+    public RequestHandle loadListData(ResponseSender<List<Map<String, Object>>> sender, int page)
+    {
+        return null;
     }
 }

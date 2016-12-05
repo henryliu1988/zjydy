@@ -21,6 +21,7 @@ import com.zhjydy.view.adapter.MainInfoListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.PagerImpActivity;
 import com.zhjydy.view.zhview.BadgImage;
+import com.zhjydy.view.zhview.ImageTipsView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +41,9 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
     @BindView(R.id.title_search_ly)
     LinearLayout titleSearchLy;
     @BindView(R.id.right_img)
-    BadgImage rightImg;
+    ImageTipsView rightImg;
     @BindView(R.id.right_l_img)
-    BadgImage rightLImg;
+    ImageTipsView rightLImg;
     @BindView(R.id.m_list)
     PullToRefreshListView mList;
     public static MainInfoFragment instance() {
@@ -68,9 +69,9 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
         initView();
         new MainInfoPresenterImp(this,mList);
         titleSearchText.setText("搜索资讯");
-        rightLImg.setImageSrc(R.mipmap.title_msg);
-        rightImg.setImageSrc(R.mipmap.shoucang);
-        rightImg.setOnClickListener(new View.OnClickListener() {
+        rightImg.setImageResource(R.mipmap.title_msg);
+        rightLImg.setImageResource(R.mipmap.shoucang);
+        rightLImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
@@ -78,7 +79,7 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
                 ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
             }
         });
-        rightLImg.setOnClickListener(new View.OnClickListener() {
+        rightImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle bundleMsg = new Bundle();
@@ -123,7 +124,7 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
         if (count != 0) {
             text = count + "";
         }
-        rightImg.setText(text);
+        rightImg.setTipText(text);
     }
 
     @Override
@@ -135,8 +136,7 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
     @Override
     public void updateFavInfoCount(int count) {
         if (count > 0) {
-            rightImg.setText(count + "");
-
+            rightLImg.setTipText(count + "");
         }
     }
 }

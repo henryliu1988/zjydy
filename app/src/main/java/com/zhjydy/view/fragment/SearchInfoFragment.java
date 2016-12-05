@@ -2,6 +2,7 @@ package com.zhjydy.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.zhjydy.presenter.contract.SearchInfoContract;
 import com.zhjydy.presenter.presenterImp.MainInfoPresenterImp;
 import com.zhjydy.presenter.presenterImp.SearchInfoPresenterImp;
 import com.zhjydy.view.adapter.MainInfoListAdapter;
+import com.zhjydy.view.avtivity.IntentKey;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +89,19 @@ public class SearchInfoFragment extends PageImpBaseFragment implements SearchInf
         mInfoAdapter = new MainInfoListAdapter(getContext(),list);
         mList.setAdapter(mInfoAdapter);
         new SearchInfoPresenterImp(this);
+        initSearchInfo();
+    }
+
+
+    private void initSearchInfo() {
+        if (getArguments() == null) {
+            return;
+        }
+        String search = getArguments().getString(IntentKey.FRAG_KEY,"");
+        if (!TextUtils.isEmpty(search)) {
+            titleSearchEdit.setText(search);
+            mPresenter.searchInfo(search);
+        }
     }
     private void search() {
         String condition = titleSearchEdit.getText().toString();

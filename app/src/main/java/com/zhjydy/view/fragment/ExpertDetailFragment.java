@@ -24,6 +24,7 @@ import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.ExperDetaiCommentListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
+import com.zhjydy.view.zhview.ListViewForScrollView;
 import com.zhjydy.view.zhview.ScoreView;
 import com.zhjydy.view.zhview.zhToast;
 import com.zhl.cbdialog.CBDialogBuilder;
@@ -81,7 +82,7 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
     @BindView(R.id.specical)
     LinearLayout specical;
     @BindView(R.id.word_listview)
-    ListView wordListview;
+    ListViewForScrollView wordListview;
     @BindView(R.id.subscribe_expert)
     TextView subscribeExpert;
     @BindView(R.id.reason_tv)
@@ -132,17 +133,17 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
         if (!TextUtils.isEmpty(collect)) {
             coList = Arrays.asList(collect.split(","));
         }
-
     }
     @Override
     public void updateExpertInfos(Map<String, Object> expertInfo) {
         name.setText(Utils.toString(expertInfo.get("realname")));
-        depart.setText( DicData.getInstance().getOfficeById(Utils.toString(expertInfo.get("office"))).getName());
+        depart.setText(DicData.getInstance().getOfficeById(Utils.toString(expertInfo.get("office"))).getName() + "|");
         hospital.setText(DicData.getInstance().getHospitalById(Utils.toString(expertInfo.get("hospital"))).getHospital());
         profession.setText(DicData.getInstance().getOfficeById(Utils.toString(expertInfo.get("business"))).getName());
         reasonTv.setText(Utils.toString(expertInfo.get("reason")));
         specicalTv.setText(Utils.toString(expertInfo.get("adept")));
-
+        reasonTv.setText("dhsajkfhaskf");
+        specicalTv.setText("dfsdddddddddddd");
         int score = Utils.toInteger(expertInfo.get("stars"));
         if (score > 100) {
             score = 100;

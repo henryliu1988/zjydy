@@ -66,7 +66,9 @@ public class AccountSafeFragment extends PageImpBaseFragment implements AccountS
 
     @Override
     public void refreshView() {
-
+        if (mPresenter != null) {
+            mPresenter.reloadData();
+        }
     }
 
     @Override
