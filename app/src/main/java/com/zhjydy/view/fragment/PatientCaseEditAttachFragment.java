@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.zhjydy.R;
 import com.zhjydy.presenter.contract.PatientCaseEditAttachContract;
 import com.zhjydy.presenter.presenterImp.PatientCaseEditAttachPresenterImp;
+import com.zhjydy.util.ScreenUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.util.ViewKey;
 import com.zhjydy.view.ActivityResultView;
@@ -104,6 +105,10 @@ public class PatientCaseEditAttachFragment extends PageImpBaseFragment implement
                 mPresenter.submitMsg(params, horizontalImageView.getAllFileList(), getContext(), type);
             }
         });
+
+        int imageWidth  = ScreenUtils.getScreenWidth()/3;
+        int imageHeigth = imageWidth*4/3;
+        horizontalImageView.setImageSize(imageWidth,imageHeigth);
     }
 
 

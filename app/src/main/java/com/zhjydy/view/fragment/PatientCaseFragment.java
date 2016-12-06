@@ -66,6 +66,7 @@ public class PatientCaseFragment extends PageImpBaseFragment implements PatientC
     @Override
     protected void afterViewCreate() {
         new PatientCasePresenterImp(this);
+        int a =0;
     }
 
     @Override

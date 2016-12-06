@@ -12,9 +12,11 @@ import com.zhjydy.R;
 import com.zhjydy.presenter.contract.IdentityInfoContract;
 import com.zhjydy.presenter.presenterImp.IdentityInfoPresenterImp;
 import com.zhjydy.util.ImageUtils;
+import com.zhjydy.util.ScreenUtils;
 import com.zhjydy.util.UserEvent;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.avtivity.IntentKey;
+import com.zhjydy.view.zhview.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,8 +106,37 @@ public class IdentityInfoFragment extends PageImpBaseFragment implements Identit
             ImageUtils.getInstance().displayFromRemote(path.get(0),photo1);
             ImageUtils.getInstance().displayFromRemote(path.get(1),photo2);
         }
+        initStatusView();
     }
 
+
+    private void initStatusView() {
+        stepUpload.setText("未上传");
+        stepWaitVerify.setText("未审核");
+        stepWait.setText("审核中");
+        stepVerify.setText("审核\n结果");
+        int strokWidth =  ScreenUtils.getScreenWidth()/80;
+        ViewUtil.setOverViewDrawbleBg(stepUpload,"#CCCCCC","#EEEEEE", strokWidth);
+        ViewUtil.setOverViewDrawbleBg(stepWaitVerify,"#CCCCCC","#EEEEEE", strokWidth);
+        ViewUtil.setOverViewDrawbleBg(stepWait,"#CCCCCC","#EEEEEE",strokWidth);
+        ViewUtil.setOverViewDrawbleBg(stepVerify,"#CCCCCC","#EEEEEE", strokWidth);
+        if (status >1){
+            stepUpload.setText("上传" + "\n" + "成功");
+            stepWaitVerify.setText("等待\n审核");
+            stepWait.setText("等待中");
+            ViewUtil.setOverViewDrawbleBg(stepUpload,"#FFAD0E","#FFE3B9", strokWidth);
+            ViewUtil.setOverViewDrawbleBg(stepWaitVerify,"#FFAD0E","#FFE3B9", strokWidth);
+            ViewUtil.setOverViewDrawbleBg(stepWait,"#FFAD0E","#FFE3B9", strokWidth);
+        }
+        if (status>2) {
+            if (status == 3) {
+                stepVerify.setText("审核\n通过");
+            } else{
+                stepVerify.setText("审核\n未通过");
+            }
+            ViewUtil.setOverViewDrawbleBg(stepVerify,"#FFAD0E","#FFE3B9", strokWidth);
+        }
+    }
     @Override
     public void setPresenter(IdentityInfoContract.Presenter presenter) {
         mPresenter = presenter;
@@ -124,8 +155,5 @@ public class IdentityInfoFragment extends PageImpBaseFragment implements Identit
         return rootView;
     }
 
-    @OnClick(R.id.edit_info)
-    public void onClick() {
 
-    }
 }

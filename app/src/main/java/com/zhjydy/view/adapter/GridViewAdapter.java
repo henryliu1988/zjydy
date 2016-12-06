@@ -25,6 +25,8 @@ public class GridViewAdapter extends android.widget.BaseAdapter
     private List<Map<String, Object>> imgList;
     private List<String> delList = new ArrayList<>();
 
+    private int width = 0;
+    private int height = 0;
     public GridViewAdapter(Context context, List<Map<String, Object>> imgList)
     {
         this.mContext = context;
@@ -33,6 +35,10 @@ public class GridViewAdapter extends android.widget.BaseAdapter
         delList.clear();
     }
 
+    public void setItemImageSize(int width,int height) {
+        this.width = width;
+        this.height = height;
+    }
     public void setList(List<Map<String, Object>> list)
     {
         this.imgList = list;
@@ -73,6 +79,10 @@ public class GridViewAdapter extends android.widget.BaseAdapter
         convertView = inflater.inflate(R.layout.image_add_grid_item, null);
         final ImageView img_pic = (ImageView) convertView
                 .findViewById(R.id.img_pic);
+        if (width >0 && height >0){
+            ViewGroup.LayoutParams param = new ViewGroup.LayoutParams(width,height);
+            img_pic.setLayoutParams(param);
+        }
         LinearLayout ly = (LinearLayout) convertView
                 .findViewById(R.id.layout);
         LinearLayout ll_picparent = (LinearLayout) convertView

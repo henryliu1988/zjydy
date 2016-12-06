@@ -1,5 +1,6 @@
 package com.zhjydy.view.fragment;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,7 +22,9 @@ import com.zhjydy.util.ViewKey;
 import com.zhjydy.view.ActivityResultView;
 import com.zhjydy.view.zhview.zhToast;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -106,9 +109,14 @@ public class IdentityInfoNewFragment extends PageImpBaseFragment implements Iden
     }
 
     @Override
-    public void onSubmitSuccess() {
-        zhToast.showToast("上传认证信息成功");
-        back();
+    public void onSubmitSuccess(boolean status) {
+        if (status){
+            zhToast.showToast("上传认证信息成功");
+            int fragKey[] = {FragKey.identify_info_fragment};
+            back(fragKey);
+        } else {
+            zhToast.showToast("上传认证信息失败");
+        }
     }
 
     @Override
@@ -179,6 +187,13 @@ public class IdentityInfoNewFragment extends PageImpBaseFragment implements Iden
 
     @Override
     public void onPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        toGetCameraImage();
+        List<String> permissionList = Arrays.asList(permissions);
+        if (permissionList.contains(Manifest.permission.CAMERA))
+        {
+            toGetCameraImage();
+        } else if (permissionList.contains(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+        {
+            toGetLocalImage();
+        }
     }
 }

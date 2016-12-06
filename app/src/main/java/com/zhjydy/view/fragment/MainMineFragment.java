@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
@@ -14,7 +14,6 @@ import com.zhjydy.presenter.contract.MainMineContract;
 import com.zhjydy.presenter.presenterImp.MainMinePresenterImp;
 import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.view.avtivity.PagerImpActivity;
-import com.zhjydy.view.zhview.BadgImage;
 import com.zhjydy.view.zhview.ImageTipsView;
 
 import java.util.Map;
@@ -22,8 +21,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.functions.Action1;
-import rx.functions.Func1;
 
 /**
  * Created by Administrator on 2016/9/19 0019.
@@ -43,17 +40,19 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
     @BindView(R.id.mine_status)
     TextView mineStatus;
     @BindView(R.id.mine_info_layout)
-    LinearLayout mineInfoLayout;
+    RelativeLayout mineInfoLayout;
     @BindView(R.id.account_safe_layout)
-    LinearLayout accountSafeLayout;
+    RelativeLayout accountSafeLayout;
     @BindView(R.id.mine_confirm_msg_layout)
-    LinearLayout mineConfirmMsgLayout;
+    RelativeLayout mineConfirmMsgLayout;
     @BindView(R.id.mine_history_layout)
-    LinearLayout mineHistoryLayout;
+    RelativeLayout mineHistoryLayout;
     @BindView(R.id.mine_common_layout)
-    LinearLayout mineCommonLayout;
+    RelativeLayout mineCommonLayout;
     @BindView(R.id.mine_about_layout)
-    LinearLayout mineAboutLayout;
+    RelativeLayout mineAboutLayout;
+    @BindView(R.id.mine_confirm_msg_status)
+    TextView mineConfirmMsgStatus;
     private MainMineContract.MainMinePresenter mPresenter;
 
     public static MainMineFragment instance() {
@@ -98,20 +97,20 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.mine_info_layout:
-                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.mine_info_fragment,null,false);
+                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.mine_info_fragment, null, false);
                 break;
             case R.id.account_safe_layout:
-                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.account_safe_fragment,null,false);
+                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.account_safe_fragment, null, false);
                 break;
             case R.id.mine_confirm_msg_layout:
                 loadIdentifyInfo();
                 break;
             case R.id.mine_history_layout:
-                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.patient_case_fragment,null,false);
+                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.patient_case_fragment, null, false);
 
                 break;
             case R.id.mine_common_layout:
-                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.common_fragment,null,false);
+                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.common_fragment, null, false);
 
                 break;
             case R.id.mine_about_layout:
@@ -120,17 +119,41 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
                 break;
         }
     }
+
+    @Override
+    public void updateIdentiFyStatus(int status,String msg) {
+        mineConfirmMsgStatus.setVisibility(View.VISIBLE);
+        String text = "";
+        switch (status) {
+            case 0:
+            case 1:
+                text = "未认证";
+                break;
+            case 2:
+                text="认证审核中";
+                break;
+
+            case 3:
+                text = "审核未通过";
+                break;
+
+            case 4:
+                text = "已认证";
+        }
+        mineConfirmMsgStatus.setText(text);
+    }
+
     private void loadIdentifyInfo() {
         if (mPresenter != null) {
-            Map<String,Object> map=  mPresenter.getIdentifyInfo(getContext());
+            Map<String, Object> map = mPresenter.getIdentifyInfo(getContext());
             if (map == null) {
                 return;
             }
-            if (map .size() < 1) {
-                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.identify_new_fragment,null,false);
+            if (map.size() < 1) {
+                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.identify_new_fragment, null, false);
             } else {
                 String info = JSONObject.toJSONString(map);
-                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.identify_info_fragment,info,false);
+                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.identify_info_fragment, info, false);
             }
         }
     }

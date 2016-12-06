@@ -13,7 +13,7 @@ public interface IdentityInfoNewContract {
 
     interface View extends BaseView<Presenter>
     {
-        void onSubmitSuccess();
+        void onSubmitSuccess(boolean status);
     }
 
     interface Presenter extends BasePresenter

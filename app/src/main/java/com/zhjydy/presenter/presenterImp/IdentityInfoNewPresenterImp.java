@@ -6,9 +6,11 @@ import com.zhjydy.model.net.FileUpLoad;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
+import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.presenter.contract.IdentityInfoContract;
 import com.zhjydy.presenter.contract.IdentityInfoNewContract;
 import com.zhjydy.util.ViewKey;
+import com.zhjydy.view.zhview.zhToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,10 +65,16 @@ public class IdentityInfoNewPresenterImp implements IdentityInfoNewContract.Pres
                 params.put("idcard",s);
                 return WebCall.getInstance().call(WebKey.func_updateHuan,params);
             }
-        }).subscribe(new BaseSubscriber<WebResponse>() {
+        }).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"请稍后，正在上传认证信息") {
             @Override
             public void onNext(WebResponse webResponse) {
-                mView.onSubmitSuccess();
+                boolean status = WebUtils.getWebStatus(webResponse);
+                mView.onSubmitSuccess(status);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                zhToast.showToast(e.getMessage());
             }
         });
     }

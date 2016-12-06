@@ -20,7 +20,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="35dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -37,12 +37,7 @@
                 android:id="@+id/step_upload"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/bg_circle_identify2"
                 android:gravity="center"
-                android:maxEms="2"
-                android:maxLines="2"
-                android:text="未上传"
                 android:textColor="@color/white_text"
                 android:textSize="16sp" />
 
@@ -51,7 +46,6 @@
                 android:layout_height="4dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-
                 android:background="@drawable/dotted_line_gray"
                 android:layerType="software" />
 
@@ -67,7 +61,6 @@
                 android:layout_height="4dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-
                 android:background="@drawable/dotted_line_gray"
                 android:layerType="software" />
 
@@ -75,12 +68,7 @@
                 android:id="@+id/step_wait_verify"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/bg_circle_identify2"
                 android:gravity="center"
-                android:maxEms="2"
-                android:maxLines="2"
-                android:text="未审核"
                 android:textColor="@color/white_text"
                 android:textSize="16sp" />
 
@@ -89,7 +77,6 @@
                 android:layout_height="4dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-
                 android:background="@drawable/dotted_line_gray"
                 android:layerType="software" />
 
@@ -105,7 +92,6 @@
                 android:layout_height="4dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-
                 android:background="@drawable/dotted_line_gray"
                 android:layerType="software" />
 
@@ -113,12 +99,7 @@
                 android:id="@+id/step_wait"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/bg_circle_identify2"
                 android:gravity="center"
-                android:maxEms="2"
-                android:maxLines="2"
-                android:text="等待中"
                 android:textColor="@color/white_text"
                 android:textSize="16sp" />
 
@@ -128,7 +109,6 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@drawable/dotted_line_gray"
-
                 android:layerType="software" />
 
         </LinearLayout>
@@ -150,12 +130,7 @@
                 android:id="@+id/step_verify"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/bg_circle_identify1"
                 android:gravity="center"
-                android:maxEms="2"
-                android:maxLines="2"
-                android:text="审核结果"
                 android:textColor="@color/white_text"
                 android:textSize="16sp" />
 
@@ -180,7 +155,6 @@
             android:id="@+id/photo1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@mipmap/camera_outline"
             android:padding="2dp"
             android:scaleType="fitCenter"
             android:src="@mipmap/photo"

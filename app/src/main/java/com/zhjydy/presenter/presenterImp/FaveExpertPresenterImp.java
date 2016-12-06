@@ -8,9 +8,11 @@ import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
+import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.presenter.contract.FavExpertContract;
 import com.zhjydy.presenter.contract.MainExpertContract;
 import com.zhjydy.util.Utils;
+import com.zhjydy.view.zhview.zhToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,12 +111,18 @@ public class FaveExpertPresenterImp implements FavExpertContract.Presenter {
         WebCall.getInstance().call(WebKey.func_cancelCollectExpert,params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"") {
             @Override
             public void onNext(WebResponse webResponse) {
-                List<String> collect = AppData.getInstance().getToken().getCollectExpertList();
-                if (collect.contains(id)) {
-                    collect.remove(id);
+                boolean status = WebUtils.getWebStatus(webResponse);
+                if (status) {
+                    ArrayList<String> collect = new ArrayList<String>();
+                    collect.addAll(AppData.getInstance().getToken().getCollectExpertList());
+                    if (collect.contains(id)) {
+                        collect.remove(id);
+                    }
+                    AppData.getInstance().getToken().setCollectExpertAsList(collect);
+                    loadExperts();
+                } else {
+                    zhToast.showToast("取消收藏失败");
                 }
-                AppData.getInstance().getToken().setCollectExpertAsList(collect);
-                loadExperts();
             }
         });
     }

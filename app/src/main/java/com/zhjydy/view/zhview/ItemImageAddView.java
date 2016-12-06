@@ -52,6 +52,11 @@ public class ItemImageAddView extends BaseItemView {
         return list;
     }
 
+    public void setImageSize(int width,int height) {
+        if (mAdapter != null) {
+            mAdapter.setItemImageSize(width,height);
+        }
+    }
     public List<String> getDelFileList() {
         return mAdapter.getDelList();
     }

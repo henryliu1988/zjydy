@@ -96,6 +96,9 @@ public class PagerImpActivity extends BaseActivity implements PageImpContract.Vi
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {
+            return;
+        }
         for (ActivityResultView view : mActivityResultViews) {
             if (view != null) {
                 view.onActivityResult1(requestCode, resultCode, data);

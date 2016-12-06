@@ -56,7 +56,7 @@ public class PatientCaseListAdapter extends ListViewAdapter<Map<String, Object>>
         String depCode = Utils.toString(comment.get("office"));
 
         if (!TextUtils.isEmpty(disCode)) {
-            List<District> list = DicData.getInstance().getDistrictById(disCode);
+            List<District> list = DicData.getInstance().getDistrictById1(disCode);
             if (list.size() > 0){
                 for (int i = list.size()-1;i>=0;i--) {
                     distrcit += list.get(i).getName() + " ";

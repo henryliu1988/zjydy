@@ -8,6 +8,7 @@ import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
+import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.presenter.contract.ExpertDetailContract;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.zhview.zhToast;
@@ -191,13 +192,18 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
         WebCall.getInstance().call(WebKey.func_cancelCollectExpert, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), "取消收藏！") {
             @Override
             public void onNext(WebResponse webResponse) {
-                List<String> collect = new ArrayList<String>();
-                collect.addAll(AppData.getInstance().getToken().getCollectExpertList());
-                if (collect.contains(expertId)) {
-                    collect.remove(expertId);
+                boolean status = WebUtils.getWebStatus(webResponse);
+                if (status) {
+                    ArrayList<String> collect = new ArrayList<String>();
+                    collect.addAll(AppData.getInstance().getToken().getCollectExpertList());
+                    if (collect.contains(expertId)) {
+                        collect.remove(expertId);
+                    }
+                    AppData.getInstance().getToken().setCollectExpertAsList(collect);
+                    loadFavStatus();
+                } else {
+                    zhToast.showToast("取消收藏失败！");
                 }
-                AppData.getInstance().getToken().setCollectExpertAsList(collect);
-                loadFavStatus();
             }
 
             @Override

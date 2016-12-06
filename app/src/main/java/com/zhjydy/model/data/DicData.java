@@ -144,6 +144,59 @@ public class DicData {
         });
         return qus;
     }
+    public  Map<String,District> getAllProsMap() {
+        List<District> pros = new ArrayList<>();
+        Map<String,District> map = new HashMap<>();
+
+        if (TextUtils.isEmpty(prosListData)) {
+            prosListData = (String) SPUtils.get("pro_dic", "");
+        }
+        if (TextUtils.isEmpty(prosListData)) {
+            return map;
+        }
+        pros = JSON.parseObject(prosListData, new TypeReference<List<District>>() {
+        });
+        for(District p:pros) {
+            map.put(p.getId(),p);
+        }
+        return map;
+    }
+
+    public  Map<String,District>  getAllCitiesMap() {
+        List<District> city = new ArrayList<>();
+        Map<String,District> map = new HashMap<>();
+        if (TextUtils.isEmpty(cityListData)) {
+            cityListData = (String) SPUtils.get("city_dic", "");
+        }
+        if (TextUtils.isEmpty(cityListData)) {
+            return map;
+        }
+        city = JSON.parseObject(cityListData, new TypeReference<List<District>>() {
+        });
+        for(District c:city) {
+            map.put(c.getId(),c);
+        }
+        return map;
+    }
+
+
+    public  Map<String,District>  getAllQusMap() {
+        List<District> qus = new ArrayList<>();
+        Map<String,District> map = new HashMap<>();
+
+        if (TextUtils.isEmpty(quListData)) {
+            quListData = (String) SPUtils.get("qu_dic", "");
+        }
+        if (TextUtils.isEmpty(quListData)) {
+            return map;
+        }
+        qus = JSON.parseObject(quListData, new TypeReference<List<District>>() {
+        });
+        for(District q:qus) {
+            map.put(q.getId(),q);
+        }
+        return map;
+    }
 
 
     public List<NormalItem> getSex() {
@@ -190,6 +243,37 @@ public class DicData {
             }
         }
         return new NormalDicItem();
+    }
+
+    public List<District> getDistrictById1(String id) {
+        List<District> list = new ArrayList<>();
+        if (TextUtils.isEmpty(id)) {
+            District d = new District();
+            d.setName("未知地区");
+            list.add(d);
+            return list;
+        }
+
+
+        Map<String,District> pros = getAllProsMap();
+        Map<String,District> cities = getAllCitiesMap();
+        Map<String,District> qus = getAllQusMap();
+
+        District qu  = qus.get(id);
+        if (qu != null) {
+            list.add(qu);
+            String cityId = qu.getParentid();
+            District city = cities.get(cityId);
+            if (city != null) {
+                list.add(city);
+                String proId = city.getParentid();
+                District pro = pros.get(proId);
+                if (pro != null) {
+                    list.add(pro);
+                }
+            }
+        }
+        return  list;
     }
 
     public List<District> getDistrictById(String id) {

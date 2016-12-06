@@ -7,6 +7,7 @@ import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
+import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.presenter.contract.MainMineContract;
 import com.zhjydy.presenter.contract.MainOrderContract;
 import com.zhjydy.util.Utils;
@@ -27,7 +28,7 @@ public class MainMinePresenterImp implements MainMineContract.MainMinePresenter 
 
     private MainMineContract.MainMineView mView;
 
-    private int identifycall = -1;
+    private int identifycall = -2;
     public MainMinePresenterImp(MainMineContract.MainMineView view) {
         this.mView = view;
         view.setPresenter(this);
@@ -64,8 +65,22 @@ public class MainMinePresenterImp implements MainMineContract.MainMinePresenter 
             }
             @Override
             public void onNext(WebResponse webResponse) {
-                identifycall = 0;
-                identifyMsg = Utils.parseObjectToMapString(webResponse.getData());
+                boolean status = WebUtils.getWebStatus(webResponse);
+                String statusMsg = "";
+                if(!status) {
+                    identifycall = -1;
+                } else {
+                    identifyMsg = Utils.parseObjectToMapString(webResponse.getData());
+                    if (identifyMsg == null || identifyMsg.size() < 1) {
+                        identifycall = -1;
+                    } else {
+                        identifycall = Utils.toInteger(identifyMsg.get("msg"));
+                    }
+                }
+                if (mView != null) {
+                    mView.updateIdentiFyStatus(identifycall,statusMsg);
+                }
+
             }
         });
     }
