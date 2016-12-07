@@ -4,8 +4,10 @@ import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
+import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.util.Utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +50,14 @@ public class PatientData {
         return WebCall.getInstance().callCache(WebKey.func_getPatientList, params, mAllPatient).map(new Func1<WebResponse, List<Map<String, Object>>>() {
             @Override
             public List<Map<String, Object>> call(WebResponse webResponse) {
-                mAllPatient = webResponse;
-                return Utils.parseObjectToListMapString(webResponse.getData());
+                boolean status = WebUtils.getWebStatus(webResponse);
+                if (status) {
+                    mAllPatient = webResponse;
+                    return Utils.parseObjectToListMapString(webResponse.getData());
+                } else {
+                    List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
+                    return  list;
+                }
             }
         });
     }

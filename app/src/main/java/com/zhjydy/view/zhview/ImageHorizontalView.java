@@ -94,8 +94,7 @@ public class ImageHorizontalView extends LinearLayout
             int imageWidth = (int)(imageHeight*1.3);
             ViewGroup.LayoutParams imageParams = new ViewGroup.LayoutParams(imageWidth, imageHeight);
             imageView.setLayoutParams(imageParams);
-            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) imageView.getLayoutParams();
-            p.setMargins(5,0,5,0);
+            imageView.setPadding(8,0,8,0);
             imageView.requestLayout();
             if (imageType == ViewKey.TYPE_FILE_PATH)
             {

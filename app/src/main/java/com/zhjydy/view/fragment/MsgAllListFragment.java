@@ -116,7 +116,7 @@ public class MsgAllListFragment extends PageImpBaseFragment implements MsgAllLis
             TextView timeTv = (TextView) view.findViewById(R.id.msg_time);
 
 
-            String photoUrl = Utils.toString(data.get(i).get("url"));
+            String photoUrl = Utils.toString(data.get(i).get("path"));
             if (!TextUtils.isEmpty(photoUrl)) {
                 ImageUtils.getInstance().displayFromRemote(photoUrl, imagew);
             } else {

@@ -10,6 +10,7 @@ import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
+import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.model.preference.SPUtils;
 import com.zhjydy.presenter.contract.LoginContract;
 import com.zhjydy.util.MD5;
@@ -51,19 +52,17 @@ public class LoginPresenterImp implements LoginContract.Presenter {
         map.put("password", paswordMd5);
         WebCall.getInstance().call(WebKey.func_login, map).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), "正在登录") {
             @Override
-            public void onError(Throwable e) {
-                closeLoadingProgress();
-                super.onError(e);
-                zhToast.showToast("登录失败" + e.getMessage());
-            }
-
-            @Override
             public void onNext(WebResponse webResponse) {
-                String data = webResponse.getData();
-                saveLogInfo(phoneNum, password);
-                saveTokenInfo(data);
-                mView.onLoginSucess();
-
+                boolean status = WebUtils.getWebStatus(webResponse);
+                if (status) {
+                    String data = webResponse.getData();
+                    saveLogInfo(phoneNum, password);
+                    saveTokenInfo(data);
+                    mView.onLoginSucess();
+                } else {
+                    String msg = WebUtils.getWebMsg(webResponse);
+                    zhToast.showToast("登录失败\n" + msg);
+                }
             }
         });
     }

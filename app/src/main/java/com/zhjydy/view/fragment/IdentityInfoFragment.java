@@ -115,7 +115,7 @@ public class IdentityInfoFragment extends PageImpBaseFragment implements Identit
         stepWaitVerify.setText("未审核");
         stepWait.setText("审核中");
         stepVerify.setText("审核\n结果");
-        int strokWidth =  ScreenUtils.getScreenWidth()/80;
+        int strokWidth =  ScreenUtils.getScreenWidth()/90;
         ViewUtil.setOverViewDrawbleBg(stepUpload,"#CCCCCC","#EEEEEE", strokWidth);
         ViewUtil.setOverViewDrawbleBg(stepWaitVerify,"#CCCCCC","#EEEEEE", strokWidth);
         ViewUtil.setOverViewDrawbleBg(stepWait,"#CCCCCC","#EEEEEE",strokWidth);

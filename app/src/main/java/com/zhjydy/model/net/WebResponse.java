@@ -70,7 +70,7 @@ public class WebResponse
 
     public boolean isEmptyData()
     {
-        if (TextUtils.isEmpty(mData) || "anyType{}".equals(mData))
+        if (TextUtils.isEmpty(returnData))
         {
             return true;
         }

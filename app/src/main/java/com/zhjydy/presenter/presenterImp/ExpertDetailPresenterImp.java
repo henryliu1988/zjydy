@@ -130,14 +130,12 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
         WebCall.getInstance().call(WebKey.func_addComment, params).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
             public void onNext(WebResponse webResponse) {
-                loadComments(expertId);
-                mView.makeCommentSuccess();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                zhToast.showToast("发布留言失败");
-                super.onError(e);
+                if (WebUtils.getWebStatus(webResponse)) {
+                    loadComments(expertId);
+                    mView.makeCommentSuccess();
+                }else{
+                    zhToast.showToast("留言失败！");
+                }
             }
         });
     }
@@ -163,18 +161,16 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
         WebCall.getInstance().call(WebKey.func_collectExpert, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), "请稍后，正在收藏！") {
             @Override
             public void onNext(WebResponse webResponse) {
-                List<String> collect = AppData.getInstance().getToken().getCollectExpertList();
-                if (!collect.contains(expertId)) {
-                    collect.add(expertId);
+                if(WebUtils.getWebStatus(webResponse)) {
+                    List<String> collect = AppData.getInstance().getToken().getCollectExpertList();
+                    if (!collect.contains(expertId)) {
+                        collect.add(expertId);
+                    }
+                    AppData.getInstance().getToken().setCollectExpertAsList(collect);
+                    loadFavStatus();
+                } else{
+                    zhToast.showToast("收藏失败");
                 }
-                AppData.getInstance().getToken().setCollectExpertAsList(collect);
-                loadFavStatus();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                zhToast.showToast("收藏失败");
-                super.onError(e);
             }
         });
     }

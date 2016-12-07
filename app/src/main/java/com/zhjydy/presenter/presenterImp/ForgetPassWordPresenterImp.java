@@ -4,8 +4,10 @@ import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
+import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.presenter.contract.ForgetPassWordContract;
 import com.zhjydy.presenter.contract.RegisterContract;
+import com.zhjydy.view.zhview.zhToast;
 
 import java.util.HashMap;
 
@@ -43,15 +45,18 @@ public class ForgetPassWordPresenterImp implements ForgetPassWordContract.Presen
         params.put("type",2);
         return WebCall.getInstance().call(WebKey.func_sendSms,params);
     }
-
-
     @Override
     public void resetPassWord(HashMap<String, Object> params) {
-        WebCall.getInstance().call(WebKey.func_reset,params).subscribe(new BaseSubscriber<WebResponse>() {
+        WebCall.getInstance().call(WebKey.func_reset,params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"请稍后，正在提交数据") {
             @Override
             public void onNext(WebResponse webResponse) {
-                String msg = webResponse.getData();
-                mView.resetOk(msg);
+                boolean status = WebUtils.getWebStatus(webResponse);
+                if (status) {
+                    String msg = webResponse.getData();
+                    mView.resetOk(msg);
+                } else {
+                    zhToast.showToast(WebUtils.getWebMsg(webResponse));
+                }
             }
         });
     }

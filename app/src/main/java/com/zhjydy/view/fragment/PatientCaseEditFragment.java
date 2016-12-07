@@ -239,12 +239,29 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
         mDistricePicker.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int option2, int options3) {
-                District pro = mProPickViewData.get(options1).getDistrict();
-                District city = mCityPickViewData.get(options1).get(option2).getDistrict();
-                District qu = mQuPickViewData.get(options1).get(option2).get(options3).getDistrict();
-                domainValue.setMap(qu.getId(), pro.getName() + " " + city.getName() + " " + qu.getName());
+                District pro = null;
+                District city = null;
+                District qu = null;
+                if (mProPickViewData.size() > options1) {
+                    pro = mProPickViewData.get(options1).getDistrict();
+                }
+                if (mCityPickViewData.size() > options1 && mCityPickViewData.get(options1).size() > option2) {
+                    city = mCityPickViewData.get(options1).get(option2).getDistrict();
+                }
+                if (mQuPickViewData.size() > options1 && mQuPickViewData.get(options1).size() > option2 && mQuPickViewData.get(options1).get(option2).size() > options3){
+                    qu = mQuPickViewData.get(options1).get(option2).get(options3).getDistrict();
+                }
+                if (pro == null) {
+                    return;
+                } else if (city == null) {
+                    domainValue.setMap(pro.getId(),pro.getName());
+                } else if (qu == null ) {
+                    domainValue.setMap(city.getId(),pro.getName() + " " + city.getName());
+                } else{
+                    domainValue.setMap(qu.getId(), pro.getName() + " " + city.getName() + " " + qu.getName());
+                }
                 mHospitalPickViewData.clear();
-                mPresenter.updateHospitalList(qu.getId());
+                mPresenter.updateHospitalList(domainValue.getTextId());
             }
         });
     }
@@ -332,13 +349,43 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
         String discript = sickDiscriptValue.getText().toString();
         String comment = commentValue.getText().toString();
         String name = sickValue.getText().toString();
-        if (TextUtils.isEmpty(reacName) || TextUtils.isEmpty(sex) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(districtId)
-                || TextUtils.isEmpty(hosId) || TextUtils.isEmpty(officeId) ||
-                TextUtils.isEmpty(docName) || TextUtils.isEmpty(patientName)
-                || TextUtils.isEmpty(hosId) || TextUtils.isEmpty(officeId)) {
-            zhToast.showToast("字段为空");
+
+        if (TextUtils.isEmpty(reacName)) {
+            zhToast.showToast("患者姓名不能为空");
             return;
+
         }
+        if (TextUtils.isEmpty(sex)) {
+            zhToast.showToast("请选择患者性别");
+            return;
+
+        }
+        if (TextUtils.isEmpty(reacName)) {
+            zhToast.showToast("患者姓名不能为空");
+            return;
+
+        }
+        if (TextUtils.isEmpty(phone)) {
+            zhToast.showToast("联系方式不能为空");
+            return;
+
+        }
+        if (TextUtils.isEmpty(districtId)) {
+            zhToast.showToast("请选择患者所在地区");
+            return;
+
+        }
+        if (TextUtils.isEmpty(hosId)) {
+            zhToast.showToast("请选择患者所在医院");
+            return;
+
+        }
+        /*
+        if (TextUtils.isEmpty(officeId)) {
+            zhToast.showToast("请选择患者所在科室");
+        }
+        */
+
 
 
         Map<String,Object> params = new HashMap<>();
@@ -364,7 +411,7 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
         }
 */
         Bundle bundle = new Bundle();
-        bundle.putString("param", JSONObject.toJSONString(params));
+        bundle.putString(IntentKey.FRAG_INFO, JSONObject.toJSONString(params));
         bundle.putInt("type", editType);
 
         gotoFragment(FragKey.patient_case_edit_attach_fragment, bundle);

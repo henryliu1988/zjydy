@@ -19,6 +19,7 @@ import com.zhjydy.util.ScreenUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.util.ViewKey;
 import com.zhjydy.view.ActivityResultView;
+import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.zhview.ItemImageAddView;
 import com.zhjydy.view.zhview.zhToast;
 
@@ -59,12 +60,12 @@ public class PatientCaseEditAttachFragment extends PageImpBaseFragment implement
     protected void initData()
     {
         Bundle bundle = getArguments();
-        if (bundle == null || bundle.getString("param") == null)
+        if (bundle == null || bundle.getString(IntentKey.FRAG_INFO) == null)
         {
             back();
             return;
         }
-        Map<String, Object> params = Utils.parseObjectToMapString(bundle.getString("param"));
+        Map<String, Object> params = Utils.parseObjectToMapString(bundle.getString(IntentKey.FRAG_INFO));
         type = bundle.getInt("type");
         this.params.putAll(params);
     }
@@ -106,11 +107,27 @@ public class PatientCaseEditAttachFragment extends PageImpBaseFragment implement
             }
         });
 
+        initImageAddView();
+    }
+
+    private void initImageAddView() {
         int imageWidth  = ScreenUtils.getScreenWidth()/3;
         int imageHeigth = imageWidth*4/3;
         horizontalImageView.setImageSize(imageWidth,imageHeigth);
+        List<Map<String, Object>> cases = Utils.parseObjectToListMapString(params.get("case"));
+        if (cases != null && cases.size() > 0) {
+            List<Map<String, Object>> images = new ArrayList<>();
+            for (Map<String, Object> c : cases)
+            {
+                Map<String, Object> image = new HashMap<>();
+                image.putAll(c);
+                image.put(ViewKey.FILE_KEY_TYPE,ViewKey.TYPE_FILE_URL);
+                image.put(ViewKey.FILE_KEY_URL,c.get("path"));
+                images.add(image);
+            }
+            horizontalImageView.setItems(images);
+        }
     }
-
 
     @Override
     public void setPresenter(PatientCaseEditAttachContract.Presenter presenter)

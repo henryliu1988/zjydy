@@ -53,7 +53,6 @@ public class PatientCaseFragment extends PageImpBaseFragment implements PatientC
                 Bundle bundle = new Bundle();
                 bundle.putString("id", Utils.toString(item.get("id")));
                 gotoFragment(FragKey.patient_case_detail_fragment, bundle);
-
             }
         });
     }

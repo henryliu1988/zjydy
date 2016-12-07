@@ -66,19 +66,12 @@ public class MainMinePresenterImp implements MainMineContract.MainMinePresenter 
             @Override
             public void onNext(WebResponse webResponse) {
                 boolean status = WebUtils.getWebStatus(webResponse);
+                identifyMsg = Utils.parseObjectToMapString(webResponse.getData());
+                int msgInt = Utils.toInteger(identifyMsg.get("msg"));
+                identifycall = msgInt;
                 String statusMsg = "";
-                if(!status) {
-                    identifycall = -1;
-                } else {
-                    identifyMsg = Utils.parseObjectToMapString(webResponse.getData());
-                    if (identifyMsg == null || identifyMsg.size() < 1) {
-                        identifycall = -1;
-                    } else {
-                        identifycall = Utils.toInteger(identifyMsg.get("msg"));
-                    }
-                }
                 if (mView != null) {
-                    mView.updateIdentiFyStatus(identifycall,statusMsg);
+                    mView.updateIdentiFyStatus(msgInt,statusMsg);
                 }
 
             }

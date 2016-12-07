@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.zhjydy.util.NetworkUtil;
 import com.zhjydy.view.zhview.CustomProgress;
+import com.zhjydy.view.zhview.zhToast;
 
 import rx.Subscriber;
 
@@ -73,6 +74,7 @@ public abstract class BaseSubscriber<T> extends Subscriber<T>
     public void onError(Throwable e)
     {
         closeLoadingProgress();
+        zhToast.showToast(e.getMessage());
     }
 
     public void showLoadingProgress()

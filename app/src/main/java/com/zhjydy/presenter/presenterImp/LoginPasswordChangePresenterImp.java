@@ -5,6 +5,7 @@ import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
+import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.presenter.contract.LoginPasswordChangeContract;
 import com.zhjydy.util.MD5;
 import com.zhjydy.view.zhview.zhToast;
@@ -41,13 +42,11 @@ public class LoginPasswordChangePresenterImp implements LoginPasswordChangeContr
         WebCall.getInstance().call(WebKey.func_updatePassword,params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"正在提交数据") {
             @Override
             public void onNext(WebResponse webResponse) {
-                mView.updatePassWordOk();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                zhToast.showToast("修改密码失败");
-                super.onError(e);
+                if(WebUtils.getWebStatus(webResponse)) {
+                    mView.updatePassWordOk();
+                } else {
+                    zhToast.showToast("修改密码失败");
+                }
             }
         });
     }

@@ -20,6 +20,7 @@ import com.zhjydy.util.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +55,9 @@ public class DicData {
     private String cityListData;
     private String quListData;
 
+    private List<District> mProList = new ArrayList<>();
+    private List<District> mCityList = new ArrayList<>();
+    private List<District> mQuList = new ArrayList<>();
     public void init() {
         loadOffice();
         loadBusiness();
@@ -106,74 +110,54 @@ public class DicData {
 
 
     public List<District> getAllPros() {
-        List<District> pros = new ArrayList<>();
-        if (TextUtils.isEmpty(prosListData)) {
+        if (mProList == null || mProList.size() < 1) {
             prosListData = (String) SPUtils.get("pro_dic", "");
+            mProList = JSON.parseObject(prosListData, new TypeReference<List<District>>() {
+            });
         }
-        if (TextUtils.isEmpty(prosListData)) {
-            return new ArrayList<>();
-        }
-        pros = JSON.parseObject(prosListData, new TypeReference<List<District>>() {
-        });
-        return pros;
+        return mProList;
     }
 
     public List<District> getAllCities() {
-        List<District> city = new ArrayList<>();
-        if (TextUtils.isEmpty(cityListData)) {
+        if (mCityList == null || mCityList.size() < 1) {
             cityListData = (String) SPUtils.get("city_dic", "");
+            mCityList = JSON.parseObject(cityListData, new TypeReference<List<District>>() {
+            });
         }
-        if (TextUtils.isEmpty(cityListData)) {
-            return new ArrayList<>();
-        }
-        city = JSON.parseObject(cityListData, new TypeReference<List<District>>() {
-        });
-        return city;
+        return mCityList;
     }
 
 
     public List<District> getAllQus() {
-        List<District> qus = new ArrayList<>();
-        if (TextUtils.isEmpty(quListData)) {
+        if (mQuList == null || mQuList.size() < 1) {
             quListData = (String) SPUtils.get("qu_dic", "");
+            mQuList = JSON.parseObject(quListData, new TypeReference<List<District>>() {
+            });
         }
-        if (TextUtils.isEmpty(quListData)) {
-            return new ArrayList<>();
-        }
-        qus = JSON.parseObject(quListData, new TypeReference<List<District>>() {
-        });
-        return qus;
+        return mQuList;
     }
     public  Map<String,District> getAllProsMap() {
-        List<District> pros = new ArrayList<>();
         Map<String,District> map = new HashMap<>();
 
-        if (TextUtils.isEmpty(prosListData)) {
+        if (mProList == null || mProList.size() < 1) {
             prosListData = (String) SPUtils.get("pro_dic", "");
+            mProList = JSON.parseObject(prosListData, new TypeReference<List<District>>() {
+            });
         }
-        if (TextUtils.isEmpty(prosListData)) {
-            return map;
-        }
-        pros = JSON.parseObject(prosListData, new TypeReference<List<District>>() {
-        });
-        for(District p:pros) {
+        for(District p:mProList) {
             map.put(p.getId(),p);
         }
         return map;
     }
 
     public  Map<String,District>  getAllCitiesMap() {
-        List<District> city = new ArrayList<>();
         Map<String,District> map = new HashMap<>();
-        if (TextUtils.isEmpty(cityListData)) {
+        if (mCityList == null || mCityList.size() < 1) {
             cityListData = (String) SPUtils.get("city_dic", "");
+            mCityList = JSON.parseObject(cityListData, new TypeReference<List<District>>() {
+            });
         }
-        if (TextUtils.isEmpty(cityListData)) {
-            return map;
-        }
-        city = JSON.parseObject(cityListData, new TypeReference<List<District>>() {
-        });
-        for(District c:city) {
+        for(District c:mCityList) {
             map.put(c.getId(),c);
         }
         return map;
@@ -184,14 +168,11 @@ public class DicData {
         List<District> qus = new ArrayList<>();
         Map<String,District> map = new HashMap<>();
 
-        if (TextUtils.isEmpty(quListData)) {
+        if (mQuList == null || mQuList.size() < 1) {
             quListData = (String) SPUtils.get("qu_dic", "");
+            qus = JSON.parseObject(quListData, new TypeReference<List<District>>() {
+            });
         }
-        if (TextUtils.isEmpty(quListData)) {
-            return map;
-        }
-        qus = JSON.parseObject(quListData, new TypeReference<List<District>>() {
-        });
         for(District q:qus) {
             map.put(q.getId(),q);
         }
@@ -339,40 +320,54 @@ public class DicData {
         return list;
 
     }
+
+
+
+    private ArrayList<DistricPickViewData> mProPickViewData;
+    private ArrayList<ArrayList<DistricPickViewData>> mCityPickViewData;
+    private ArrayList<ArrayList<ArrayList<DistricPickViewData>>> mQuPickViewData;
     public Observable<Map<String, ArrayList>> getAllDistrictForPicker() {
         return Observable.create(new Observable.OnSubscribe<Map<String, ArrayList>>() {
             @Override
             public void call(Subscriber<? super Map<String, ArrayList>> subscriber) {
-                ArrayList<DistricPickViewData> mProPickViewData;
-                ArrayList<ArrayList<DistricPickViewData>> mCityPickViewData;
-                ArrayList<ArrayList<ArrayList<DistricPickViewData>>> mQuPickViewData;
-                mProPickViewData = new ArrayList<>();
-                mCityPickViewData = new ArrayList<>();
-                mQuPickViewData = new ArrayList<>();
-                List<District> pros = new ArrayList<>();
-                pros.addAll(DicData.getInstance().getAllPros());
-                List<District> citys = new ArrayList<>();
-                citys.addAll(DicData.getInstance().getAllCities());
-                List<District> qus = new ArrayList<>();
-                qus.addAll(DicData.getInstance().getAllQus());
-                for (District pro : pros) {
-                    mProPickViewData.add(new DistricPickViewData(pro));
-                    ArrayList<DistricPickViewData> cityPickList = new ArrayList<>();
-                    ArrayList<ArrayList<DistricPickViewData>> cityQuPickList = new ArrayList<>();
-                    for (District city : citys) {
-                        ArrayList<DistricPickViewData> quPickList = new ArrayList<>();
-                        if (!TextUtils.isEmpty(city.getParentid()) && city.getParentid().equals(pro.getId())) {
-                            cityPickList.add(new DistricPickViewData(city));
-                            for (District qu : qus) {
-                                if (!TextUtils.isEmpty(qu.getParentid()) && qu.getParentid().equals(city.getId())) {
-                                    quPickList.add(new DistricPickViewData(qu));
+
+                if (mProPickViewData == null || mProPickViewData.size()< 1 || mCityPickViewData == null
+                        || mCityPickViewData.size()< 1|| mQuPickViewData == null || mQuPickViewData.size()< 1)
+                {
+                    mProPickViewData = new ArrayList<>();
+                    mCityPickViewData = new ArrayList<>();
+                    mQuPickViewData = new ArrayList<>();
+                    List<District> pros = new ArrayList<>();
+                    pros.addAll(getAllPros());
+                    List<District> citys = new ArrayList<>();
+                    citys.addAll(getAllCities());
+                    List<District> qus = new ArrayList<>();
+                    qus.addAll(getAllQus());
+                    for (District pro : pros) {
+                        mProPickViewData.add(new DistricPickViewData(pro));
+                        ArrayList<DistricPickViewData> cityPickList = new ArrayList<>();
+                        ArrayList<ArrayList<DistricPickViewData>> cityQuPickList = new ArrayList<>();
+                        Iterator<District> itC = citys.iterator();
+                        while (itC.hasNext()) {
+                            ArrayList<DistricPickViewData> quPickList = new ArrayList<>();
+                            District city = itC.next();
+                            if (!TextUtils.isEmpty(city.getParentid()) && city.getParentid().equals(pro.getId())) {
+                                cityPickList.add(new DistricPickViewData(city));
+                                Iterator<District> itQu = qus.iterator();
+                                while (itQu.hasNext()) {
+                                    District qu = itQu.next();
+                                    if (!TextUtils.isEmpty(qu.getParentid()) && qu.getParentid().equals(city.getId())) {
+                                        quPickList.add(new DistricPickViewData(itQu.next()));
+                                        itQu.remove();
+                                    }
                                 }
+                                cityQuPickList.add(quPickList);
+                                itC.remove();
                             }
-                            cityQuPickList.add(quPickList);
                         }
+                        mCityPickViewData.add(cityPickList);
+                        mQuPickViewData.add(cityQuPickList);
                     }
-                    mCityPickViewData.add(cityPickList);
-                    mQuPickViewData.add(cityQuPickList);
                 }
                 Map<String, ArrayList> map = new HashMap<String, ArrayList>();
                 map.put("pro", mProPickViewData);
@@ -383,8 +378,6 @@ public class DicData {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-
-
     }
 
     private void loadOffice() {

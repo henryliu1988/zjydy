@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -79,19 +80,13 @@ public class GridViewAdapter extends android.widget.BaseAdapter
         convertView = inflater.inflate(R.layout.image_add_grid_item, null);
         final ImageView img_pic = (ImageView) convertView
                 .findViewById(R.id.img_pic);
+        FrameLayout image_layout = (FrameLayout)convertView.findViewById(R.id.image_layout);
         if (width >0 && height >0){
-            ViewGroup.LayoutParams param = new ViewGroup.LayoutParams(width,height);
-            img_pic.setLayoutParams(param);
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(width,height);
+            image_layout.setLayoutParams(param);
         }
-        LinearLayout ly = (LinearLayout) convertView
-                .findViewById(R.id.layout);
-        LinearLayout ll_picparent = (LinearLayout) convertView
-                .findViewById(R.id.ll_picparent);
         ImageView delete = (ImageView) convertView
                 .findViewById(R.id.img_delete);
-
-
-        ll_picparent.setVisibility(View.GONE);
         img_pic.setVisibility(View.VISIBLE);
         if (Utils.toInteger(imgList.get(position).get(ViewKey.FILE_KEY_TYPE)) == ViewKey.TYPE_FILE_PATH)
         {

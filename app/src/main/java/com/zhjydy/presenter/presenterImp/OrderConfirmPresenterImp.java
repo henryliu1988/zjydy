@@ -7,6 +7,7 @@ import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
+import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.presenter.contract.OrderConfirmContract;
 import com.zhjydy.presenter.contract.PayPasswordAddContract;
 import com.zhjydy.util.MD5;
@@ -77,13 +78,11 @@ public class OrderConfirmPresenterImp implements OrderConfirmContract.Presenter 
         WebCall.getInstance().call(WebKey.func_makeOrder,params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"提交预约信息") {
             @Override
             public void onNext(WebResponse webResponse) {
-                mView.subsribExpertResult(true,"成功预约专家");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                mView.subsribExpertResult(false,"预约失败  " + e.getMessage());
-                super.onError(e);
+                if (WebUtils.getWebStatus(webResponse)) {
+                    mView.subsribExpertResult(true,"成功预约专家");
+                } else {
+                    mView.subsribExpertResult(false,"预约失败  " +WebUtils.getWebMsg(webResponse));
+                }
             }
         });
 

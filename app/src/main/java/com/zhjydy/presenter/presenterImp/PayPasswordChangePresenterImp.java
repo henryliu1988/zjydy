@@ -5,6 +5,7 @@ import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
+import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.presenter.contract.PayPasswordChangContract;
 import com.zhjydy.presenter.contract.PhoneNumChangContract;
 
@@ -48,14 +49,12 @@ public class PayPasswordChangePresenterImp implements PayPasswordChangContract.P
         WebCall.getInstance().call(WebKey.func_addPayPass,parasm).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
             public void onNext(WebResponse webResponse) {
-                AppData.getInstance().getToken().setPaypass(newPw);
-                mView.confirmResult(true,"修改支付密码成功");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                mView.confirmResult(false,e.getMessage());
-                super.onError(e);
+                if(WebUtils.getWebStatus(webResponse)) {
+                    AppData.getInstance().getToken().setPaypass(newPw);
+                    mView.confirmResult(true,"修改支付密码成功");
+                } else {
+                    mView.confirmResult(false,"修改支付密码失败");
+                }
             }
         });
     }
