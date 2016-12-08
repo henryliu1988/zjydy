@@ -43,7 +43,7 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
     @BindView(R.id.right_img)
     ImageTipsView rightImg;
     @BindView(R.id.right_l_img)
-    ImageView rightLImg;
+    ImageTipsView rightLImg;
     @BindView(R.id.tab_layout)
     CommonTabLayout tabLayout;
     @BindView(R.id.m_list)

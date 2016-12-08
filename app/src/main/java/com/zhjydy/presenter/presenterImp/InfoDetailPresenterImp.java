@@ -13,6 +13,7 @@ import com.zhjydy.presenter.contract.InfoDetailContract;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.zhview.zhToast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +97,31 @@ public class InfoDetailPresenterImp implements InfoDetailContract.Presenter {
 
     @Override
     public void cancelSaveInfo() {
+        HashMap<String, Object> params = new HashMap<>();
+        List<String> collect = new ArrayList<>();
+        collect.addAll(AppData.getInstance().getToken().getCollectNewsList());
+        if (collect.contains(infoId)) {
+            collect.remove(infoId);
+        }
+        params.put("collectnews",Utils.strListToString(collect));
+        params.put("userid", AppData.getInstance().getToken().getId());
+        WebCall.getInstance().call(WebKey.func_cancelCollectNews, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), "取消收藏") {
+            @Override
+            public void onNext(WebResponse webResponse) {
+                boolean status = WebUtils.getWebStatus(webResponse);
+                if (status) {
+                    ArrayList<String> collect = new ArrayList<String>();
+                    collect.addAll(AppData.getInstance().getToken().getCollectNewsList());
+                    if (collect.contains(infoId)) {
+                        collect.remove(infoId);
+                    }
+                    AppData.getInstance().getToken().setCollectNewAsList(collect);
+                    loadFavStatus();
+                } else {
+                    zhToast.showToast("取消收藏失败！");
+                }
+            }
+        });
 
     }
 

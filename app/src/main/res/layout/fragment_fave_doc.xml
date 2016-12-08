@@ -4,19 +4,27 @@
     android:layout_height="match_parent">
     <include layout="@layout/titlebar_layout_back_search"/>
 
-    <com.yyydjk.library.DropDownMenu
-        android:id="@+id/dropDownMenu"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout
+        android:id="@+id/list_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:ddmenuTextSize="13sp"
-        app:ddtextUnselectedColor="@color/drop_down_unselected"
-        app:ddtextSelectedColor="@color/drop_down_selected"
-        app:dddividerColor="@color/gray"
-        app:ddunderlineColor="@color/gray"
-        app:ddmaskColor="@color/mask_color"
-        app:ddmenuBackgroundColor="@color/white"
-        app:ddmenuSelectedIcon="@mipmap/dropmenu_down"
-        app:ddmenuUnselectedIcon="@mipmap/dropmenu_up" />
+        android:layout_height="match_parent"
+        android:background="@color/gray_bg">
+
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+            android:id="@+id/m_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="#00000000"
+            android:divider="#00000000"
+            android:dividerHeight="10dp"
+            android:fadingEdge="none"
+            android:fastScrollEnabled="false"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:smoothScrollbar="true" />
+
+    </RelativeLayout>
+    <include layout="@layout/null_data_layout"/>
+
 
 </LinearLayout>

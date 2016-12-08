@@ -6,32 +6,22 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.shizhefei.mvc.RequestHandle;
 import com.shizhefei.mvc.ResponseSender;
 import com.zhjydy.model.data.AppData;
-import com.zhjydy.model.entity.District;
-import com.zhjydy.model.entity.DocTorInfo;
-import com.zhjydy.model.entity.Infomation;
-import com.zhjydy.model.entity.NormalDicItem;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.pageload.PageLoadDataSource;
 import com.zhjydy.model.pageload.RxObservalRequestHandle;
-import com.zhjydy.presenter.contract.MainExpertContract;
 import com.zhjydy.presenter.contract.MainInfoContract;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.MainInfoListAdapter;
-import com.zhjydy.view.adapter.PageLoadListAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import rx.Observable;
 import rx.Subscription;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.functions.Func3;
 
 /**
  * Created by Administrator on 2016/9/20 0020.

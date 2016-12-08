@@ -1,8 +1,10 @@
 package com.zhjydy.presenter.contract;
 
+import com.zhjydy.model.entity.NormalPickViewData;
 import com.zhjydy.presenter.BasePresenter;
 import com.zhjydy.presenter.BaseView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +15,7 @@ public interface OrderCancelContract {
     interface View extends BaseView<Presenter> {
 
         void cancelResult(boolean result);
+        void updateCancelResonList(ArrayList<NormalPickViewData> resons);
     }
 
     interface Presenter extends BasePresenter {

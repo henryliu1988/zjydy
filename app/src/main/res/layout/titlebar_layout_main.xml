@@ -32,10 +32,10 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"/>
 
-    <ImageView
+    <com.zhjydy.view.zhview.ImageTipsView
         android:id="@+id/right_l_img"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_toLeftOf="@id/right_img"
         android:visibility="gone"
         android:layout_centerVertical="true"

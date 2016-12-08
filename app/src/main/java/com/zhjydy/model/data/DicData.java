@@ -54,16 +54,20 @@ public class DicData {
     private String prosListData;
     private String cityListData;
     private String quListData;
+    private String orderCancelReason;
 
     private List<District> mProList = new ArrayList<>();
     private List<District> mCityList = new ArrayList<>();
     private List<District> mQuList = new ArrayList<>();
+
     public void init() {
         loadOffice();
         loadBusiness();
         loadHospital();
         loadDistrict();
+        loadOrderCanCelReson();
     }
+
 
     public List<NormalDicItem> getOffice() {
         List<NormalDicItem> list = new ArrayList<>();
@@ -177,6 +181,24 @@ public class DicData {
             map.put(q.getId(),q);
         }
         return map;
+    }
+
+    public List<NormalDicItem> getOrderReasons() {
+        List<NormalDicItem> list = new ArrayList<>();
+        if (TextUtils.isEmpty(orderCancelReason)) {
+            orderCancelReason = (String) SPUtils.get("order_cancel", "");
+        }
+        if (TextUtils.isEmpty(orderCancelReason)) {
+            return new ArrayList<>();
+        }
+        List<Map<String,Object>> datas = Utils.parseObjectToListMapString(orderCancelReason);
+        for (Map<String,Object> m:datas) {
+            NormalDicItem item = new NormalDicItem();
+            item.setId(Utils.toString(m.get("id")));
+            item.setName(Utils.toString(m.get("content")));
+            list.add(item);
+        }
+        return list;
     }
 
 
@@ -418,9 +440,9 @@ public class DicData {
                 String data = webResponse.getData();
                 SPUtils.put("pro_dic", data);
                 prosListData = data;
-                List<District> pros = JSON.parseObject(data, new TypeReference<List<District>>() {
+                mProList = JSON.parseObject(data, new TypeReference<List<District>>() {
                 });
-                return pros;
+                return mProList;
             }
         }).subscribe(new BaseSubscriber<List<District>>() {
             @Override
@@ -434,10 +456,10 @@ public class DicData {
                 String data = webResponse.getData();
                 cityListData = data;
                 SPUtils.put("city_dic", data);
-                List<District> citys = JSON.parseObject(data, new TypeReference<List<District>>() {
+                mCityList = JSON.parseObject(data, new TypeReference<List<District>>() {
                 });
                 ;
-                return citys;
+                return mCityList;
             }
         }).subscribe(new BaseSubscriber<List<District>>() {
             @Override
@@ -451,9 +473,9 @@ public class DicData {
                 String data = webResponse.getData();
                 quListData = data;
                 SPUtils.put("qu_dic", data);
-                List<District> qus = JSON.parseObject(data, new TypeReference<List<District>>() {
+                mQuList = JSON.parseObject(data, new TypeReference<List<District>>() {
                 });
-                return qus;
+                return mQuList;
             }
         }).subscribe(new BaseSubscriber<List<District>>() {
             @Override
@@ -480,6 +502,16 @@ public class DicData {
         });
     }
 
+    private  void loadOrderCanCelReson() {
+        WebCall.getInstance().call(WebKey.func_getCancelReason,new HashMap<String, Object>()).subscribe(new BaseSubscriber<WebResponse>() {
+            @Override
+            public void onNext(WebResponse webResponse) {
+                String data = webResponse.getData();
+                orderCancelReason = data;
+                SPUtils.put("order_cancel", data);
+            }
+        });
+    }
     public NormalDicItem getDicById(int type, String id) {
         switch (type) {
             case DIC_BUSINESS:

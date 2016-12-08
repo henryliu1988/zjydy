@@ -20,6 +20,7 @@ public interface OrderMsgListContract {
 
     interface Presenter extends BasePresenter
     {
-
+        void reLoadData();
+        void readOrder(String id);
     }
 }

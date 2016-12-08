@@ -19,5 +19,7 @@ public interface FavInfoContract {
 
     interface Presenter extends BasePresenter
     {
+        void searchFavInfos(String condition);
+        void cancelFav(String id);
     }
 }

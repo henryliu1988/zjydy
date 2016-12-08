@@ -4,10 +4,8 @@ import android.content.Context;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.shizhefei.mvc.IDataAdapter;
 import com.zhjydy.R;
 import com.zhjydy.model.data.DicData;
-import com.zhjydy.model.entity.DocTorInfo;
 import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.zhview.ScoreView;

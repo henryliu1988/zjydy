@@ -200,8 +200,7 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
             size = 2;
         }
         for (int i = 0; i < size; i++) {
-            Map<String, Object> expert = experts.get(i);
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.listview_main_expert_info_item, null);
+           final  Map<String, Object> expert = experts.get(i);
             ViewHolderAdd holder = ViewHolderAdd.get(getContext(), R.layout.listview_main_expert_info_item);
             ((TextView) holder.getView(R.id.name)).setText(Utils.toString(expert.get("realname")));
             ((TextView) holder.getView(R.id.depart)).setText(DicData.getInstance().getOfficeById(Utils.toString(expert.get("office"))).getName());
@@ -221,17 +220,24 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
             }
             starView.setScore(score, 100);
             ImageUtils.getInstance().displayFromRemote(Utils.toString(expert.get("path")), (ImageView) holder.getView(R.id.photo));
+            holder.getConvertView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.detail_expert_fragment, Utils.toString(expert.get("id")), false);
+                }
+            });
+            expertListLayout.addView(holder.getConvertView());
         }
     }
 
     private void initInfoListLayout(List<Map<String, Object>> infos) {
-        expertListLayout.removeAllViews();
+        infoListLayout.removeAllViews();
         int size = infos.size();
         if (size > 2) {
             size = 2;
         }
         for (int i = 0; i < size; i++) {
-            Map<String, Object> info = infos.get(i);
+           final Map<String, Object> info = infos.get(i);
             ViewHolderAdd holder = ViewHolderAdd.get(getContext(), R.layout.listview_main_info_item);
 
             ((TextView) holder.getView(R.id.title)).setText(Utils.toString(info.get("title")));
@@ -239,7 +245,16 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
             ((TextView) holder.getView(R.id.date)).setText(DateUtil.getFullTimeDiffDayCurrent(Utils.toLong(info.get("add_time")), DateUtil.LONG_DATE_FORMAT_1));
             //((TextView) holder.getView(R.id.star)).setText(info.getStar());
             ImageUtils.getInstance().displayFromRemote(Utils.toString(info.get("path")), (ImageView) holder.getView(R.id.image));
-
+            holder.getConvertView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(IntentKey.FRAG_KEY, FragKey.detail_info_fragment);
+                    bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
+                    ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+                }
+            });
+            infoListLayout.addView(holder.getConvertView());
         }
     }
 

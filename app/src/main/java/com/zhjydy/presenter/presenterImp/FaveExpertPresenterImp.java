@@ -1,8 +1,10 @@
 package com.zhjydy.presenter.presenterImp;
 
+import android.text.TextUtils;
+
+import com.shizhefei.mvc.MVCHelper;
 import com.zhjydy.model.data.AppData;
 import com.zhjydy.model.entity.District;
-import com.zhjydy.model.entity.DocTorInfo;
 import com.zhjydy.model.entity.NormalDicItem;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
@@ -10,7 +12,6 @@ import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.presenter.contract.FavExpertContract;
-import com.zhjydy.presenter.contract.MainExpertContract;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.zhview.zhToast;
 
@@ -39,40 +40,7 @@ public class FaveExpertPresenterImp implements FavExpertContract.Presenter {
 
     @Override
     public void start() {
-        loadFilterDatas();
         loadExperts();
-    }
-
-    private void loadFilterDatas() {
-
-
-        List<District> districts = new ArrayList<>();
-
-
-        List<NormalDicItem> offices = new ArrayList<>();
-
-
-        List<NormalDicItem> profess = new ArrayList<>();
-
-        Observable<List<District>> districob = Observable.just(districts);
-        Observable<List<NormalDicItem>> officeob = Observable.just(offices);
-        Observable<List<NormalDicItem>> professob = Observable.just(profess);
-
-        Observable.zip(districob, officeob, professob, new Func3<List<District>, List<NormalDicItem>, List<NormalDicItem>, Map<String, Object>>() {
-            @Override
-            public Map<String, Object> call(List<District> districts, List<NormalDicItem> normalDicItems, List<NormalDicItem> normalDicItems2) {
-                Map<String, Object> item = new HashMap<String, Object>();
-                item.put("全部地区", districts);
-                item.put("科室", normalDicItems);
-                item.put("职称", normalDicItems2);
-                return item;
-            }
-        }).subscribe(new Action1<Map<String, Object>>() {
-            @Override
-            public void call(Map<String, Object> map) {
-                mView.updateFilters(map);
-            }
-        });
     }
 
     private void loadExperts() {
@@ -123,6 +91,24 @@ public class FaveExpertPresenterImp implements FavExpertContract.Presenter {
                 } else {
                     zhToast.showToast("取消收藏失败");
                 }
+            }
+        });
+    }
+
+    @Override
+    public void searchFavExpert(String condition) {
+        if (TextUtils.isEmpty(condition)){
+            loadExperts();
+            return;
+        }
+        HashMap<String,Object> param = new HashMap<>();
+        param.put("expert",condition);
+        param.put("collect",AppData.getInstance().getToken().getCollectExperts());
+        WebCall.getInstance().call(WebKey.func_searchCollectExpert,param).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"") {
+            @Override
+            public void onNext(WebResponse webResponse) {
+                List<Map<String,Object>> list = Utils.parseObjectToListMapString(webResponse.getData());
+                mView.updateExperts(list);
             }
         });
     }

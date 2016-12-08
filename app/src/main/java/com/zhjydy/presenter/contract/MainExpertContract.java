@@ -1,12 +1,10 @@
 package com.zhjydy.presenter.contract;
 
-import com.zhjydy.model.entity.DocTorInfo;
 import com.zhjydy.model.entity.NormalPickViewData;
 import com.zhjydy.presenter.BasePresenter;
 import com.zhjydy.presenter.BaseView;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**

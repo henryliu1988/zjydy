@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhjydy.R;
 import com.zhjydy.presenter.contract.OrderMsgListContract;
@@ -38,7 +39,7 @@ public class OrderMsgListFragment extends PageImpBaseFragment implements OrderMs
     @BindView(R.id.title_center_tv)
     TextView titleCenterTv;
     @BindView(R.id.m_list)
-    ListView mList;
+    PullToRefreshListView mList;
 
     private OrderMsgListAdapter mAdapter;
     private OrderMsgListContract.Presenter mPresenter;
@@ -71,12 +72,22 @@ public class OrderMsgListFragment extends PageImpBaseFragment implements OrderMs
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Map<String,Object> order = (Map<String,Object>)parent.getAdapter().getItem(position);
                 if (order != null) {
+
                     String orderId = Utils.toString(order.get("orderid"));
+                    if (mPresenter != null) {
+                        mPresenter.readOrder(orderId);
+                    }
                     Bundle bundle = new Bundle();
                     bundle.putString(IntentKey.FRAG_INFO,orderId);
                     bundle.putInt("key", FragKey.detail_order_fragment);
                     gotoFragment(FragKey.detail_order_fragment,bundle);
                 }
+            }
+        });
+        mList.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                mPresenter.reLoadData();
             }
         });
     }

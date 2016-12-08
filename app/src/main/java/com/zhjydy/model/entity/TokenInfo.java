@@ -22,7 +22,9 @@ public class TokenInfo {
     String idcard;
     String status;
     String passoword;
-
+    String sex;
+    String photoId;
+    String photoUrl;
     public String getPassoword() {
         return passoword;
     }
@@ -95,6 +97,30 @@ public class TokenInfo {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getPhotoId() {
+        return photoId;
+    }
+
+    public void setPhotoId(String photoId) {
+        this.photoId = photoId;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     public List<String> getCollectExpertList(){

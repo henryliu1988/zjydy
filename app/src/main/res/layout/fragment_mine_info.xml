@@ -21,7 +21,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:textSize="15dp"
-            android:text="用户姓名"
+            android:text="头像"
             android:textColor="@color/black_text" />
 
         <ImageView
@@ -36,9 +36,10 @@
             android:id="@+id/user_photo"
             android:layout_toLeftOf="@id/item_more_flag"
             android:layout_marginRight="15dp"
-            android:layout_width="wrap_content"
+            android:layout_width="55dp"
             android:layout_centerVertical="true"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
+            android:scaleType="fitCenter"
             android:src="@mipmap/photo" />
     </RelativeLayout>
 
@@ -70,7 +71,6 @@
                 android:id="@+id/user_name_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="用户名"
                 android:textColor="@color/black_text2"
                 android:layout_alignParentRight="true"
                 android:drawableRight="@mipmap/item_turn"
@@ -100,7 +100,7 @@
                 android:layout_alignParentLeft="true"
                 android:textSize="15dp"
                 android:layout_centerVertical="true" />
-            <TextView
+            <com.zhjydy.view.zhview.MapTextView
                 android:id="@+id/user_sex_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

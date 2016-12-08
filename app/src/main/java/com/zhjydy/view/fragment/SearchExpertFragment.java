@@ -15,11 +15,10 @@ import android.widget.LinearLayout;
 
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhjydy.R;
-import com.zhjydy.model.entity.DocTorInfo;
 import com.zhjydy.presenter.contract.SearchExpertContract;
 import com.zhjydy.presenter.presenterImp.SearchExpertPresenterImp;
 import com.zhjydy.util.ActivityUtils;
-import com.zhjydy.view.adapter.FavExpertListAdapter;
+import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.MainExpertListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.PagerImpActivity;
@@ -110,9 +109,10 @@ public class SearchExpertFragment extends PageImpBaseFragment implements SearchE
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                DocTorInfo info = (DocTorInfo) adapterView.getAdapter().getItem(i);
+                Map<String,Object> info = (Map<String,Object>) adapterView.getAdapter().getItem(i);
+
                 if (info != null) {
-                    ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.detail_expert_fragment, "fsdf", false);
+                    ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.detail_expert_fragment, Utils.toString(info.get("id")), false);
                 }
             }
         });

@@ -41,13 +41,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:gravity="right">
+        android:gravity="right|center_vertical">
 
         <com.zhjydy.view.zhview.ImageTipsView
             android:id="@+id/right_l_img"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginRight="5dp"
             android:layout_centerVertical="true"/>
         <com.zhjydy.view.zhview.ImageTipsView
             android:id="@+id/right_img"

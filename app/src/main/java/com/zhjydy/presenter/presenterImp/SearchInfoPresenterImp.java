@@ -50,7 +50,7 @@ public class SearchInfoPresenterImp implements SearchInfoContract.Presenter {
                 list = Utils.parseObjectToListMapString(data);
                 return  list;
             }
-        }).subscribe(new BaseSubscriber<List<Map<String, Object>>>() {
+        }).subscribe(new BaseSubscriber<List<Map<String, Object>>>(mView.getContext(),"请稍后，正在查询") {
             @Override
             public void onNext(List<Map<String, Object>> list) {
                 mView.updateInfoList(list);

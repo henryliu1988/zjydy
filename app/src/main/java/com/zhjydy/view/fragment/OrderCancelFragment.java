@@ -11,7 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.zhjydy.R;
+import com.zhjydy.model.entity.NormalDicItem;
+import com.zhjydy.model.entity.NormalPickViewData;
 import com.zhjydy.presenter.contract.OrderCancelContract;
 import com.zhjydy.presenter.presenterImp.OrderCancelPresenterImp;
 import com.zhjydy.util.Utils;
@@ -19,6 +22,8 @@ import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.zhview.MapTextView;
 import com.zhjydy.view.zhview.ViewUtil;
 import com.zhjydy.view.zhview.zhToast;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,10 +40,8 @@ public class OrderCancelFragment extends PageImpBaseFragment implements OrderCan
     TextView cancelReasonTitle;
     @BindView(R.id.cancel_reason_value)
     MapTextView cancelReasonValue;
-    @BindView(R.id.cancel_reason_choose)
-    ImageView cancelReasonChoose;
     @BindView(R.id.cancel_reason_layout)
-    RelativeLayout cancelReasonLayout;
+    LinearLayout cancelReasonLayout;
     @BindView(R.id.comment_edit_value)
     EditText commentEditValue;
     @BindView(R.id.cancel_comment_layout)
@@ -47,6 +50,10 @@ public class OrderCancelFragment extends PageImpBaseFragment implements OrderCan
     TextView confirm;
 
     private OrderCancelContract.Presenter mPresenter;
+
+    private OptionsPickerView mCancelReasonPicker;
+    private ArrayList<NormalPickViewData> mCancelPickViewData = new ArrayList<>();
+
     @Override
     protected void initData() {
 
@@ -72,6 +79,16 @@ public class OrderCancelFragment extends PageImpBaseFragment implements OrderCan
         if (getArguments() != null && !TextUtils.isEmpty(getArguments().getString(IntentKey.FRAG_INFO))) {
             orderId = getArguments().getString(IntentKey.FRAG_INFO);
         }
+        mCancelReasonPicker = new OptionsPickerView<NormalDicItem>(getContext());
+        cancelReasonLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCancelPickViewData.size() > 0)
+                {
+                    mCancelReasonPicker.show();
+                }
+            }
+        });
         new OrderCancelPresenterImp(this, orderId);
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +123,35 @@ public class OrderCancelFragment extends PageImpBaseFragment implements OrderCan
         }else {
             zhToast.showToast("取消预约失败");
         }
+    }
+
+    @Override
+    public void updateCancelResonList(ArrayList<NormalPickViewData> resons) {
+        if (mCancelReasonPicker == null) {
+            mCancelReasonPicker = new OptionsPickerView<NormalDicItem>(getContext());
+        }
+        mCancelPickViewData = resons;
+        mCancelReasonPicker.setPicker(mCancelPickViewData);
+        mCancelReasonPicker.setCyclic(false);
+        mCancelReasonPicker.setSelectOptions(0);
+        mCancelReasonPicker.setCancelable(true);
+        mCancelReasonPicker.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener()
+        {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3)
+            {
+                String officeName = mCancelPickViewData.get(options1).getmItem().getName();
+                String officeId = mCancelPickViewData.get(options1).getmItem().getId();
+                if (TextUtils.isEmpty(officeId))
+                {
+                    cancelReasonValue.setMap("", "");
+                } else
+                {
+                    cancelReasonValue.setMap(officeId, officeName);
+                }
+            }
+        });
+
     }
 
     @Override

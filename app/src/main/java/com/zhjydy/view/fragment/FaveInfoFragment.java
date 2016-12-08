@@ -1,15 +1,23 @@
 package com.zhjydy.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhjydy.R;
 import com.zhjydy.presenter.contract.FavInfoContract;
@@ -40,8 +48,15 @@ public class FaveInfoFragment extends PageImpBaseFragment implements FavInfoCont
     LinearLayout titleSearchLy;
     @BindView(R.id.m_list)
     PullToRefreshListView mList;
+    @BindView(R.id.null_data_text)
+    TextView nullDataText;
+    @BindView(R.id.null_data_retrye)
+    TextView nullDataRetrye;
+    @BindView(R.id.null_data_layout)
+    RelativeLayout nullDataLayout;
 
     private FaveInfoListAdapter mAdapter;
+
     public static FaveInfoFragment instance() {
         FaveInfoFragment frag = new FaveInfoFragment();
         return frag;
@@ -51,7 +66,8 @@ public class FaveInfoFragment extends PageImpBaseFragment implements FavInfoCont
 
     @Override
     protected void initData() {
-
+        mAdapter = new FaveInfoListAdapter(getContext(), new ArrayList<Map<String, Object>>());
+        mList.setAdapter(mAdapter);
     }
 
     @Override
@@ -63,13 +79,26 @@ public class FaveInfoFragment extends PageImpBaseFragment implements FavInfoCont
     @Override
     protected void afterViewCreate() {
         titleSearchEdit.setHint("搜索资讯");
+        titleSearchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(getActivity().getCurrentFocus()
+                                    .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    search();
+                }
+
+                return false;
+            }
+        });
+        nullDataLayout.setVisibility(View.GONE);
         new FaveInfoPresenterImp(this);
-        mAdapter = new FaveInfoListAdapter(getContext(),new ArrayList<Map<String,Object>>());
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Map<String,Object>info =(Map<String,Object>)adapterView.getAdapter().getItem(i);
-                if(info != null && !TextUtils.isEmpty(Utils.toString(info.get("id")))) {
+                Map<String, Object> info = (Map<String, Object>) adapterView.getAdapter().getItem(i);
+                if (info != null && !TextUtils.isEmpty(Utils.toString(info.get("id")))) {
                     Bundle bundle = new Bundle();
                     bundle.putInt(IntentKey.FRAG_KEY, FragKey.detail_info_fragment);
                     bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
@@ -77,11 +106,19 @@ public class FaveInfoFragment extends PageImpBaseFragment implements FavInfoCont
                 }
             }
         });
+        mList.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                search();
+            }
+        });
     }
 
     @Override
     public void setPresenter(FavInfoContract.Presenter presenter) {
         mPresenter = presenter;
+        mAdapter.setPresenter(mPresenter);
+
     }
 
     @Override
@@ -91,9 +128,27 @@ public class FaveInfoFragment extends PageImpBaseFragment implements FavInfoCont
 
 
     @Override
-    public void updateInfoList(List<Map<String,Object>> infos) {
+    public void updateInfoList(List<Map<String, Object>> infos) {
+        mList.onRefreshComplete();
         mAdapter.refreshData(infos);
-        mList.setAdapter(mAdapter);
+        if (infos != null && infos.size() > 0) {
+            nullDataLayout.setVisibility(View.GONE);
+            mList.setVisibility(View.VISIBLE);
+        } else {
+            mList.setVisibility(View.GONE);
+            nullDataLayout.setVisibility(View.VISIBLE);
+            nullDataRetrye.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    search();
+                }
+            });
+        }
+    }
+
+    private void search() {
+        String condition = titleSearchEdit.getText().toString();
+        mPresenter.searchFavInfos(condition);
     }
 
     @Override

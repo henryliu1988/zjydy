@@ -81,6 +81,10 @@ public class LoginPresenterImp implements LoginContract.Presenter {
             info.setPaypass(Utils.toString(token.get("paypass")));
             info.setStatus(Utils.toString(token.get("status")));
             info.setPassoword(Utils.toString(token.get("password")));
+            Map<String,Object> headImg = Utils.parseObjectToMapString(token.get("head_img"));
+            info.setPhotoId(Utils.toString(headImg.get("id")));
+            info.setPhotoUrl(Utils.toString(headImg.get("path")));
+            info.setSex(Utils.toString(token.get("sex")));
             AppData.getInstance().setToken(info);
             AppData.getInstance().initData();
         }

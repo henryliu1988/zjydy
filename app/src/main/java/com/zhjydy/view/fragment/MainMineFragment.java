@@ -34,7 +34,7 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
     @BindView(R.id.right_img)
     ImageTipsView rightImg;
     @BindView(R.id.right_l_img)
-    ImageView rightLImg;
+    ImageTipsView rightLImg;
     @BindView(R.id.mine_image)
     ImageView mineImage;
     @BindView(R.id.mine_status)

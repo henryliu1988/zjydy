@@ -48,16 +48,7 @@ public class SearchHomePresenterImp implements SearchHomeContract.Presenter {
         @Override
         public List<Map<String, Object>> call(WebResponse webResponse) {
             String data = webResponse.getData();
-            Map<String,Object> dataMap = Utils.parseObjectToMapString(data);
-            List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
-            if (dataMap != null && dataMap.size() > 0) {
-                for (int i = 0 ; i < dataMap.size(); i ++) {
-                    Map<String,Object> item = Utils.parseObjectToMapString(dataMap.get(i +""));
-                    if (item != null && item.size() > 0) {
-                        list.add(item);
-                    }
-                }
-            }
+            List<Map<String,Object>> list = Utils.parseObjectToListMapString(data);
             return  list;
         }
     });
@@ -82,7 +73,7 @@ public class SearchHomePresenterImp implements SearchHomeContract.Presenter {
                 map.put("info",info);
                 return map;
             }
-        }).subscribe(new BaseSubscriber<Map<String, Object>>(mView.getContext(),"")
+        }).subscribe(new BaseSubscriber<Map<String, Object>>(mView.getContext(),"请稍后，正在查询")
         {
             @Override
             public void onNext(Map<String, Object> map)

@@ -64,6 +64,7 @@ public class MsgData {
     public Observable<List<Map<String,Object>>> getAllOrderMsgList() {
         HashMap<String, Object> params = new HashMap<>();
         params.put("userid", AppData.getInstance().getToken().getId());
+        mOrderMsgData = null;
         return WebCall.getInstance().callCache(WebKey.func_getOrdersMsg,params,mOrderMsgData).map(new Func1<WebResponse, List<Map<String, Object>>>() {
             @Override
             public List<Map<String, Object>> call(WebResponse webResponse) {

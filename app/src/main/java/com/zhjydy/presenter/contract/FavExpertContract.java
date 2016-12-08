@@ -1,6 +1,5 @@
 package com.zhjydy.presenter.contract;
 
-import com.zhjydy.model.entity.DocTorInfo;
 import com.zhjydy.presenter.BasePresenter;
 import com.zhjydy.presenter.BaseView;
 
@@ -14,12 +13,12 @@ public interface FavExpertContract {
 
     interface View extends BaseView<Presenter>
     {
-        void updateFilters(Map<String, Object> data);
         void updateExperts(List<Map<String, Object>> list);
     }
 
     interface Presenter extends BasePresenter
     {
        void cancelFavExpert(String id);
+        void searchFavExpert(String condition);
     }
 }

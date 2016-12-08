@@ -1,6 +1,5 @@
 package com.zhjydy.presenter.contract;
 
-import com.zhjydy.model.entity.DocTorInfo;
 import com.zhjydy.presenter.BasePresenter;
 import com.zhjydy.presenter.BaseView;
 

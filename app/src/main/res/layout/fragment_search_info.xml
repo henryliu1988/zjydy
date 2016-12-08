@@ -16,4 +16,7 @@
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
         android:smoothScrollbar="true" />
+
+    <include layout="@layout/null_data_layout"/>
+
 </LinearLayout>

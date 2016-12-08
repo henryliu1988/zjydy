@@ -54,7 +54,7 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
     @BindView(R.id.center_tv)
     TextView centerTv;
     @BindView(R.id.right_l_img)
-    ImageView rightLImg;
+    ImageTipsView rightLImg;
     @BindView(R.id.banner_home)
     ConvenientBanner bannerHome;
     @BindView(R.id.m_new_msg_icon)
@@ -154,8 +154,6 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
             text = count + "";
         }
         rightImg.setTipText(text);
-
-
     }
 
     @Override

@@ -1,36 +1,32 @@
 package com.zhjydy.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.yyydjk.library.DropDownMenu;
 import com.zhjydy.R;
-import com.zhjydy.model.entity.District;
-import com.zhjydy.model.entity.DocTorInfo;
-import com.zhjydy.model.entity.NormalDicItem;
 import com.zhjydy.presenter.contract.FavExpertContract;
-import com.zhjydy.presenter.contract.MainExpertContract;
 import com.zhjydy.presenter.presenterImp.FaveExpertPresenterImp;
-import com.zhjydy.presenter.presenterImp.MainExpertPresenterImp;
 import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.FavExpertListAdapter;
-import com.zhjydy.view.adapter.SimPleTextAdapter;
 import com.zhjydy.view.avtivity.PagerImpActivity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -50,17 +46,19 @@ public class FavExpertFragment extends PageImpBaseFragment implements FavExpertC
     EditText titleSearchEdit;
     @BindView(R.id.title_search_ly)
     LinearLayout titleSearchLy;
-    @BindView(R.id.dropDownMenu)
-    DropDownMenu dropDownMenu;
+    @BindView(R.id.m_list)
+    PullToRefreshListView mList;
 
-    private View mListContainerView;
-    private PullToRefreshListView mExpertListView;
     protected FavExpertContract.Presenter mPresenter;
-    protected String headers[] = {"全部地区", "科室", "职称"};
-    protected String depart[] = {"内科", "外科", "五官科"};
-    protected String proTitle[] = {"内科", "外科", "五官科"};
-    protected List<View> dropViews = new ArrayList<>();
     protected FavExpertListAdapter mExpertListAdapter;
+    @BindView(R.id.list_layout)
+    RelativeLayout listLayout;
+    @BindView(R.id.null_data_text)
+    TextView nullDataText;
+    @BindView(R.id.null_data_retrye)
+    TextView nullDataRetrye;
+    @BindView(R.id.null_data_layout)
+    RelativeLayout nullDataLayout;
 
     public static MainExpertFragment instance() {
         MainExpertFragment frag = new MainExpertFragment();
@@ -84,25 +82,39 @@ public class FavExpertFragment extends PageImpBaseFragment implements FavExpertC
         titleSearchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId== EditorInfo.IME_ACTION_SEARCH) {
-
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(getActivity().getCurrentFocus()
+                                    .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    search();
                 }
 
                 return false;
             }
         });
+        mList.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                search();
+            }
+        });
+    }
+
+
+    private void search() {
+        String condition = titleSearchEdit.getText().toString();
+        mPresenter.searchFavExpert(condition);
+
     }
 
     private void initExpertList() {
-        mListContainerView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_expert_list, null);
-        mExpertListView = (PullToRefreshListView) mListContainerView.findViewById(R.id.m_list);
-        mExpertListAdapter = new FavExpertListAdapter(getContext(), new ArrayList<Map<String,Object>>());
+        mExpertListAdapter = new FavExpertListAdapter(getContext(), new ArrayList<Map<String, Object>>());
         mExpertListAdapter.setPresenter(mPresenter);
-        mExpertListView.setAdapter(mExpertListAdapter);
-        mExpertListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mList.setAdapter(mExpertListAdapter);
+        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Map<String,Object> info = (Map<String,Object>) adapterView.getAdapter().getItem(i);
+                Map<String, Object> info = (Map<String, Object>) adapterView.getAdapter().getItem(i);
                 if (info != null) {
                     ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.detail_expert_fragment, Utils.toString(info.get("id")), false);
                 }
@@ -121,45 +133,25 @@ public class FavExpertFragment extends PageImpBaseFragment implements FavExpertC
 
     @Override
     public void refreshView() {
-
-    }
-
-
-    @Override
-    public void updateFilters(Map<String, Object> data) {
-        dropViews.clear();
-        List<District> districts = (List<District>) data.get(headers[0]);
-        List<NormalDicItem> depart = (List<NormalDicItem>) data.get(headers[1]);
-        List<NormalDicItem> profe = (List<NormalDicItem>) data.get(headers[2]);
-
-
-        ListView listView0 = new ListView(getContext());
-        SimPleTextAdapter adapter0 = new SimPleTextAdapter(getContext(), depart);
-        listView0.setAdapter(adapter0);
-        dropViews.add(listView0);
-
-
-        ListView listView1 = new ListView(getContext());
-        SimPleTextAdapter adapter1 = new SimPleTextAdapter(getContext(), profe);
-        listView1.setAdapter(adapter1);
-        dropViews.add(listView1);
-        listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                dropDownMenu.closeMenu();
-            }
-        });
-        ListView listView2 = new ListView(getContext());
-        SimPleTextAdapter adapter2 = new SimPleTextAdapter(getContext(), profe);
-        listView2.setAdapter(adapter2);
-        dropViews.add(listView2);
-        dropDownMenu.setDropDownMenu(Arrays.asList(headers), dropViews, mListContainerView);
-
     }
 
     @Override
-    public void updateExperts(List<Map<String,Object>> list) {
+    public void updateExperts(List<Map<String, Object>> list) {
         mExpertListAdapter.refreshData(list);
+        mList.onRefreshComplete();
+        if (list != null && list.size() > 0) {
+            listLayout.setVisibility(View.VISIBLE);
+            nullDataLayout.setVisibility(View.GONE);
+        } else {
+            listLayout.setVisibility(View.GONE);
+            nullDataLayout.setVisibility(View.VISIBLE);
+            nullDataRetrye.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    search();
+                }
+            });
+        }
     }
 
     @Override

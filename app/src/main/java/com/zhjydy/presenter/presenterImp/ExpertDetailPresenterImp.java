@@ -201,12 +201,6 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
                     zhToast.showToast("取消收藏失败！");
                 }
             }
-
-            @Override
-            public void onError(Throwable e) {
-                zhToast.showToast("取消收藏失败  " + e.getMessage());
-                onCompleted();
-            }
         });
 
     }

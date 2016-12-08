@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
     <include layout="@layout/titlebar_layout_back" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/cancel_reason_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,18 +32,14 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:gravity="right"
+            android:drawablePadding="10dp"
+            android:drawableRight="@mipmap/choose"
             android:textColor="@color/black_text"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/cancel_reason_title"
+            android:lines="1"
             android:textSize="15sp" />
-        <ImageView
-            android:id="@+id/cancel_reason_choose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/choose"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/cancel_comment_layout"
