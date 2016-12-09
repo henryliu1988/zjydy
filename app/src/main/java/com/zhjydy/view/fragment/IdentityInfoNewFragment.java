@@ -96,6 +96,16 @@ public class IdentityInfoNewFragment extends PageImpBaseFragment implements Iden
                 selectImg();
             }
         });
+        identify1.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                imgPos = 1;
+                selectImg();
+
+            }
+        });
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,6 +114,15 @@ public class IdentityInfoNewFragment extends PageImpBaseFragment implements Iden
                     return;
                 }
                 mPresenter.submitIdentifymsg(mImageMap);
+            }
+        });
+        identify2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                imgPos = 0;
+                selectImg();
             }
         });
     }
@@ -161,21 +180,16 @@ public class IdentityInfoNewFragment extends PageImpBaseFragment implements Iden
         switch (requestCode) {
             //从相册选择
             case SELECT_PICTURE:
-                Uri uri = data.getData();
-                String path = Utils.getPath(uri);
-                Map<String, Object> item = new HashMap<>();
-                item.put(ViewKey.FILE_KEY_TYPE, ViewKey.TYPE_FILE_PATH);
-                item.put(ViewKey.FILE_KEY_URL, path);
-                updateImageMap(path);
+                if(data != null) {
+                    Uri uri = data.getData();
+                    String path = Utils.getPath(uri);
+                    updateImageMap(path);
+                }
                 break;
             //拍照添加图片
             case SELECT_CAMER:
                 if (mCameraPath != null) {
                     String p = mCameraPath.toString();
-                    Map<String, Object> m = new HashMap<>();
-                    Map<String, Object> item1 = new HashMap<>();
-                    item1.put(ViewKey.FILE_KEY_TYPE, ViewKey.TYPE_FILE_PATH);
-                    item1.put(ViewKey.FILE_KEY_URL, p);
                     updateImageMap(p);
                 }
                 break;

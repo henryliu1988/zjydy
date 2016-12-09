@@ -198,10 +198,12 @@ public class MineIndoFragment extends PageImpBaseFragment implements MineInfoCon
         {
             //从相册选择
             case SELECT_PICTURE:
-                Uri uri = data.getData();
-                String path = Utils.getPath(uri);
-                ImageUtils.getInstance().displayFromRemote(path,userPhoto);
-                mPresenter.updateMemberPhoto(path);
+                if (data != null) {
+                    Uri uri = data.getData();
+                    String path = Utils.getPath(uri);
+                    ImageUtils.getInstance().displayFromRemote(path,userPhoto);
+                    mPresenter.updateMemberPhoto(path);
+                }
                 break;
             //拍照添加图片
             case SELECT_CAMER:

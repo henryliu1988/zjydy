@@ -157,9 +157,11 @@ public class PatientCaseEditAttachFragment extends PageImpBaseFragment implement
         {
             //从相册选择
             case SELECT_PICTURE:
-                Uri uri = data.getData();
-                String path = Utils.getPath(uri);
-                horizontalImageView.addImage(path, ViewKey.TYPE_FILE_PATH);
+                if (data!= null) {
+                    Uri uri = data.getData();
+                    String path = Utils.getPath(uri);
+                    horizontalImageView.addImage(path, ViewKey.TYPE_FILE_PATH);
+                }
                 break;
             //拍照添加图片
             case SELECT_CAMER:
