@@ -51,10 +51,10 @@ public class PatientCaseEditAttachPresenterImp implements PatientCaseEditAttachC
     public void submitMsg(final HashMap<String, Object> params, List<Map<String, Object>> files,Context context,int type) {
 
         if (type == 1) {
-            FileUpLoad.uploadFiles(files).flatMap(new Func1<String, Observable<WebResponse>>() {
+            FileUpLoad.uploadFiles(files).flatMap(new Func1<List<Map<String,Object>>, Observable<WebResponse>>() {
                 @Override
-                public Observable<WebResponse> call(String s) {
-                    params.put("case",s);
+                public Observable<WebResponse> call(List<Map<String,Object>> files) {
+                    params.put("case",Utils.getListStrsAdd(files,"id"));
                     return WebCall.getInstance().call(WebKey.func_updatePatient,params);
                 }
             }).subscribe(new BaseSubscriber<WebResponse>(context,"正在保存数据") {
@@ -65,10 +65,10 @@ public class PatientCaseEditAttachPresenterImp implements PatientCaseEditAttachC
                 }
             });
         } else {
-            FileUpLoad.uploadFiles(files).flatMap(new Func1<String, Observable<WebResponse>>() {
+            FileUpLoad.uploadFiles(files).flatMap(new Func1<List<Map<String,Object>>, Observable<WebResponse>>() {
                 @Override
-                public Observable<WebResponse> call(String s) {
-                    params.put("case",s);
+                public Observable<WebResponse> call(List<Map<String,Object>> files) {
+                    params.put("case",Utils.getListStrsAdd(files,"id"));
                     return WebCall.getInstance().call(WebKey.func_addPatient,params);
                 }
             }).subscribe(new BaseSubscriber<WebResponse>(context,"正在保存数据") {

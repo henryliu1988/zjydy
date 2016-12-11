@@ -71,7 +71,7 @@ public class OrderListAdapter extends  ListViewAdapter<Map<String,Object>> {
         String statusText = "";
         int operateType = 0;
         switch (status){
-            case 1:
+            case 1: //预约中，操作为取消预约
                 isOperateVisible = true;
                 operateText = "取消预约";
                 backGroudColor = "#F8B500";
@@ -79,7 +79,7 @@ public class OrderListAdapter extends  ListViewAdapter<Map<String,Object>> {
                 statusText = "预约中";
                 operateType = OPERATE_CANCEL;
                 break;
-            case 2:
+            case 2:  //专家确认状态，可以马上支付
                 isOperateVisible = true;
                 operateText = "马上支付";
                 backGroudColor = "#60D700";
@@ -89,6 +89,7 @@ public class OrderListAdapter extends  ListViewAdapter<Map<String,Object>> {
                 break;
 
             case 3:
+            case 11: //
                 isOperateVisible = false;
                 statusColor = "#527EFA";
                 statusText = "会诊中";
@@ -100,7 +101,6 @@ public class OrderListAdapter extends  ListViewAdapter<Map<String,Object>> {
                 statusColor = "#FF2500";
                 statusText = "退款中";
                 operateType = OPERATE_DETAIL;
-
                 break;
             case 5:
                 isOperateVisible = false;
@@ -111,10 +111,24 @@ public class OrderListAdapter extends  ListViewAdapter<Map<String,Object>> {
                 statusText = "预约取消";
                 operateType = OPERATE_DETAIL;
                 break;
-
             case 7:
                 statusText = "预约取消";
                 operateType = OPERATE_DETAIL;
+                break;
+            case 9:
+                isOperateVisible = false;
+                statusColor = "#383838";
+                statusText = "订单退款失败";
+                break;
+            case 10:
+                isOperateVisible = false;
+                statusColor = "#60D700";
+                statusText = "订单退款成功";
+                break;
+            case 12:
+                isOperateVisible = false;
+                statusColor = "#527EFA";
+                statusText = "治疗中";
                 break;
         }
         statusTv.setText(statusText);

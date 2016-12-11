@@ -100,9 +100,15 @@ public class FaveInfoFragment extends PageImpBaseFragment implements FavInfoCont
                 Map<String, Object> info = (Map<String, Object>) adapterView.getAdapter().getItem(i);
                 if (info != null && !TextUtils.isEmpty(Utils.toString(info.get("id")))) {
                     Bundle bundle = new Bundle();
-                    bundle.putInt(IntentKey.FRAG_KEY, FragKey.detail_info_fragment);
+                   // bundle.putInt(IntentKey.FRAG_KEY, FragKey.detail_info_fragment);
                     bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
-                    ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+                 //   ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+
+
+                 //   bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
+                    // ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+                    gotoFragment(FragKey.detail_info_fragment,bundle);
+
                 }
             }
         });

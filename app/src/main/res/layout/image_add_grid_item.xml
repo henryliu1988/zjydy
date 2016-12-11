@@ -9,12 +9,13 @@
         android:id="@+id/image_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="4dp">
+        android:padding="3dp">
         <ImageView
             android:id="@+id/img_pic"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:scaleType="fitCenter"
             android:visibility="gone"/>
         <!-- 删除的图片 -->
         <RelativeLayout
@@ -23,8 +24,8 @@
 
             <ImageView
                 android:id="@+id/img_delete"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:background="@mipmap/img_delet"

@@ -132,12 +132,12 @@ public class ActivityUtils
 
     public static void showLogin(Activity context, boolean finish)
     {
-        Intent intent = new Intent(context, LoginActivity.class);
-        context.startActivity(intent);
         if (finish)
         {
-            finishActivityExceptOne(LoginActivity.class);
+            finishAllActivity();
         }
+        Intent intent = new Intent(zhjApplication.getInstance().getContext(), LoginActivity.class);
+        context.startActivity(intent);
     }
 
     public static void transActivity(Activity context1, Class des, boolean finish)

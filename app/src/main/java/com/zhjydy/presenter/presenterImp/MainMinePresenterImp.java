@@ -8,6 +8,8 @@ import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.net.WebUtils;
+import com.zhjydy.presenter.RefreshKey;
+import com.zhjydy.presenter.RefreshManager;
 import com.zhjydy.presenter.contract.MainMineContract;
 import com.zhjydy.presenter.contract.MainOrderContract;
 import com.zhjydy.util.Utils;
@@ -24,7 +26,7 @@ import rx.functions.Func1;
 /**
  * Created by Administrator on 2016/9/20 0020.
  */
-public class MainMinePresenterImp implements MainMineContract.MainMinePresenter {
+public class MainMinePresenterImp implements MainMineContract.MainMinePresenter,RefreshWithData {
 
     private MainMineContract.MainMineView mView;
 
@@ -32,6 +34,8 @@ public class MainMinePresenterImp implements MainMineContract.MainMinePresenter 
     public MainMinePresenterImp(MainMineContract.MainMineView view) {
         this.mView = view;
         view.setPresenter(this);
+        RefreshManager.getInstance().addNewListener(RefreshKey.TOKEN_MSG_NICK_NAME,this);
+        RefreshManager.getInstance().addNewListener(RefreshKey.TOKEN_MSG_PHOTO,this);
         start();
     }
     private Map<String, Object> identifyMsg;
@@ -55,6 +59,7 @@ public class MainMinePresenterImp implements MainMineContract.MainMinePresenter 
         WebCall.getInstance().call(WebKey.func_patient, params).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
             public void onError(Throwable e) {
+                super.onError(e);
                 String msg = e.getMessage();
                 Map<String, Object> map = Utils.parseObjectToMapString(msg);
                 int code = Utils.toInteger(map.get("code"));
@@ -87,6 +92,15 @@ public class MainMinePresenterImp implements MainMineContract.MainMinePresenter 
         } else {
             return identifyMsg;
 
+        }
+    }
+
+    @Override
+    public void onRefreshWithData(int key, Object data) {
+        if (key == RefreshKey.TOKEN_MSG_NICK_NAME) {
+            mView.updateTokenInfo();
+        } else if (key == RefreshKey.TOKEN_MSG_PHOTO) {
+            mView.updateTokenInfo();
         }
     }
 }

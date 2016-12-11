@@ -15,7 +15,7 @@ public interface MainHomeContract {
     {
 
         void updateBanner(List<String> images);
-        void updateMsg(Map<String,Object> msg);
+        void updateMsg(List<String> news);
         void updateExpert(List<Map<String, Object>> maps);
         void updateInfo(List<Map<String, Object>> infos);
     }

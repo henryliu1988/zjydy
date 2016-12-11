@@ -83,6 +83,15 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
             tabs.add(new TabEntity(mTitles[i]));
         }
         centerTv.setText("订单");
+        rightImg.setImageResource(R.mipmap.title_msg);
+        rightImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundleMsg = new Bundle();
+                bundleMsg.putInt("key", FragKey.msg_all_fragment);
+                ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundleMsg, false);
+            }
+        });
         tabLayout.setTabData(tabs);
         tabLayout.setCurrentTab(0);
         tabLayout.setOnTabSelectListener(new OnTabSelectListener()
@@ -150,6 +159,13 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
     {
 
     }
+    public void updateUnReadMsgCount(int count) {
+        String text = "";
+        if (count != 0) {
+            text = count + "";
+        }
+        rightImg.setTipText(text);
+    }
 
     @Override
     protected int getLayoutId()
@@ -178,12 +194,20 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
                 case 1:
                 case 2:
                 case 3:
+                case 11:
+                case 12:
                     mOnGoOrderList.add(order);
                     break;
                 case 5:
+                case 6:
+                case 7:
                     mOkOrderList.add(order);
+                    break;
                 case 4:
+                case 9:
+                case 10:
                     mRetrackOrderList.add(order);
+                    break;
             }
         }
         updateAdapter();

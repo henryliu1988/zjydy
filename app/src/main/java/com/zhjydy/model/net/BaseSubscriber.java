@@ -74,7 +74,7 @@ public abstract class BaseSubscriber<T> extends Subscriber<T>
     public void onError(Throwable e)
     {
         closeLoadingProgress();
-        zhToast.showToast(e.getMessage());
+       // zhToast.showToast(e.getMessage());
     }
 
     public void showLoadingProgress()

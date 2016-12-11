@@ -24,6 +24,7 @@ import com.zhjydy.presenter.presenterImp.FaveExpertPresenterImp;
 import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.FavExpertListAdapter;
+import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.PagerImpActivity;
 
 import java.util.ArrayList;
@@ -116,7 +117,10 @@ public class FavExpertFragment extends PageImpBaseFragment implements FavExpertC
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Map<String, Object> info = (Map<String, Object>) adapterView.getAdapter().getItem(i);
                 if (info != null) {
-                    ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.detail_expert_fragment, Utils.toString(info.get("id")), false);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
+                    // ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+                    gotoFragment(FragKey.detail_expert_fragment,bundle);
                 }
             }
         });

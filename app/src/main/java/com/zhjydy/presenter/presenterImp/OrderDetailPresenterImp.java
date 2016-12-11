@@ -2,6 +2,7 @@ package com.zhjydy.presenter.presenterImp;
 
 import android.text.TextUtils;
 
+import com.shizhefei.mvc.MVCHelper;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
@@ -44,7 +45,7 @@ public class OrderDetailPresenterImp implements OrderDetailContract.Presenter {
     private void loadOrderContent(String id) {
         HashMap<String,Object> params = new HashMap<>();
         params.put("id",id);
-        WebCall.getInstance().call(WebKey.func_getOrdersById,params).subscribe(new BaseSubscriber<WebResponse>() {
+        WebCall.getInstance().call(WebKey.func_getOrdersById,params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),true) {
             @Override
             public void onNext(WebResponse webResponse) {
                 String data = webResponse.getData();

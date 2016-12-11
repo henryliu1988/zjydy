@@ -12,6 +12,9 @@ import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.pageload.PageLoadDataSource;
 import com.zhjydy.model.pageload.RxObservalRequestHandle;
+import com.zhjydy.presenter.RefreshKey;
+import com.zhjydy.presenter.RefreshManager;
+import com.zhjydy.presenter.RefreshWithKey;
 import com.zhjydy.presenter.contract.MainInfoContract;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.MainInfoListAdapter;
@@ -26,7 +29,7 @@ import rx.Subscription;
 /**
  * Created by Administrator on 2016/9/20 0020.
  */
-public class MainInfoPresenterImp extends PageLoadDataSource implements MainInfoContract.MainInfoPresenter
+public class MainInfoPresenterImp extends PageLoadDataSource implements MainInfoContract.MainInfoPresenter,RefreshWithKey
 {
 
     private MainInfoContract.MainInfoView mView;
@@ -36,6 +39,7 @@ public class MainInfoPresenterImp extends PageLoadDataSource implements MainInfo
         this.mView = view;
         setPageView(listView, new MainInfoListAdapter(mView.getContext(), new ArrayList<Map<String, Object>>()));
         view.setPresenter(this);
+        RefreshManager.getInstance().addNewListener(RefreshKey.KEY_FAV_INFO,this);
         start();
     }
 
@@ -79,7 +83,7 @@ public class MainInfoPresenterImp extends PageLoadDataSource implements MainInfo
         HashMap<String, Object> params = new HashMap<>();
         params.put("page", page);
         params.put("pagesize", PAGE_SIZE);
-        Subscription subscription = WebCall.getInstance().call(WebKey.func_getNewsList, params).subscribe(new BaseSubscriber<WebResponse>()
+        final Subscription subscription = WebCall.getInstance().call(WebKey.func_getNewsList, params).subscribe(new BaseSubscriber<WebResponse>()
         {
             @Override
             public void onNext(WebResponse webResponse)
@@ -98,12 +102,17 @@ public class MainInfoPresenterImp extends PageLoadDataSource implements MainInfo
             @Override
             public void onError(Throwable e)
             {
+                super.onError(e);
                 Exception exption = new Exception(new Throwable());
                 sender.sendError(exption);
             }
         });
         RxObservalRequestHandle handle = new RxObservalRequestHandle(subscription);
         return handle;
+    }
 
+    @Override
+    public void onRefreshWithKey(int key) {
+        loadFavMsgCount();
     }
 }

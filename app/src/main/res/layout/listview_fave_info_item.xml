@@ -14,16 +14,15 @@
 
         <ImageView
             android:id="@+id/image"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:scaleType="fitCenter" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-            android:layout_marginLeft="4dp"
+            android:layout_marginLeft="6dp"
             android:gravity="center_vertical|left"
             android:orientation="vertical">
 
@@ -41,7 +40,7 @@
                     android:ellipsize="end"
                     android:lines="1"
                     android:textColor="@color/black_text"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/fave_cancel"
@@ -64,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black_text2"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/outline"
@@ -74,7 +73,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="@color/black_text2"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
         </LinearLayout>
     </LinearLayout>

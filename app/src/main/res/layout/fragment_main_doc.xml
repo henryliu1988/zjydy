@@ -15,8 +15,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp">
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp">
 
             <com.zhjydy.view.zhview.MapTextView
                 android:id="@+id/filter_dis_tv"

@@ -395,7 +395,7 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
         params.put("realname",reacName);
         params.put("sex",sex);
         params.put("mobile",phone);
-        params.put("age",DateUtil.getDiffOfBaseTime(date));
+        params.put("age",DateUtil.getDiffOfBaseTime(date,DateUtil.LONG_DATE_FORMAT));
         params.put("address",districtId);
         params.put("hospital",hosId);
         params.put("address",districtId);

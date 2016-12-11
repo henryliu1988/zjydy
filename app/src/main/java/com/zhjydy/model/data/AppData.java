@@ -33,6 +33,9 @@ public class AppData {
         mToken = token;
     }
     public TokenInfo getToken() {
+        if (mToken == null) {
+            return new TokenInfo();
+        }
         return mToken;
     }
 

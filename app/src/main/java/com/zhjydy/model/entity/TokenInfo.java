@@ -3,6 +3,8 @@ package com.zhjydy.model.entity;
 import android.text.TextUtils;
 
 import com.zhjydy.model.data.AppData;
+import com.zhjydy.presenter.RefreshKey;
+import com.zhjydy.presenter.RefreshManager;
 import com.zhjydy.util.Utils;
 
 import java.util.ArrayList;
@@ -55,9 +57,8 @@ public class TokenInfo {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+        RefreshManager.getInstance().refreshData(RefreshKey.TOKEN_MSG_NICK_NAME);
     }
-
-
 
     public String getCollectExperts() {
         return collectExperts;
@@ -65,6 +66,7 @@ public class TokenInfo {
 
     public void setCollectExperts(String collectExperts) {
         this.collectExperts = collectExperts;
+        RefreshManager.getInstance().refreshData(RefreshKey.KEY_FAV_EXPERT);
     }
 
     public String getCollectNews() {
@@ -73,6 +75,7 @@ public class TokenInfo {
 
     public void setCollectNews(String collectNews) {
         this.collectNews = collectNews;
+        RefreshManager.getInstance().refreshData(RefreshKey.KEY_FAV_INFO);
     }
 
     public String getPaypass() {
@@ -105,6 +108,8 @@ public class TokenInfo {
 
     public void setSex(String sex) {
         this.sex = sex;
+        RefreshManager.getInstance().refreshData(RefreshKey.TOKEN_MSG_SEX);
+
     }
 
     public String getPhotoId() {
@@ -121,6 +126,7 @@ public class TokenInfo {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+        RefreshManager.getInstance().refreshData(RefreshKey.TOKEN_MSG_PHOTO);
     }
 
     public List<String> getCollectExpertList(){

@@ -99,6 +99,12 @@ public class IdentityInfoFragment extends PageImpBaseFragment implements Identit
                 gotoFragment(FragKey.identify_new_fragment);
             }
         });
+        initInfoImage();
+        initStatusView();
+    }
+
+
+    private void initInfoImage() {
         int size = path.size();
         if (size == 1) {
             ImageUtils.getInstance().displayFromRemote(path.get(0),photo1);
@@ -106,16 +112,14 @@ public class IdentityInfoFragment extends PageImpBaseFragment implements Identit
             ImageUtils.getInstance().displayFromRemote(path.get(0),photo1);
             ImageUtils.getInstance().displayFromRemote(path.get(1),photo2);
         }
-        initStatusView();
+
     }
-
-
     private void initStatusView() {
         stepUpload.setText("未上传");
         stepWaitVerify.setText("未审核");
         stepWait.setText("审核中");
         stepVerify.setText("审核\n结果");
-        int strokWidth =  ScreenUtils.getScreenWidth()/90;
+        int strokWidth =  ScreenUtils.getScreenWidth()/100;
         ViewUtil.setOverViewDrawbleBg(stepUpload,"#CCCCCC","#EEEEEE", strokWidth);
         ViewUtil.setOverViewDrawbleBg(stepWaitVerify,"#CCCCCC","#EEEEEE", strokWidth);
         ViewUtil.setOverViewDrawbleBg(stepWait,"#CCCCCC","#EEEEEE",strokWidth);
@@ -156,4 +160,11 @@ public class IdentityInfoFragment extends PageImpBaseFragment implements Identit
     }
 
 
+    @Override
+    public void updateIdentifyInfo(int status, List<String> path) {
+        this.status = status;
+        this.path = path;
+        initInfoImage();
+        initStatusView();
+    }
 }

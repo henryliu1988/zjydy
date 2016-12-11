@@ -42,6 +42,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
             android:text="添加患者"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"

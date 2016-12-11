@@ -17,6 +17,10 @@ import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.pageload.PageLoadDataSource;
 import com.zhjydy.model.pageload.RxObservalRequestHandle;
+import com.zhjydy.presenter.RefreshKey;
+import com.zhjydy.presenter.RefreshListener;
+import com.zhjydy.presenter.RefreshManager;
+import com.zhjydy.presenter.RefreshWithKey;
 import com.zhjydy.presenter.contract.MainExpertContract;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.PageLoadListAdapter;
@@ -31,7 +35,7 @@ import rx.Subscription;
 /**
  * Created by Administrator on 2016/9/20 0020.
  */
-public class MainExpertPresenterImp extends PageLoadDataSource implements MainExpertContract.MainExpertPresenter
+public class MainExpertPresenterImp extends PageLoadDataSource implements MainExpertContract.MainExpertPresenter,RefreshWithKey
 {
 
     private MainExpertContract.MainExpertView mView;
@@ -41,6 +45,7 @@ public class MainExpertPresenterImp extends PageLoadDataSource implements MainEx
         mView = view;
         setPageView(listView, adapter);
         view.setPresenter(this);
+        RefreshManager.getInstance().addNewListener(RefreshKey.KEY_FAV_EXPERT,this);
         start();
     }
 
@@ -93,14 +98,20 @@ public class MainExpertPresenterImp extends PageLoadDataSource implements MainEx
 
                 ArrayList<ArrayList<DistricPickViewData>> view2ListDefault = new ArrayList<ArrayList<DistricPickViewData>>();
                 view2ListDefault.add(viewListDefault);
-
-                ArrayList<DistricPickViewData> proPickViewData = (ArrayList<DistricPickViewData>) map.get("pro");
-                ArrayList<ArrayList<DistricPickViewData>> cityPickViewData = (ArrayList<ArrayList<DistricPickViewData>>) map.get("city");
-                ArrayList<ArrayList<ArrayList<DistricPickViewData>>> quPickViewData = (ArrayList<ArrayList<ArrayList<DistricPickViewData>>>) map.get("qu");
+                ArrayList<DistricPickViewData> proPickViewData = new ArrayList<DistricPickViewData>();
+                ArrayList<ArrayList<DistricPickViewData>> cityPickViewData = new ArrayList<ArrayList<DistricPickViewData>>();
+                ArrayList<ArrayList<ArrayList<DistricPickViewData>>> quPickViewData = new ArrayList<ArrayList<ArrayList<DistricPickViewData>>>();
+               proPickViewData.addAll((ArrayList<DistricPickViewData>) map.get("pro"));
+                cityPickViewData.addAll((ArrayList<ArrayList<DistricPickViewData>>) map.get("city"));
+                quPickViewData.addAll((ArrayList<ArrayList<ArrayList<DistricPickViewData>>>) map.get("qu")) ;
                 proPickViewData.add(0, viewDefuatData);
                 cityPickViewData.add(0, viewListDefault);
                 quPickViewData.add(0, view2ListDefault);
-                mView.updateDistrict(map);
+                Map<String,ArrayList> newMap = new HashMap<String, ArrayList>();
+                newMap.put("pro",proPickViewData);
+                newMap.put("city",cityPickViewData);
+                newMap.put("qu",quPickViewData);
+                mView.updateDistrict(newMap);
             }
         });
     }
@@ -161,7 +172,7 @@ public class MainExpertPresenterImp extends PageLoadDataSource implements MainEx
         params.put("page", page);
         params.put("pagesize", PAGE_SIZE);
 
-        Subscription subscription = WebCall.getInstance().call(WebKey.func_getExpertsList, params).subscribe(new BaseSubscriber<WebResponse>()
+        final Subscription subscription = WebCall.getInstance().call(WebKey.func_getExpertsList, params).subscribe(new BaseSubscriber<WebResponse>()
         {
             @Override
             public void onNext(WebResponse webResponse)
@@ -179,6 +190,7 @@ public class MainExpertPresenterImp extends PageLoadDataSource implements MainEx
             @Override
             public void onError(Throwable e)
             {
+                super.onError(e);
                 Exception exption = new Exception(new Throwable());
                 sender.sendError(exption);
             }
@@ -188,5 +200,10 @@ public class MainExpertPresenterImp extends PageLoadDataSource implements MainEx
         RxObservalRequestHandle handle = new RxObservalRequestHandle(subscription);
         return handle;
 
+    }
+
+    @Override
+    public void onRefreshWithKey(int key) {
+        loadExpertsFavNum();
     }
 }

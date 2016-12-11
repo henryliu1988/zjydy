@@ -52,9 +52,9 @@ public class FileUpLoad
     private static final int TIME_OUT = 10 * 1000;   //超时时间
     private static final String CHARSET = "UTF-8"; //设置编码
 
-    public static Observable<String> uploadFiles(List<Map<String, Object>> files) {
+    public static Observable<List<Map<String,Object>>> uploadFiles(List<Map<String, Object>> files) {
         if (files == null &&files.size() < 1) {
-            String ids = "";
+            List<Map<String,Object>> ids = new ArrayList<>();
             return Observable.just(ids);
         }
         List<Map<String, Object>> existFile = new ArrayList<>();
@@ -83,46 +83,24 @@ public class FileUpLoad
                     return FileUpLoad.getInstance().uploadFile(file, params);
                 }
             }).buffer(newFile.size());
-            return Observable.zip(obExist, obNew, new Func2<List<Map<String,Object>>, List<Map<String,Object>>, String>() {
+            return Observable.zip(obExist, obNew, new Func2<List<Map<String,Object>>, List<Map<String,Object>>, List<Map<String,Object>>>() {
                 @Override
-                public String call(List<Map<String, Object>> oldFile, List<Map<String, Object>> newFile) {
-                    List<String> idList = new ArrayList<String>();
-                    String ids = "";
+                public List<Map<String,Object>> call(List<Map<String, Object>> oldFile, List<Map<String, Object>> newFile) {
+                    List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
                     for (Map<String,Object> file:oldFile) {
-                        idList.add(Utils.toString(file.get("id")));
+                        list.add(file);
                     }
                     for (Map<String,Object> file:newFile) {
-                        idList.add(Utils.toString(file.get("id")));
+                        list.add(file);
                     }
-                    for (int i = 0 ; i <idList.size(); i ++) {
-                        ids += idList.get(i);
-                        if (i < idList.size() -1) {
-                            ids +=",";
-                        }
-                    }
-                    return  ids;
+
+                    return  list;
                 }
             });
         } else {
-            return obExist.map(new Func1<List<Map<String, Object>>, String>() {
-                @Override
-                public String call(List<Map<String, Object>> oldFile) {
-                    List<String> idList = new ArrayList<String>();
-                    String ids = "";
-                    for (Map<String,Object> file:oldFile) {
-                        idList.add(Utils.toString(file.get("id")));
-                    }
-
-                    for (int i = 0 ; i <idList.size(); i ++) {
-                        ids += idList.get(i);
-                        if (i < idList.size() -1) {
-                            ids +=",";
-                        }
-                    }
-                    return ids;
-                }
-            });
+            return obExist;
         }
+
     }
 
 

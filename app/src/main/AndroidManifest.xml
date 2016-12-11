@@ -4,9 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -31,13 +29,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".view.avtivity.MainTabsActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait">
         </activity>
 
 
         <activity android:name=".view.avtivity.LoginActivity"
-            android:screenOrientation="portrait">
-            <intent-filter>
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+
+            ><intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -45,12 +46,18 @@
 
         </activity>
         <activity android:name=".view.avtivity.ForgetPassWordActivity"
+            android:launchMode="singleTask"
+
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".view.avtivity.RegisterActivity"
+            android:launchMode="singleTask"
+
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".view.avtivity.PagerImpActivity"
+            android:launchMode="singleTask"
+
             android:screenOrientation="portrait">
         </activity>
         <activity

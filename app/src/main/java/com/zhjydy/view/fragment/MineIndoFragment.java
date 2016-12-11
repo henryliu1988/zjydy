@@ -30,6 +30,7 @@ import com.zhjydy.util.ScreenUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.util.ViewKey;
 import com.zhjydy.view.ActivityResultView;
+import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.zhview.MapTextView;
 
 import java.util.ArrayList;
@@ -82,7 +83,13 @@ public class MineIndoFragment extends PageImpBaseFragment implements MineInfoCon
         return R.layout.fragment_mine_info;
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(mPresenter != null) {
+            mPresenter.refreshView();
+        }
+    }
 
     @Override
     protected void afterViewCreate() {
@@ -162,6 +169,8 @@ public class MineIndoFragment extends PageImpBaseFragment implements MineInfoCon
                 selectImg();
                 break;
             case R.id.user_name_value:
+                Bundle bundle = new Bundle();
+                gotoFragment(FragKey.mine_name_change_fragment,bundle);
                 break;
             case R.id.user_sex_value:
                 if (mSexPickViewData.size() > 0) {
@@ -201,7 +210,7 @@ public class MineIndoFragment extends PageImpBaseFragment implements MineInfoCon
                 if (data != null) {
                     Uri uri = data.getData();
                     String path = Utils.getPath(uri);
-                    ImageUtils.getInstance().displayFromRemote(path,userPhoto);
+                 //   ImageUtils.getInstance().displayFromRemote(path,userPhoto);
                     mPresenter.updateMemberPhoto(path);
                 }
                 break;
@@ -210,7 +219,7 @@ public class MineIndoFragment extends PageImpBaseFragment implements MineInfoCon
                 if (mCameraPath != null)
                 {
                     String p = mCameraPath.toString();
-                    ImageUtils.getInstance().displayFromRemote(p,userPhoto);
+                 //   ImageUtils.getInstance().displayFromRemote(p,userPhoto);
                     mPresenter.updateMemberPhoto(p);
                     mCameraPath = null;
                 }

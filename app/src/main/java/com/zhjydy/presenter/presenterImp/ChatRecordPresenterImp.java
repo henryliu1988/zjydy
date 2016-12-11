@@ -60,12 +60,13 @@ public class ChatRecordPresenterImp implements ChatRecordContract.Presenter {
         }
         HashMap<String, Object> param = new HashMap<>();
         param.put("mark", mark);
-        WebCall.getInstance().call(WebKey.func_getComment, param).subscribe(new BaseSubscriber<WebResponse>() {
+        WebCall.getInstance().call(WebKey.func_getComment, param).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),true) {
             @Override
             public void onNext(WebResponse webResponse) {
                 String data = webResponse.getData();
                 List<Map<String, Object>> comments = Utils.parseObjectToListMapString(data);
-                mView.setChatMsgs(comments);
+                String expertUrl = Utils.toString(chatInfo.get("path"));
+                mView.setChatMsgs(comments,expertUrl);
             }
         });
     }

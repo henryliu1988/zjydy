@@ -111,8 +111,8 @@ public class PatientCaseEditAttachFragment extends PageImpBaseFragment implement
     }
 
     private void initImageAddView() {
-        int imageWidth  = ScreenUtils.getScreenWidth()/3;
-        int imageHeigth = imageWidth*4/3;
+        int imageWidth  = ScreenUtils.getScreenWidth()*2/5;
+        int imageHeigth = imageWidth*3/4;
         horizontalImageView.setImageSize(imageWidth,imageHeigth);
         List<Map<String, Object>> cases = Utils.parseObjectToListMapString(params.get("case"));
         if (cases != null && cases.size() > 0) {

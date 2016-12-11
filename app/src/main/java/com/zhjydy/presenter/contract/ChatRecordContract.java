@@ -13,7 +13,7 @@ public interface ChatRecordContract {
 
     interface View extends BaseView<Presenter>
     {
-        void setChatMsgs(List<Map<String,Object>> msg);
+        void setChatMsgs(List<Map<String,Object>> msg,String expertPhoto);
         void updateExpertName(String name);
     }
 

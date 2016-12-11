@@ -3,9 +3,15 @@ package com.zhjydy.presenter.presenterImp;
 import com.zhjydy.R;
 import com.zhjydy.model.data.MsgData;
 import com.zhjydy.model.net.BaseSubscriber;
+import com.zhjydy.model.net.WebCall;
+import com.zhjydy.model.net.WebKey;
+import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.presenter.contract.MsgAllListContract;
+import com.zhjydy.util.ListMapComparator;
+import com.zhjydy.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,10 +75,15 @@ public class MsgAllListPresenterImp implements MsgAllListContract.Presenter {
                 orderData.put("content", "暂无新消息");
                 orderData.put("count", "0");
                 if (orderList != null && orderList.size() > 0) {
+                    ListMapComparator comp = new ListMapComparator("addtime",0);
+                    Collections.sort(orderList,comp);
                     Map<String, Object> order = orderList.get(0);
                     orderData.put("content", order.get("introduction"));
                     orderData.put("count", orderList.size());
                     orderData.put("time", order.get("addtime"));
+                    orderData.put("orderid", order.get("id"));
+                    boolean unRead = Utils.toInteger(order.get("status")) == 0;
+                    orderData.put("status",unRead);
                 }
                 orderData.put("type", 0);
                 return orderData;
@@ -81,7 +92,7 @@ public class MsgAllListPresenterImp implements MsgAllListContract.Presenter {
     }
 
     private Observable<Map<String, Object>> getSystemItemData() {
-        return MsgData.getInstance().getAllSystemMsgList().map(new Func1<List<Map<String, Object>>, Map<String, Object>>() {
+        return MsgData.getInstance().getNewSystemMsgList().map(new Func1<List<Map<String, Object>>, Map<String, Object>>() {
             @Override
             public Map<String, Object> call(List<Map<String, Object>> sysList) {
                 Map<String, Object> orderData = new HashMap<>();
@@ -91,7 +102,7 @@ public class MsgAllListPresenterImp implements MsgAllListContract.Presenter {
                 orderData.put("count", "0");
                 if (sysList != null && sysList.size() > 0) {
                     Map<String, Object> order = sysList.get(0);
-                    orderData.put("content", order.get("introduction"));
+                    orderData.put("content", order.get("content"));
                     orderData.put("count", sysList.size());
                     orderData.put("time", order.get("addtime"));
                 }
@@ -99,6 +110,30 @@ public class MsgAllListPresenterImp implements MsgAllListContract.Presenter {
                 return orderData;
             }
         });
+    }
+    @Override
+    public void readOrder(String id) {
+        HashMap<String,Object> params = new HashMap<>();
+        params.put("id",id);
+        WebCall.getInstance().call(WebKey.func_updateOrdersMsg,params).subscribe(new BaseSubscriber<WebResponse>() {
+            @Override
+            public void onNext(WebResponse webResponse) {
+                MsgData.getInstance().loadOrderMsgData();
+            }
+        });
+    }
+
+    @Override
+    public void readComment(String id) {
+        HashMap<String,Object> params = new HashMap<>();
+        params.put("id",id);
+        WebCall.getInstance().call(WebKey.func_updateCommentStatus,params).subscribe(new BaseSubscriber<WebResponse>() {
+            @Override
+            public void onNext(WebResponse webResponse) {
+                MsgData.getInstance().loadNewCommentList();
+            }
+        });
+
     }
 
     @Override

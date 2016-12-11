@@ -4,6 +4,7 @@ import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
+import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.presenter.contract.MainHomeContract;
 import com.zhjydy.util.Utils;
 
@@ -63,14 +64,13 @@ public class MainHomePresenterImp implements MainHomeContract.MainHomePresenter 
     }
 
     private void loadNewMsg() {
-        Map<String, Object> mes = new HashMap<>();
-        mes.put("url", "http://sports.sina.com.cn/");
-        mes.put("title", "新浪新闻");
-        Observable.just(mes).subscribe(new Action1<Map<String, Object>>() {
+        WebCall.getInstance().call(WebKey.func_getRecommend,new HashMap<String, Object>()).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
-            public void call(Map<String, Object> stringStringMap) {
-                if (mView != null) {
-                    mView.updateMsg(stringStringMap);
+            public void onNext(WebResponse webResponse) {
+                boolean status = WebUtils.getWebStatus(webResponse);
+                if (mView != null && status) {
+                    List<String> news = Utils.parseObjectToListString(webResponse.getData());
+                    mView.updateMsg(news);
                 }
             }
         });

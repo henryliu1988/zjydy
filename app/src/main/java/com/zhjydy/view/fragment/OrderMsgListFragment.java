@@ -74,7 +74,8 @@ public class OrderMsgListFragment extends PageImpBaseFragment implements OrderMs
                 if (order != null) {
 
                     String orderId = Utils.toString(order.get("orderid"));
-                    if (mPresenter != null) {
+                    int status = Utils.toInteger(order.get("status"));
+                    if (mPresenter != null && status ==0) {
                         mPresenter.readOrder(orderId);
                     }
                     Bundle bundle = new Bundle();
@@ -112,6 +113,7 @@ public class OrderMsgListFragment extends PageImpBaseFragment implements OrderMs
 
     @Override
     public void updateOrderList(List<Map<String, Object>> list) {
+        mList.onRefreshComplete();
         mAdapter.refreshData(list);
     }
 }

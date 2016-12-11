@@ -41,9 +41,9 @@ public class PatientCaseListAdapter extends ListViewAdapter<Map<String, Object>>
         String realName = Utils.toString(comment.get("realname"));
         String sexName = DicData.getInstance().getSexById(Utils.toString(comment.get("sex"))).getName();
         String sec = Utils.toString(comment.get("age"));
-        long ageLong = DateUtil.getYearDiffBySeconds(Utils.toLong(comment.get("age")));
+        long ageLong = DateUtil.getYearDiffBySeconds(Utils.toLong(comment.get("age"))) + 1;
         String age = "";
-        if (ageLong > 0) {
+        if (ageLong >= 0) {
             age = ageLong + "岁";
         }
         String nameSexAge =realName + " " +sexName + " " + age;

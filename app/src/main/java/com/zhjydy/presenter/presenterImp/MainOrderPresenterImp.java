@@ -9,6 +9,9 @@ import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.pageload.PageLoadDataSource;
+import com.zhjydy.presenter.RefreshKey;
+import com.zhjydy.presenter.RefreshManager;
+import com.zhjydy.presenter.RefreshWithKey;
 import com.zhjydy.presenter.contract.MainInfoContract;
 import com.zhjydy.presenter.contract.MainOrderContract;
 import com.zhjydy.util.Utils;
@@ -22,13 +25,14 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016/9/20 0020.
  */
-public class MainOrderPresenterImp  implements MainOrderContract.MainOrderPresenter {
+public class MainOrderPresenterImp  implements MainOrderContract.MainOrderPresenter,RefreshWithKey {
 
     private MainOrderContract.MainOrderView mView;
 
     public MainOrderPresenterImp(MainOrderContract.MainOrderView view) {
         this.mView = view;
         view.setPresenter(this);
+        RefreshManager.getInstance().addNewListener(RefreshKey.ORDET_LIST_CHANGE,this);
         start();
     }
 
@@ -49,6 +53,7 @@ public class MainOrderPresenterImp  implements MainOrderContract.MainOrderPresen
 
             @Override
             public void onError(Throwable e) {
+                super.onError(e);
                 mView.onNetError();
             }
         });
@@ -64,4 +69,8 @@ public class MainOrderPresenterImp  implements MainOrderContract.MainOrderPresen
         loadOrders();
     }
 
+    @Override
+    public void onRefreshWithKey(int key) {
+        loadOrders();
+    }
 }

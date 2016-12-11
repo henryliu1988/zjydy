@@ -66,6 +66,9 @@ public class WebKey {
     public static final int func_getCancelReason = 1049;  //
     public static final int func_searchCollectExpert = 1050;  //
     public static final int func_searchCollectNews = 1051;  //
+    public static final int func_getRecommend = 1052;  //
+    public static final int func_updateCommentStatus = 1053;  //
+    public static final int func_getSysMsg = 1054;  //
 
 
 
@@ -104,6 +107,10 @@ public class WebKey {
         WEBKEY_FUNC_COMMON_MAP.put(func_addPayPass, "addPayPass");
         WEBKEY_FUNC_COMMON_MAP.put(func_getCancelReason, "getCancelReason");
         WEBKEY_FUNC_COMMON_MAP.put(func_searchCollectNews, "searchCollectNews");
+        WEBKEY_FUNC_COMMON_MAP.put(func_getRecommend, "getRecommend");
+        WEBKEY_FUNC_COMMON_MAP.put(func_updateCommentStatus, "updateCommentStatus");
+        WEBKEY_FUNC_COMMON_MAP.put(func_getSysMsg, "getSysMsg");
+
 
     }
 

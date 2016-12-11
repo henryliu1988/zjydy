@@ -20,5 +20,7 @@ public interface MsgAllListContract {
 
     interface Presenter extends BasePresenter
     {
+        void readOrder(String id);
+        void readComment(String id);
     }
 }

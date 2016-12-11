@@ -124,9 +124,9 @@ public class OrderDetailFragment extends PageImpBaseFragment implements OrderDet
             ImageUtils.getInstance().displayFromRemote(experturl, dicPhoto);
         }
         docName.setText(Utils.toString(info.get("expertname")));
-        String docHosId = Utils.toString(info.get("experthospital"));
-        String docOfficeId = Utils.toString(info.get("experOffice"));
-        String docBusId = Utils.toString(info.get("expertBus"));
+        String docHosId = Utils.toString(info.get("hospital"));
+        String docOfficeId = Utils.toString(info.get("office"));
+        String docBusId = Utils.toString(info.get("business"));
 
         docHospital.setText(DicData.getInstance().getHospitalById(docHosId).getHospital());
         docDepart.setText(Utils.toString(DicData.getInstance().getOfficeById(docOfficeId).getName()));
@@ -162,6 +162,27 @@ public class OrderDetailFragment extends PageImpBaseFragment implements OrderDet
                 statuText = "专家未接受预约，订单已结束";
                 textColorBg = "#FFB81F";
                 break;
+
+            case 9:
+                statuText = "退款失败，请重新申请";
+                textColorBg = "#FFB81F";
+                break;
+
+            case 10:
+                statuText = "退款成功，订单已结束";
+                textColorBg = "#FFB81F";
+                break;
+
+            case 11:
+                statuText = "会诊中";
+                textColorBg = "#FFB81F";
+                break;
+
+            case 12:
+                statuText = "治疗中";
+                textColorBg = "#FFB81F";
+                break;
+
         }
         this.status.setText(statuText);
         ViewUtil.setCornerViewDrawbleBg(this.status, textColorBg);

@@ -13,6 +13,7 @@ import com.zhjydy.presenter.contract.OrderMsgListContract;
 import com.zhjydy.presenter.contract.SystemMsgListContract;
 import com.zhjydy.presenter.presenterImp.OrderMsgListPresenterImp;
 import com.zhjydy.presenter.presenterImp.SystemMsgListPresenterImp;
+import com.zhjydy.view.adapter.MsgSystemListAdapter;
 import com.zhjydy.view.adapter.OrderMsgListAdapter;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class SystemMsgListFragment extends PageImpBaseFragment implements System
     @BindView(R.id.m_list)
     PullToRefreshListView mList;
 
-    private OrderMsgListAdapter mAdapter;
+    private MsgSystemListAdapter mAdapter;
     private SystemMsgListContract.Presenter mPresenter;
     private List<Map<String,Object>> orderList = new ArrayList<>();
 
@@ -51,8 +52,6 @@ public class SystemMsgListFragment extends PageImpBaseFragment implements System
 
     @Override
     protected void afterViewCreate() {
-        mAdapter = new OrderMsgListAdapter(getContext(),orderList);
-        mList.setAdapter(mAdapter);
         titleCenterTv.setText("系统消息");
         titleBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +59,8 @@ public class SystemMsgListFragment extends PageImpBaseFragment implements System
                 back();
             }
         });
-        new SystemMsgListPresenterImp(this);
+        mAdapter = new MsgSystemListAdapter(getContext(),new ArrayList<Map<String, Object>>());
+        new SystemMsgListPresenterImp(this,mList,mAdapter);
     }
 
     @Override

@@ -2,13 +2,17 @@ package com.zhjydy.presenter.presenterImp;
 
 import android.text.TextUtils;
 
+import com.apptalkingdata.push.service.Msg;
 import com.zhjydy.model.data.AppData;
+import com.zhjydy.model.data.MsgData;
 import com.zhjydy.model.data.PatientData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.net.WebUtils;
+import com.zhjydy.presenter.RefreshKey;
+import com.zhjydy.presenter.RefreshManager;
 import com.zhjydy.presenter.contract.ExpertDetailContract;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.zhview.zhToast;
@@ -133,6 +137,7 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
                 if (WebUtils.getWebStatus(webResponse)) {
                     loadComments(expertId);
                     mView.makeCommentSuccess();
+                    MsgData.getInstance().loadNewCommentList();
                 }else{
                     zhToast.showToast("留言失败！");
                 }

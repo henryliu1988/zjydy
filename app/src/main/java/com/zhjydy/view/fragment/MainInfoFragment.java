@@ -136,8 +136,10 @@ public class MainInfoFragment extends StatedFragment implements MainInfoContract
 
     @Override
     public void updateFavInfoCount(int count) {
-        if (count > 0) {
-            rightLImg.setTipText(count + "");
+        String text = "";
+        if (count != 0) {
+            text = count + "";
         }
+        rightLImg.setTipText(text);
     }
 }

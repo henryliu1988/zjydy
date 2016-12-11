@@ -66,6 +66,8 @@ public class PagerFragmentFactory
                 return new PatientCaseSelectFragment();
             case FragKey.order_cancel_fragment:
                 return new OrderCancelFragment();
+            case FragKey.mine_name_change_fragment:
+                return new MineNameChangeFragment();
 
         }
       return null;

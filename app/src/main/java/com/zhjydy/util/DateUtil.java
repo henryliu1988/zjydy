@@ -1,5 +1,6 @@
 package com.zhjydy.util;
 
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -364,30 +365,28 @@ public class DateUtil {
     }
 
     public static int getYearDiffBySeconds(long seconds) {
-        long currentSeconds = getDiffOfBaseTime(getCurrDate(LONG_DATE_FORMAT));
-        long diffSec = currentSeconds - seconds;
-        int diffYear = (int) diffSec / 3600 / 24/365;
-        return diffYear;
+        Date dateBegin = getDateBySeconds(seconds);
+        Date dateEnd = new Date();
+        Calendar calBegin = Calendar.getInstance(); //获取日历实例
+        Calendar calEnd = Calendar.getInstance();
+        calBegin.setTime(dateBegin); //字符串按照指定格式转化为日期
+        calEnd.setTime(dateEnd);
+        return calEnd.get(Calendar.YEAR) - calBegin.get(Calendar.YEAR);
     }
 
     public static Date getDateBySeconds(long seconds){
         return new Date(seconds*1000);
     }
-    public static long getDiffOfBaseTime(String current) {
-        String base = "1970年01月01日";
-        Date currDate = DateUtil.stringtoDate(current, LONG_DATE_FORMAT);
-        Date baseDate = stringtoDate(base, LONG_DATE_FORMAT);
-        return (currDate.getTime() - baseDate.getTime()) / 1000;
+    public static long getDiffOfBaseTime(String current,String formate) {
+        SimpleDateFormat sdf = new SimpleDateFormat(formate);
+        try {
+            long millionSeconds = sdf.parse(current).getTime();//毫秒
+            return millionSeconds/1000;
+        }catch (ParseException e) {
+            return 0;
+        }
     }
-    /**
-     * 获得当前日期字符串，格式"yyyy-MM-dd HH:mm:ss"
-     *
-     * @return
-     */
-    public static String getNow() {
-        Calendar today = Calendar.getInstance();
-        return dateToString(today.getTime(), FORMAT_ONE);
-    }
+
 
     /**
      * 根据生日获取星座

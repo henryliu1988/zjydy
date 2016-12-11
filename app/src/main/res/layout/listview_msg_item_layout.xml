@@ -8,13 +8,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="8dp"
         android:orientation="horizontal">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:padding="3dp">
             <ImageView
                 android:id="@+id/image"
@@ -25,11 +24,11 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="4"
             android:gravity="center_vertical|left"
             android:orientation="vertical"
-            android:paddingLeft="5dp"
+            android:paddingLeft="10dp"
             android:paddingRight="5dp">
 
             <TextView
@@ -49,10 +48,12 @@
                 android:textSize="15sp" />
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            >
 
             <TextView
                 android:id="@+id/msg_time"
@@ -60,7 +61,14 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black_text2"
                 android:textSize="13sp" />
-        </RelativeLayout>
+            <View
+                android:id="@+id/unread_flag"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone" />
+        </LinearLayout>
     </LinearLayout>
 
     <View

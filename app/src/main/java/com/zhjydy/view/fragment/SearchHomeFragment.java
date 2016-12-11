@@ -95,6 +95,7 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
                 back();
             }
         });
+        titleSearchEdit.setHint("输入搜索专家和资讯");
         titleSearchEdit.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
@@ -121,18 +122,20 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
     private void moreSeachExpert() {
         String seach = titleSearchEdit.getText().toString();
         Bundle bundle = new Bundle();
-        bundle.putInt(IntentKey.FRAG_KEY, FragKey.search_expert_fragment);
+      //  bundle.putInt(IntentKey.FRAG_KEY, FragKey.search_expert_fragment);
         bundle.putString(IntentKey.FRAG_INFO, seach);
-        ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
-
+      //  ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+        gotoFragment(FragKey.search_expert_fragment,bundle);
     }
 
     private void moreSeachInfo() {
         String seach = titleSearchEdit.getText().toString();
         Bundle bundle = new Bundle();
-        bundle.putInt(IntentKey.FRAG_KEY, FragKey.search_info_fragment);
+      //  bundle.putInt(IntentKey.FRAG_KEY, FragKey.search_info_fragment);
         bundle.putString(IntentKey.FRAG_INFO, seach);
-        ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+      //  ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+        gotoFragment(FragKey.search_info_fragment,bundle);
+
     }
 
     @Override
@@ -204,7 +207,7 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
             ViewHolderAdd holder = ViewHolderAdd.get(getContext(), R.layout.listview_main_expert_info_item);
             ((TextView) holder.getView(R.id.name)).setText(Utils.toString(expert.get("realname")));
             ((TextView) holder.getView(R.id.depart)).setText(DicData.getInstance().getOfficeById(Utils.toString(expert.get("office"))).getName());
-            ((TextView) holder.getView(R.id.profession)).setText(DicData.getInstance().getOfficeById(Utils.toString(expert.get("business"))).getName());
+            ((TextView) holder.getView(R.id.profession)).setText(DicData.getInstance().getBusinessById(Utils.toString(expert.get("business"))).getName());
             ((TextView) holder.getView(R.id.hospital)).setText(DicData.getInstance().getHospitalById(Utils.toString(expert.get("hospital"))).getHospital());
 
             ((TextView) holder.getView(R.id.special)).setText(Utils.toString(expert.get("adept")));
@@ -223,7 +226,9 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
             holder.getConvertView().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.detail_expert_fragment, Utils.toString(expert.get("id")), false);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(IntentKey.FRAG_INFO,Utils.toString(expert.get("id")));
+                    gotoFragment(FragKey.detail_expert_fragment,bundle);
                 }
             });
             expertListLayout.addView(holder.getConvertView());
@@ -249,9 +254,9 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
-                    bundle.putInt(IntentKey.FRAG_KEY, FragKey.detail_info_fragment);
                     bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
-                    ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+                   // ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+                    gotoFragment(FragKey.detail_info_fragment,bundle);
                 }
             });
             infoListLayout.addView(holder.getConvertView());

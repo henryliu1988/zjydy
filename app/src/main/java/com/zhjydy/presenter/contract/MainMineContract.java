@@ -18,6 +18,7 @@ public interface MainMineContract {
     interface MainMineView extends BaseView<MainMinePresenter>
     {
         void updateIdentiFyStatus(int status,String msg);
+        void updateTokenInfo();
     }
 
     interface MainMinePresenter extends BasePresenter

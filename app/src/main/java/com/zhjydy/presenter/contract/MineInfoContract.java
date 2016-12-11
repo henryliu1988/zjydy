@@ -26,5 +26,6 @@ public interface MineInfoContract {
         void updateMemberPhoto(String path);
         void updateMemberSex(int sex);
         void updateMemberName(String name);
+        void refreshView();
     }
 }

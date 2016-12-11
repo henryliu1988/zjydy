@@ -1,6 +1,7 @@
 package com.zhjydy.view.fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,12 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zhjydy.R;
+import com.zhjydy.model.data.AppData;
+import com.zhjydy.model.entity.TokenInfo;
 import com.zhjydy.presenter.contract.MainMineContract;
 import com.zhjydy.presenter.presenterImp.MainMinePresenterImp;
 import com.zhjydy.util.ActivityUtils;
+import com.zhjydy.util.ImageUtils;
 import com.zhjydy.view.avtivity.PagerImpActivity;
 import com.zhjydy.view.zhview.ImageTipsView;
 
@@ -72,10 +76,31 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
     }
 
     @Override
-    protected void afterViewCreate() {
-        new MainMinePresenterImp(this);
+    public void onResume() {
+        super.onResume();
+        initMinePhotoView();
     }
 
+    @Override
+    protected void afterViewCreate() {
+        new MainMinePresenterImp(this);
+        initMinePhotoView();
+    }
+
+    private void initMinePhotoView() {
+        TokenInfo tokenInfo  = AppData.getInstance().getToken();
+        if (TextUtils.isEmpty(tokenInfo.getId())){
+            mineStatus.setText("请登录");
+            return;
+        }
+        if (!TextUtils.isEmpty(tokenInfo.getPhotoUrl())) {
+            ImageUtils.getInstance().displayFromRemote(tokenInfo.getPhotoUrl(),mineImage);
+        }
+        if (!TextUtils.isEmpty(tokenInfo.getNickname())) {
+            mineStatus.setText(tokenInfo.getNickname());
+        }
+
+    }
     @Override
     public void setPresenter(MainMineContract.MainMinePresenter presenter) {
         mPresenter = presenter;
@@ -141,6 +166,11 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
                 text = "已认证";
         }
         mineConfirmMsgStatus.setText(text);
+    }
+
+    @Override
+    public void updateTokenInfo() {
+        initMinePhotoView();
     }
 
     private void loadIdentifyInfo() {

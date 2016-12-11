@@ -25,13 +25,13 @@
             <LinearLayout
                 android:id="@+id/news_msg"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
                 android:background="@color/white_bg"
                 android:orientation="horizontal">
 
                 <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="40dp"
+                    android:layout_height="35dp"
                     android:background="@color/yellow_color"
                     android:padding="10dp">
 
@@ -43,14 +43,17 @@
                         android:src="@mipmap/main_msg_ringer" />
                 </RelativeLayout>
 
-                <TextView
+                <TextSwitcher
                     android:id="@+id/m_new_msg_title"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:gravity="left|center_vertical"
-                    android:padding="8dp"
+                    android:layout_gravity="center_vertical"
                     android:singleLine="true"
                     android:textColor="@color/black_text1"
+                    android:inAnimation="@anim/push_up_in"
+                    android:outAnimation="@anim/push_up_out"
                     android:textSize="14sp" />
             </LinearLayout>
 

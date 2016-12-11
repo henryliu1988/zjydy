@@ -88,22 +88,24 @@ public class DocChatRecordFragment extends PageImpBaseFragment implements ChatRe
     }
 
     @Override
-    public void setChatMsgs(List<Map<String, Object>> msg) {
+    public void setChatMsgs(List<Map<String, Object>> msg,String expertPhoto) {
         for (Map<String, Object> item : msg) {
             String sendId = Utils.toString(item.get("sendid"));
             String userId = AppData.getInstance().getToken().getId();
             boolean isUser = (!TextUtils.isEmpty(userId) && userId.equals(sendId));
             View view;
+            String photoUrl;
             if (isUser) {
                 view =  LayoutInflater.from(getContext()).inflate(R.layout.chat_record_right, null);
+                photoUrl = AppData.getInstance().getToken().getPhotoUrl();
             } else {
                 view =  LayoutInflater.from(getContext()).inflate(R.layout.chat_record_left, null);
+                photoUrl = expertPhoto;
             }
             ImageView photImage = (ImageView)view.findViewById(R.id.photo);
             TextView timeTv = (TextView)view.findViewById(R.id.time);
             TextView contentTv = (TextView)view.findViewById(R.id.msg);
 
-            String photoUrl = Utils.toString(item.get("url"));
             if (TextUtils.isEmpty(photoUrl)) {
                 ImageUtils.getInstance().displayFromDrawable(R.mipmap.photo,photImage);
             } else {

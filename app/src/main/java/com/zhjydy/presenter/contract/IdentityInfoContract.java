@@ -12,6 +12,7 @@ public interface IdentityInfoContract {
 
     interface View extends BaseView<Presenter>
     {
+        void updateIdentifyInfo(int status,List<String> path);
     }
 
     interface Presenter extends BasePresenter

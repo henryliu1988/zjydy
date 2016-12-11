@@ -48,4 +48,12 @@ public class ViewUtil {
         gd.setStroke(strokWidth, strokeColorInt);
         view.setBackgroundDrawable(gd);
     }
+
+    public static void setOverViewDrawbleBg(View view,String fillColor) {
+        GradientDrawable gd = new GradientDrawable();//创建drawable
+        gd.setShape(GradientDrawable.OVAL);
+        int fillColorInt = Color.parseColor(fillColor); //内部填充颜色
+        gd.setColor(fillColorInt);
+        view.setBackgroundDrawable(gd);
+    }
 }

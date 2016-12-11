@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,7 +50,7 @@ public class InfoDetailFragment extends PageImpBaseFragment implements InfoDetai
     @BindView(R.id.m_info_webview)
     WebView mInfoWebview;
     private InfoDetailContract.Presenter mPresenter;
-    private  ShareAction mShareAction;
+    private ShareAction mShareAction;
     String id;
 
     @Override
@@ -98,9 +99,9 @@ public class InfoDetailFragment extends PageImpBaseFragment implements InfoDetai
 
     }
 
-    private void initShareAction(){
-        mShareAction =   new ShareAction(getActivity())
-                .setDisplayList(SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,SHARE_MEDIA.SINA).withText("分享资讯")
+    private void initShareAction() {
+        mShareAction = new ShareAction(getActivity())
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.SINA).withText("分享资讯")
                 .setCallback(new UMShareListener() {
                     @Override
                     public void onResult(SHARE_MEDIA share_media) {
@@ -119,6 +120,7 @@ public class InfoDetailFragment extends PageImpBaseFragment implements InfoDetai
                 });
 
     }
+
     private void shareInfo() {
         ShareBoardConfig config = new ShareBoardConfig();
         config.setShareboardPostion(ShareBoardConfig.SHAREBOARD_POSITION_CENTER);
@@ -126,24 +128,33 @@ public class InfoDetailFragment extends PageImpBaseFragment implements InfoDetai
         mShareAction.open(config);
 
     }
+
     @Override
     public void update(Map<String, Object> info) {
         String url = Utils.toString(info.get("url"));
         mInfoWebview.loadUrl(url);
+        mInfoWebview.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+        });
+
     }
 
     @Override
     public void updateFavStatus(boolean isCollect) {
         if (isCollect) {
-            ImageUtils.getInstance().displayFromDrawable(R.mipmap.save_cancel_text,mSaveInfoButton);
+            ImageUtils.getInstance().displayFromDrawable(R.mipmap.save_cancel_bottom, mSaveInfoButton);
             mSaveInfoButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mPresenter.cancelSaveInfo();
                 }
             });
-        } else{
-            ImageUtils.getInstance().displayFromDrawable(R.mipmap.save_text_green,mSaveInfoButton);
+        } else {
+            ImageUtils.getInstance().displayFromDrawable(R.mipmap.save_text_green, mSaveInfoButton);
             mSaveInfoButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

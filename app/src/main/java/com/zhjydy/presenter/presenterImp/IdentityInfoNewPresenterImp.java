@@ -7,8 +7,11 @@ import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.net.WebUtils;
+import com.zhjydy.presenter.RefreshKey;
+import com.zhjydy.presenter.RefreshManager;
 import com.zhjydy.presenter.contract.IdentityInfoContract;
 import com.zhjydy.presenter.contract.IdentityInfoNewContract;
+import com.zhjydy.util.Utils;
 import com.zhjydy.util.ViewKey;
 import com.zhjydy.view.zhview.zhToast;
 
@@ -57,24 +60,24 @@ public class IdentityInfoNewPresenterImp implements IdentityInfoNewContract.Pres
         List<Map<String,Object>> list = new ArrayList<>();
         list.add(img0);
         list.add(img1);
-        FileUpLoad.uploadFiles(list).flatMap(new Func1<String, Observable<WebResponse>>() {
+        FileUpLoad.uploadFiles(list).flatMap(new Func1<List<Map<String, Object>>, Observable<WebResponse>>() {
             @Override
-            public Observable<WebResponse> call(String s) {
+            public Observable<WebResponse> call(List<Map<String, Object>> maps) {
                 HashMap<String, Object> params = new HashMap<String, Object>();
                 params.put("id", AppData.getInstance().getToken().getId());
-                params.put("idcard",s);
+                params.put("idcard", Utils.getListStrsAdd(maps,"id"));
                 return WebCall.getInstance().call(WebKey.func_updateHuan,params);
             }
-        }).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"请稍后，正在上传认证信息") {
+        }).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"正在提交认证信息") {
             @Override
             public void onNext(WebResponse webResponse) {
                 boolean status = WebUtils.getWebStatus(webResponse);
                 mView.onSubmitSuccess(status);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                zhToast.showToast(e.getMessage());
+                if (status) {
+                    RefreshManager.getInstance().refreshData(RefreshKey.IDENTIFY_MSG_UPDATE);
+                } else{
+                    zhToast.showToast("上传失败");
+                }
             }
         });
     }

@@ -3,7 +3,9 @@ package com.zhjydy.view.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Layout;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,9 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -20,6 +24,8 @@ import com.bigkoo.convenientbanner.holder.Holder;
 import com.readystatesoftware.viewbadger.BadgeView;
 import com.zhjydy.R;
 import com.zhjydy.model.data.DicData;
+import com.zhjydy.presenter.RefreshKey;
+import com.zhjydy.presenter.RefreshManager;
 import com.zhjydy.presenter.contract.MainHomeContract;
 import com.zhjydy.presenter.presenterImp.MainHomePresenterImp;
 import com.zhjydy.util.ActivityUtils;
@@ -34,6 +40,7 @@ import com.zhjydy.view.avtivity.PagerImpActivity;
 import com.zhjydy.view.zhview.BadgImage;
 import com.zhjydy.view.zhview.ImageTipsView;
 import com.zhjydy.view.zhview.ListViewForScrollView;
+import com.zhjydy.view.zhview.ScoreView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +67,7 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
     @BindView(R.id.m_new_msg_icon)
     ImageView mNewMsgIcon;
     @BindView(R.id.m_new_msg_title)
-    TextView mNewMsgTitle;
+    TextSwitcher mNewMsgTitle;
     @BindView(R.id.news_msg)
     LinearLayout newsMsg;
     @BindView(R.id.expert_more)
@@ -82,6 +89,8 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
 
     private MainHomeInfoListAdapter mInfoListAdapter;
 
+    private int curTitle = 0;
+
     public static MainHomeFragment instance() {
         MainHomeFragment frag = new MainHomeFragment();
         return frag;
@@ -102,12 +111,24 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
         centerTv.setText("专家医对壹");
         initMsgCountImage();
         scrollView.scrollTo(0, 0);
+        mNewMsgTitle.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                final TextView tv = new TextView(getActivity());
+                tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                tv.setPadding(0,0,0,0);
+                tv.setLines(1);
+                return tv;
+
+            }
+        });
     }
 
     private void initMsgCountImage() {
         rightImg.setImageResource(R.mipmap.title_msg);
 
     }
+
     @Override
     protected void initData() {
     }
@@ -136,15 +157,16 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
     }
 
     @Override
-    public void updateMsg(Map<String, Object> msg) {
-        String title = Utils.toString(msg.get("title"));
-        mNewMsgTitle.setText(title);
-        newsMsg.setOnClickListener(new View.OnClickListener() {
+    public void updateMsg(final List<String> msg) {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onClick(View view) {
-
+            public void run() {
+                mNewMsgTitle.setText(msg.get(curTitle++ % msg.size())
+                );
+                handler.postDelayed(this, 3000);
             }
-        });
+        }, 3000);
     }
 
 
@@ -176,6 +198,16 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
             TextView hospitalTv = ViewFindUtils.find(childView, R.id.hospital);
             TextView officeTv = ViewFindUtils.find(childView, R.id.office);
             TextView professTv = ViewFindUtils.find(childView, R.id.profess);
+            ScoreView scroreView = ViewFindUtils.find(childView, R.id.star);
+            int score = Utils.toInteger(item.get("stars"));
+            if (score > 100) {
+                score = 100;
+            }
+            if (score < 0) {
+                score = 0;
+            }
+            scroreView.setScore(score,100);
+
             ImageUtils.getInstance().displayFromRemote(photoUrl, imageView);
             nameTv.setText(name);
             hospitalTv.setText(DicData.getInstance().getHospitalById(hospitaId).getHospital());

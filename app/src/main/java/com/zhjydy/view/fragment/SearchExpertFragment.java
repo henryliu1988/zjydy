@@ -93,7 +93,7 @@ public class SearchExpertFragment extends PageImpBaseFragment implements SearchE
         if (getArguments() == null) {
             return;
         }
-        String search = getArguments().getString(IntentKey.FRAG_KEY,"");
+        String search = getArguments().getString(IntentKey.FRAG_INFO,"");
         if (!TextUtils.isEmpty(search)) {
             titleSearchEdit.setText(search);
             mPresenter.searchExpert(search);
@@ -112,7 +112,11 @@ public class SearchExpertFragment extends PageImpBaseFragment implements SearchE
                 Map<String,Object> info = (Map<String,Object>) adapterView.getAdapter().getItem(i);
 
                 if (info != null) {
-                    ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.detail_expert_fragment, Utils.toString(info.get("id")), false);
+                   // ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.detail_expert_fragment, Utils.toString(info.get("id")), false);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(IntentKey.FRAG_INFO,Utils.toString(info.get("id")));
+                    gotoFragment(FragKey.detail_expert_fragment);
+
                 }
             }
         });

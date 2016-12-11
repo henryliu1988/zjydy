@@ -5,19 +5,18 @@
     android:background="@drawable/bg_white_corner"
     android:orientation="horizontal"
     android:paddingBottom="8dp"
-    android:paddingLeft="10dp"
+    android:paddingLeft="5dp"
     android:paddingTop="8dp">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="75dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/photo"
-            android:layout_width="wrap_content"
+            android:layout_width="55dp"
             android:layout_height="55dp"
             android:scaleType="fitCenter"
             android:src="@mipmap/photo" />
@@ -55,7 +54,7 @@
                         android:id="@+id/depart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="12sp"
+                        android:textSize="13sp"
                         android:text="科室"
                         android:textColor="@color/black_text2" />
                     <TextView
@@ -63,7 +62,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:textSize="12sp"
+                        android:textSize="13sp"
                         android:text="职称"
                         android:textColor="@color/black_text2" />
                 </LinearLayout>
@@ -73,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:textSize="11sp"
+                    android:textSize="13sp"
                     android:text="医院"
                     android:textColor="@color/black_text2" />
 
@@ -88,8 +87,7 @@
                 android:id="@+id/special"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="dsdfdsfjkdslfhjkhgkjsdhfdshgkjfd"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:textColor="@color/black_text1" />
         </LinearLayout>
 

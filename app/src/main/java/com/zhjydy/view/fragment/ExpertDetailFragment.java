@@ -110,6 +110,9 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
 
     @Override
     protected void afterViewCreate() {
+        if(getArguments() == null) {
+            return;
+        }
         id = getArguments().getString(IntentKey.FRAG_INFO);
         if (TextUtils.isEmpty(id)) {
             return;
@@ -121,9 +124,9 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
 
     private void initCommentListView() {
         mCommentListAdapter = new ExperDetaiCommentListAdapter(getContext(), new ArrayList<Map<String, Object>>());
-        wordListview.setAdapter(mCommentListAdapter);
         mCommentListHeaderView = LayoutInflater.from(getContext()).inflate(R.layout.listview_expert_comment_header_layout, null);
         wordListview.addHeaderView(mCommentListHeaderView);
+        wordListview.setAdapter(mCommentListAdapter);
     }
 
 
@@ -137,7 +140,13 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
     @Override
     public void updateExpertInfos(Map<String, Object> expertInfo) {
         name.setText(Utils.toString(expertInfo.get("realname")));
-        depart.setText(DicData.getInstance().getOfficeById(Utils.toString(expertInfo.get("office"))).getName() + "|");
+        String office = DicData.getInstance().getOfficeById(Utils.toString(expertInfo.get("office"))).getName();
+        String business = DicData.getInstance().getOfficeById(Utils.toString(expertInfo.get("business"))).getName();
+        if(!TextUtils.isEmpty(office) && !TextUtils.isEmpty(business)) {
+            depart.setText(DicData.getInstance().getOfficeById(Utils.toString(expertInfo.get("office"))).getName() + " | ");
+        } else {
+            depart.setText(DicData.getInstance().getOfficeById(Utils.toString(expertInfo.get("office"))).getName());
+        }
         hospital.setText(DicData.getInstance().getHospitalById(Utils.toString(expertInfo.get("hospital"))).getHospital());
         profession.setText(DicData.getInstance().getOfficeById(Utils.toString(expertInfo.get("business"))).getName());
         reasonTv.setText(Utils.toString(expertInfo.get("reason")));

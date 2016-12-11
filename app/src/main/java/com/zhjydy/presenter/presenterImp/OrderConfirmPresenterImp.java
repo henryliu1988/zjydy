@@ -2,12 +2,17 @@ package com.zhjydy.presenter.presenterImp;
 
 import android.text.TextUtils;
 
+import com.apptalkingdata.push.service.Msg;
 import com.zhjydy.model.data.AppData;
+import com.zhjydy.model.data.DicData;
+import com.zhjydy.model.data.MsgData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.net.WebUtils;
+import com.zhjydy.presenter.RefreshKey;
+import com.zhjydy.presenter.RefreshManager;
 import com.zhjydy.presenter.contract.OrderConfirmContract;
 import com.zhjydy.presenter.contract.PayPasswordAddContract;
 import com.zhjydy.util.MD5;
@@ -80,6 +85,8 @@ public class OrderConfirmPresenterImp implements OrderConfirmContract.Presenter 
             public void onNext(WebResponse webResponse) {
                 if (WebUtils.getWebStatus(webResponse)) {
                     mView.subsribExpertResult(true,"成功预约专家");
+                    MsgData.getInstance().loadOrderMsgData();
+                    RefreshManager.getInstance().refreshData(RefreshKey.ORDET_LIST_CHANGE);
                 } else {
                     mView.subsribExpertResult(false,"预约失败  " +WebUtils.getWebMsg(webResponse));
                 }

@@ -98,6 +98,9 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
         if (mThirdFragment != null) {
             mThirdFragment.updateUnReadMsgCount(count);
         }
+        if (mFourthFragment != null) {
+            mFourthFragment.updateUnReadMsgCount(count);
+        }
     }
 
     @Override

@@ -55,6 +55,7 @@ public class RegisterPresenterImp implements RegisterContract.Presenter {
     @Override
     public void register(HashMap<String, Object> params) {
         params.put("nickname","");
+        params.put("type", "1");
         WebCall.getInstance().call(WebKey.func_register,params).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
             public void onNext(WebResponse webResponse) {

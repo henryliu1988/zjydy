@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,8 +22,11 @@ import com.zhjydy.presenter.contract.MainInfoContract;
 import com.zhjydy.presenter.contract.SearchInfoContract;
 import com.zhjydy.presenter.presenterImp.MainInfoPresenterImp;
 import com.zhjydy.presenter.presenterImp.SearchInfoPresenterImp;
+import com.zhjydy.util.ActivityUtils;
+import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.MainInfoListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
+import com.zhjydy.view.avtivity.PagerImpActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +92,21 @@ public class SearchInfoFragment extends PageImpBaseFragment implements SearchInf
 
         mInfoAdapter = new MainInfoListAdapter(getContext(),list);
         mList.setAdapter(mInfoAdapter);
+        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Map<String, Object> info = (Map<String, Object>) adapterView.getAdapter().getItem(position);
+                if (info != null && !TextUtils.isEmpty(Utils.toString(info.get("id")))) {
+                    Bundle bundle = new Bundle();
+                   // bundle.putInt(IntentKey.FRAG_KEY, FragKey.detail_info_fragment);
+                    bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
+                   // ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+
+                    gotoFragment(FragKey.detail_info_fragment,bundle);
+
+                }
+            }
+        });
         new SearchInfoPresenterImp(this);
         initSearchInfo();
     }
@@ -97,7 +116,7 @@ public class SearchInfoFragment extends PageImpBaseFragment implements SearchInf
         if (getArguments() == null) {
             return;
         }
-        String search = getArguments().getString(IntentKey.FRAG_KEY,"");
+        String search = getArguments().getString(IntentKey.FRAG_INFO,"");
         if (!TextUtils.isEmpty(search)) {
             titleSearchEdit.setText(search);
             mPresenter.searchInfo(search);

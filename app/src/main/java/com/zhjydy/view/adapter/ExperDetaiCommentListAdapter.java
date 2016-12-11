@@ -1,9 +1,12 @@
 package com.zhjydy.view.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.TextView;
 
 import com.zhjydy.R;
+import com.zhjydy.util.DateUtil;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.zhview.ViewHolder;
 
@@ -23,9 +26,18 @@ public class ExperDetaiCommentListAdapter extends ListViewAdapter<Map<String, Ob
     @Override
     public void convert(ViewHolder holder, Map<String, Object> comment) {
         // ((TextView) holder.getView(R.id.photo)).setText(info.getPhotoUrl());
-        ((TextView) holder.getView(R.id.name)).setText(Utils.toString(comment.get("name")));
+        String expertId = Utils.toString(comment.get("expertid"));
+        String sendName = Utils.toString(comment.get("sendname"));
+        String sendId = Utils.toString(comment.get("sendid"));
+        if (!TextUtils.isEmpty(expertId) && expertId.equals(sendId)) {
+            holder.getView(R.id.reply_tv).setVisibility(View.VISIBLE);
+        } else {
+            holder.getView(R.id.reply_tv).setVisibility(View.GONE);
+        }
+
+        ((TextView) holder.getView(R.id.name)).setText(sendName);
         ((TextView) holder.getView(R.id.content)).setText(Utils.toString(comment.get("content")));
-        ((TextView) holder.getView(R.id.time)).setText(Utils.toString(comment.get("time")));
+        ((TextView) holder.getView(R.id.time)).setText(DateUtil.getTimeDiffDayCurrent(Utils.toLong(comment.get("addtime"))));
         //((TextView) holder.getView(R.id.star)).setText(info.getStar());
     }
 }

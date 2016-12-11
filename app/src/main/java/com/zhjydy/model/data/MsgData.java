@@ -1,13 +1,23 @@
 package com.zhjydy.model.data;
 
+import android.text.TextUtils;
+
+import com.zhjydy.model.entity.DistricPickViewData;
+import com.zhjydy.model.entity.District;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
+import com.zhjydy.presenter.RefreshKey;
+import com.zhjydy.presenter.RefreshManager;
+import com.zhjydy.util.ListMapComparator;
 import com.zhjydy.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -23,11 +33,12 @@ public class MsgData {
 
 
     private List<Map<String, Object>> mOrderList = new ArrayList<>();
-    private List<Map<String,Object>> mNewCommentList = new ArrayList<>();
-
+    private List<Map<String, Object>> mNewCommentList = new ArrayList<>();
+    private List<Map<String, Object>> mNewSystemList = new ArrayList<>();
 
     private WebResponse mOrderMsgData;
     private WebResponse mCommentNewData;
+    private WebResponse mNewSystemData;
 
     public MsgData() {
     }
@@ -41,12 +52,13 @@ public class MsgData {
 
     public void loadData() {
         loadOrderMsgData();
-        loadSystemList();
+        loadNewSystemList();
         loadNewCommentList();
     }
 
 
     public int getUnReadMsgCount() {
+
         int count = 0;
         if (mOrderList != null && mOrderList.size() > 0) {
             for (Map<String, Object> order : mOrderList) {
@@ -56,54 +68,85 @@ public class MsgData {
                 }
             }
         }
-        int a= count;
+        if (mNewCommentList != null && mNewCommentList.size() > 0) {
+            for (Map<String, Object> comment : mNewCommentList) {
+                int status = Utils.toInteger(comment.get("status"));
+                if (status == 0) {
+                    count++;
+                }
+            }
+        }
         return count;
     }
 
 
-    public Observable<List<Map<String,Object>>> getAllOrderMsgList() {
+    public Observable<List<Map<String, Object>>> getAllOrderMsgList() {
         HashMap<String, Object> params = new HashMap<>();
         params.put("userid", AppData.getInstance().getToken().getId());
-        mOrderMsgData = null;
-        return WebCall.getInstance().callCache(WebKey.func_getOrdersMsg,params,mOrderMsgData).map(new Func1<WebResponse, List<Map<String, Object>>>() {
+        return WebCall.getInstance().callCache(WebKey.func_getOrdersMsg, params, mOrderMsgData).map(new Func1<WebResponse, List<Map<String, Object>>>() {
             @Override
             public List<Map<String, Object>> call(WebResponse webResponse) {
                 mOrderMsgData = webResponse;
                 String data = webResponse.getData();
                 mOrderList = Utils.parseObjectToListMapString(data);
-                for (onDataCountChangeListener l:mListeners) {
-                    l.onChange(getUnReadMsgCount());
+                ListMapComparator comp = new ListMapComparator("addtime",0);
+                Collections.sort(mOrderList,comp);
+                Integer statusGroup[] = {2,3,4,5,6,7,9,10,11,12};
+
+                Iterator<Map<String,Object>> it = mOrderList.iterator();
+                List<Integer> statusList = Arrays.asList(statusGroup);
+                while (it.hasNext()) {
+                    Map<String,Object> qu = it.next();
+                    if (!statusList.contains(Utils.toInteger(qu.get("orderstatus")))) {
+                        it.remove();
+                    }
                 }
-                return  mOrderList;
+                RefreshManager.getInstance().refreshData(RefreshKey.ORDER_DATA_READ);
+                RefreshManager.getInstance().refreshData(RefreshKey.ORDER_DATA_LIST);
+                return mOrderList;
             }
         });
     }
-    public Observable<List<Map<String,Object>>> getAllCommentNewList() {
+
+    public Observable<List<Map<String, Object>>> getAllCommentNewList() {
         HashMap<String, Object> params = new HashMap<>();
         params.put("userid", AppData.getInstance().getToken().getId());
         params.put("pagesize", 30);
-       return WebCall.getInstance().callCache(WebKey.func_getNewCommentList, params,mCommentNewData).map(new Func1<WebResponse, List<Map<String,Object>>>() {
-           @Override
-           public List<Map<String, Object>> call(WebResponse webResponse) {
-               String data = webResponse.getData();
-               mCommentNewData = webResponse;
-               mNewCommentList = Utils.parseObjectToListMapString(data);
-               for (onDataCountChangeListener l:mListeners) {
-                   l.onChange(getUnReadMsgCount());
-               }
-               return mNewCommentList;
-           }
-       });
+        return WebCall.getInstance().callCache(WebKey.func_getNewCommentList, params, mCommentNewData).map(new Func1<WebResponse, List<Map<String, Object>>>() {
+            @Override
+            public List<Map<String, Object>> call(WebResponse webResponse) {
+                String data = webResponse.getData();
+                mCommentNewData = webResponse;
+                mNewCommentList = Utils.parseObjectToListMapString(data);
+                RefreshManager.getInstance().refreshData(RefreshKey.NEW_COMMENT_DATA_LIST);
+                RefreshManager.getInstance().refreshData(RefreshKey.NEW_COMMENT_DATA_READ);
+                return mNewCommentList;
+            }
+        });
     }
 
-    public Observable<List<Map<String,Object>>> getAllSystemMsgList() {
-          List<Map<String,Object>> list  = new ArrayList<>();
-        return Observable.just(list);
+    public Observable<List<Map<String, Object>>> getNewSystemMsgList() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("page", 1);
+        params.put("pagesize", 1);
+      return   WebCall.getInstance().callCache(WebKey.func_getSysMsg, params,mNewSystemData).map(new Func1<WebResponse, List<Map<String, Object>>>() {
+            @Override
+            public List<Map<String, Object>> call(WebResponse webResponse) {
+                mNewSystemData = webResponse;
+                String data = webResponse.getReturnData();
+                Map<String, Object> map = Utils.parseObjectToMapString(data);
+                List<Map<String, Object>> list = Utils.parseObjectToListMapString(map.get("data"));
+                RefreshManager.getInstance().refreshData(RefreshKey.SYTEM_DATA_LIST);
+
+                return list;
+            }
+        });
+
+
     }
 
 
-
-    private void loadOrderMsgData() {
+    public void loadOrderMsgData() {
         HashMap<String, Object> params = new HashMap<>();
         params.put("userid", AppData.getInstance().getToken().getId());
         WebCall.getInstance().call(WebKey.func_getOrdersMsg, params).subscribe(new BaseSubscriber<WebResponse>() {
@@ -112,13 +155,27 @@ public class MsgData {
                 String data = webResponse.getData();
                 mOrderMsgData = webResponse;
                 mOrderList = Utils.parseObjectToListMapString(data);
-                for (onDataCountChangeListener l:mListeners) {
-                    l.onChange(getUnReadMsgCount());
+                ListMapComparator comp = new ListMapComparator("addtime",0);
+                Collections.sort(mOrderList,comp);
+                Integer statusGroup[] = {2,3,4,5,6,7,9,10,11,12};
+
+                Iterator<Map<String,Object>> it = mOrderList.iterator();
+                List<Integer> statusList = Arrays.asList(statusGroup);
+                while (it.hasNext()) {
+                    Map<String,Object> qu = it.next();
+                    if (!statusList.contains(Utils.toInteger(qu.get("orderstatus")))) {
+                        it.remove();
+                    }
                 }
+
+                RefreshManager.getInstance().refreshData(RefreshKey.ORDER_DATA_LIST);
+                RefreshManager.getInstance().refreshData(RefreshKey.ORDER_DATA_READ);
+
             }
         });
     }
-    private void loadNewCommentList(){
+
+    public void loadNewCommentList() {
         HashMap<String, Object> params = new HashMap<>();
         params.put("userid", AppData.getInstance().getToken().getId());
         params.put("pagesize", 30);
@@ -128,41 +185,15 @@ public class MsgData {
                 String data = webResponse.getData();
                 mCommentNewData = webResponse;
                 mNewCommentList = Utils.parseObjectToListMapString(data);
-                for (onDataCountChangeListener l:mListeners) {
-                    l.onChange(getUnReadMsgCount());
-                }
+                RefreshManager.getInstance().refreshData(RefreshKey.NEW_COMMENT_DATA_LIST);
+                RefreshManager.getInstance().refreshData(RefreshKey.NEW_COMMENT_DATA_READ);
+
             }
         });
 
     }
 
-    private void loadSystemList() {
-
+    private void loadNewSystemList() {
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public void addOnCountChangeListener(onDataCountChangeListener listener) {
-        if (!mListeners.contains(listener)) {
-            mListeners.add(listener);
-        }
-    }
-
-    private List<onDataCountChangeListener> mListeners = new ArrayList<>();
-
-    public interface onDataCountChangeListener {
-
-        public void onChange(int count);
-    }
 }

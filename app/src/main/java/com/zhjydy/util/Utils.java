@@ -600,4 +600,20 @@ public class Utils
         Matcher m = p.matcher(inputText);
         return m.matches();
     }
+
+    public static String getListStrsAdd(List<Map<String,Object>> list,String key) {
+        String ids = "";
+        List<String> idList = new ArrayList<>();
+        for (Map<String,Object> l:list) {
+            idList.add(Utils.toString(l.get(key)));
+        }
+
+        for (int i = 0 ; i <idList.size(); i ++) {
+            ids += idList.get(i);
+            if (i < idList.size() -1) {
+                ids +=",";
+            }
+        }
+        return ids;
+    }
 }

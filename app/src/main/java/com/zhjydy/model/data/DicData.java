@@ -387,9 +387,11 @@ public class DicData {
                                 itC.remove();
                             }
                         }
+
                         mCityPickViewData.add(cityPickList);
                         mQuPickViewData.add(cityQuPickList);
                     }
+
                 }
                 Map<String, ArrayList> map = new HashMap<String, ArrayList>();
                 map.put("pro", mProPickViewData);
