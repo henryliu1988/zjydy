@@ -11,6 +11,7 @@ public interface MainTabsContract {
     interface View extends BaseView<Presenter>
     {
         void updateMsgCount(int count);
+        void refreshOrderList();
 
     }
 

@@ -184,8 +184,12 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
     @Override
     public void update(List<Map<String, Object>> orders)
     {
-        mOrderList = orders;
+        mOrderList.clear();
+        mOrderList.addAll(orders);
         mList.onRefreshComplete();
+        mOnGoOrderList.clear();
+        mOkOrderList.clear();
+        mRetrackOrderList.clear();
         for (Map<String, Object> order : mOrderList)
         {
             int status = Utils.toInteger(order.get("status"));
@@ -230,7 +234,6 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
                 list.addAll(mOrderList);
                 break;
             case 1:
-
                 list.addAll(mOnGoOrderList);
                 break;
             case 2:

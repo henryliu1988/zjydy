@@ -14,6 +14,8 @@ import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.preference.SPUtils;
+import com.zhjydy.presenter.RefreshKey;
+import com.zhjydy.presenter.RefreshManager;
 import com.zhjydy.presenter.contract.OrderCancelContract;
 import com.zhjydy.presenter.contract.OrderConfirmContract;
 import com.zhjydy.util.Utils;
@@ -90,6 +92,9 @@ public class OrderCancelPresenterImp implements OrderCancelContract.Presenter {
               String  returnData = webResponse.getReturnData();
                 Map<String,Object> map = Utils.parseObjectToMapString(returnData);
                 boolean status = Utils.toBoolean(map.get("status"));
+                if (status) {
+                    RefreshManager.getInstance().refreshData(RefreshKey.ORDET_LIST_CHANGE);
+                }
                 mView.cancelResult(status);
             }
         });

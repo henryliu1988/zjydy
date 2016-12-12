@@ -18,6 +18,7 @@ public class MainTabsPrensenter implements MainTabsContract.Presenter,RefreshWit
         view.setPresenter(this);
         RefreshManager.getInstance().addNewListener(RefreshKey.ORDER_DATA_READ,this);
         RefreshManager.getInstance().addNewListener(RefreshKey.NEW_COMMENT_DATA_READ,this);
+        RefreshManager.getInstance().addNewListener(RefreshKey.ORDER_DATA_LIST,this);
         start();
     }
 
@@ -44,6 +45,15 @@ public class MainTabsPrensenter implements MainTabsContract.Presenter,RefreshWit
 
     @Override
     public void onRefreshWithKey(int key) {
-        loadMsgCount();
+        switch (key) {
+            case RefreshKey.ORDER_DATA_READ:
+            case RefreshKey.NEW_COMMENT_DATA_READ:
+                loadMsgCount();
+                break;
+            case RefreshKey.ORDER_DATA_LIST:
+                if(mView != null) {
+                    mView.refreshOrderList();
+                }
+        }
     }
 }

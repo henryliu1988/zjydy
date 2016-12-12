@@ -157,13 +157,12 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
             case 2:
                 text="认证审核中";
                 break;
-
             case 3:
                 text = "审核未通过";
                 break;
-
             case 4:
                 text = "已认证";
+                break;
         }
         mineConfirmMsgStatus.setText(text);
     }

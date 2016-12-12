@@ -134,9 +134,9 @@ public class IdentityInfoFragment extends PageImpBaseFragment implements Identit
         }
         if (status>2) {
             if (status == 3) {
-                stepVerify.setText("审核\n通过");
+                stepVerify.setText("审核\n失败");
             } else{
-                stepVerify.setText("审核\n未通过");
+                stepVerify.setText("审核\n通过");
             }
             ViewUtil.setOverViewDrawbleBg(stepVerify,"#FFAD0E","#FFE3B9", strokWidth);
         }

@@ -104,6 +104,14 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
     }
 
     @Override
+    public void refreshOrderList()
+    {
+        if (mFourthFragment != null) {
+            mFourthFragment.refreshView();
+        }
+    }
+
+    @Override
     public void setPresenter(MainTabsContract.Presenter presenter) {
         mPresenter = presenter;
     }
