@@ -4,7 +4,6 @@ import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
-import com.zhjydy.presenter.contract.SearchExpertContract;
 import com.zhjydy.presenter.contract.SearchHomeContract;
 import com.zhjydy.util.Utils;
 
@@ -40,47 +39,42 @@ public class SearchHomePresenterImp implements SearchHomeContract.Presenter {
     }
 
     @Override
-    public void searchExpertAndInfo(String info)
-    {
-        HashMap<String,Object> paramsExpert = new HashMap<>();
-        paramsExpert.put("expert",info);
-        Observable<List<Map<String,Object>>> expertOb =  WebCall.getInstance().call(WebKey.func_searchExpertsList,paramsExpert).map(new Func1<WebResponse, List<Map<String,Object>>>() {
-        @Override
-        public List<Map<String, Object>> call(WebResponse webResponse) {
-            String data = webResponse.getData();
-            List<Map<String,Object>> list = Utils.parseObjectToListMapString(data);
-            return  list;
-        }
-    });
-        HashMap<String,Object> paramsInfo = new HashMap<>();
-        paramsInfo.put("news",info);
-        Observable<List<Map<String,Object>>> infoOb =WebCall.getInstance().call(WebKey.func_searchNewsList,paramsInfo).map(new Func1<WebResponse, List<Map<String,Object>>>() {
+    public void searchExpertAndInfo(String info) {
+        HashMap<String, Object> paramsExpert = new HashMap<>();
+        paramsExpert.put("expert", info);
+        Observable<List<Map<String, Object>>> expertOb = WebCall.getInstance().call(WebKey.func_searchExpertsList, paramsExpert).map(new Func1<WebResponse, List<Map<String, Object>>>() {
             @Override
             public List<Map<String, Object>> call(WebResponse webResponse) {
                 String data = webResponse.getData();
-                List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
-                list = Utils.parseObjectToListMapString(data);
-                return  list;
+                List<Map<String, Object>> list = Utils.parseObjectToListMapString(data);
+                return list;
             }
         });
-        Observable.zip(expertOb, infoOb, new Func2<List<Map<String,Object>>, List<Map<String,Object>>, Map<String,Object>>()
-        {
+        HashMap<String, Object> paramsInfo = new HashMap<>();
+        paramsInfo.put("news", info);
+        Observable<List<Map<String, Object>>> infoOb = WebCall.getInstance().call(WebKey.func_searchNewsList, paramsInfo).map(new Func1<WebResponse, List<Map<String, Object>>>() {
             @Override
-            public Map<String, Object> call(List<Map<String, Object>> expert, List<Map<String, Object>> info)
-            {
-                Map<String,Object> map = new HashMap<String, Object>();
-                map.put("expert",expert);
-                map.put("info",info);
+            public List<Map<String, Object>> call(WebResponse webResponse) {
+                String data = webResponse.getData();
+                List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+                list = Utils.parseObjectToListMapString(data);
+                return list;
+            }
+        });
+        Observable.zip(expertOb, infoOb, new Func2<List<Map<String, Object>>, List<Map<String, Object>>, Map<String, Object>>() {
+            @Override
+            public Map<String, Object> call(List<Map<String, Object>> expert, List<Map<String, Object>> info) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("expert", expert);
+                map.put("info", info);
                 return map;
             }
-        }).subscribe(new BaseSubscriber<Map<String, Object>>(mView.getContext(),"请稍后，正在查询")
-        {
+        }).subscribe(new BaseSubscriber<Map<String, Object>>(mView.getContext(), "请稍后，正在查询") {
             @Override
-            public void onNext(Map<String, Object> map)
-            {
-                List<Map<String, Object>> expert = ( List<Map<String, Object>> )map.get("expert");
-                List<Map<String, Object>> info = ( List<Map<String, Object>> )map.get("info");
-                mView.onSearchResult(expert,info);
+            public void onNext(Map<String, Object> map) {
+                List<Map<String, Object>> expert = (List<Map<String, Object>>) map.get("expert");
+                List<Map<String, Object>> info = (List<Map<String, Object>>) map.get("info");
+                mView.onSearchResult(expert, info);
             }
         });
     }

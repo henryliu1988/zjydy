@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="10dp"
     android:paddingBottom="10dp">
 
-    
+
     <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
@@ -26,6 +27,7 @@
         android:paddingRight="40dp"
         android:layout_marginTop="10dp"
         android:gravity="left|center_vertical">
+
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -45,6 +47,6 @@
             app:arrowHeight="10dp"
             app:arrowPosition="14dp"
             app:arrowLocation="left"
-            app:bubbleColor="@color/white_bg"/>
+            app:bubbleColor="@color/white_bg" />
     </LinearLayout>
 </LinearLayout>

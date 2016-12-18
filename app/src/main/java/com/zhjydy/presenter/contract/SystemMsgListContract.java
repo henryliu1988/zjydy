@@ -8,12 +8,10 @@ import com.zhjydy.presenter.BaseView;
  */
 public interface SystemMsgListContract {
 
-    interface View extends BaseView<Presenter>
-    {
+    interface View extends BaseView<Presenter> {
     }
 
-    interface Presenter extends BasePresenter
-    {
+    interface Presenter extends BasePresenter {
 
     }
 }

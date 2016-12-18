@@ -102,8 +102,8 @@ public class OrderDetailFragment extends PageImpBaseFragment implements OrderDet
                     return;
                 }
                 Bundle bundle = new Bundle();
-                bundle.putString(IntentKey.FRAG_INFO,expertId);
-                gotoFragment(FragKey.detail_expert_fragment,bundle);
+                bundle.putString(IntentKey.FRAG_INFO, expertId);
+                gotoFragment(FragKey.detail_expert_fragment, bundle);
             }
         });
     }

@@ -13,7 +13,6 @@ import com.zhjydy.R;
 import com.zhjydy.presenter.contract.LoginPasswordChangeContract;
 import com.zhjydy.presenter.presenterImp.LoginPasswordChangePresenterImp;
 import com.zhjydy.util.ActivityUtils;
-import com.zhjydy.view.avtivity.LoginActivity;
 import com.zhjydy.view.zhview.zhToast;
 
 import butterknife.BindView;
@@ -89,26 +88,26 @@ public class LoginPasswordChangeFragment extends PageImpBaseFragment implements 
             zhToast.showToast("请输入原密码");
             return;
         }
-        if(TextUtils.isEmpty(newPassword )) {
+        if (TextUtils.isEmpty(newPassword)) {
             zhToast.showToast("请输入新密码");
             return;
 
         }
-        if(newPassword.length() < 6) {
+        if (newPassword.length() < 6) {
             zhToast.showToast("新密码长度太短");
             return;
 
         }
-        if(newPassword.length() > 19) {
+        if (newPassword.length() > 19) {
             zhToast.showToast("新密码长度太长");
             return;
         }
-        mPresenter.confirmUpdate(oldPassword,newPassword);
+        mPresenter.confirmUpdate(oldPassword, newPassword);
     }
 
     @Override
     public void updatePassWordOk() {
         zhToast.showToast("修改密码成功");
-        ActivityUtils.showLogin(getActivity(),true);
+        ActivityUtils.showLogin(getActivity(), true);
     }
 }

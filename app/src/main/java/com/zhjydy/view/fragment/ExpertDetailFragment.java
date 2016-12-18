@@ -1,7 +1,5 @@
 package com.zhjydy.view.fragment;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -10,13 +8,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zhjydy.R;
-import com.zhjydy.model.data.AppData;
 import com.zhjydy.model.data.DicData;
+import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.presenter.contract.ExpertDetailContract;
 import com.zhjydy.presenter.presenterImp.ExpertDetailPresenterImp;
@@ -27,7 +24,6 @@ import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.zhview.ListViewForScrollView;
 import com.zhjydy.view.zhview.ScoreView;
 import com.zhjydy.view.zhview.zhToast;
-import com.zhl.cbdialog.CBDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,6 +94,7 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
 
 
     private boolean isCollect = false;
+
     @Override
     protected void initData() {
 
@@ -110,7 +107,7 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
 
     @Override
     protected void afterViewCreate() {
-        if(getArguments() == null) {
+        if (getArguments() == null) {
             return;
         }
         id = getArguments().getString(IntentKey.FRAG_INFO);
@@ -131,24 +128,25 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
 
 
     private void updateFavStatus() {
-        String collect = AppData.getInstance().getToken().getCollectExperts();
+        String collect = UserData.getInstance().getToken().getCollectExperts();
         List<String> coList = new ArrayList<String>();
         if (!TextUtils.isEmpty(collect)) {
             coList = Arrays.asList(collect.split(","));
         }
     }
+
     @Override
     public void updateExpertInfos(Map<String, Object> expertInfo) {
         name.setText(Utils.toString(expertInfo.get("realname")));
         String office = DicData.getInstance().getOfficeById(Utils.toString(expertInfo.get("office"))).getName();
-        String business = DicData.getInstance().getOfficeById(Utils.toString(expertInfo.get("business"))).getName();
-        if(!TextUtils.isEmpty(office) && !TextUtils.isEmpty(business)) {
+        String business = DicData.getInstance().getBusinessById(Utils.toString(expertInfo.get("business"))).getName();
+        if (!TextUtils.isEmpty(office) && !TextUtils.isEmpty(business)) {
             depart.setText(DicData.getInstance().getOfficeById(Utils.toString(expertInfo.get("office"))).getName() + " | ");
         } else {
             depart.setText(DicData.getInstance().getOfficeById(Utils.toString(expertInfo.get("office"))).getName());
         }
         hospital.setText(DicData.getInstance().getHospitalById(Utils.toString(expertInfo.get("hospital"))).getHospital());
-        profession.setText(DicData.getInstance().getOfficeById(Utils.toString(expertInfo.get("business"))).getName());
+        profession.setText(DicData.getInstance().getBusinessById(Utils.toString(expertInfo.get("business"))).getName());
         reasonTv.setText(Utils.toString(expertInfo.get("reason")));
         specicalTv.setText(Utils.toString(expertInfo.get("adept")));
         int score = Utils.toInteger(expertInfo.get("stars"));
@@ -159,8 +157,8 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
             score = 0;
         }
         scoreText.setText("推荐分数：" + score + "分");
-        scoreStar.setScore(score,100);
-        ImageUtils.getInstance().displayFromRemote(Utils.toString(expertInfo.get("path")), image);
+        scoreStar.setScore(score, 100);
+        ImageUtils.getInstance().displayFromRemoteOver(Utils.toString(expertInfo.get("path")), image);
 
     }
 
@@ -172,7 +170,7 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
             wordListview.setVisibility(View.GONE);
             return;
         }
-        TextView commentCoutTv = (TextView)mCommentListHeaderView.findViewById(R.id.comment_count);
+        TextView commentCoutTv = (TextView) mCommentListHeaderView.findViewById(R.id.comment_count);
         commentCoutTv.setText("留言（" + comments.size() + "）");
     }
 
@@ -180,16 +178,16 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
     public void updateFavStatus(boolean isCollect) {
         if (isCollect) {
             saveText.setText("取消收藏");
-            ImageUtils.getInstance().displayFromDrawable(R.mipmap.save_cancel,saveImage);
+            ImageUtils.getInstance().displayFromDrawable(R.mipmap.save_cancel, saveImage);
             saveLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mPresenter.cancelSaveExpert();
                 }
             });
-        } else{
+        } else {
             saveText.setText("收藏");
-            ImageUtils.getInstance().displayFromDrawable(R.mipmap.save_start,saveImage);
+            ImageUtils.getInstance().displayFromDrawable(R.mipmap.save_start, saveImage);
             saveLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -219,14 +217,14 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
         mPresenter.getAllPatientCase().subscribe(new BaseSubscriber<List<Map<String, Object>>>() {
             @Override
             public void onNext(List<Map<String, Object>> maps) {
-                if (maps == null || maps.size()< 1) {
+                if (maps == null || maps.size() < 1) {
                     gotoFragment(FragKey.patient_case_fragment);
                 } else {
-                    Map<String,Object> expertInfo = mPresenter.getExpertSubScribInfo();
+                    Map<String, Object> expertInfo = mPresenter.getExpertSubScribInfo();
                     String fragInfo = JSONObject.toJSONString(expertInfo);
                     Bundle bundle = new Bundle();
-                    bundle.putString(IntentKey.FRAG_INFO,fragInfo);
-                    gotoFragment(FragKey.patient_case_select_fragment,bundle);
+                    bundle.putString(IntentKey.FRAG_INFO, fragInfo);
+                    gotoFragment(FragKey.patient_case_select_fragment, bundle);
                 }
             }
         });
@@ -240,7 +238,7 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
         return rootView;
     }
 
-    @OnClick({R.id.comment_make_btn, R.id.title_back,R.id.subscribe_expert})
+    @OnClick({R.id.comment_make_btn, R.id.title_back, R.id.subscribe_expert})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.comment_make_btn:

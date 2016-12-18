@@ -17,16 +17,23 @@ public interface ExpertDetailContract {
         void updateExpertInfos(Map<String, Object> expertInfo);
 
         void updateComments(List<Map<String, Object>> comments);
+
         void updateFavStatus(boolean isCollect);
+
         void makeCommentSuccess();
     }
 
     interface Presenter extends BasePresenter {
         void makeNewComment(String commentId);
+
         void reloadData();
+
         void saveExpert();
+
         void cancelSaveExpert();
-        Observable<List<Map<String,Object>>> getAllPatientCase();
-        Map<String,Object> getExpertSubScribInfo();
+
+        Observable<List<Map<String, Object>>> getAllPatientCase();
+
+        Map<String, Object> getExpertSubScribInfo();
     }
 }

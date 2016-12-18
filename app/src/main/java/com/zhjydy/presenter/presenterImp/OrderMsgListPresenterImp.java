@@ -1,7 +1,5 @@
 package com.zhjydy.presenter.presenterImp;
 
-import android.text.TextUtils;
-
 import com.shizhefei.mvc.RequestHandle;
 import com.shizhefei.mvc.ResponseSender;
 import com.zhjydy.model.data.MsgData;
@@ -11,7 +9,6 @@ import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.model.pageload.PageLoadDataSource;
-import com.zhjydy.presenter.contract.OrderDetailContract;
 import com.zhjydy.presenter.contract.OrderMsgListContract;
 import com.zhjydy.util.ListMapComparator;
 
@@ -44,10 +41,10 @@ public class OrderMsgListPresenterImp extends PageLoadDataSource implements Orde
         MsgData.getInstance().getAllOrderMsgList().subscribe(new BaseSubscriber<List<Map<String, Object>>>() {
             @Override
             public void onNext(List<Map<String, Object>> orderLit) {
-                ListMapComparator comp = new ListMapComparator("addtime",0);
-                Collections.sort(orderLit,comp);
+                ListMapComparator comp = new ListMapComparator("addtime", 0);
+                Collections.sort(orderLit, comp);
                 if (mView != null)
-                mView.updateOrderList(orderLit);
+                    mView.updateOrderList(orderLit);
             }
         });
     }
@@ -64,9 +61,9 @@ public class OrderMsgListPresenterImp extends PageLoadDataSource implements Orde
 
     @Override
     public void readOrder(String id) {
-        HashMap<String,Object> params = new HashMap<>();
-        params.put("id",id);
-        WebCall.getInstance().call(WebKey.func_updateOrdersMsg,params).subscribe(new BaseSubscriber<WebResponse>() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        WebCall.getInstance().call(WebKey.func_updateOrdersMsg, params).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
             public void onNext(WebResponse webResponse) {
                 if (WebUtils.getWebStatus(webResponse)) {

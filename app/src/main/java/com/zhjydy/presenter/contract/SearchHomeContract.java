@@ -11,9 +11,9 @@ import java.util.Map;
  */
 public interface SearchHomeContract {
     interface View extends BaseView<Presenter> {
-        void onSearchResult(List<Map<String,Object>> experts,List<Map<String,Object>> infos);
-       // void onSearchExpert(List<Map<String,Object>> experts);
-       // void onSearchInfo(List<Map<String,Object>> infos);
+        void onSearchResult(List<Map<String, Object>> experts, List<Map<String, Object>> infos);
+        // void onSearchExpert(List<Map<String,Object>> experts);
+        // void onSearchInfo(List<Map<String,Object>> infos);
     }
 
     interface Presenter extends BasePresenter {

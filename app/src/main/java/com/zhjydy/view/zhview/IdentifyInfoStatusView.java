@@ -2,14 +2,12 @@ package com.zhjydy.view.zhview;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhjydy.R;
 import com.zhjydy.util.DensityUtil;
 import com.zhjydy.util.ScreenUtils;
-import com.zhjydy.util.Utils;
 
 /**
  * Created by Administrator on 2016/10/27 0027.
@@ -37,18 +35,20 @@ public class IdentifyInfoStatusView extends RelativeLayout {
         mOutlineView.setPadding(padding, padding, padding, padding);
         mStatusText = new TextView(getContext());
         mStatusText.setTextColor(getContext().getResources().getColor(R.color.white_text));
-        mStatusText.setTextSize(ScreenUtils.getScreenWidth()/60);
+        mStatusText.setTextSize(ScreenUtils.getScreenWidth() / 60);
         mStatusText.setMaxEms(3);
-        mStatusText.setPadding(padding*2, padding*2, padding*2, padding*2);
+        mStatusText.setPadding(padding * 2, padding * 2, padding * 2, padding * 2);
         mOutlineView.setGravity(CENTER_IN_PARENT);
         mOutlineView.addView(mStatusText);
         this.addView(mOutlineView);
     }
+
     public void setStatusText(String status) {
         mStatusText.setText(status);
     }
+
     public void setStatus(boolean finish) {
-        if (finish){
+        if (finish) {
             mOutlineView.setBackgroundResource(R.drawable.bg_circle_identify22);
             mStatusText.setBackgroundResource(R.drawable.bg_circle_identify2);
         } else {

@@ -1,8 +1,6 @@
 package com.zhjydy.view.adapter;
 
 import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zhjydy.R;

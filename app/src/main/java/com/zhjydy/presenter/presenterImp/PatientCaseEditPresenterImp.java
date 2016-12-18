@@ -7,7 +7,6 @@ import com.zhjydy.model.entity.NormalDicItem;
 import com.zhjydy.model.entity.NormalPickViewData;
 import com.zhjydy.model.entity.PickViewData;
 import com.zhjydy.model.net.BaseSubscriber;
-import com.zhjydy.presenter.contract.PatientCaseDetailContract;
 import com.zhjydy.presenter.contract.PatientCaseEditContract;
 
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ public class PatientCaseEditPresenterImp implements PatientCaseEditContract.Pres
     private PatientCaseEditContract.View mView;
 
     private List<HosipitalPickViewData> mHospitalList = new ArrayList<>();
+
     public PatientCaseEditPresenterImp(PatientCaseEditContract.View view) {
         this.mView = view;
         view.setPresenter(this);
@@ -38,18 +38,20 @@ public class PatientCaseEditPresenterImp implements PatientCaseEditContract.Pres
 
     private void loadSexPickData() {
         ArrayList<PickViewData> sexData = new ArrayList<>();
-        sexData.add(new PickViewData("1","男"));
-        sexData.add(new PickViewData("2","女"));
+        sexData.add(new PickViewData("1", "男"));
+        sexData.add(new PickViewData("2", "女"));
         mView.updateSexPick(sexData);
     }
+
     private void loadOfficeData() {
         ArrayList<NormalPickViewData> officeData = new ArrayList<>();
         List<NormalDicItem> items = DicData.getInstance().getOffice();
-        for (NormalDicItem item:items) {
+        for (NormalDicItem item : items) {
             officeData.add(new NormalPickViewData(item));
         }
         mView.updateOffice(officeData);
     }
+
     private void loadDistricPickData() {
         DicData.getInstance().getAllDistrictForPicker().subscribe(new BaseSubscriber<Map<String, ArrayList>>() {
             @Override
@@ -58,6 +60,7 @@ public class PatientCaseEditPresenterImp implements PatientCaseEditContract.Pres
             }
         });
     }
+
     private void loadPatientCase() {
     }
 
@@ -69,11 +72,11 @@ public class PatientCaseEditPresenterImp implements PatientCaseEditContract.Pres
 
     @Override
     public void updateHospitalList(String addressId) {
-       // List<HospitalDicItem> list = DicData.getInstance().getHospitalByAddress(addressId);
+        // List<HospitalDicItem> list = DicData.getInstance().getHospitalByAddress(addressId);
         List<HospitalDicItem> list = DicData.getInstance().getHospitals();
         ArrayList<HosipitalPickViewData> listPick = new ArrayList<>();
         if (list != null && list.size() > 0) {
-            for(HospitalDicItem item:list) {
+            for (HospitalDicItem item : list) {
                 listPick.add(new HosipitalPickViewData(item));
             }
         }

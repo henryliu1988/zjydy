@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zhjydy.R;
-import com.zhjydy.model.data.AppData;
+import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.entity.TokenInfo;
 import com.zhjydy.presenter.contract.MainMineContract;
 import com.zhjydy.presenter.presenterImp.MainMinePresenterImp;
@@ -88,19 +88,20 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
     }
 
     private void initMinePhotoView() {
-        TokenInfo tokenInfo  = AppData.getInstance().getToken();
-        if (TextUtils.isEmpty(tokenInfo.getId())){
+        TokenInfo tokenInfo = UserData.getInstance().getToken();
+        if (TextUtils.isEmpty(tokenInfo.getId())) {
             mineStatus.setText("请登录");
             return;
         }
         if (!TextUtils.isEmpty(tokenInfo.getPhotoUrl())) {
-            ImageUtils.getInstance().displayFromRemote(tokenInfo.getPhotoUrl(),mineImage);
+            ImageUtils.getInstance().displayFromRemote(tokenInfo.getPhotoUrl(), mineImage);
         }
         if (!TextUtils.isEmpty(tokenInfo.getNickname())) {
             mineStatus.setText(tokenInfo.getNickname());
         }
 
     }
+
     @Override
     public void setPresenter(MainMineContract.MainMinePresenter presenter) {
         mPresenter = presenter;
@@ -146,7 +147,7 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
     }
 
     @Override
-    public void updateIdentiFyStatus(int status,String msg) {
+    public void updateIdentiFyStatus(int status, String msg) {
         mineConfirmMsgStatus.setVisibility(View.VISIBLE);
         String text = "";
         switch (status) {
@@ -155,7 +156,7 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
                 text = "未认证";
                 break;
             case 2:
-                text="认证审核中";
+                text = "认证审核中";
                 break;
             case 3:
                 text = "审核未通过";

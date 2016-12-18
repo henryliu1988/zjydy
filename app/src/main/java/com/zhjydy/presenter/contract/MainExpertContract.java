@@ -12,18 +12,20 @@ import java.util.Map;
  */
 public interface MainExpertContract {
 
-    interface MainExpertView extends BaseView<MainExpertPresenter>
-    {
-        void updateDistrict(Map<String,ArrayList> distrctData);
+    interface MainExpertView extends BaseView<MainExpertPresenter> {
+        void updateDistrict(Map<String, ArrayList> distrctData);
+
         void updateOffice(ArrayList<NormalPickViewData> officeData);
+
         void updateBusiness(ArrayList<NormalPickViewData> officeData);
-        Map<String,Object> getFilterConditions();
+
+        Map<String, Object> getFilterConditions();
+
         void updateFavExpertCount(int count);
 
     }
 
-    interface MainExpertPresenter extends BasePresenter
-    {
+    interface MainExpertPresenter extends BasePresenter {
         void reloadExperts();
     }
 }

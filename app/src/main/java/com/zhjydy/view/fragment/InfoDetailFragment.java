@@ -16,16 +16,12 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 import com.zhjydy.R;
-import com.zhjydy.model.data.AppData;
 import com.zhjydy.presenter.contract.InfoDetailContract;
 import com.zhjydy.presenter.presenterImp.InfoDetailPresenterImp;
 import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.avtivity.IntentKey;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -133,7 +129,7 @@ public class InfoDetailFragment extends PageImpBaseFragment implements InfoDetai
     public void update(Map<String, Object> info) {
         String url = Utils.toString(info.get("url"));
         mInfoWebview.loadUrl(url);
-        mInfoWebview.setWebViewClient(new WebViewClient(){
+        mInfoWebview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);

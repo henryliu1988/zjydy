@@ -9,4 +9,8 @@ public class IntentKey {
     public static final String FRAG_KEY = "key";
     public static final String FRAG_INFO = "info";
 
+    public static final String IMAGE_POS = "position";
+    public static final String IMAGE_LIST = "list";
+
+
 }

@@ -8,15 +8,19 @@ import android.text.TextUtils;
 
 import com.umeng.socialize.UMShareAPI;
 import com.zhjydy.R;
-import com.zhjydy.view.ActivityResultView;
-import com.zhjydy.view.fragment.PagerFragmentFactory;
+import com.zhjydy.model.data.UserData;
 import com.zhjydy.presenter.contract.PageImpContract;
 import com.zhjydy.presenter.presenterImp.PageImpPresenter;
+import com.zhjydy.util.ActivityUtils;
+import com.zhjydy.view.ActivityResultView;
 import com.zhjydy.view.fragment.FragKey;
 import com.zhjydy.view.fragment.FragmentUtils;
+import com.zhjydy.view.fragment.PagerFragmentFactory;
 import com.zhjydy.view.fragment.StatedFragment;
+import com.zhjydy.view.zhview.zhToast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -37,6 +41,12 @@ public class PagerImpActivity extends BaseActivity implements PageImpContract.Vi
         if (!FragKey.FragMap.containsKey(key)) {
             finish();
             return;
+        }
+        List<Integer> noUserFragList = Arrays.asList(FragKey.NO_NEED_USER_FRAG);
+        if (!noUserFragList.contains(key) && !UserData.getInstance().isLogin()) {
+            finish();
+            ActivityUtils.showLogin(this,false);
+            zhToast.showToast("请先登录");
         }
         new PageImpPresenter(this);
         setContentView(R.layout.activity_pager_imp);
@@ -74,7 +84,6 @@ public class PagerImpActivity extends BaseActivity implements PageImpContract.Vi
     public void setPresenter(PageImpContract.Presenter presenter) {
         this.mPresenter = presenter;
     }
-
 
 
     @Override

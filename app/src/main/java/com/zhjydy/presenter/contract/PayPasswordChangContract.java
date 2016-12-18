@@ -8,13 +8,11 @@ import com.zhjydy.presenter.BaseView;
  */
 public interface PayPasswordChangContract {
 
-    interface View extends BaseView<Presenter>
-    {
-        void confirmResult(boolean result,String msg);
+    interface View extends BaseView<Presenter> {
+        void confirmResult(boolean result, String msg);
     }
 
-    interface Presenter extends BasePresenter
-    {
-        void confirm(String oldPw,String newPw);
+    interface Presenter extends BasePresenter {
+        void confirm(String oldPw, String newPw);
     }
 }

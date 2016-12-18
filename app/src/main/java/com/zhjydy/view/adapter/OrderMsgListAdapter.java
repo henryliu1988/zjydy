@@ -2,16 +2,12 @@ package com.zhjydy.view.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhjydy.R;
-import com.zhjydy.model.data.DicData;
-import com.zhjydy.model.entity.NormalDicItem;
-import com.zhjydy.model.entity.NormalItem;
 import com.zhjydy.util.DateUtil;
 import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.Utils;
@@ -38,8 +34,8 @@ public class OrderMsgListAdapter extends PageLoadListAdapter {
         if (orderStatus < 0) {
             return;
         }
-     //   NormalItem status =  DicData.getInstance().getOrderStatuById(orderStatus);
-      //  ((TextView) holder.getView(R.id.content)).setText(Utils.toString(data.get("introduction")));
+        //   NormalItem status =  DicData.getInstance().getOrderStatuById(orderStatus);
+        //  ((TextView) holder.getView(R.id.content)).setText(Utils.toString(data.get("introduction")));
         int imageRecId = -1;
         String statusName = "";
         String textCorlor = "#FFFFFFFF";
@@ -94,11 +90,11 @@ public class OrderMsgListAdapter extends PageLoadListAdapter {
                 textCorlor = "#F8B500";
                 break;
         }
-        if(!TextUtils.isEmpty(statusName)) {
+        if (!TextUtils.isEmpty(statusName)) {
             ((TextView) holder.getView(R.id.order_status)).setText(statusName);
         }
-        if(imageRecId >0) {
-            ImageUtils.getInstance().displayFromDrawable(imageRecId,((ImageView)holder.getView(R.id.status_image)));
+        if (imageRecId > 0) {
+            ImageUtils.getInstance().displayFromDrawable(imageRecId, ((ImageView) holder.getView(R.id.status_image)));
         }
         if (!TextUtils.isEmpty(textCorlor) && textCorlor.length() > 1) {
             ((TextView) holder.getView(R.id.content)).setText("订单详情内容");

@@ -2,17 +2,13 @@ package com.zhjydy.view.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhjydy.R;
 import com.zhjydy.util.DateUtil;
-import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.zhview.ViewHolder;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +26,7 @@ public class MsgSystemListAdapter extends PageLoadListAdapter {
     public void convert(ViewHolder holder, Map<String, Object> data) {
         String title = Utils.toString(data.get("title"));
         String content = Utils.toString(data.get("content"));
-        if (!TextUtils.isEmpty(Utils.toString(data.get("addtime")))){
+        if (!TextUtils.isEmpty(Utils.toString(data.get("addtime")))) {
             String time = DateUtil.getTimeDiffDayCurrent(Utils.toLong(data.get("addtime")));
             ((TextView) holder.getView(R.id.msg_time)).setText(time);
         }

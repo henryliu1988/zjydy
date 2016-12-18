@@ -1,6 +1,6 @@
 package com.zhjydy.presenter.presenterImp;
 
-import com.zhjydy.model.data.AppData;
+import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.FileUpLoad;
 import com.zhjydy.model.net.WebCall;
@@ -9,7 +9,6 @@ import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.presenter.RefreshKey;
 import com.zhjydy.presenter.RefreshManager;
-import com.zhjydy.presenter.contract.IdentityInfoContract;
 import com.zhjydy.presenter.contract.IdentityInfoNewContract;
 import com.zhjydy.util.Utils;
 import com.zhjydy.util.ViewKey;
@@ -42,7 +41,6 @@ public class IdentityInfoNewPresenterImp implements IdentityInfoNewContract.Pres
     }
 
 
-
     @Override
     public void finish() {
 
@@ -50,32 +48,32 @@ public class IdentityInfoNewPresenterImp implements IdentityInfoNewContract.Pres
 
     @Override
     public void submitIdentifymsg(Map<Integer, String> urls) {
-        HashMap<String,Object> params = new HashMap();
-        Map<String,Object> img0 = new HashMap<>();
-        img0.put(ViewKey.FILE_KEY_TYPE,ViewKey.TYPE_FILE_PATH);
-        img0.put(ViewKey.FILE_KEY_URL,urls.get(0));
-        Map<String,Object> img1 = new HashMap<>();
-        img1.put(ViewKey.FILE_KEY_TYPE,ViewKey.TYPE_FILE_PATH);
-        img1.put(ViewKey.FILE_KEY_URL,urls.get(1));
-        List<Map<String,Object>> list = new ArrayList<>();
+        HashMap<String, Object> params = new HashMap();
+        Map<String, Object> img0 = new HashMap<>();
+        img0.put(ViewKey.FILE_KEY_TYPE, ViewKey.TYPE_FILE_PATH);
+        img0.put(ViewKey.FILE_KEY_URL, urls.get(0));
+        Map<String, Object> img1 = new HashMap<>();
+        img1.put(ViewKey.FILE_KEY_TYPE, ViewKey.TYPE_FILE_PATH);
+        img1.put(ViewKey.FILE_KEY_URL, urls.get(1));
+        List<Map<String, Object>> list = new ArrayList<>();
         list.add(img0);
         list.add(img1);
         FileUpLoad.uploadFiles(list).flatMap(new Func1<List<Map<String, Object>>, Observable<WebResponse>>() {
             @Override
             public Observable<WebResponse> call(List<Map<String, Object>> maps) {
                 HashMap<String, Object> params = new HashMap<String, Object>();
-                params.put("id", AppData.getInstance().getToken().getId());
-                params.put("idcard", Utils.getListStrsAdd(maps,"id"));
-                return WebCall.getInstance().call(WebKey.func_updateHuan,params);
+                params.put("id", UserData.getInstance().getToken().getId());
+                params.put("idcard", Utils.getListStrsAdd(maps, "id"));
+                return WebCall.getInstance().call(WebKey.func_updateHuan, params);
             }
-        }).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"正在提交认证信息") {
+        }).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), "正在提交认证信息") {
             @Override
             public void onNext(WebResponse webResponse) {
                 boolean status = WebUtils.getWebStatus(webResponse);
                 mView.onSubmitSuccess(status);
                 if (status) {
                     RefreshManager.getInstance().refreshData(RefreshKey.IDENTIFY_MSG_UPDATE);
-                } else{
+                } else {
                     zhToast.showToast("上传失败");
                 }
             }

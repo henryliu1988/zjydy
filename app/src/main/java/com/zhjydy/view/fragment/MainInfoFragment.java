@@ -2,9 +2,7 @@ package com.zhjydy.view.fragment;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,23 +10,17 @@ import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhjydy.R;
-import com.zhjydy.model.entity.Infomation;
 import com.zhjydy.presenter.contract.MainInfoContract;
 import com.zhjydy.presenter.presenterImp.MainInfoPresenterImp;
 import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.Utils;
-import com.zhjydy.view.adapter.MainInfoListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.PagerImpActivity;
-import com.zhjydy.view.zhview.BadgImage;
 import com.zhjydy.view.zhview.ImageTipsView;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2016/9/19 0019.

@@ -1,13 +1,12 @@
 package com.zhjydy.presenter.presenterImp;
 
-import com.zhjydy.model.data.AppData;
+import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.presenter.contract.PayPasswordAddContract;
-import com.zhjydy.presenter.contract.PayPasswordChangContract;
 import com.zhjydy.util.MD5;
 
 import java.util.HashMap;
@@ -31,7 +30,6 @@ public class PayPasswordAddPresenterImp implements PayPasswordAddContract.Presen
     }
 
 
-
     @Override
     public void finish() {
 
@@ -40,17 +38,17 @@ public class PayPasswordAddPresenterImp implements PayPasswordAddContract.Presen
 
     @Override
     public void confirm(final String newPw) {
-        HashMap<String,Object> parasm = new HashMap<>();
+        HashMap<String, Object> parasm = new HashMap<>();
         String password = MD5.GetMD5Code(newPw);
-        parasm.put("paypass",password);
-        WebCall.getInstance().call(WebKey.func_addPayPass,parasm).subscribe(new BaseSubscriber<WebResponse>() {
+        parasm.put("paypass", password);
+        WebCall.getInstance().call(WebKey.func_addPayPass, parasm).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
             public void onNext(WebResponse webResponse) {
                 if (WebUtils.getWebStatus(webResponse)) {
-                    mView.confirmResult(true,"修改支付密码成功");
-                    AppData.getInstance().getToken().setPaypass(newPw);
+                    mView.confirmResult(true, "修改支付密码成功");
+                    UserData.getInstance().getToken().setPaypass(newPw);
                 } else {
-                    mView.confirmResult(false,"修改支付密码失败");
+                    mView.confirmResult(false, "修改支付密码失败");
                 }
             }
         });

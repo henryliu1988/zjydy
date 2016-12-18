@@ -11,14 +11,13 @@ import java.util.Map;
  */
 public interface FavExpertContract {
 
-    interface View extends BaseView<Presenter>
-    {
+    interface View extends BaseView<Presenter> {
         void updateExperts(List<Map<String, Object>> list);
     }
 
-    interface Presenter extends BasePresenter
-    {
-       void cancelFavExpert(String id);
+    interface Presenter extends BasePresenter {
+        void cancelFavExpert(String id);
+
         void searchFavExpert(String condition);
     }
 }

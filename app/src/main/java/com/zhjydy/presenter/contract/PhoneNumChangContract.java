@@ -4,9 +4,6 @@ import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.presenter.BasePresenter;
 import com.zhjydy.presenter.BaseView;
 
-import java.util.List;
-import java.util.Map;
-
 import rx.Observable;
 
 /**
@@ -14,14 +11,13 @@ import rx.Observable;
  */
 public interface PhoneNumChangContract {
 
-    interface View extends BaseView<Presenter>
-    {
-        void submitResult(boolean result,String msg,String phone);
+    interface View extends BaseView<Presenter> {
+        void submitResult(boolean result, String msg, String phone);
     }
 
-    interface Presenter extends BasePresenter
-    {
+    interface Presenter extends BasePresenter {
         Observable<WebResponse> getConfirmCode(String phone);
-        void submitChangeConfirm(String phone,String confirmCode);
+
+        void submitChangeConfirm(String phone, String confirmCode);
     }
 }

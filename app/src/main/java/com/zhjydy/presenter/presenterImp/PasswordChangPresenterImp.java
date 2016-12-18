@@ -1,6 +1,5 @@
 package com.zhjydy.presenter.presenterImp;
 
-import com.zhjydy.presenter.contract.AccountSafeContract;
 import com.zhjydy.presenter.contract.PasswordChangContract;
 
 /**
@@ -20,7 +19,6 @@ public class PasswordChangPresenterImp implements PasswordChangContract.Presente
     public void start() {
 
     }
-
 
 
     @Override

@@ -2,23 +2,19 @@ package com.zhjydy.presenter.presenterImp;
 
 import android.text.TextUtils;
 
-import com.apptalkingdata.push.service.Msg;
-import com.zhjydy.model.data.AppData;
 import com.zhjydy.model.data.MsgData;
 import com.zhjydy.model.data.PatientData;
+import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.net.WebUtils;
-import com.zhjydy.presenter.RefreshKey;
-import com.zhjydy.presenter.RefreshManager;
 import com.zhjydy.presenter.contract.ExpertDetailContract;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.zhview.zhToast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +65,7 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
         }).subscribe(new BaseSubscriber<Map<String, Object>>(mView.getContext(), true) {
             @Override
             public void onNext(Map<String, Object> map) {
-                String collect = AppData.getInstance().getToken().getCollectExperts();
+                String collect = UserData.getInstance().getToken().getCollectExperts();
                 map.put("collect", collect);
                 mExpertInfo = map;
                 mView.updateExpertInfos(map);
@@ -107,7 +103,6 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
     }
 
 
-
     @Override
     public void makeNewComment(String content) {
         HashMap<String, Object> params = new HashMap<>();
@@ -119,8 +114,8 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
             Map<String, Object> item = mComments.get(0);
             mark = Utils.toString(item.get("mark"));
         }
-        params.put("sendid", AppData.getInstance().getToken().getId());
-        params.put("sendname", AppData.getInstance().getToken().getNickname());
+        params.put("sendid", UserData.getInstance().getToken().getId());
+        params.put("sendname", UserData.getInstance().getToken().getNickname());
 
         params.put("getid", expertId);
         params.put("getname", getName);
@@ -138,7 +133,7 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
                     loadComments(expertId);
                     mView.makeCommentSuccess();
                     MsgData.getInstance().loadNewCommentList();
-                }else{
+                } else {
                     zhToast.showToast("留言失败！");
                 }
             }
@@ -154,7 +149,7 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
 
 
     private void loadFavStatus() {
-        List<String> collecs = AppData.getInstance().getToken().getCollectExpertList();
+        List<String> collecs = UserData.getInstance().getToken().getCollectExpertList();
         mView.updateFavStatus(collecs.contains(expertId));
     }
 
@@ -162,18 +157,18 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
     public void saveExpert() {
         HashMap<String, Object> params = new HashMap<>();
         params.put("expertid", expertId);
-        params.put("userid", AppData.getInstance().getToken().getId());
+        params.put("userid", UserData.getInstance().getToken().getId());
         WebCall.getInstance().call(WebKey.func_collectExpert, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), "请稍后，正在收藏！") {
             @Override
             public void onNext(WebResponse webResponse) {
-                if(WebUtils.getWebStatus(webResponse)) {
-                    List<String> collect = AppData.getInstance().getToken().getCollectExpertList();
+                if (WebUtils.getWebStatus(webResponse)) {
+                    List<String> collect = UserData.getInstance().getToken().getCollectExpertList();
                     if (!collect.contains(expertId)) {
                         collect.add(expertId);
                     }
-                    AppData.getInstance().getToken().setCollectExpertAsList(collect);
+                    UserData.getInstance().getToken().setCollectExpertAsList(collect);
                     loadFavStatus();
-                } else{
+                } else {
                     zhToast.showToast("收藏失败");
                 }
             }
@@ -184,23 +179,23 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
     public void cancelSaveExpert() {
         HashMap<String, Object> params = new HashMap<>();
         List<String> collect = new ArrayList<>();
-        collect.addAll(AppData.getInstance().getToken().getCollectExpertList());
+        collect.addAll(UserData.getInstance().getToken().getCollectExpertList());
         if (collect.contains(expertId)) {
             collect.remove(expertId);
         }
-        params.put("collectexpert",Utils.strListToString(collect));
-        params.put("userid", AppData.getInstance().getToken().getId());
+        params.put("collectexpert", Utils.strListToString(collect));
+        params.put("userid", UserData.getInstance().getToken().getId());
         WebCall.getInstance().call(WebKey.func_cancelCollectExpert, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), "取消收藏！") {
             @Override
             public void onNext(WebResponse webResponse) {
                 boolean status = WebUtils.getWebStatus(webResponse);
                 if (status) {
                     ArrayList<String> collect = new ArrayList<String>();
-                    collect.addAll(AppData.getInstance().getToken().getCollectExpertList());
+                    collect.addAll(UserData.getInstance().getToken().getCollectExpertList());
                     if (collect.contains(expertId)) {
                         collect.remove(expertId);
                     }
-                    AppData.getInstance().getToken().setCollectExpertAsList(collect);
+                    UserData.getInstance().getToken().setCollectExpertAsList(collect);
                     loadFavStatus();
                 } else {
                     zhToast.showToast("取消收藏失败！");

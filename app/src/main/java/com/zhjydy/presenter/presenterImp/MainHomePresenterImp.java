@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
-import rx.functions.Action1;
 import rx.functions.Func1;
 
 /**
@@ -64,7 +63,7 @@ public class MainHomePresenterImp implements MainHomeContract.MainHomePresenter 
     }
 
     private void loadNewMsg() {
-        WebCall.getInstance().call(WebKey.func_getRecommend,new HashMap<String, Object>()).subscribe(new BaseSubscriber<WebResponse>() {
+        WebCall.getInstance().call(WebKey.func_getRecommend, new HashMap<String, Object>()).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
             public void onNext(WebResponse webResponse) {
                 boolean status = WebUtils.getWebStatus(webResponse);

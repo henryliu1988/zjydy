@@ -10,7 +10,6 @@ import com.zhjydy.model.pageload.PageLoadDataSource;
 import com.zhjydy.presenter.contract.SearchExpertContract;
 import com.zhjydy.util.Utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,13 +22,15 @@ import rx.functions.Func1;
 public class SearchExpertPresenterImp extends PageLoadDataSource implements SearchExpertContract.Presenter {
 
     private SearchExpertContract.View mView;
+
     public SearchExpertPresenterImp(SearchExpertContract.View view) {
         this.mView = view;
         mView.setPresenter(this);
     }
+
     @Override
     public void start() {
-        
+
     }
 
     @Override
@@ -39,16 +40,16 @@ public class SearchExpertPresenterImp extends PageLoadDataSource implements Sear
 
     @Override
     public void searchExpert(String condition) {
-        HashMap<String,Object> params = new HashMap<>();
-        params.put("expert",condition);
-        WebCall.getInstance().call(WebKey.func_searchExpertsList,params).map(new Func1<WebResponse, List<Map<String,Object>>>() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("expert", condition);
+        WebCall.getInstance().call(WebKey.func_searchExpertsList, params).map(new Func1<WebResponse, List<Map<String, Object>>>() {
             @Override
             public List<Map<String, Object>> call(WebResponse webResponse) {
                 String data = webResponse.getData();
-                List<Map<String,Object>> list = Utils.parseObjectToListMapString(data);
-                return  list;
+                List<Map<String, Object>> list = Utils.parseObjectToListMapString(data);
+                return list;
             }
-        }).subscribe(new BaseSubscriber<List<Map<String, Object>>>(mView.getContext(),"请稍后，正在查询") {
+        }).subscribe(new BaseSubscriber<List<Map<String, Object>>>(mView.getContext(), "请稍后，正在查询") {
             @Override
             public void onNext(List<Map<String, Object>> list) {
                 mView.updateExpertList(list);
@@ -57,8 +58,7 @@ public class SearchExpertPresenterImp extends PageLoadDataSource implements Sear
     }
 
     @Override
-    public RequestHandle loadListData(ResponseSender<List<Map<String, Object>>> sender, int page)
-    {
+    public RequestHandle loadListData(ResponseSender<List<Map<String, Object>>> sender, int page) {
         return null;
     }
 }

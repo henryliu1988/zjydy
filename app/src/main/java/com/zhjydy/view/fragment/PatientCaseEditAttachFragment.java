@@ -2,7 +2,6 @@ package com.zhjydy.view.fragment;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.YuvImage;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -35,8 +34,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2016/9/26 0026.
  */
-public class PatientCaseEditAttachFragment extends PageImpBaseFragment implements PatientCaseEditAttachContract.View, ActivityResultView
-{
+public class PatientCaseEditAttachFragment extends PageImpBaseFragment implements PatientCaseEditAttachContract.View, ActivityResultView {
 
 
     @BindView(R.id.title_back)
@@ -57,11 +55,9 @@ public class PatientCaseEditAttachFragment extends PageImpBaseFragment implement
     private HashMap<String, Object> params = new HashMap<>();
 
     @Override
-    protected void initData()
-    {
+    protected void initData() {
         Bundle bundle = getArguments();
-        if (bundle == null || bundle.getString(IntentKey.FRAG_INFO) == null)
-        {
+        if (bundle == null || bundle.getString(IntentKey.FRAG_INFO) == null) {
             back();
             return;
         }
@@ -71,38 +67,30 @@ public class PatientCaseEditAttachFragment extends PageImpBaseFragment implement
     }
 
     @Override
-    protected int getLayoutId()
-    {
+    protected int getLayoutId() {
         return R.layout.fragment_patient_info_edit_attach;
     }
 
     @Override
-    protected void afterViewCreate()
-    {
+    protected void afterViewCreate() {
         new PatientCaseEditAttachPresenterImp(this);
         addOnActivityResultView(this);
-        titleBack.setOnClickListener(new View.OnClickListener()
-        {
+        titleBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 back();
             }
         });
         titleCenterTv.setText("上传病例");
-        takePhoto.setOnClickListener(new View.OnClickListener()
-        {
+        takePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 selectImg();
             }
         });
-        confirm.setOnClickListener(new View.OnClickListener()
-        {
+        confirm.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 mPresenter.submitMsg(params, horizontalImageView.getAllFileList(), getContext(), type);
             }
         });
@@ -111,18 +99,17 @@ public class PatientCaseEditAttachFragment extends PageImpBaseFragment implement
     }
 
     private void initImageAddView() {
-        int imageWidth  = ScreenUtils.getScreenWidth()*2/5;
-        int imageHeigth = imageWidth*3/4;
-        horizontalImageView.setImageSize(imageWidth,imageHeigth);
+        int imageWidth = ScreenUtils.getScreenWidth() * 2 / 5;
+        int imageHeigth = imageWidth * 3 / 4;
+        horizontalImageView.setImageSize(imageWidth, imageHeigth);
         List<Map<String, Object>> cases = Utils.parseObjectToListMapString(params.get("case"));
         if (cases != null && cases.size() > 0) {
             List<Map<String, Object>> images = new ArrayList<>();
-            for (Map<String, Object> c : cases)
-            {
+            for (Map<String, Object> c : cases) {
                 Map<String, Object> image = new HashMap<>();
                 image.putAll(c);
-                image.put(ViewKey.FILE_KEY_TYPE,ViewKey.TYPE_FILE_URL);
-                image.put(ViewKey.FILE_KEY_URL,c.get("path"));
+                image.put(ViewKey.FILE_KEY_TYPE, ViewKey.TYPE_FILE_URL);
+                image.put(ViewKey.FILE_KEY_URL, c.get("path"));
                 images.add(image);
             }
             horizontalImageView.setItems(images);
@@ -130,20 +117,17 @@ public class PatientCaseEditAttachFragment extends PageImpBaseFragment implement
     }
 
     @Override
-    public void setPresenter(PatientCaseEditAttachContract.Presenter presenter)
-    {
+    public void setPresenter(PatientCaseEditAttachContract.Presenter presenter) {
         mPresenter = presenter;
     }
 
     @Override
-    public void refreshView()
-    {
+    public void refreshView() {
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
@@ -151,13 +135,11 @@ public class PatientCaseEditAttachFragment extends PageImpBaseFragment implement
     }
 
     @Override
-    public void onActivityResult1(int requestCode, int resultCode, Intent data)
-    {
-        switch (requestCode)
-        {
+    public void onActivityResult1(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
             //从相册选择
             case SELECT_PICTURE:
-                if (data!= null) {
+                if (data != null) {
                     Uri uri = data.getData();
                     String path = Utils.getPath(uri);
                     horizontalImageView.addImage(path, ViewKey.TYPE_FILE_PATH);
@@ -165,8 +147,7 @@ public class PatientCaseEditAttachFragment extends PageImpBaseFragment implement
                 break;
             //拍照添加图片
             case SELECT_CAMER:
-                if (mCameraPath != null)
-                {
+                if (mCameraPath != null) {
                     String p = mCameraPath.toString();
                     horizontalImageView.addImage(p, ViewKey.TYPE_FILE_PATH);
                     mCameraPath = null;
@@ -179,21 +160,17 @@ public class PatientCaseEditAttachFragment extends PageImpBaseFragment implement
     }
 
     @Override
-    public void onPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
-    {
+    public void onPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         List<String> permissionList = Arrays.asList(permissions);
-        if (permissionList.contains(Manifest.permission.CAMERA))
-        {
+        if (permissionList.contains(Manifest.permission.CAMERA)) {
             toGetCameraImage();
-        } else if (permissionList.contains(Manifest.permission.WRITE_EXTERNAL_STORAGE))
-        {
+        } else if (permissionList.contains(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             toGetLocalImage();
         }
     }
 
     @Override
-    public void sumbitOk()
-    {
+    public void sumbitOk() {
         zhToast.showToast("添加患者成功");
         int[] refreshFrags = {FragKey.patient_case_detail_fragment};
         back(2, refreshFrags);

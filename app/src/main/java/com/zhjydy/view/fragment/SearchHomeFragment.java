@@ -17,12 +17,10 @@ import com.zhjydy.R;
 import com.zhjydy.model.data.DicData;
 import com.zhjydy.presenter.contract.SearchHomeContract;
 import com.zhjydy.presenter.presenterImp.SearchHomePresenterImp;
-import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.DateUtil;
 import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.avtivity.IntentKey;
-import com.zhjydy.view.avtivity.PagerImpActivity;
 import com.zhjydy.view.zhview.ScoreView;
 import com.zhjydy.view.zhview.ViewHolderAdd;
 
@@ -122,19 +120,19 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
     private void moreSeachExpert() {
         String seach = titleSearchEdit.getText().toString();
         Bundle bundle = new Bundle();
-      //  bundle.putInt(IntentKey.FRAG_KEY, FragKey.search_expert_fragment);
+        //  bundle.putInt(IntentKey.FRAG_KEY, FragKey.search_expert_fragment);
         bundle.putString(IntentKey.FRAG_INFO, seach);
-      //  ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
-        gotoFragment(FragKey.search_expert_fragment,bundle);
+        //  ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+        gotoFragment(FragKey.search_expert_fragment, bundle);
     }
 
     private void moreSeachInfo() {
         String seach = titleSearchEdit.getText().toString();
         Bundle bundle = new Bundle();
-      //  bundle.putInt(IntentKey.FRAG_KEY, FragKey.search_info_fragment);
+        //  bundle.putInt(IntentKey.FRAG_KEY, FragKey.search_info_fragment);
         bundle.putString(IntentKey.FRAG_INFO, seach);
-      //  ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
-        gotoFragment(FragKey.search_info_fragment,bundle);
+        //  ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+        gotoFragment(FragKey.search_info_fragment, bundle);
 
     }
 
@@ -149,7 +147,7 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
     @Override
     public void onSearchResult(List<Map<String, Object>> experts, List<Map<String, Object>> infos) {
 
-        if (experts.size() <1 && infos.size() <1) {
+        if (experts.size() < 1 && infos.size() < 1) {
             nullDataLayout.setVisibility(View.VISIBLE);
             nullDataRetrye.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -203,7 +201,7 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
             size = 2;
         }
         for (int i = 0; i < size; i++) {
-           final  Map<String, Object> expert = experts.get(i);
+            final Map<String, Object> expert = experts.get(i);
             ViewHolderAdd holder = ViewHolderAdd.get(getContext(), R.layout.listview_main_expert_info_item);
             ((TextView) holder.getView(R.id.name)).setText(Utils.toString(expert.get("realname")));
             ((TextView) holder.getView(R.id.depart)).setText(DicData.getInstance().getOfficeById(Utils.toString(expert.get("office"))).getName());
@@ -227,8 +225,8 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
-                    bundle.putString(IntentKey.FRAG_INFO,Utils.toString(expert.get("id")));
-                    gotoFragment(FragKey.detail_expert_fragment,bundle);
+                    bundle.putString(IntentKey.FRAG_INFO, Utils.toString(expert.get("id")));
+                    gotoFragment(FragKey.detail_expert_fragment, bundle);
                 }
             });
             expertListLayout.addView(holder.getConvertView());
@@ -242,7 +240,7 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
             size = 2;
         }
         for (int i = 0; i < size; i++) {
-           final Map<String, Object> info = infos.get(i);
+            final Map<String, Object> info = infos.get(i);
             ViewHolderAdd holder = ViewHolderAdd.get(getContext(), R.layout.listview_main_info_item);
 
             ((TextView) holder.getView(R.id.title)).setText(Utils.toString(info.get("title")));
@@ -255,8 +253,8 @@ public class SearchHomeFragment extends PageImpBaseFragment implements SearchHom
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
-                   // ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
-                    gotoFragment(FragKey.detail_info_fragment,bundle);
+                    // ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+                    gotoFragment(FragKey.detail_info_fragment, bundle);
                 }
             });
             infoListLayout.addView(holder.getConvertView());

@@ -7,26 +7,19 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhjydy.R;
-import com.zhjydy.model.entity.Infomation;
-import com.zhjydy.presenter.contract.MainInfoContract;
 import com.zhjydy.presenter.contract.SearchInfoContract;
-import com.zhjydy.presenter.presenterImp.MainInfoPresenterImp;
 import com.zhjydy.presenter.presenterImp.SearchInfoPresenterImp;
-import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.MainInfoListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
-import com.zhjydy.view.avtivity.PagerImpActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +43,9 @@ public class SearchInfoFragment extends PageImpBaseFragment implements SearchInf
     PullToRefreshListView mList;
 
 
-    private List<Map<String,Object>> list = new ArrayList<>();
+    private List<Map<String, Object>> list = new ArrayList<>();
     private MainInfoListAdapter mInfoAdapter;
+
     public static SearchInfoFragment instance() {
         SearchInfoFragment frag = new SearchInfoFragment();
         return frag;
@@ -90,7 +84,7 @@ public class SearchInfoFragment extends PageImpBaseFragment implements SearchInf
         });
 
 
-        mInfoAdapter = new MainInfoListAdapter(getContext(),list);
+        mInfoAdapter = new MainInfoListAdapter(getContext(), list);
         mList.setAdapter(mInfoAdapter);
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -98,11 +92,11 @@ public class SearchInfoFragment extends PageImpBaseFragment implements SearchInf
                 Map<String, Object> info = (Map<String, Object>) adapterView.getAdapter().getItem(position);
                 if (info != null && !TextUtils.isEmpty(Utils.toString(info.get("id")))) {
                     Bundle bundle = new Bundle();
-                   // bundle.putInt(IntentKey.FRAG_KEY, FragKey.detail_info_fragment);
+                    // bundle.putInt(IntentKey.FRAG_KEY, FragKey.detail_info_fragment);
                     bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
-                   // ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+                    // ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
 
-                    gotoFragment(FragKey.detail_info_fragment,bundle);
+                    gotoFragment(FragKey.detail_info_fragment, bundle);
 
                 }
             }
@@ -116,12 +110,13 @@ public class SearchInfoFragment extends PageImpBaseFragment implements SearchInf
         if (getArguments() == null) {
             return;
         }
-        String search = getArguments().getString(IntentKey.FRAG_INFO,"");
+        String search = getArguments().getString(IntentKey.FRAG_INFO, "");
         if (!TextUtils.isEmpty(search)) {
             titleSearchEdit.setText(search);
             mPresenter.searchInfo(search);
         }
     }
+
     private void search() {
         String condition = titleSearchEdit.getText().toString();
         mPresenter.searchInfo(condition);
@@ -136,6 +131,7 @@ public class SearchInfoFragment extends PageImpBaseFragment implements SearchInf
     public void refreshView() {
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view

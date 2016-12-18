@@ -9,16 +9,16 @@ import com.zhjydy.presenter.contract.MainTabsContract;
 /**
  * Created by Administrator on 2016/11/28 0028.
  */
-public class MainTabsPrensenter implements MainTabsContract.Presenter,RefreshWithKey{
+public class MainTabsPrensenter implements MainTabsContract.Presenter, RefreshWithKey {
 
     private MainTabsContract.View mView;
 
     public MainTabsPrensenter(MainTabsContract.View view) {
         this.mView = view;
         view.setPresenter(this);
-        RefreshManager.getInstance().addNewListener(RefreshKey.ORDER_DATA_READ,this);
-        RefreshManager.getInstance().addNewListener(RefreshKey.NEW_COMMENT_DATA_READ,this);
-        RefreshManager.getInstance().addNewListener(RefreshKey.ORDER_DATA_LIST,this);
+        RefreshManager.getInstance().addNewListener(RefreshKey.ORDER_DATA_READ, this);
+        RefreshManager.getInstance().addNewListener(RefreshKey.NEW_COMMENT_DATA_READ, this);
+        RefreshManager.getInstance().addNewListener(RefreshKey.ORDER_DATA_LIST, this);
         start();
     }
 
@@ -39,6 +39,7 @@ public class MainTabsPrensenter implements MainTabsContract.Presenter,RefreshWit
             mView.updateMsgCount(count);
         }
     }
+
     public void loadFavList() {
 
     }
@@ -51,7 +52,7 @@ public class MainTabsPrensenter implements MainTabsContract.Presenter,RefreshWit
                 loadMsgCount();
                 break;
             case RefreshKey.ORDER_DATA_LIST:
-                if(mView != null) {
+                if (mView != null) {
                     mView.refreshOrderList();
                 }
         }

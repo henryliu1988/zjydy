@@ -9,17 +9,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSONObject;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhjydy.R;
 import com.zhjydy.presenter.contract.OrderMsgListContract;
 import com.zhjydy.presenter.presenterImp.OrderMsgListPresenterImp;
-import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.OrderMsgListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
-import com.zhjydy.view.avtivity.PagerImpActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +40,7 @@ public class OrderMsgListFragment extends PageImpBaseFragment implements OrderMs
 
     private OrderMsgListAdapter mAdapter;
     private OrderMsgListContract.Presenter mPresenter;
-    private List<Map<String,Object>> orderList = new ArrayList<>();
+    private List<Map<String, Object>> orderList = new ArrayList<>();
 
     @Override
     protected void initData() {
@@ -57,7 +54,7 @@ public class OrderMsgListFragment extends PageImpBaseFragment implements OrderMs
 
     @Override
     protected void afterViewCreate() {
-        mAdapter = new OrderMsgListAdapter(getContext(),orderList);
+        mAdapter = new OrderMsgListAdapter(getContext(), orderList);
         mList.setAdapter(mAdapter);
         titleCenterTv.setText("订单消息");
         titleBack.setOnClickListener(new View.OnClickListener() {
@@ -70,18 +67,18 @@ public class OrderMsgListFragment extends PageImpBaseFragment implements OrderMs
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Map<String,Object> order = (Map<String,Object>)parent.getAdapter().getItem(position);
+                Map<String, Object> order = (Map<String, Object>) parent.getAdapter().getItem(position);
                 if (order != null) {
 
                     String orderId = Utils.toString(order.get("orderid"));
                     int status = Utils.toInteger(order.get("status"));
-                    if (mPresenter != null && status ==0) {
+                    if (mPresenter != null && status == 0) {
                         mPresenter.readOrder(orderId);
                     }
                     Bundle bundle = new Bundle();
-                    bundle.putString(IntentKey.FRAG_INFO,orderId);
+                    bundle.putString(IntentKey.FRAG_INFO, orderId);
                     bundle.putInt("key", FragKey.detail_order_fragment);
-                    gotoFragment(FragKey.detail_order_fragment,bundle);
+                    gotoFragment(FragKey.detail_order_fragment, bundle);
                 }
             }
         });

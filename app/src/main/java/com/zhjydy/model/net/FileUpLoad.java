@@ -31,19 +31,15 @@ import rx.schedulers.Schedulers;
 /**
  * Created by admin on 2016/9/6.
  */
-public class FileUpLoad
-{
+public class FileUpLoad {
 
     private static FileUpLoad fileUpload;
 
-    public FileUpLoad()
-    {
+    public FileUpLoad() {
     }
 
-    public static FileUpLoad getInstance()
-    {
-        if (fileUpload == null)
-        {
+    public static FileUpLoad getInstance() {
+        if (fileUpload == null) {
             fileUpload = new FileUpLoad();
         }
         return fileUpload;
@@ -52,9 +48,9 @@ public class FileUpLoad
     private static final int TIME_OUT = 10 * 1000;   //超时时间
     private static final String CHARSET = "UTF-8"; //设置编码
 
-    public static Observable<List<Map<String,Object>>> uploadFiles(List<Map<String, Object>> files) {
-        if (files == null &&files.size() < 1) {
-            List<Map<String,Object>> ids = new ArrayList<>();
+    public static Observable<List<Map<String, Object>>> uploadFiles(List<Map<String, Object>> files) {
+        if (files == null && files.size() < 1) {
+            List<Map<String, Object>> ids = new ArrayList<>();
             return Observable.just(ids);
         }
         List<Map<String, Object>> existFile = new ArrayList<>();
@@ -70,31 +66,31 @@ public class FileUpLoad
         }
         Observable<List<Map<String, Object>>> obExist = Observable.just(existFile);
         if (newFile.size() > 0) {
-            Observable<List<Map<String, Object>>> obNew =   Observable.from(newFile).map(new Func1<String, File>() {
+            Observable<List<Map<String, Object>>> obNew = Observable.from(newFile).map(new Func1<String, File>() {
                 @Override
                 public File call(String s) {
                     return new File(s);
                 }
-            }).flatMap(new Func1<File, Observable<Map<String,Object>>>() {
+            }).flatMap(new Func1<File, Observable<Map<String, Object>>>() {
                 @Override
                 public Observable<Map<String, Object>> call(File file) {
-                    HashMap<String,Object> params = new HashMap<String, Object>();
-                    params.put("X_FILENAME",".jpg");
+                    HashMap<String, Object> params = new HashMap<String, Object>();
+                    params.put("X_FILENAME", ".jpg");
                     return FileUpLoad.getInstance().uploadFile(file, params);
                 }
             }).buffer(newFile.size());
-            return Observable.zip(obExist, obNew, new Func2<List<Map<String,Object>>, List<Map<String,Object>>, List<Map<String,Object>>>() {
+            return Observable.zip(obExist, obNew, new Func2<List<Map<String, Object>>, List<Map<String, Object>>, List<Map<String, Object>>>() {
                 @Override
-                public List<Map<String,Object>> call(List<Map<String, Object>> oldFile, List<Map<String, Object>> newFile) {
-                    List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
-                    for (Map<String,Object> file:oldFile) {
+                public List<Map<String, Object>> call(List<Map<String, Object>> oldFile, List<Map<String, Object>> newFile) {
+                    List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+                    for (Map<String, Object> file : oldFile) {
                         list.add(file);
                     }
-                    for (Map<String,Object> file:newFile) {
+                    for (Map<String, Object> file : newFile) {
                         list.add(file);
                     }
 
-                    return  list;
+                    return list;
                 }
             });
         } else {
@@ -104,20 +100,15 @@ public class FileUpLoad
     }
 
 
-    public Observable<Map<String, Object>> uploadFile(final File file, final Map<String,Object> params)
-    {
+    public Observable<Map<String, Object>> uploadFile(final File file, final Map<String, Object> params) {
 
-        return Observable.create(new Observable.OnSubscribe<Map<String, Object>>()
-        {
+        return Observable.create(new Observable.OnSubscribe<Map<String, Object>>() {
             @Override
-            public void call(final Subscriber<? super Map<String, Object>> subscriber)
-            {
+            public void call(final Subscriber<? super Map<String, Object>> subscriber) {
                 Map<String, Object> result = uploadFileService(file, params);
-                if (result.size() > 0 && Utils.toBoolean(result.get("status")))
-                {
+                if (result.size() > 0 && Utils.toBoolean(result.get("status"))) {
                     subscriber.onNext(result);
-                } else
-                {
+                } else {
                     subscriber.onError(new Throwable());
                 }
             }
@@ -126,15 +117,13 @@ public class FileUpLoad
 
     }
 
-    public static Map<String, Object> uploadFileService(File file, Map<String, Object> params)
-    {
+    public static Map<String, Object> uploadFileService(File file, Map<String, Object> params) {
         Map<String, Object> result = new HashMap<>();
-        String BOUNDARY = UUID  .randomUUID().toString(); // 边界标识 随机生成
+        String BOUNDARY = UUID.randomUUID().toString(); // 边界标识 随机生成
         String PREFIX = "--", LINE_END = "\r\n";
         String CONTENT_TYPE = "multipart/form-data"; // 内容类型
         String RequestURL = WebKey.WEBKEY_URL_RES;
-        try
-        {
+        try {
             URL url = new URL(RequestURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(TIME_OUT);
@@ -147,8 +136,7 @@ public class FileUpLoad
             conn.setRequestProperty("connection", "keep-alive");
             conn.setRequestProperty("Content-Type", CONTENT_TYPE + ";boundary="
                     + BOUNDARY);
-            if (file != null)
-            {
+            if (file != null) {
                 /**
                  * 当文件不为空，把文件包装并且上传
                  */
@@ -163,10 +151,8 @@ public class FileUpLoad
 
                 sb.append(LINE_END);
 
-                if (params != null)
-                {
-                    for (Map.Entry<String, Object> entry : params.entrySet())
-                    {
+                if (params != null) {
+                    for (Map.Entry<String, Object> entry : params.entrySet()) {
                         sb.append(PREFIX).append(BOUNDARY).append(LINE_END);
                         sb.append("Content-Disposition: form-data; name=\"" + entry.getKey() + "\"" + LINE_END);
                         sb.append("Content-Type: text/plain; charset=" + CHARSET + LINE_END);
@@ -187,8 +173,7 @@ public class FileUpLoad
                 InputStream is = new FileInputStream(file);
                 byte[] bytes = new byte[1024];
                 int len = 0;
-                while ((len = is.read(bytes)) != -1)
-                {
+                while ((len = is.read(bytes)) != -1) {
                     dos.write(bytes, 0, len);
                 }
                 is.close();
@@ -201,14 +186,12 @@ public class FileUpLoad
                  * 获取响应码 200=成功 当响应成功，获取响应的流
                  */
                 int res = conn.getResponseCode();
-                if (res == 200)
-                {
+                if (res == 200) {
                     InputStream in = conn.getInputStream();
                     BufferedReader br = new BufferedReader(new InputStreamReader(in));
                     String str = null;
                     StringBuffer buffer = new StringBuffer();
-                    while ((str =br.readLine ()) != null)
-                    {//BufferedReader特有功能，一次读取一行数据
+                    while ((str = br.readLine()) != null) {//BufferedReader特有功能，一次读取一行数据
                         buffer.append(str);
                     }
                     in.close();
@@ -217,12 +200,10 @@ public class FileUpLoad
                     return result;
                 }
             }
-        } catch (MalformedURLException e)
-        {
+        } catch (MalformedURLException e) {
             e.printStackTrace();
             return result;
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
             return result;
         }

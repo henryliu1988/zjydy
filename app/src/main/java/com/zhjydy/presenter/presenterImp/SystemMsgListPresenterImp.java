@@ -9,7 +9,6 @@ import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.pageload.PageLoadDataSource;
 import com.zhjydy.model.pageload.RxObservalRequestHandle;
-import com.zhjydy.presenter.contract.OrderMsgListContract;
 import com.zhjydy.presenter.contract.SystemMsgListContract;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.PageLoadListAdapter;
@@ -51,15 +50,13 @@ public class SystemMsgListPresenterImp extends PageLoadDataSource implements Sys
 
 
     @Override
-    public RequestHandle loadListData(final ResponseSender<List<Map<String, Object>>> sender,final  int page) {
+    public RequestHandle loadListData(final ResponseSender<List<Map<String, Object>>> sender, final int page) {
         HashMap<String, Object> params = new HashMap<>();
         params.put("page", page);
         params.put("pagesize", PAGE_SIZE);
-        final Subscription subscription = WebCall.getInstance().call(WebKey.func_getSysMsg, params).subscribe(new BaseSubscriber<WebResponse>()
-        {
+        final Subscription subscription = WebCall.getInstance().call(WebKey.func_getSysMsg, params).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
-            public void onNext(WebResponse webResponse)
-            {
+            public void onNext(WebResponse webResponse) {
                 String data = webResponse.getReturnData();
                 Map<String, Object> map = Utils.parseObjectToMapString(data);
                 List<Map<String, Object>> list = Utils.parseObjectToListMapString(map.get("data"));
@@ -71,8 +68,7 @@ public class SystemMsgListPresenterImp extends PageLoadDataSource implements Sys
             }
 
             @Override
-            public void onError(Throwable e)
-            {
+            public void onError(Throwable e) {
                 super.onError(e);
                 Exception exption = new Exception(new Throwable());
                 sender.sendError(exption);

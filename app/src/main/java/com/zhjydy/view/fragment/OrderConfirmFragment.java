@@ -69,12 +69,12 @@ public class OrderConfirmFragment extends PageImpBaseFragment implements OrderCo
             }
         });
         titleCenterTv.setText("确认信息");
-        if(getArguments() == null) {
+        if (getArguments() == null) {
             back();
             return;
         }
         String info = getArguments().getString(IntentKey.FRAG_INFO);
-        new OrderConfirmPresenterImp(this,info);
+        new OrderConfirmPresenterImp(this, info);
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,19 +106,19 @@ public class OrderConfirmFragment extends PageImpBaseFragment implements OrderCo
         if (ageLong > 0) {
             age = ageLong + "岁";
         }
-        String nameSexAge =realName + " " +sexName + " " + age;
+        String nameSexAge = realName + " " + sexName + " " + age;
 
         String distrcit = "";
         String hospital = "";
         String depart = "";
         String disCode = Utils.toString(info.get("address"));
-        String hosCode =  Utils.toString(info.get("hospital"));
+        String hosCode = Utils.toString(info.get("hospital"));
         String depCode = Utils.toString(info.get("office"));
 
         if (!TextUtils.isEmpty(disCode)) {
             List<District> list = DicData.getInstance().getDistrictById(disCode);
-            if (list.size() > 0){
-                for (int i = list.size()-1;i>=0;i--) {
+            if (list.size() > 0) {
+                for (int i = list.size() - 1; i >= 0; i--) {
                     distrcit += list.get(i).getName() + " ";
                 }
             }
@@ -129,7 +129,7 @@ public class OrderConfirmFragment extends PageImpBaseFragment implements OrderCo
         if (!TextUtils.isEmpty(depCode)) {
             depart = DicData.getInstance().getOfficeById(depCode).getName();
         }
-        String domain =distrcit + " " +hospital + " " +depart;
+        String domain = distrcit + " " + hospital + " " + depart;
 
         patientSexAge.setText(nameSexAge);
         patientDomainHosDeparts.setText(domain);
@@ -140,7 +140,7 @@ public class OrderConfirmFragment extends PageImpBaseFragment implements OrderCo
         expertName.setText(Utils.toString(info.get("realname")));
         String hos = DicData.getInstance().getHospitalById(Utils.toString(info.get("hospital"))).getHospital();
         String office = DicData.getInstance().getOfficeById(Utils.toString(info.get("office"))).getName();
-        String business =  DicData.getInstance().getOfficeById(Utils.toString(info.get("business"))).getName();
+        String business = DicData.getInstance().getOfficeById(Utils.toString(info.get("business"))).getName();
 
         String msg = hos + "  " + office + "  " + business;
         expertDomainHosDeparts.setText(msg);
@@ -150,8 +150,8 @@ public class OrderConfirmFragment extends PageImpBaseFragment implements OrderCo
     public void subsribExpertResult(boolean result, String msg) {
         zhToast.showToast(msg);
         if (result) {
-            int [] refreshFrag = {FragKey.detail_expert_fragment};
-            back(2,refreshFrag);
+            int[] refreshFrag = {FragKey.detail_expert_fragment};
+            back(2, refreshFrag);
         }
     }
 }

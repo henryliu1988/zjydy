@@ -21,31 +21,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ItemTabViewBase extends LinearLayout
-{
+public class ItemTabViewBase extends LinearLayout {
     protected Context context;
     protected SlidingTabLayout mTabLayout;
     protected ViewPager mViewPager;
     protected PagerAdapter mAdapter;
     protected List<PagerItem> mPagerItems = new ArrayList<>();
 
-    public ItemTabViewBase(Context context)
-    {
+    public ItemTabViewBase(Context context) {
         super(context);
         this.context = context;
         initView();
     }
 
-    public ItemTabViewBase(Context context, AttributeSet attrs)
-    {
+    public ItemTabViewBase(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         initView();
 
     }
 
-    public void initView()
-    {
+    public void initView() {
         LayoutInflater.from(context).inflate(R.layout.item_tab_layout, this);
         mTabLayout = (SlidingTabLayout) findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -53,104 +49,86 @@ public class ItemTabViewBase extends LinearLayout
 
     }
 
-    public void setPagerItems(List<PagerItem> pagerItems)
-    {
+    public void setPagerItems(List<PagerItem> pagerItems) {
         this.mPagerItems = pagerItems;
         refreshView();
     }
 
-    private void refreshView()
-    {
+    private void refreshView() {
         mAdapter = new TabPagerAdapter(getContext(), mPagerItems);
         mViewPager.setAdapter(mAdapter);
         mTabLayout.setViewPager(mViewPager);
     }
 
-    public View getTabView(String title)
-    {
-        for (int i = 0; i < mPagerItems.size(); i++)
-        {
+    public View getTabView(String title) {
+        for (int i = 0; i < mPagerItems.size(); i++) {
             PagerItem item = mPagerItems.get(i);
-            if (item != null && !TextUtils.isEmpty(title) && title.equals(item.getTitle()))
-            {
+            if (item != null && !TextUtils.isEmpty(title) && title.equals(item.getTitle())) {
                 return item.getView();
             }
         }
         return null;
     }
 
-    public static class PagerItem
-    {
+    public static class PagerItem {
         String title;
         View view;
 
-        public PagerItem(String title, View view)
-        {
+        public PagerItem(String title, View view) {
             this.title = title;
             this.view = view;
         }
 
-        public String getTitle()
-        {
+        public String getTitle() {
             return title;
         }
 
-        public void setTitle(String title)
-        {
+        public void setTitle(String title) {
             this.title = title;
         }
 
-        public View getView()
-        {
+        public View getView() {
             return view;
         }
 
-        public void setView(View view)
-        {
+        public void setView(View view) {
             this.view = view;
         }
     }
 
-    static class TabPagerAdapter extends android.support.v4.view.PagerAdapter
-    {
+    static class TabPagerAdapter extends android.support.v4.view.PagerAdapter {
         private List<PagerItem> items = new ArrayList();
         private Context context;
 
-        private TabPagerAdapter(Context context, List<PagerItem> items)
-        {
+        private TabPagerAdapter(Context context, List<PagerItem> items) {
             this.context = context;
             this.items = items;
         }
 
         @Override
-        public int getCount()
-        {
+        public int getCount() {
             return items.size();
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position)
-        {
+        public Object instantiateItem(ViewGroup container, int position) {
             View v = items.get(position).getView();
             container.addView(v);
             return v;
         }
 
         @Override
-        public CharSequence getPageTitle(int position)
-        {
+        public CharSequence getPageTitle(int position) {
             return items.get(position).getTitle();
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object object)
-        {
+        public boolean isViewFromObject(View view, Object object) {
             return view == object;
         }
 
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object)
-        {
+        public void destroyItem(ViewGroup container, int position, Object object) {
             ((ViewPager) container).removeView((View) object);
         }
     }

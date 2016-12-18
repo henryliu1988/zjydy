@@ -11,16 +11,16 @@ import java.util.Map;
  */
 public interface MsgAllListContract {
 
-    interface View extends BaseView<Presenter>
-    {
+    interface View extends BaseView<Presenter> {
         void updateOrderList(List<Map<String, Object>> data);
+
         void updateChatList(List<Map<String, Object>> data);
 
     }
 
-    interface Presenter extends BasePresenter
-    {
+    interface Presenter extends BasePresenter {
         void readOrder(String id);
+
         void readComment(String id);
     }
 }

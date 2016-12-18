@@ -2,10 +2,8 @@ package com.zhjydy.presenter.presenterImp;
 
 import android.text.TextUtils;
 
-import com.apptalkingdata.push.service.Msg;
-import com.zhjydy.model.data.AppData;
-import com.zhjydy.model.data.DicData;
 import com.zhjydy.model.data.MsgData;
+import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
@@ -14,8 +12,6 @@ import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.presenter.RefreshKey;
 import com.zhjydy.presenter.RefreshManager;
 import com.zhjydy.presenter.contract.OrderConfirmContract;
-import com.zhjydy.presenter.contract.PayPasswordAddContract;
-import com.zhjydy.util.MD5;
 import com.zhjydy.util.Utils;
 
 import java.util.HashMap;
@@ -29,9 +25,10 @@ public class OrderConfirmPresenterImp implements OrderConfirmContract.Presenter 
     private OrderConfirmContract.View mView;
 
     private String mConfirmInfo;
-    private Map<String,Object> mPatientInfo;
-    private Map<String,Object> mExpertInfo;
-    public OrderConfirmPresenterImp(OrderConfirmContract.View view,String info) {
+    private Map<String, Object> mPatientInfo;
+    private Map<String, Object> mExpertInfo;
+
+    public OrderConfirmPresenterImp(OrderConfirmContract.View view, String info) {
         this.mView = view;
         this.mConfirmInfo = info;
         view.setPresenter(this);
@@ -47,10 +44,10 @@ public class OrderConfirmPresenterImp implements OrderConfirmContract.Presenter 
         if (TextUtils.isEmpty(mConfirmInfo)) {
             return;
         }
-        Map<String,Object> info = Utils.parseObjectToMapString(mConfirmInfo);
+        Map<String, Object> info = Utils.parseObjectToMapString(mConfirmInfo);
         mPatientInfo = Utils.parseObjectToMapString(info.get("patient"));
         mExpertInfo = Utils.parseObjectToMapString(info.get("expert"));
-        if (mPatientInfo == null || mPatientInfo.size()<1 || mExpertInfo == null || mExpertInfo.size() < 1) {
+        if (mPatientInfo == null || mPatientInfo.size() < 1 || mExpertInfo == null || mExpertInfo.size() < 1) {
             return;
         }
         mView.updateExpert(mExpertInfo);
@@ -71,24 +68,24 @@ public class OrderConfirmPresenterImp implements OrderConfirmContract.Presenter 
         String expertid = Utils.toString(mExpertInfo.get("id"));
         String hos = Utils.toString(mPatientInfo.get("hospital"));
         String name = Utils.toString(mPatientInfo.get("realname"));
-        String memberId = AppData.getInstance().getToken().getId();
+        String memberId = UserData.getInstance().getToken().getId();
         HashMap<String, Object> params = new HashMap<>();
-        params.put("patientid",patientId);
-        params.put("experturl",experturl);
-        params.put("expertname",expertName);
-        params.put("expertid",expertid);
-        params.put("patienthospital",hos);
-        params.put("patientname",name);
-        params.put("memberid",memberId);
-        WebCall.getInstance().call(WebKey.func_makeOrder,params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"提交预约信息") {
+        params.put("patientid", patientId);
+        params.put("experturl", experturl);
+        params.put("expertname", expertName);
+        params.put("expertid", expertid);
+        params.put("patienthospital", hos);
+        params.put("patientname", name);
+        params.put("memberid", memberId);
+        WebCall.getInstance().call(WebKey.func_makeOrder, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), "提交预约信息") {
             @Override
             public void onNext(WebResponse webResponse) {
                 if (WebUtils.getWebStatus(webResponse)) {
-                    mView.subsribExpertResult(true,"成功预约专家");
+                    mView.subsribExpertResult(true, "成功预约专家");
                     MsgData.getInstance().loadOrderMsgData();
                     RefreshManager.getInstance().refreshData(RefreshKey.ORDET_LIST_CHANGE);
                 } else {
-                    mView.subsribExpertResult(false,"预约失败  " +WebUtils.getWebMsg(webResponse));
+                    mView.subsribExpertResult(false, "预约失败  " + WebUtils.getWebMsg(webResponse));
                 }
             }
         });

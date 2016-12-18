@@ -1,6 +1,6 @@
 package com.zhjydy.presenter.presenterImp;
 
-import com.zhjydy.model.data.AppData;
+import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
@@ -19,29 +19,31 @@ import java.util.HashMap;
 public class MineNamePresenterIml implements MineNameChangContract.Presenter {
 
     private MineNameChangContract.View mView;
+
     public MineNamePresenterIml(MineNameChangContract.View view) {
-        mView =view;
+        mView = view;
         mView.setPresenter(this);
         start();
-   }
+    }
+
     @Override
     public void submitChangeConfirm(final String name) {
-        HashMap<String,Object> params = new HashMap<>();
+        HashMap<String, Object> params = new HashMap<>();
         params.put("nickname", name);
-        params.put("sex",AppData.getInstance().getToken().getSex());
-        params.put("head_img",AppData.getInstance().getToken().getPhotoId());
-        params.put("id",AppData.getInstance().getToken().getId());
-        WebCall.getInstance().call(WebKey.func_updateMember,params).subscribe(new BaseSubscriber<WebResponse>() {
+        params.put("sex", UserData.getInstance().getToken().getSex());
+        params.put("head_img", UserData.getInstance().getToken().getPhotoId());
+        params.put("id", UserData.getInstance().getToken().getId());
+        WebCall.getInstance().call(WebKey.func_updateMember, params).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
             public void onNext(WebResponse webResponse) {
                 boolean status = WebUtils.getWebStatus(webResponse);
                 zhToast.showToast(WebUtils.getWebMsg(webResponse));
-                String msg = status ? "修改成功":"修改失败";
+                String msg = status ? "修改成功" : "修改失败";
                 if (status) {
-                    AppData.getInstance().getToken().setNickname(name);
+                    UserData.getInstance().getToken().setNickname(name);
                     RefreshManager.getInstance().refreshData(RefreshKey.TOKEN_MSG_NICK_NAME);
                 }
-                mView.submitResult(status,msg);
+                mView.submitResult(status, msg);
             }
         });
 

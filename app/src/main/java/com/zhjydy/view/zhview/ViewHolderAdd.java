@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 /**
  * Created by smyhvae on 2015/5/4.
@@ -23,9 +22,9 @@ public class ViewHolderAdd {
 
     }
 
-    public static ViewHolderAdd get(Context context,  int layoutId) {
+    public static ViewHolderAdd get(Context context, int layoutId) {
 
-            return new ViewHolderAdd(context, layoutId );
+        return new ViewHolderAdd(context, layoutId);
 
     }
 

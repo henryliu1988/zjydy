@@ -99,6 +99,7 @@
             android:text="认证信息"
             android:textColor="@color/black_text"
             android:textSize="15sp" />
+
         <ImageView
             android:id="@+id/mine_confirm_msg_turn"
             android:layout_width="wrap_content"
@@ -129,6 +130,7 @@
     <RelativeLayout
         android:id="@+id/mine_history_layout"
         style="@style/mine_item_layout">
+
         <ImageView
             android:id="@+id/mine_history_image"
             android:layout_width="wrap_content"

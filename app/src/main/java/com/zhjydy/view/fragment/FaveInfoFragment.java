@@ -22,11 +22,9 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhjydy.R;
 import com.zhjydy.presenter.contract.FavInfoContract;
 import com.zhjydy.presenter.presenterImp.FaveInfoPresenterImp;
-import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.FaveInfoListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
-import com.zhjydy.view.avtivity.PagerImpActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,14 +98,14 @@ public class FaveInfoFragment extends PageImpBaseFragment implements FavInfoCont
                 Map<String, Object> info = (Map<String, Object>) adapterView.getAdapter().getItem(i);
                 if (info != null && !TextUtils.isEmpty(Utils.toString(info.get("id")))) {
                     Bundle bundle = new Bundle();
-                   // bundle.putInt(IntentKey.FRAG_KEY, FragKey.detail_info_fragment);
+                    // bundle.putInt(IntentKey.FRAG_KEY, FragKey.detail_info_fragment);
                     bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
-                 //   ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+                    //   ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
 
 
-                 //   bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
+                    //   bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
                     // ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
-                    gotoFragment(FragKey.detail_info_fragment,bundle);
+                    gotoFragment(FragKey.detail_info_fragment, bundle);
 
                 }
             }

@@ -11,13 +11,10 @@ import com.zhjydy.view.adapter.PageLoadListAdapter;
 import java.util.List;
 import java.util.Map;
 
-import rx.Observable;
-
 /**
  * Created by admin on 2016/12/2.
  */
-public abstract class PageLoadDataSource implements IAsyncDataSource<List<Map<String, Object>>>
-{
+public abstract class PageLoadDataSource implements IAsyncDataSource<List<Map<String, Object>>> {
     protected static final int PAGE_SIZE = 10;
     protected int mTotalCount;
     protected int mPage;
@@ -27,8 +24,7 @@ public abstract class PageLoadDataSource implements IAsyncDataSource<List<Map<St
     protected MVCHelper<List<Map<String, Object>>> mvcHelper;
 
 
-    public void setPageView(PullToRefreshListView listView, PageLoadListAdapter adapter)
-    {
+    public void setPageView(PullToRefreshListView listView, PageLoadListAdapter adapter) {
         this.mListView = listView;
         this.mADapter = adapter;
         mvcHelper = new MVCPullrefshHelper<List<Map<String, Object>>>(mListView);
@@ -37,27 +33,24 @@ public abstract class PageLoadDataSource implements IAsyncDataSource<List<Map<St
         mPage = 0;
     }
 
-    protected  void refreshData() {
+    protected void refreshData() {
         mvcHelper.refresh();
     }
 
     @Override
-    public RequestHandle refresh(ResponseSender<List<Map<String, Object>>> sender) throws Exception
-    {
+    public RequestHandle refresh(ResponseSender<List<Map<String, Object>>> sender) throws Exception {
         return loadListData(sender, 1);
     }
 
     @Override
-    public RequestHandle loadMore(ResponseSender<List<Map<String, Object>>> sender) throws Exception
-    {
+    public RequestHandle loadMore(ResponseSender<List<Map<String, Object>>> sender) throws Exception {
         return loadListData(sender, mPage + 1);
     }
 
     public abstract RequestHandle loadListData(final ResponseSender<List<Map<String, Object>>> sender, final int page);
 
     @Override
-    public boolean hasMore()
-    {
+    public boolean hasMore() {
         int currentData = mPage * PAGE_SIZE;
         return currentData < mTotalCount;
     }

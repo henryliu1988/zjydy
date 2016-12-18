@@ -10,24 +10,19 @@ import java.util.Map;
 /**
  * Created by admin on 2016/12/2.
  */
-public abstract class PageLoadListAdapter extends ListViewAdapter<Map<String,Object>> implements IDataAdapter<List<Map<String,Object>>>
-{
-    public PageLoadListAdapter(Context context, List datas, int layoutId)
-    {
+public abstract class PageLoadListAdapter extends ListViewAdapter<Map<String, Object>> implements IDataAdapter<List<Map<String, Object>>> {
+    public PageLoadListAdapter(Context context, List datas, int layoutId) {
         super(context, datas, layoutId);
     }
 
     @Override
-    public List<Map<String,Object>> getData()
-    {
+    public List<Map<String, Object>> getData() {
         return mDatas;
     }
 
     @Override
-    public void notifyDataChanged(List<Map<String,Object>> maps, boolean isRefresh)
-    {
-        if (isRefresh)
-        {
+    public void notifyDataChanged(List<Map<String, Object>> maps, boolean isRefresh) {
+        if (isRefresh) {
             mDatas.clear();
         }
         mDatas.addAll(maps);

@@ -1,7 +1,6 @@
 package com.zhjydy.presenter.presenterImp;
 
 import com.zhjydy.presenter.contract.CommonContract;
-import com.zhjydy.presenter.contract.PayPasswordChangContract;
 
 /**
  * Created by Administrator on 2016/9/20 0020.
@@ -20,7 +19,6 @@ public class CommonPresenterImp implements CommonContract.Presenter {
     public void start() {
 
     }
-
 
 
     @Override

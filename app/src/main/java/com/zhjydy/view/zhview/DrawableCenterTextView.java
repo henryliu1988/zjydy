@@ -9,7 +9,8 @@ import android.widget.TextView;
 public class DrawableCenterTextView extends TextView {
     public DrawableCenterTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-}
+    }
+
     public DrawableCenterTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }

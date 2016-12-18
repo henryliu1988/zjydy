@@ -15,7 +15,6 @@ public class WebKey {
     public static final String WEBKEY_URL_RES = "http://59.110.24.36/yiduyi/index.php?s=App/Common/imgUpload";
 
 
-
     public static final int func_login = 1001;   //登录
     public static final int func_checkMobile = 1002;  //检查手机号是否被注册
     public static final int func_sendSms = 1003;  //发送验证码
@@ -71,9 +70,8 @@ public class WebKey {
     public static final int func_getSysMsg = 1054;  //
 
 
-
-
     public static final Map<Integer, String> WEBKEY_FUNC_COMMON_MAP = new HashMap<Integer, String>();
+
     static {
         WEBKEY_FUNC_COMMON_MAP.put(func_getComment, "getComment");
         WEBKEY_FUNC_COMMON_MAP.put(func_getNewCommentList, "getNewCommentList");
@@ -110,11 +108,10 @@ public class WebKey {
         WEBKEY_FUNC_COMMON_MAP.put(func_getRecommend, "getRecommend");
         WEBKEY_FUNC_COMMON_MAP.put(func_updateCommentStatus, "updateCommentStatus");
         WEBKEY_FUNC_COMMON_MAP.put(func_getSysMsg, "getSysMsg");
-
-
     }
 
     public static final Map<Integer, String> WEBKEY_FUNC_HUAN_MAP = new HashMap<Integer, String>();
+
     static {
         WEBKEY_FUNC_HUAN_MAP.put(func_getCollectExpert, "getCollectExpert");
         WEBKEY_FUNC_HUAN_MAP.put(func_getPatientList, "getPatientList");
@@ -133,8 +130,5 @@ public class WebKey {
         WEBKEY_FUNC_HUAN_MAP.put(func_updateMobile, "updateMobile");
         WEBKEY_FUNC_HUAN_MAP.put(func_updateMember, "updateMember");
         WEBKEY_FUNC_HUAN_MAP.put(func_searchCollectExpert, "searchCollectExpert");
-
-
-
     }
 }

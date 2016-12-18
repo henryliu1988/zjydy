@@ -11,8 +11,6 @@ import android.widget.TextView;
 import com.zhjydy.R;
 import com.zhjydy.presenter.contract.PatientCaseSelectContract;
 import com.zhjydy.presenter.presenterImp.PatientCaseSelectPresenterImp;
-import com.zhjydy.util.Utils;
-import com.zhjydy.view.adapter.PatientCaseListAdapter;
 import com.zhjydy.view.adapter.PatientCaseSelectListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.zhview.ListViewForScrollView;
@@ -105,17 +103,18 @@ public class PatientCaseSelectFragment extends PageImpBaseFragment implements Pa
     }
 
     private void confirmSelect() {
-       Map<String,Object> patientCase = mPatientCaseListAdapter.getSelectItem();
+        Map<String, Object> patientCase = mPatientCaseListAdapter.getSelectItem();
         if (patientCase == null) {
             zhToast.showToast("请选择患者病例！");
             return;
         }
         String confirmInfo = mPresenter.getConfirmInfo(patientCase);
         Bundle bundle = new Bundle();
-        bundle.putString(IntentKey.FRAG_INFO,confirmInfo);
-        gotoFragment(FragKey.order_confirm_fragment,bundle);
+        bundle.putString(IntentKey.FRAG_INFO, confirmInfo);
+        gotoFragment(FragKey.order_confirm_fragment, bundle);
 
     }
+
     @Override
     public void updatePatient(List<Map<String, Object>> list) {
         if (list.size() > 0) {

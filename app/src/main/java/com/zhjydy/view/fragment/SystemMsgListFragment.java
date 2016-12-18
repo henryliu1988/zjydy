@@ -9,12 +9,9 @@ import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhjydy.R;
-import com.zhjydy.presenter.contract.OrderMsgListContract;
 import com.zhjydy.presenter.contract.SystemMsgListContract;
-import com.zhjydy.presenter.presenterImp.OrderMsgListPresenterImp;
 import com.zhjydy.presenter.presenterImp.SystemMsgListPresenterImp;
 import com.zhjydy.view.adapter.MsgSystemListAdapter;
-import com.zhjydy.view.adapter.OrderMsgListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +35,7 @@ public class SystemMsgListFragment extends PageImpBaseFragment implements System
 
     private MsgSystemListAdapter mAdapter;
     private SystemMsgListContract.Presenter mPresenter;
-    private List<Map<String,Object>> orderList = new ArrayList<>();
+    private List<Map<String, Object>> orderList = new ArrayList<>();
 
     @Override
     protected void initData() {
@@ -59,8 +56,8 @@ public class SystemMsgListFragment extends PageImpBaseFragment implements System
                 back();
             }
         });
-        mAdapter = new MsgSystemListAdapter(getContext(),new ArrayList<Map<String, Object>>());
-        new SystemMsgListPresenterImp(this,mList,mAdapter);
+        mAdapter = new MsgSystemListAdapter(getContext(), new ArrayList<Map<String, Object>>());
+        new SystemMsgListPresenterImp(this, mList, mAdapter);
     }
 
     @Override

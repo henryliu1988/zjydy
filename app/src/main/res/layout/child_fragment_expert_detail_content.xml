@@ -57,33 +57,34 @@
             android:paddingTop="5dp"
             android:textColor="@color/white_text"
             android:textSize="14sp"
-            android:text="马上预约"
-          />
+            android:text="马上预约" />
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/div_line"/>
+        android:background="@color/div_line" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingTop="10dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="推荐理由"
             android:textColor="@color/black_text"
             android:textSize="14sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:id="@+id/reason"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/reason_tv"
                 android:layout_width="wrap_content"
@@ -94,23 +95,27 @@
         </LinearLayout>
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingTop="10dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="专业擅长"
             android:textColor="@color/black_text"
             android:textSize="14sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:id="@+id/specical"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/specical_tv"
                 android:layout_width="wrap_content"

@@ -65,7 +65,7 @@ public class PatientCaseFragment extends PageImpBaseFragment implements PatientC
     @Override
     protected void afterViewCreate() {
         new PatientCasePresenterImp(this);
-        int a =0;
+        int a = 0;
     }
 
     @Override
@@ -105,7 +105,7 @@ public class PatientCaseFragment extends PageImpBaseFragment implements PatientC
 
     @Override
     public void updatePatient(List<Map<String, Object>> list) {
-        if (list.size() >0) {
+        if (list.size() > 0) {
             emptyPatientTv.setVisibility(View.GONE);
             mCaseList.setVisibility(View.VISIBLE);
         } else {

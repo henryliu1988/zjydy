@@ -47,14 +47,15 @@ public class MsgAllListPresenterImp implements MsgAllListContract.Presenter {
             }
         });
     }
+
     private void initOrderList() {
-        Observable.zip(getOrderItemData(), getSystemItemData(), new Func2<Map<String,Object>, Map<String,Object>, List<Map<String,Object>>>() {
+        Observable.zip(getOrderItemData(), getSystemItemData(), new Func2<Map<String, Object>, Map<String, Object>, List<Map<String, Object>>>() {
             @Override
             public List<Map<String, Object>> call(Map<String, Object> order, Map<String, Object> sys) {
-                List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
+                List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
                 list.add(order);
                 list.add(sys);
-                return  list;
+                return list;
             }
         }).subscribe(new BaseSubscriber<List<Map<String, Object>>>() {
             @Override
@@ -75,15 +76,15 @@ public class MsgAllListPresenterImp implements MsgAllListContract.Presenter {
                 orderData.put("content", "暂无新消息");
                 orderData.put("count", "0");
                 if (orderList != null && orderList.size() > 0) {
-                    ListMapComparator comp = new ListMapComparator("addtime",0);
-                    Collections.sort(orderList,comp);
+                    ListMapComparator comp = new ListMapComparator("addtime", 0);
+                    Collections.sort(orderList, comp);
                     Map<String, Object> order = orderList.get(0);
                     orderData.put("content", order.get("introduction"));
                     orderData.put("count", orderList.size());
                     orderData.put("time", order.get("addtime"));
                     orderData.put("orderid", order.get("id"));
                     boolean unRead = Utils.toInteger(order.get("status")) == 0;
-                    orderData.put("status",unRead);
+                    orderData.put("status", unRead);
                 }
                 orderData.put("type", 0);
                 return orderData;
@@ -111,11 +112,12 @@ public class MsgAllListPresenterImp implements MsgAllListContract.Presenter {
             }
         });
     }
+
     @Override
     public void readOrder(String id) {
-        HashMap<String,Object> params = new HashMap<>();
-        params.put("id",id);
-        WebCall.getInstance().call(WebKey.func_updateOrdersMsg,params).subscribe(new BaseSubscriber<WebResponse>() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        WebCall.getInstance().call(WebKey.func_updateOrdersMsg, params).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
             public void onNext(WebResponse webResponse) {
                 MsgData.getInstance().loadOrderMsgData();
@@ -125,9 +127,9 @@ public class MsgAllListPresenterImp implements MsgAllListContract.Presenter {
 
     @Override
     public void readComment(String id) {
-        HashMap<String,Object> params = new HashMap<>();
-        params.put("id",id);
-        WebCall.getInstance().call(WebKey.func_updateCommentStatus,params).subscribe(new BaseSubscriber<WebResponse>() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        WebCall.getInstance().call(WebKey.func_updateCommentStatus, params).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
             public void onNext(WebResponse webResponse) {
                 MsgData.getInstance().loadNewCommentList();

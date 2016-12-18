@@ -1,7 +1,5 @@
 package com.zhjydy.presenter.contract;
 
-import android.content.Intent;
-
 import com.zhjydy.presenter.BasePresenter;
 import com.zhjydy.presenter.BaseView;
 
@@ -13,14 +11,13 @@ import java.util.Map;
  */
 public interface OrderMsgListContract {
 
-    interface View extends BaseView<Presenter>
-    {
-        void updateOrderList(List<Map<String,Object>> list);
+    interface View extends BaseView<Presenter> {
+        void updateOrderList(List<Map<String, Object>> list);
     }
 
-    interface Presenter extends BasePresenter
-    {
+    interface Presenter extends BasePresenter {
         void reLoadData();
+
         void readOrder(String id);
     }
 }

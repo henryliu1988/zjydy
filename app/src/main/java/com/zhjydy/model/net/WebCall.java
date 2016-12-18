@@ -2,14 +2,12 @@ package com.zhjydy.model.net;
 
 import android.text.TextUtils;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.zhjydy.model.preference.SPUtils;
+import com.zhjydy.model.cache.SPUtils;
 import com.zhjydy.util.Log;
 import com.zhjydy.util.Utils;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
@@ -21,29 +19,22 @@ import rx.schedulers.Schedulers;
 /**
  * Created by admin on 2016/7/29.
  */
-public class WebCall
-{
+public class WebCall {
     private static WebCall webCall;
 
-    public WebCall()
-    {
+    public WebCall() {
     }
 
-    public static WebCall getInstance()
-    {
-        if (webCall == null)
-        {
+    public static WebCall getInstance() {
+        if (webCall == null) {
             webCall = new WebCall();
         }
         return webCall;
     }
 
 
-
-    public Observable<WebResponse> call(int methodId, HashMap<String, Object> params)
-    {
-        if (!WebKey.WEBKEY_FUNC_COMMON_MAP.containsKey(methodId) && !WebKey.WEBKEY_FUNC_HUAN_MAP.containsKey(methodId))
-        {
+    public Observable<WebResponse> call(int methodId, HashMap<String, Object> params) {
+        if (!WebKey.WEBKEY_FUNC_COMMON_MAP.containsKey(methodId) && !WebKey.WEBKEY_FUNC_HUAN_MAP.containsKey(methodId)) {
             WebResponse response = new WebResponse(1, "没有此接口", null);
             return Observable.just(response);
         }
@@ -51,13 +42,10 @@ public class WebCall
                 params), null);
     }
 
-    public Observable<WebResponse> callCache(int methodId, HashMap<String, Object> params, final WebResponse cache)
-    {
-        Observable<WebResponse> cacheOb = Observable.create(new Observable.OnSubscribe<WebResponse>()
-        {
+    public Observable<WebResponse> callCache(int methodId, HashMap<String, Object> params, final WebResponse cache) {
+        Observable<WebResponse> cacheOb = Observable.create(new Observable.OnSubscribe<WebResponse>() {
             @Override
-            public void call(Subscriber<? super WebResponse> subscriber)
-            {
+            public void call(Subscriber<? super WebResponse> subscriber) {
                 subscriber.onNext(cache);
                 subscriber.onCompleted();
             }
@@ -67,36 +55,28 @@ public class WebCall
 
         return Observable
                 .concat(cacheOb, netOb)
-                .first(new Func1<WebResponse, Boolean>()
-                {
+                .first(new Func1<WebResponse, Boolean>() {
                     @Override
-                    public Boolean call(WebResponse o)
-                    {
+                    public Boolean call(WebResponse o) {
                         return (o != null) && (!o.isEmptyData());
                     }
                 });
     }
 
-    public Observable<WebResponse> callCacheThree(int methodId, HashMap<String, Object> params, final WebResponse memory, final String prefKey)
-    {
-        Observable<WebResponse> callMemory = Observable.create(new Observable.OnSubscribe<WebResponse>()
-        {
+    public Observable<WebResponse> callCacheThree(int methodId, HashMap<String, Object> params, final WebResponse memory, final String prefKey) {
+        Observable<WebResponse> callMemory = Observable.create(new Observable.OnSubscribe<WebResponse>() {
             @Override
-            public void call(Subscriber<? super WebResponse> subscriber)
-            {
+            public void call(Subscriber<? super WebResponse> subscriber) {
                 subscriber.onNext(memory);
                 subscriber.onCompleted();
             }
         });
-        Observable<WebResponse> callPref = Observable.create(new Observable.OnSubscribe<WebResponse>()
-        {
+        Observable<WebResponse> callPref = Observable.create(new Observable.OnSubscribe<WebResponse>() {
             @Override
-            public void call(Subscriber<? super WebResponse> subscriber)
-            {
+            public void call(Subscriber<? super WebResponse> subscriber) {
                 String value = Utils.toString(SPUtils.get(prefKey, ""));
                 WebResponse response = null;
-                if (!TextUtils.isEmpty(value))
-                {
+                if (!TextUtils.isEmpty(value)) {
                     response = new WebResponse();
                     response.setError(0);
                     response.setData(value);
@@ -113,36 +93,28 @@ public class WebCall
                 callMemory,
                 callPref,
                 callNet)
-                .first(new Func1<WebResponse, Boolean>()
-                {
+                .first(new Func1<WebResponse, Boolean>() {
                     @Override
-                    public Boolean call(WebResponse o)
-                    {
+                    public Boolean call(WebResponse o) {
                         return (o != null) && (!o.isEmptyData());
                     }
                 });
     }
 
 
-    public Observable<WebResponse> callWebService(final WebService webService, final String key)
-    {
-        return Observable.create(new Observable.OnSubscribe<WebResponse>()
-        {
+    public Observable<WebResponse> callWebService(final WebService webService, final String key) {
+        return Observable.create(new Observable.OnSubscribe<WebResponse>() {
             @Override
-            public void call(Subscriber<? super WebResponse> subscriber)
-            {
+            public void call(Subscriber<? super WebResponse> subscriber) {
                 //订阅者回调 onNext 和 onCompleted
                 WebResponse result = webService.call();
                 Log.d(this.getClass(), result.getError() + "");
-                if (result != null && result.getError() == 0)
-                {
-                    if (!TextUtils.isEmpty(key) && !result.isEmptyData())
-                    {
+                if (result != null && result.getError() == 0) {
+                    if (!TextUtils.isEmpty(key) && !result.isEmptyData()) {
                         SPUtils.put(key, result.getData());
                     }
                     subscriber.onNext(result);
-                } else
-                {
+                } else {
                     Map<String, Object> erroMap = new HashMap<>();
                     erroMap.put("code", result.getError());
                     erroMap.put("info", result.getInfo());

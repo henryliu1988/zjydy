@@ -28,4 +28,8 @@ public class RefreshKey {
 
     public static final int TOKEN_MSG_SEX = 12;
 
+
+    public static final int LOGIN_RESULT_BACK = 13;
+
+
 }

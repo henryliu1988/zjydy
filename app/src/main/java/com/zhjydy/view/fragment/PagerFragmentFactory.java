@@ -3,11 +3,9 @@ package com.zhjydy.view.fragment;
 /**
  * Created by admin on 2016/8/9.
  */
-public class PagerFragmentFactory
-{
-    public static PageImpBaseFragment createFragment(int key)
-    {
-        switch (key){
+public class PagerFragmentFactory {
+    public static PageImpBaseFragment createFragment(int key) {
+        switch (key) {
             case FragKey.search_expert_fragment:
                 return new SearchExpertFragment();
             case FragKey.search_info_fragment:
@@ -70,6 +68,6 @@ public class PagerFragmentFactory
                 return new MineNameChangeFragment();
 
         }
-      return null;
+        return null;
     }
 }

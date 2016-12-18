@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhjydy.R;
-import com.zhjydy.model.data.AppData;
+import com.zhjydy.model.data.UserData;
 import com.zhjydy.presenter.contract.AccountSafeContract;
 import com.zhjydy.presenter.presenterImp.AccountSafePresenterImp;
 
@@ -86,7 +86,7 @@ public class AccountSafeFragment extends PageImpBaseFragment implements AccountS
                 gotoFragment(FragKey.phone_num_change_fragment);
                 break;
             case R.id.layout_change_payword:
-                String patPass = AppData.getInstance().getToken().getPaypass();
+                String patPass = UserData.getInstance().getToken().getPaypass();
                 if (TextUtils.isEmpty(patPass)) {
                     gotoFragment(FragKey.pay_password_add_fragment);
                 } else {

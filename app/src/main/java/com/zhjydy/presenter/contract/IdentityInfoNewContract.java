@@ -3,7 +3,6 @@ package com.zhjydy.presenter.contract;
 import com.zhjydy.presenter.BasePresenter;
 import com.zhjydy.presenter.BaseView;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,13 +10,11 @@ import java.util.Map;
  */
 public interface IdentityInfoNewContract {
 
-    interface View extends BaseView<Presenter>
-    {
+    interface View extends BaseView<Presenter> {
         void onSubmitSuccess(boolean status);
     }
 
-    interface Presenter extends BasePresenter
-    {
-        void submitIdentifymsg(Map<Integer,String> urls);
+    interface Presenter extends BasePresenter {
+        void submitIdentifymsg(Map<Integer, String> urls);
     }
 }

@@ -1,6 +1,5 @@
 package com.zhjydy.presenter.contract;
 
-import com.zhjydy.model.entity.Infomation;
 import com.zhjydy.presenter.BasePresenter;
 import com.zhjydy.presenter.BaseView;
 
@@ -12,14 +11,13 @@ import java.util.Map;
  */
 public interface FavInfoContract {
 
-    interface View extends BaseView<Presenter>
-    {
-        void updateInfoList(List<Map<String,Object>> infos);
+    interface View extends BaseView<Presenter> {
+        void updateInfoList(List<Map<String, Object>> infos);
     }
 
-    interface Presenter extends BasePresenter
-    {
+    interface Presenter extends BasePresenter {
         void searchFavInfos(String condition);
+
         void cancelFav(String id);
     }
 }

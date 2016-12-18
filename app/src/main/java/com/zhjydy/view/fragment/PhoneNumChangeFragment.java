@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhjydy.R;
-import com.zhjydy.model.data.AppData;
+import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.presenter.contract.PhoneNumChangContract;
@@ -67,8 +67,8 @@ public class PhoneNumChangeFragment extends PageImpBaseFragment implements Phone
         titleBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mCurrentStep >0) {
-                    mCurrentStep --;
+                if (mCurrentStep > 0) {
+                    mCurrentStep--;
                     switchStep(mCurrentStep);
                 } else {
                     back();
@@ -91,14 +91,14 @@ public class PhoneNumChangeFragment extends PageImpBaseFragment implements Phone
 
     private void initLoginLayout() {
         mLoginPsView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_phone_change_login, null);
-        mLoginPsEdit = (EditText)mLoginPsView.findViewById(R.id.edit_old_password);
+        mLoginPsEdit = (EditText) mLoginPsView.findViewById(R.id.edit_old_password);
     }
 
     private void initNewPhoneLayout() {
         mPhoneView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_phone_change_newphone, null);
-        mNewPhoneEdit = (EditText)mPhoneView.findViewById(R.id.new_phone_edit);
-        TextView mNewPhoneTv = (TextView)mPhoneView.findViewById(R.id.new_phone_tv);
-        mCountTimer = new MyCountTimer(mNewPhoneTv,0xff658dff,0xff658dff);
+        mNewPhoneEdit = (EditText) mPhoneView.findViewById(R.id.new_phone_edit);
+        TextView mNewPhoneTv = (TextView) mPhoneView.findViewById(R.id.new_phone_tv);
+        mCountTimer = new MyCountTimer(mNewPhoneTv, 0xff658dff, 0xff658dff);
         mNewPhoneTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,9 +106,10 @@ public class PhoneNumChangeFragment extends PageImpBaseFragment implements Phone
             }
         });
     }
+
     private void initConfirmLayout() {
         mConfirmView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_phone_change_confirm, null);
-        mConfirmCodeEdit = (EditText)mConfirmView.findViewById(R.id.edit_confirm_code);
+        mConfirmCodeEdit = (EditText) mConfirmView.findViewById(R.id.edit_confirm_code);
     }
 
     private void tryGetConfirmCode() {
@@ -117,15 +118,15 @@ public class PhoneNumChangeFragment extends PageImpBaseFragment implements Phone
             zhToast.showToast("请输入手机号");
             return;
         }
-        if(!Utils.isPhone(phoneNum)) {
+        if (!Utils.isPhone(phoneNum)) {
             zhToast.showToast("请输入正确的手机号");
             return;
         }
         if (mPresenter != null) {
-            mPresenter.getConfirmCode(phoneNum).subscribe(new BaseSubscriber<WebResponse>(getContext(),"") {
+            mPresenter.getConfirmCode(phoneNum).subscribe(new BaseSubscriber<WebResponse>(getContext(), "") {
                 @Override
                 public void onNext(WebResponse webResponse) {
-                   String  mConfirSmsCode = webResponse.getData();
+                    String mConfirSmsCode = webResponse.getData();
                     zhToast.showToast(mConfirSmsCode);
                     mCountTimer.start();
                 }
@@ -157,6 +158,7 @@ public class PhoneNumChangeFragment extends PageImpBaseFragment implements Phone
 
         }
     }
+
     private void confirmClick() {
         switch (mCurrentStep) {
             case 0:
@@ -171,7 +173,7 @@ public class PhoneNumChangeFragment extends PageImpBaseFragment implements Phone
     }
 
     private void loginPassConfirm() {
-        if (mLoginPsEdit == null){
+        if (mLoginPsEdit == null) {
             return;
         }
         String inputPs = mLoginPsEdit.getText().toString();
@@ -180,10 +182,10 @@ public class PhoneNumChangeFragment extends PageImpBaseFragment implements Phone
             return;
         }
         String inputMd5 = MD5.GetMD5Code(inputPs);
-        String password = AppData.getInstance().getToken().getPassoword();
+        String password = UserData.getInstance().getToken().getPassoword();
         if (inputMd5.equals(password)) {
             switchStep(1);
-        } else{
+        } else {
             zhToast.showToast("请输入正确的登录密码");
             return;
         }
@@ -200,13 +202,14 @@ public class PhoneNumChangeFragment extends PageImpBaseFragment implements Phone
             zhToast.showToast("请输入手机号码并获取验证码");
             return;
         }
-        if(!Utils.isPhone(newPhone)) {
+        if (!Utils.isPhone(newPhone)) {
             zhToast.showToast("请输入正确的手机号");
             return;
         }
 
         switchStep(2);
     }
+
     private void allConfirm() {
         if (mConfirmCodeEdit == null || mNewPhoneEdit == null) {
             return;
@@ -221,9 +224,10 @@ public class PhoneNumChangeFragment extends PageImpBaseFragment implements Phone
             zhToast.showToast("请返回上一步输入手机号码");
             return;
         }
-        mPresenter.submitChangeConfirm(phoneNum,confirmCode);
+        mPresenter.submitChangeConfirm(phoneNum, confirmCode);
 
     }
+
     @Override
     public void setPresenter(PhoneNumChangContract.Presenter presenter) {
         mPresenter = presenter;
@@ -243,17 +247,16 @@ public class PhoneNumChangeFragment extends PageImpBaseFragment implements Phone
     }
 
     @Override
-    public void submitResult(boolean result, String msg,String phoneNum)
-    {
+    public void submitResult(boolean result, String msg, String phoneNum) {
         if (result) {
-            AppData.getInstance().getToken().setMobile(phoneNum);
+            UserData.getInstance().getToken().setMobile(phoneNum);
             int key[] = {FragKey.account_safe_fragment};
             back(key);
         }
         if (!TextUtils.isEmpty(msg)) {
             zhToast.showToast(msg);
         } else {
-            zhToast.showToast(result? "修改手机号码成功":"修改手机号码失败");
+            zhToast.showToast(result ? "修改手机号码成功" : "修改手机号码失败");
         }
 
 

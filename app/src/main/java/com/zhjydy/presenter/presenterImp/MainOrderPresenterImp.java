@@ -1,22 +1,16 @@
 package com.zhjydy.presenter.presenterImp;
 
-import com.shizhefei.mvc.RequestHandle;
-import com.shizhefei.mvc.ResponseSender;
-import com.zhjydy.model.data.AppData;
-import com.zhjydy.model.entity.Infomation;
+import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
-import com.zhjydy.model.pageload.PageLoadDataSource;
 import com.zhjydy.presenter.RefreshKey;
 import com.zhjydy.presenter.RefreshManager;
 import com.zhjydy.presenter.RefreshWithKey;
-import com.zhjydy.presenter.contract.MainInfoContract;
 import com.zhjydy.presenter.contract.MainOrderContract;
 import com.zhjydy.util.Utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,14 +19,15 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016/9/20 0020.
  */
-public class MainOrderPresenterImp  implements MainOrderContract.MainOrderPresenter,RefreshWithKey {
+public class MainOrderPresenterImp implements MainOrderContract.MainOrderPresenter, RefreshWithKey {
 
     private MainOrderContract.MainOrderView mView;
 
     public MainOrderPresenterImp(MainOrderContract.MainOrderView view) {
         this.mView = view;
         view.setPresenter(this);
-        RefreshManager.getInstance().addNewListener(RefreshKey.ORDET_LIST_CHANGE,this);
+        RefreshManager.getInstance().addNewListener(RefreshKey.ORDET_LIST_CHANGE, this);
+        RefreshManager.getInstance().addNewListener(RefreshKey.LOGIN_RESULT_BACK, this);
         start();
     }
 
@@ -40,14 +35,15 @@ public class MainOrderPresenterImp  implements MainOrderContract.MainOrderPresen
     public void start() {
         loadOrders();
     }
+
     private void loadOrders() {
-        HashMap<String,Object> params = new HashMap<>();
-        params.put("memberid", AppData.getInstance().getToken().getId());
-        WebCall.getInstance().call(WebKey.func_getOrders,params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),true) {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("memberid", UserData.getInstance().getToken().getId());
+        WebCall.getInstance().call(WebKey.func_getOrders, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), true) {
             @Override
             public void onNext(WebResponse webResponse) {
                 String data = webResponse.getData();
-                List<Map<String,Object>> list = Utils.parseObjectToListMapString(data);
+                List<Map<String, Object>> list = Utils.parseObjectToListMapString(data);
                 mView.update(list);
             }
 

@@ -21,11 +21,9 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhjydy.R;
 import com.zhjydy.presenter.contract.FavExpertContract;
 import com.zhjydy.presenter.presenterImp.FaveExpertPresenterImp;
-import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.FavExpertListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
-import com.zhjydy.view.avtivity.PagerImpActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,7 +118,7 @@ public class FavExpertFragment extends PageImpBaseFragment implements FavExpertC
                     Bundle bundle = new Bundle();
                     bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
                     // ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
-                    gotoFragment(FragKey.detail_expert_fragment,bundle);
+                    gotoFragment(FragKey.detail_expert_fragment, bundle);
                 }
             }
         });

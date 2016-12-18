@@ -10,14 +10,12 @@ import java.util.Map;
  * Created by Administrator on 2016/12/3 0003.
  */
 public interface PatientCaseSelectContract {
-    interface View extends BaseView<Presenter>
-    {
+    interface View extends BaseView<Presenter> {
         public void updatePatient(List<Map<String, Object>> list);
     }
 
-    interface Presenter extends BasePresenter
-    {
-        public String getConfirmInfo(Map<String,Object> patientCase);
+    interface Presenter extends BasePresenter {
+        public String getConfirmInfo(Map<String, Object> patientCase);
     }
 
 }

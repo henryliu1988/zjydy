@@ -5,33 +5,22 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zhjydy.R;
-import com.zhjydy.model.net.BaseSubscriber;
-import com.zhjydy.model.net.WebCall;
-import com.zhjydy.model.net.WebKey;
-import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.presenter.contract.MsgAllListContract;
 import com.zhjydy.presenter.presenterImp.MsgAllListPresenterImp;
-import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.DateUtil;
 import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.Utils;
-import com.zhjydy.view.adapter.MsgChatListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
-import com.zhjydy.view.avtivity.PagerImpActivity;
 import com.zhjydy.view.zhview.ViewUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -105,12 +94,12 @@ public class MsgAllListFragment extends PageImpBaseFragment implements MsgAllLis
                             mPresenter.readOrder(orderId);
                         }
                         gotoFragment(FragKey.msg_order_list_fragment);
-                     //   ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+                        //   ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
                     } else if (type == 1) {
                         Bundle bundle = new Bundle();
                         //bundle.putInt("key", FragKey.system_order_list_fragment);
                         gotoFragment(FragKey.system_order_list_fragment);
-                      //  ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+                        //  ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
                     }
                 }
             });
@@ -175,10 +164,10 @@ public class MsgAllListFragment extends PageImpBaseFragment implements MsgAllLis
                         Bundle bundle = new Bundle();
                         String info = JSONObject.toJSONString(data);
                         bundle.putString(IntentKey.FRAG_INFO, info);
-                       // bundle.putInt("key", FragKey.doc_chat_record_fragment);
-                       // ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
+                        // bundle.putInt("key", FragKey.doc_chat_record_fragment);
+                        // ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
 
-                        gotoFragment(FragKey.doc_chat_record_fragment,bundle);
+                        gotoFragment(FragKey.doc_chat_record_fragment, bundle);
                     }
                 }
             });

@@ -2,7 +2,6 @@ package com.zhjydy.view.zhview;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -38,12 +37,13 @@ public class BadgImage extends RelativeLayout {
         image = new ImageView(context);
         RelativeLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        image.setPadding(0,0,15,0);
+        image.setPadding(0, 0, 15, 0);
         image.setLayoutParams(params);
         image.setScaleType(ImageView.ScaleType.FIT_CENTER);
         this.addView(image);
 
     }
+
     public BadgeView getBadgeView(Context context, View target) {
         BadgeView badge = new BadgeView(context, target);
         badge.setBadgeBackgroundColor(context.getResources().getColor(R.color.badge_bg_color));

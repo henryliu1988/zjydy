@@ -10,13 +10,11 @@ import java.util.Map;
  */
 public interface OrderDetailContract {
 
-    interface View extends BaseView<Presenter>
-    {
+    interface View extends BaseView<Presenter> {
         void update(Map<String, Object> info);
     }
 
-    interface Presenter extends BasePresenter
-    {
+    interface Presenter extends BasePresenter {
         String getExpertId();
     }
 }

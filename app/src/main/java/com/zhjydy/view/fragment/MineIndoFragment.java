@@ -16,8 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.soundcloud.android.crop.Crop;
 import com.zhjydy.R;
-import com.zhjydy.model.data.AppData;
 import com.zhjydy.model.data.DicData;
 import com.zhjydy.model.entity.NormalItem;
 import com.zhjydy.model.entity.PickViewData;
@@ -28,11 +28,11 @@ import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.ScreenUtils;
 import com.zhjydy.util.Utils;
-import com.zhjydy.util.ViewKey;
 import com.zhjydy.view.ActivityResultView;
-import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.zhview.MapTextView;
+import com.zhjydy.view.zhview.zhToast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +44,7 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/9/26 0026.
  */
-public class MineIndoFragment extends PageImpBaseFragment implements MineInfoContract.View , ActivityResultView {
+public class MineIndoFragment extends PageImpBaseFragment implements MineInfoContract.View, ActivityResultView {
 
 
     @BindView(R.id.title_back)
@@ -86,7 +86,7 @@ public class MineIndoFragment extends PageImpBaseFragment implements MineInfoCon
     @Override
     public void onResume() {
         super.onResume();
-        if(mPresenter != null) {
+        if (mPresenter != null) {
             mPresenter.refreshView();
         }
     }
@@ -97,6 +97,7 @@ public class MineIndoFragment extends PageImpBaseFragment implements MineInfoCon
         addOnActivityResultView(this);
         titleCenterTv.setText("个人信息");
     }
+
     @Override
     public void updateSexPick(ArrayList<PickViewData> sexData) {
         mSexPickViewData = sexData;
@@ -113,13 +114,14 @@ public class MineIndoFragment extends PageImpBaseFragment implements MineInfoCon
             public void onOptionsSelect(int options1, int option2, int options3) {
                 String sexName = mSexPickViewData.get(options1).getName();
                 String sexId = mSexPickViewData.get(options1).getId();
-                userSexValue.setMap(sexId,sexName);
+                userSexValue.setMap(sexId, sexName);
                 mPresenter.updateMemberSex(Utils.toInteger(sexId));
             }
         });
     }
 
     private void confirmLogOut() {
+        mPresenter.logOut();
         ActivityUtils.showLogin(getActivity(), true);
     }
 
@@ -149,12 +151,12 @@ public class MineIndoFragment extends PageImpBaseFragment implements MineInfoCon
         int sex = Utils.toInteger(info.getSex());
         if (sex > 0) {
             NormalItem item = DicData.getInstance().getSexById(sex + "");
-            userSexValue.setMap(item.getId(),item.getName());
+            userSexValue.setMap(item.getId(), item.getName());
         }
 
         String photoPath = info.getPhotoUrl();
         if (!TextUtils.isEmpty(photoPath)) {
-            ImageUtils.getInstance().displayFromRemote(photoPath,userPhoto);
+            ImageUtils.getInstance().displayFromRemote(photoPath, userPhoto);
         }
     }
 
@@ -170,7 +172,7 @@ public class MineIndoFragment extends PageImpBaseFragment implements MineInfoCon
                 break;
             case R.id.user_name_value:
                 Bundle bundle = new Bundle();
-                gotoFragment(FragKey.mine_name_change_fragment,bundle);
+                gotoFragment(FragKey.mine_name_change_fragment, bundle);
                 break;
             case R.id.user_sex_value:
                 if (mSexPickViewData.size() > 0) {
@@ -203,40 +205,51 @@ public class MineIndoFragment extends PageImpBaseFragment implements MineInfoCon
 
     @Override
     public void onActivityResult1(int requestCode, int resultCode, Intent data) {
-        switch (requestCode)
-        {
+        switch (requestCode) {
             //从相册选择
             case SELECT_PICTURE:
                 if (data != null) {
                     Uri uri = data.getData();
                     String path = Utils.getPath(uri);
-                 //   ImageUtils.getInstance().displayFromRemote(path,userPhoto);
-                    mPresenter.updateMemberPhoto(path);
+                    //   ImageUtils.getInstance().displayFromRemote(path,userPhoto);
+                    beginCrop(uri);
+                   // mPresenter.updateMemberPhoto(path);
                 }
                 break;
             //拍照添加图片
             case SELECT_CAMER:
-                if (mCameraPath != null)
-                {
+                if (mCameraPath != null) {
                     String p = mCameraPath.toString();
-                 //   ImageUtils.getInstance().displayFromRemote(p,userPhoto);
-                    mPresenter.updateMemberPhoto(p);
-                    mCameraPath = null;
+                    Uri uri = Uri.fromFile(new File(p));
+                    beginCrop(uri);
                 }
                 break;
+            case Crop.REQUEST_CROP:
+                    handleCrop(resultCode,data);
             default:
                 break;
+        }
+    }
+    private void beginCrop(Uri source) {
+        Uri destination = Uri.fromFile(new File(getActivity().getCacheDir(), "cropped"));
+        Crop.of(source, destination).asSquare().start(getActivity());
+    }
+    private void handleCrop(int resultCode, Intent result) {
+        if (resultCode == getActivity().RESULT_OK) {
+            Uri uri =   Crop.getOutput(result);
+            String path =  Utils.getPath(uri);
+            mPresenter.updateMemberPhoto(path);
+        } else if (resultCode == Crop.RESULT_ERROR) {
+            zhToast.showToast(Crop.getError(result).getMessage());
         }
     }
 
     @Override
     public void onPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         List<String> permissionList = Arrays.asList(permissions);
-        if (permissionList.contains(Manifest.permission.CAMERA))
-        {
+        if (permissionList.contains(Manifest.permission.CAMERA)) {
             toGetCameraImage();
-        } else if (permissionList.contains(Manifest.permission.WRITE_EXTERNAL_STORAGE))
-        {
+        } else if (permissionList.contains(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             toGetLocalImage();
         }
 

@@ -75,7 +75,6 @@ public class MineNameChangeFragment extends PageImpBaseFragment implements MineN
     }
 
 
-
     @Override
     public void submitResult(boolean result, String msg) {
         if (result) {

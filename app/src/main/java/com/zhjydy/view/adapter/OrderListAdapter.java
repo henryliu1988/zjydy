@@ -2,7 +2,6 @@ package com.zhjydy.view.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,8 +10,6 @@ import android.widget.TextView;
 
 import com.zhjydy.R;
 import com.zhjydy.model.data.DicData;
-import com.zhjydy.model.entity.NormalItem;
-import com.zhjydy.presenter.contract.AccountSafeContract;
 import com.zhjydy.util.DateUtil;
 import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.Utils;
@@ -25,7 +22,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016/10/3 0003.
  */
-public class OrderListAdapter extends  ListViewAdapter<Map<String,Object>> {
+public class OrderListAdapter extends ListViewAdapter<Map<String, Object>> {
 
 
     public static final int OPERATE_DETAIL = 0;
@@ -35,7 +32,8 @@ public class OrderListAdapter extends  ListViewAdapter<Map<String,Object>> {
     public OrderListAdapter(Context context, List<Map<String, Object>> datas) {
         super(context, datas, R.layout.order_list_item);
     }
-    public void setData( List<Map<String, Object>> datas) {
+
+    public void setData(List<Map<String, Object>> datas) {
         super.refreshData(datas);
     }
 
@@ -44,33 +42,35 @@ public class OrderListAdapter extends  ListViewAdapter<Map<String,Object>> {
     public void setOperateListener(OperateListener listener) {
         this.mOperateListener = listener;
     }
-    public interface OperateListener{
-        void onOperate(Map<String,Object> item,int operate);
+
+    public interface OperateListener {
+        void onOperate(Map<String, Object> item, int operate);
     }
+
     @Override
     public void convert(ViewHolder holder, final Map<String, Object> map) {
         String photoUrl = Utils.toString(map.get("experturl"));
-        if (!TextUtils.isEmpty(photoUrl)){
-            ImageUtils.getInstance().displayFromRemote(photoUrl,(ImageView)holder.getView(R.id.photo));
+        if (!TextUtils.isEmpty(photoUrl)) {
+            ImageUtils.getInstance().displayFromRemote(photoUrl, (ImageView) holder.getView(R.id.photo));
         }
-        ( (TextView)holder.getView(R.id.doc_name)).setText(Utils.toString(map.get("expertname")));
-        ( (TextView)holder.getView(R.id.serialNum)).setText("预约单号：" +Utils.toString(map.get("orderid")));
-        ( (TextView)holder.getView(R.id.time)).setText("预约时间：" + DateUtil.getFullTimeDiffDayCurrent(Utils.toLong(map.get("showtime"))));
+        ((TextView) holder.getView(R.id.doc_name)).setText(Utils.toString(map.get("expertname")));
+        ((TextView) holder.getView(R.id.serialNum)).setText("预约单号：" + Utils.toString(map.get("orderid")));
+        ((TextView) holder.getView(R.id.time)).setText("预约时间：" + DateUtil.getFullTimeDiffDayCurrent(Utils.toLong(map.get("showtime"))));
 
-        ( (TextView)holder.getView(R.id.patientName)).setText("患者：" +Utils.toString(map.get("patientname")));
-        ( (TextView)holder.getView(R.id.patientHospital)).setText("患者所在医院：" + DicData.getInstance().getHospitalById(Utils.toString(map.get("patienthospital"))).getHospital());
+        ((TextView) holder.getView(R.id.patientName)).setText("患者：" + Utils.toString(map.get("patientname")));
+        ((TextView) holder.getView(R.id.patientHospital)).setText("患者所在医院：" + DicData.getInstance().getHospitalById(Utils.toString(map.get("patienthospital"))).getHospital());
 
         int status = Utils.toInteger(Utils.toString(map.get("status")));
-        RelativeLayout operateLayout = (RelativeLayout)holder.getView(R.id.operate_layout);
-        TextView operateTv = (TextView)holder.getView(R.id.operate);
-        TextView statusTv = (TextView)holder.getView(R.id.status);
+        RelativeLayout operateLayout = (RelativeLayout) holder.getView(R.id.operate_layout);
+        TextView operateTv = (TextView) holder.getView(R.id.operate);
+        TextView statusTv = (TextView) holder.getView(R.id.status);
         boolean isOperateVisible = true;
         String operateText = "查看详情";
         String backGroudColor = "#527EFA";
         String statusColor = "#383838";
         String statusText = "";
         int operateType = 0;
-        switch (status){
+        switch (status) {
             case 1: //预约中，操作为取消预约
                 isOperateVisible = true;
                 operateText = "取消预约";
@@ -135,10 +135,10 @@ public class OrderListAdapter extends  ListViewAdapter<Map<String,Object>> {
         statusTv.setTextColor(Color.parseColor(statusColor));
         if (!isOperateVisible) {
             operateLayout.setVisibility(View.GONE);
-        }else {
+        } else {
             operateLayout.setVisibility(View.VISIBLE);
             operateTv.setText(operateText);
-            ViewUtil.setCornerViewDrawbleBg(operateTv,backGroudColor);
+            ViewUtil.setCornerViewDrawbleBg(operateTv, backGroudColor);
         }
         operateTv.setTag(operateType);
 
@@ -147,7 +147,7 @@ public class OrderListAdapter extends  ListViewAdapter<Map<String,Object>> {
             @Override
             public void onClick(View view) {
                 if (mOperateListener != null) {
-                    mOperateListener.onOperate(map,Utils.toInteger(view.getTag()));
+                    mOperateListener.onOperate(map, Utils.toInteger(view.getTag()));
                 }
             }
         });

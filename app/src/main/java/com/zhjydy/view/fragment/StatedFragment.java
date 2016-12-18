@@ -1,7 +1,6 @@
 package com.zhjydy.view.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +40,6 @@ public abstract class StatedFragment extends Fragment {
     }
 
 
-
     protected abstract void initData();
 
     protected abstract int getLayoutId();
@@ -52,7 +50,8 @@ public abstract class StatedFragment extends Fragment {
 
     }
 
-    public  abstract  void refreshView();
+    public abstract void refreshView();
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

@@ -2,10 +2,8 @@ package com.zhjydy.model.entity;
 
 import android.text.TextUtils;
 
-import com.zhjydy.model.data.AppData;
 import com.zhjydy.presenter.RefreshKey;
 import com.zhjydy.presenter.RefreshManager;
-import com.zhjydy.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +25,7 @@ public class TokenInfo {
     String sex;
     String photoId;
     String photoUrl;
+
     public String getPassoword() {
         return passoword;
     }
@@ -129,7 +128,7 @@ public class TokenInfo {
         RefreshManager.getInstance().refreshData(RefreshKey.TOKEN_MSG_PHOTO);
     }
 
-    public List<String> getCollectExpertList(){
+    public List<String> getCollectExpertList() {
         String collect = getCollectExperts();
         List<String> coList = new ArrayList<String>();
         if (!TextUtils.isEmpty(collect)) {
@@ -137,7 +136,8 @@ public class TokenInfo {
         }
         return coList;
     }
-    public List<String> getCollectNewsList(){
+
+    public List<String> getCollectNewsList() {
         String news = getCollectNews();
         List<String> list = new ArrayList<String>();
         if (!TextUtils.isEmpty(news)) {
@@ -149,10 +149,10 @@ public class TokenInfo {
     public void setCollectExpertAsList(List<String> collect) {
         String str = "";
         if (collect != null && collect.size() > 0) {
-            for (int i = 0 ; i < collect.size() ; i ++) {
+            for (int i = 0; i < collect.size(); i++) {
                 str += collect.get(i);
-                if (i < collect.size() -1)
-                str +=",";
+                if (i < collect.size() - 1)
+                    str += ",";
             }
         }
         setCollectExperts(str);
@@ -161,10 +161,10 @@ public class TokenInfo {
     public void setCollectNewAsList(List<String> news) {
         String str = "";
         if (news != null && news.size() > 0) {
-            for (int i = 0 ; i < news.size() ; i ++) {
+            for (int i = 0; i < news.size(); i++) {
                 str += news.get(i);
-                if (i < news.size() -1)
-                    str +=",";
+                if (i < news.size() - 1)
+                    str += ",";
             }
         }
         setCollectNews(str);

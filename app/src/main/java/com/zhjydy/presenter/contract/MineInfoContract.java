@@ -1,7 +1,5 @@
 package com.zhjydy.presenter.contract;
 
-import android.media.session.MediaSession;
-
 import com.zhjydy.model.entity.PickViewData;
 import com.zhjydy.model.entity.TokenInfo;
 import com.zhjydy.presenter.BasePresenter;
@@ -14,18 +12,21 @@ import java.util.ArrayList;
  */
 public interface MineInfoContract {
 
-    interface View extends BaseView<Presenter>
-    {
+    interface View extends BaseView<Presenter> {
         void updateInfo(TokenInfo info);
+
         void updateSexPick(ArrayList<PickViewData> sexData);
 
     }
 
-    interface Presenter extends BasePresenter
-    {
+    interface Presenter extends BasePresenter {
         void updateMemberPhoto(String path);
+
         void updateMemberSex(int sex);
+
         void updateMemberName(String name);
+
         void refreshView();
+        void logOut();
     }
 }

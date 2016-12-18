@@ -15,11 +15,13 @@ public class CustomDialog extends AlertDialog {
 
     private TextView mMsgTv;
     private String msg;
+
     public CustomDialog(Context context) {
         super(context);
         initView();
     }
-    public CustomDialog(Context context,String msg) {
+
+    public CustomDialog(Context context, String msg) {
         super(context);
         this.msg = msg;
         initView();
@@ -31,14 +33,14 @@ public class CustomDialog extends AlertDialog {
         initView();
     }
 
-    private void initView(){
+    private void initView() {
         setContentView(R.layout.confirm_dlg_layout);
-        mMsgTv = (TextView)findViewById(R.id.dlg_msg);
+        mMsgTv = (TextView) findViewById(R.id.dlg_msg);
         if (!TextUtils.isEmpty(msg)) {
             mMsgTv.setText(msg);
         }
-        TextView cancelTv = (TextView)findViewById(R.id.cancel);
-        TextView confirmTv = (TextView)findViewById(R.id.confirm);
+        TextView cancelTv = (TextView) findViewById(R.id.cancel);
+        TextView confirmTv = (TextView) findViewById(R.id.confirm);
         cancelTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,6 +56,7 @@ public class CustomDialog extends AlertDialog {
             }
         });
     }
+
     private void setTitle(String msg) {
         this.msg = msg;
         if (mMsgTv != null) {
@@ -62,10 +65,12 @@ public class CustomDialog extends AlertDialog {
     }
 
     private OnConfirmListner onConfirmListner;
-    private void setOnConfirmListner(OnConfirmListner listner){
+
+    private void setOnConfirmListner(OnConfirmListner listner) {
         this.onConfirmListner = listner;
     }
-    public interface OnConfirmListner{
+
+    public interface OnConfirmListner {
         public void onConfirm();
     }
 }

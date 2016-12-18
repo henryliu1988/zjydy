@@ -9,7 +9,6 @@ public class NormalDicItem {
     private String name = "";
 
 
-
     public String getId() {
         return id;
     }

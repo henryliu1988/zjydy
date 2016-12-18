@@ -1,7 +1,6 @@
 package com.zhjydy.presenter.contract;
 
 import com.zhjydy.model.entity.HosipitalPickViewData;
-import com.zhjydy.model.entity.NormalDicItem;
 import com.zhjydy.model.entity.NormalPickViewData;
 import com.zhjydy.model.entity.PickViewData;
 import com.zhjydy.presenter.BasePresenter;
@@ -15,16 +14,17 @@ import java.util.Map;
  */
 public interface PatientCaseEditContract {
 
-    interface View extends BaseView<Presenter>
-    {
+    interface View extends BaseView<Presenter> {
         void updateSexPick(ArrayList<PickViewData> sexData);
-        void updateDistrict(Map<String,ArrayList> distrctData);
+
+        void updateDistrict(Map<String, ArrayList> distrctData);
+
         void updateHospitalByAddress(ArrayList<HosipitalPickViewData> hosData);
+
         void updateOffice(ArrayList<NormalPickViewData> officeData);
     }
 
-    interface Presenter extends BasePresenter
-    {
+    interface Presenter extends BasePresenter {
         void updateHospitalList(String addressId);
     }
 }

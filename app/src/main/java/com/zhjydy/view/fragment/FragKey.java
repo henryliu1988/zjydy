@@ -1,5 +1,6 @@
 package com.zhjydy.view.fragment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,9 +41,9 @@ public class FragKey {
     public static final int order_cancel_fragment = 1029;
     public static final int mine_name_change_fragment = 1030;
 
-    public static final Map<Integer,String> FragMap = new HashMap<>();
-    static
-    {
+    public static final Map<Integer, String> FragMap = new HashMap<>();
+
+    static {
         FragMap.put(patient_case_select_fragment, "patient_case_select_fragment");
         FragMap.put(order_cancel_fragment, "order_cancel_fragment");
 
@@ -78,4 +79,9 @@ public class FragKey {
         FragMap.put(mine_name_change_fragment, "mine_name_change_fragment");
 
     }
+
+
+    public static final Integer[] NO_NEED_USER_FRAG = {
+            search_expert_fragment,search_info_fragment,detail_expert_fragment,detail_info_fragment,common_fragment,search_home_fragment
+    };
 }

@@ -18,6 +18,7 @@ public interface ForgetPassWordContract {
 
     interface Presenter extends BasePresenter {
         Observable<WebResponse> getConfirmCode(String phone);
+
         void resetPassWord(HashMap<String, Object> params);
     }
 }

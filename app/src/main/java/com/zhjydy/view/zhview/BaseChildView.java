@@ -3,14 +3,14 @@ package com.zhjydy.view.zhview;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 /**
  * Created by Administrator on 2016/9/27 0027.
  */
-public abstract  class BaseChildView extends ViewGroup {
-    protected  Context mContext;
+public abstract class BaseChildView extends ViewGroup {
+    protected Context mContext;
+
     public BaseChildView(Context context) {
         super(context);
         this.mContext = context;
@@ -24,8 +24,9 @@ public abstract  class BaseChildView extends ViewGroup {
     }
 
     private void initView() {
-        LayoutInflater.from(mContext).inflate(getLayoutId(),this);
+        LayoutInflater.from(mContext).inflate(getLayoutId(), this);
     }
-    protected abstract  int getLayoutId();
+
+    protected abstract int getLayoutId();
 
 }

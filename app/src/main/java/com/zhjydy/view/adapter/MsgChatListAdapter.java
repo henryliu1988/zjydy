@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhjydy.R;
-import com.zhjydy.model.entity.NormalDicItem;
 import com.zhjydy.util.DateUtil;
 import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.Utils;
@@ -30,7 +29,8 @@ public class MsgChatListAdapter extends ListViewAdapter<Map<String, Object>> {
         String photo = Utils.toString(data.get("url"));
         String name = Utils.toString(data.get("sendname"));
         String content = Utils.toString(data.get("content"));
-        String time = DateUtil.getTimeDiffDayCurrent(Utils.toLong(data.get("addtime")));;
+        String time = DateUtil.getTimeDiffDayCurrent(Utils.toLong(data.get("addtime")));
+        ;
         ImageView imageView = (ImageView) holder.getView(R.id.image);
         ((TextView) holder.getView(R.id.msg_title)).setText(name);
         ((TextView) holder.getView(R.id.msg_content)).setText(content);
@@ -38,9 +38,9 @@ public class MsgChatListAdapter extends ListViewAdapter<Map<String, Object>> {
             ((TextView) holder.getView(R.id.msg_time)).setText(time);
         }
         if (!TextUtils.isEmpty(photo)) {
-            ImageUtils.getInstance().displayFromRemote(photo,imageView);
+            ImageUtils.getInstance().displayFromRemote(photo, imageView);
         } else {
-            ImageUtils.getInstance().displayFromDrawable(R.mipmap.photo,imageView);
+            ImageUtils.getInstance().displayFromDrawable(R.mipmap.photo, imageView);
         }
     }
 }

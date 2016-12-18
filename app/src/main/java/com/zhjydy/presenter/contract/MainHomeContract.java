@@ -11,16 +11,17 @@ import java.util.Map;
  */
 public interface MainHomeContract {
 
-    interface MainHomeView extends BaseView<MainHomePresenter>
-    {
+    interface MainHomeView extends BaseView<MainHomePresenter> {
 
         void updateBanner(List<String> images);
+
         void updateMsg(List<String> news);
+
         void updateExpert(List<Map<String, Object>> maps);
+
         void updateInfo(List<Map<String, Object>> infos);
     }
 
-    interface MainHomePresenter extends BasePresenter
-    {
+    interface MainHomePresenter extends BasePresenter {
     }
 }

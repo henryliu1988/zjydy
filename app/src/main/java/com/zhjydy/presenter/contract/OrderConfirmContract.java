@@ -3,7 +3,6 @@ package com.zhjydy.presenter.contract;
 import com.zhjydy.presenter.BasePresenter;
 import com.zhjydy.presenter.BaseView;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,9 +10,11 @@ import java.util.Map;
  */
 public interface OrderConfirmContract {
     interface View extends BaseView<Presenter> {
-        void updatePatient(Map<String,Object> info);
-        void updateExpert(Map<String,Object> info);
-        void subsribExpertResult(boolean result,String msg);
+        void updatePatient(Map<String, Object> info);
+
+        void updateExpert(Map<String, Object> info);
+
+        void subsribExpertResult(boolean result, String msg);
 
     }
 

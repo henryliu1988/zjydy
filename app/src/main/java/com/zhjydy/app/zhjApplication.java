@@ -3,9 +3,9 @@ package com.zhjydy.app;
 import android.app.Application;
 import android.content.Context;
 
-import com.tendcloud.tenddata.TCAgent;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
+import com.zhjydy.model.data.AppDataManager;
 import com.zhjydy.util.ImageUtils;
 
 /**
@@ -14,14 +14,13 @@ import com.zhjydy.util.ImageUtils;
 public class zhjApplication extends Application {
 
     private static zhjApplication instance;
-    public static zhjApplication getInstance()
-    {
+
+    public static zhjApplication getInstance() {
         return instance;
     }
 
 
-    public Context getContext()
-    {
+    public Context getContext() {
         return this.getApplicationContext();
     }
 
@@ -30,24 +29,24 @@ public class zhjApplication extends Application {
         PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad");
         PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
     }
+
     @Override
-    public void onCreate()
-    {
+    public void onCreate() {
         super.onCreate();
         init();
         UMShareAPI.get(this);
 
     }
+
     @Override
-    public void onTerminate()
-    {
+    public void onTerminate() {
         super.onTerminate();
     }
 
-    private void init()
-    {
+    private void init() {
         instance = this;
         ImageUtils.getInstance().initImageLoader();
+        AppDataManager.getInstance().initData();
     }
 
 }

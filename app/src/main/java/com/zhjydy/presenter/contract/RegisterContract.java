@@ -5,8 +5,6 @@ import com.zhjydy.presenter.BasePresenter;
 import com.zhjydy.presenter.BaseView;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import rx.Observable;
 
@@ -20,6 +18,7 @@ public interface RegisterContract {
 
     interface Presenter extends BasePresenter {
         Observable<WebResponse> getConfirmCode(String phone);
-        void register(HashMap<String,Object> params);
+
+        void register(HashMap<String, Object> params);
     }
 }

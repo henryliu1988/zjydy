@@ -1,5 +1,3 @@
-
-
 package com.zhjydy.presenter.contract;
 
 import android.content.Context;
@@ -16,13 +14,11 @@ import java.util.Map;
  */
 public interface PatientCaseEditAttachContract {
 
-    interface View extends BaseView<Presenter>
-    {
+    interface View extends BaseView<Presenter> {
         void sumbitOk();
     }
 
-    interface Presenter extends BasePresenter
-    {
-        void submitMsg(HashMap<String,Object> params,List<Map<String,Object>> files,Context context,int type);
+    interface Presenter extends BasePresenter {
+        void submitMsg(HashMap<String, Object> params, List<Map<String, Object>> files, Context context, int type);
     }
 }

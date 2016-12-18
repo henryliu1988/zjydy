@@ -7,15 +7,12 @@ import android.widget.LinearLayout;
 /**
  * Created by admin on 2016/9/18.
  */
-public abstract class BaseItemView extends LinearLayout
-{
-    public BaseItemView(Context context)
-    {
+public abstract class BaseItemView extends LinearLayout {
+    public BaseItemView(Context context) {
         super(context);
     }
 
-    public BaseItemView(Context context, AttributeSet attrs)
-    {
+    public BaseItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

@@ -9,6 +9,7 @@ public class NormalPickViewData implements IPickerViewData {
 
 
     private NormalDicItem mItem;
+
     public NormalPickViewData(NormalDicItem item) {
         this.mItem = item;
     }

@@ -1,9 +1,5 @@
 package com.zhjydy.model.data;
 
-import android.text.TextUtils;
-
-import com.zhjydy.model.entity.DistricPickViewData;
-import com.zhjydy.model.entity.District;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
@@ -82,21 +78,21 @@ public class MsgData {
 
     public Observable<List<Map<String, Object>>> getAllOrderMsgList() {
         HashMap<String, Object> params = new HashMap<>();
-        params.put("userid", AppData.getInstance().getToken().getId());
+        params.put("userid", UserData.getInstance().getToken().getId());
         return WebCall.getInstance().callCache(WebKey.func_getOrdersMsg, params, mOrderMsgData).map(new Func1<WebResponse, List<Map<String, Object>>>() {
             @Override
             public List<Map<String, Object>> call(WebResponse webResponse) {
                 mOrderMsgData = webResponse;
                 String data = webResponse.getData();
                 mOrderList = Utils.parseObjectToListMapString(data);
-                ListMapComparator comp = new ListMapComparator("addtime",0);
-                Collections.sort(mOrderList,comp);
-                Integer statusGroup[] = {2,3,4,5,6,7,9,10,11,12};
+                ListMapComparator comp = new ListMapComparator("addtime", 0);
+                Collections.sort(mOrderList, comp);
+                Integer statusGroup[] = {2, 3, 4, 5, 6, 7, 9, 10, 11, 12};
 
-                Iterator<Map<String,Object>> it = mOrderList.iterator();
+                Iterator<Map<String, Object>> it = mOrderList.iterator();
                 List<Integer> statusList = Arrays.asList(statusGroup);
                 while (it.hasNext()) {
-                    Map<String,Object> qu = it.next();
+                    Map<String, Object> qu = it.next();
                     if (!statusList.contains(Utils.toInteger(qu.get("orderstatus")))) {
                         it.remove();
                     }
@@ -110,7 +106,7 @@ public class MsgData {
 
     public Observable<List<Map<String, Object>>> getAllCommentNewList() {
         HashMap<String, Object> params = new HashMap<>();
-        params.put("userid", AppData.getInstance().getToken().getId());
+        params.put("userid", UserData.getInstance().getToken().getId());
         params.put("pagesize", 30);
         return WebCall.getInstance().callCache(WebKey.func_getNewCommentList, params, mCommentNewData).map(new Func1<WebResponse, List<Map<String, Object>>>() {
             @Override
@@ -129,7 +125,7 @@ public class MsgData {
         HashMap<String, Object> params = new HashMap<>();
         params.put("page", 1);
         params.put("pagesize", 1);
-      return   WebCall.getInstance().callCache(WebKey.func_getSysMsg, params,mNewSystemData).map(new Func1<WebResponse, List<Map<String, Object>>>() {
+        return WebCall.getInstance().callCache(WebKey.func_getSysMsg, params, mNewSystemData).map(new Func1<WebResponse, List<Map<String, Object>>>() {
             @Override
             public List<Map<String, Object>> call(WebResponse webResponse) {
                 mNewSystemData = webResponse;
@@ -148,21 +144,21 @@ public class MsgData {
 
     public void loadOrderMsgData() {
         HashMap<String, Object> params = new HashMap<>();
-        params.put("userid", AppData.getInstance().getToken().getId());
+        params.put("userid", UserData.getInstance().getToken().getId());
         WebCall.getInstance().call(WebKey.func_getOrdersMsg, params).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
             public void onNext(WebResponse webResponse) {
                 String data = webResponse.getData();
                 mOrderMsgData = webResponse;
                 mOrderList = Utils.parseObjectToListMapString(data);
-                ListMapComparator comp = new ListMapComparator("addtime",0);
-                Collections.sort(mOrderList,comp);
-                Integer statusGroup[] = {2,3,4,5,6,7,9,10,11,12};
+                ListMapComparator comp = new ListMapComparator("addtime", 0);
+                Collections.sort(mOrderList, comp);
+                Integer statusGroup[] = {2, 3, 4, 5, 6, 7, 9, 10, 11, 12};
 
-                Iterator<Map<String,Object>> it = mOrderList.iterator();
+                Iterator<Map<String, Object>> it = mOrderList.iterator();
                 List<Integer> statusList = Arrays.asList(statusGroup);
                 while (it.hasNext()) {
-                    Map<String,Object> qu = it.next();
+                    Map<String, Object> qu = it.next();
                     if (!statusList.contains(Utils.toInteger(qu.get("orderstatus")))) {
                         it.remove();
                     }
@@ -177,7 +173,7 @@ public class MsgData {
 
     public void loadNewCommentList() {
         HashMap<String, Object> params = new HashMap<>();
-        params.put("userid", AppData.getInstance().getToken().getId());
+        params.put("userid", UserData.getInstance().getToken().getId());
         params.put("pagesize", 30);
         WebCall.getInstance().call(WebKey.func_getNewCommentList, params).subscribe(new BaseSubscriber<WebResponse>() {
             @Override

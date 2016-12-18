@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
@@ -17,7 +16,6 @@ import com.zhjydy.model.entity.NormalDicItem;
 import com.zhjydy.model.entity.NormalPickViewData;
 import com.zhjydy.presenter.contract.OrderCancelContract;
 import com.zhjydy.presenter.presenterImp.OrderCancelPresenterImp;
-import com.zhjydy.util.Utils;
 import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.zhview.MapTextView;
 import com.zhjydy.view.zhview.ViewUtil;
@@ -83,8 +81,7 @@ public class OrderCancelFragment extends PageImpBaseFragment implements OrderCan
         cancelReasonLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mCancelPickViewData.size() > 0)
-                {
+                if (mCancelPickViewData.size() > 0) {
                     mCancelReasonPicker.show();
                 }
             }
@@ -104,12 +101,13 @@ public class OrderCancelFragment extends PageImpBaseFragment implements OrderCan
             zhToast.showToast("请选择取消原因");
         }
         String commentStr = commentEditValue.getText().toString();
-        if ( commentStr.length() > 30) {
+        if (commentStr.length() > 30) {
             zhToast.showToast("备注长度超过30！");
         }
 
-        mPresenter.confirmCancel(cancelId,commentStr);
+        mPresenter.confirmCancel(cancelId, commentStr);
     }
+
     @Override
     public void refreshView() {
 
@@ -120,7 +118,7 @@ public class OrderCancelFragment extends PageImpBaseFragment implements OrderCan
         if (result) {
             zhToast.showToast("取消预约成功");
             back();
-        }else {
+        } else {
             zhToast.showToast("取消预约失败");
         }
     }
@@ -135,18 +133,14 @@ public class OrderCancelFragment extends PageImpBaseFragment implements OrderCan
         mCancelReasonPicker.setCyclic(false);
         mCancelReasonPicker.setSelectOptions(0);
         mCancelReasonPicker.setCancelable(true);
-        mCancelReasonPicker.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener()
-        {
+        mCancelReasonPicker.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
             @Override
-            public void onOptionsSelect(int options1, int option2, int options3)
-            {
+            public void onOptionsSelect(int options1, int option2, int options3) {
                 String officeName = mCancelPickViewData.get(options1).getmItem().getName();
                 String officeId = mCancelPickViewData.get(options1).getmItem().getId();
-                if (TextUtils.isEmpty(officeId))
-                {
+                if (TextUtils.isEmpty(officeId)) {
                     cancelReasonValue.setMap("", "");
-                } else
-                {
+                } else {
                     cancelReasonValue.setMap(officeId, officeName);
                 }
             }

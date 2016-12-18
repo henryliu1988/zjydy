@@ -17,11 +17,9 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhjydy.R;
 import com.zhjydy.presenter.contract.SearchExpertContract;
 import com.zhjydy.presenter.presenterImp.SearchExpertPresenterImp;
-import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.MainExpertListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
-import com.zhjydy.view.avtivity.PagerImpActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,28 +91,30 @@ public class SearchExpertFragment extends PageImpBaseFragment implements SearchE
         if (getArguments() == null) {
             return;
         }
-        String search = getArguments().getString(IntentKey.FRAG_INFO,"");
+        String search = getArguments().getString(IntentKey.FRAG_INFO, "");
         if (!TextUtils.isEmpty(search)) {
             titleSearchEdit.setText(search);
             mPresenter.searchExpert(search);
         }
     }
+
     private void search() {
         String condition = titleSearchEdit.getText().toString();
         mPresenter.searchExpert(condition);
     }
+
     private void initExpertList() {
-        mExpertListAdapter = new MainExpertListAdapter(getContext(), new ArrayList<Map<String,Object>>());
+        mExpertListAdapter = new MainExpertListAdapter(getContext(), new ArrayList<Map<String, Object>>());
         mList.setAdapter(mExpertListAdapter);
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Map<String,Object> info = (Map<String,Object>) adapterView.getAdapter().getItem(i);
+                Map<String, Object> info = (Map<String, Object>) adapterView.getAdapter().getItem(i);
 
                 if (info != null) {
-                   // ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.detail_expert_fragment, Utils.toString(info.get("id")), false);
+                    // ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.detail_expert_fragment, Utils.toString(info.get("id")), false);
                     Bundle bundle = new Bundle();
-                    bundle.putString(IntentKey.FRAG_INFO,Utils.toString(info.get("id")));
+                    bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
                     gotoFragment(FragKey.detail_expert_fragment);
 
                 }

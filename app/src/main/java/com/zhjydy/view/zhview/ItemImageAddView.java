@@ -1,30 +1,17 @@
 package com.zhjydy.view.zhview;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 
 import com.zhjydy.R;
-import com.zhjydy.util.DateUtil;
-import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.util.ViewKey;
 import com.zhjydy.view.adapter.GridViewAdapter;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,11 +39,12 @@ public class ItemImageAddView extends BaseItemView {
         return list;
     }
 
-    public void setImageSize(int width,int height) {
+    public void setImageSize(int width, int height) {
         if (mAdapter != null) {
-            mAdapter.setItemImageSize(width,height);
+            mAdapter.setItemImageSize(width, height);
         }
     }
+
     public List<String> getDelFileList() {
         return mAdapter.getDelList();
     }
@@ -103,10 +91,10 @@ public class ItemImageAddView extends BaseItemView {
         mAdapter.setList(items);
     }
 
-    public void addImage(String path,int type) {
-        Map<String,Object> item = new HashMap<>();
-        item.put(ViewKey.FILE_KEY_TYPE,type);
-        item.put(ViewKey.FILE_KEY_URL,path);
+    public void addImage(String path, int type) {
+        Map<String, Object> item = new HashMap<>();
+        item.put(ViewKey.FILE_KEY_TYPE, type);
+        item.put(ViewKey.FILE_KEY_URL, path);
         items.add(item);
         mAdapter.setList(items);
 

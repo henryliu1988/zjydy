@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/black_text">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_text">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
             android:id="@+id/img_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true" />
 
         <LinearLayout
             android:id="@+id/img_info_ly"
@@ -23,8 +23,7 @@
             android:layout_marginBottom="20dp"
             android:layout_marginTop="10dp"
             android:orientation="vertical"
-            android:visibility="gone"
-            ></LinearLayout>
+            android:visibility="gone"></LinearLayout>
     </RelativeLayout>
 
 

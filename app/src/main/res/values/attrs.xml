@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="Title_bar">
-        <attr name="titleText" format="string"/>
-        <attr name="titleTextSize" format="dimension"/>
-        <attr name="titleColor" format="color"/>
-        <attr name="leftBtnText" format="string"/>
-        <attr name="leftBtnTextSize" format="dimension"/>
-        <attr name="leftBtnBackground" format="reference|color"/>
-        <attr name="rightBtnText" format="string"/>
-        <attr name="rightBtnTextSize" format="dimension"/>
-        <attr name="rightBtnBackground" format="reference|color"/>
+        <attr name="titleText" format="string" />
+        <attr name="titleTextSize" format="dimension" />
+        <attr name="titleColor" format="color" />
+        <attr name="leftBtnText" format="string" />
+        <attr name="leftBtnTextSize" format="dimension" />
+        <attr name="leftBtnBackground" format="reference|color" />
+        <attr name="rightBtnText" format="string" />
+        <attr name="rightBtnTextSize" format="dimension" />
+        <attr name="rightBtnBackground" format="reference|color" />
     </declare-styleable>
 
     <!-- Defines the custom XML attributes supported for a HorizontalListView -->
@@ -18,6 +18,12 @@
         <attr name="android:divider" />
         <attr name="android:requiresFadingEdge" />
         <attr name="android:fadingEdgeLength" />
+    </declare-styleable>
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_fill_color" format="color" />
     </declare-styleable>
 
 </resources>

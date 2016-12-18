@@ -6,15 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhjydy.R;
-import com.zhjydy.model.net.BaseSubscriber;
-import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.presenter.contract.LoginContract;
 import com.zhjydy.presenter.presenterImp.LoginPresenterImp;
 import com.zhjydy.util.ActivityUtils;
@@ -27,7 +24,7 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/9/29 0029.
  */
-public class LoginActivity extends BaseActivity implements LoginContract.View{
+public class LoginActivity extends BaseActivity implements LoginContract.View {
 
 
     @BindView(R.id.title_back)
@@ -48,6 +45,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View{
     TextView rigisterNow;
 
     private LoginContract.Presenter mPresenter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,13 +63,13 @@ public class LoginActivity extends BaseActivity implements LoginContract.View{
                 finish();
                 break;
             case R.id.forget_psw_tv:
-                ActivityUtils.transActivity(LoginActivity.this,ForgetPassWordActivity.class,false);
+                ActivityUtils.transActivity(LoginActivity.this, ForgetPassWordActivity.class, false);
                 break;
             case R.id.btnLogin:
                 tryLogin();
                 break;
             case R.id.rigister_now:
-                ActivityUtils.transActivity(LoginActivity.this,RegisterActivity.class,false);
+                ActivityUtils.transActivity(LoginActivity.this, RegisterActivity.class, false);
                 break;
         }
     }
@@ -79,13 +77,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View{
     private void tryLogin() {
         String name = phonenumEdit.getText().toString();
         String psw = passwordEdit.getText().toString();
-        if (TextUtils.isEmpty(name))
-        {
+        if (TextUtils.isEmpty(name)) {
             zhToast.showToast("用户名不能为空!");
             return;
         }
-        if (TextUtils.isEmpty(psw))
-        {
+        if (TextUtils.isEmpty(psw)) {
             zhToast.showToast("密码不能为空!");
             return;
         }
@@ -106,7 +102,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View{
 
     @Override
     public void onLoginSucess() {
-        ActivityUtils.transActivity(LoginActivity.this,MainTabsActivity.class,true);
+        ActivityUtils.transActivity(LoginActivity.this, MainTabsActivity.class, true);
     }
 
     @Override

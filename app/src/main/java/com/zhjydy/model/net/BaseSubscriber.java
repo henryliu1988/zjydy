@@ -2,16 +2,13 @@ package com.zhjydy.model.net;
 
 import android.app.Activity;
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.zhjydy.util.NetworkUtil;
 import com.zhjydy.view.zhview.CustomProgress;
-import com.zhjydy.view.zhview.zhToast;
 
 import rx.Subscriber;
 
-public abstract class BaseSubscriber<T> extends Subscriber<T>
-{
+public abstract class BaseSubscriber<T> extends Subscriber<T> {
 
 
     private boolean showProgress;
@@ -20,32 +17,28 @@ public abstract class BaseSubscriber<T> extends Subscriber<T>
     public CustomProgress waitDlg;
 
     private String msg = "请稍后,正在加载数据";
-    public BaseSubscriber()
-    {
+
+    public BaseSubscriber() {
     }
 
-    public BaseSubscriber(Context context, boolean showProgress)
-    {
+    public BaseSubscriber(Context context, boolean showProgress) {
         this.mContext = context;
         this.showProgress = showProgress;
     }
 
-    public BaseSubscriber(Context context, String msg)
-    {
+    public BaseSubscriber(Context context, String msg) {
         this.mContext = context;
         this.showProgress = true;
         this.msg = msg;
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
 
-        if (!NetworkUtil.isNetworkAvailable())
-        {
+        if (!NetworkUtil.isNetworkAvailable()) {
 
-         //   SimsToast.showToast("当前网络不可用，请检查网络情况");
+            //   SimsToast.showToast("当前网络不可用，请检查网络情况");
 
             // 一定好主动调用下面这一句
             onCompleted();
@@ -53,44 +46,36 @@ public abstract class BaseSubscriber<T> extends Subscriber<T>
             return;
         }
         // 显示进度条
-        if (showProgress)
-        {
+        if (showProgress) {
             showLoadingProgress();
         }
 
     }
 
     @Override
-    public void onCompleted()
-    {
+    public void onCompleted() {
         //关闭等待进度条
-        if (showProgress)
-        {
+        if (showProgress) {
             closeLoadingProgress();
         }
     }
 
     @Override
-    public void onError(Throwable e)
-    {
+    public void onError(Throwable e) {
         closeLoadingProgress();
-       // zhToast.showToast(e.getMessage());
+        // zhToast.showToast(e.getMessage());
     }
 
-    public void showLoadingProgress()
-    {
-        if (mContext != null && mContext instanceof Activity)
-        {
+    public void showLoadingProgress() {
+        if (mContext != null && mContext instanceof Activity) {
             waitDlg = new CustomProgress(mContext);
             waitDlg.setMessage(msg);
             waitDlg.show();
         }
     }
 
-    public void closeLoadingProgress()
-    {
-        if (waitDlg != null)
-        {
+    public void closeLoadingProgress() {
+        if (waitDlg != null) {
             waitDlg.dismiss();
         }
     }

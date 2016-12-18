@@ -1,6 +1,6 @@
 package com.zhjydy.presenter.presenterImp;
 
-import com.zhjydy.model.data.AppData;
+import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
@@ -18,11 +18,13 @@ import java.util.HashMap;
 public class LoginPasswordChangePresenterImp implements LoginPasswordChangeContract.Presenter {
 
     private LoginPasswordChangeContract.View mView;
-    public LoginPasswordChangePresenterImp(LoginPasswordChangeContract.View view){
+
+    public LoginPasswordChangePresenterImp(LoginPasswordChangeContract.View view) {
         mView = view;
         mView.setPresenter(this);
         start();
     }
+
     @Override
     public void start() {
 
@@ -35,14 +37,14 @@ public class LoginPasswordChangePresenterImp implements LoginPasswordChangeContr
 
     @Override
     public void confirmUpdate(String oldPw, String newPw) {
-        HashMap<String,Object> params = new HashMap<>();
+        HashMap<String, Object> params = new HashMap<>();
         params.put("password", MD5.GetMD5Code(oldPw));
-        params.put("newpassword",MD5.GetMD5Code(newPw));
-        params.put("id", AppData.getInstance().getToken().getId());
-        WebCall.getInstance().call(WebKey.func_updatePassword,params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"正在提交数据") {
+        params.put("newpassword", MD5.GetMD5Code(newPw));
+        params.put("id", UserData.getInstance().getToken().getId());
+        WebCall.getInstance().call(WebKey.func_updatePassword, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), "正在提交数据") {
             @Override
             public void onNext(WebResponse webResponse) {
-                if(WebUtils.getWebStatus(webResponse)) {
+                if (WebUtils.getWebStatus(webResponse)) {
                     mView.updatePassWordOk();
                 } else {
                     zhToast.showToast("修改密码失败");

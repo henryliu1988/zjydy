@@ -12,19 +12,17 @@ import android.widget.TextView;
 import com.zhjydy.R;
 
 
-public class CustomProgress extends Dialog
-{
+public class CustomProgress extends Dialog {
     private String msg;
     private boolean cancelable = false;
     private View view;
-    public CustomProgress(Context context)
-    {
+
+    public CustomProgress(Context context) {
         super(context, R.style.Custom_Progress);
         initView();
     }
 
-    public CustomProgress(Context context, int theme)
-    {
+    public CustomProgress(Context context, int theme) {
         super(context, theme);
         initView();
     }
@@ -32,8 +30,7 @@ public class CustomProgress extends Dialog
     /**
      * 当窗口焦点改变时调用
      */
-    public void onWindowFocusChanged(boolean hasFocus)
-    {
+    public void onWindowFocusChanged(boolean hasFocus) {
         ImageView imageView = (ImageView) findViewById(R.id.spinnerImageView);
         // 获取ImageView上的动画背景  
         AnimationDrawable spinner = (AnimationDrawable) imageView.getBackground();
@@ -41,17 +38,14 @@ public class CustomProgress extends Dialog
         spinner.start();
     }
 
-    private void initView()
-    {
+    private void initView() {
         this.setTitle("");
-         view = View.inflate(getContext(),R.layout.progress_custom,null);
+        view = View.inflate(getContext(), R.layout.progress_custom, null);
         this.setContentView(view);
 
-        if (msg == null || msg.length() == 0)
-        {
+        if (msg == null || msg.length() == 0) {
             view.findViewById(R.id.message).setVisibility(View.GONE);
-        } else
-        {
+        } else {
             TextView txt = (TextView) view.findViewById(R.id.message);
             txt.setText(msg);
         }
@@ -66,8 +60,7 @@ public class CustomProgress extends Dialog
     }
 
 
-    public void setCancelbale(boolean enable)
-    {
+    public void setCancelbale(boolean enable) {
         this.cancelable = enable;
         this.setCancelable(cancelable);
     }
@@ -77,12 +70,10 @@ public class CustomProgress extends Dialog
      *
      * @param message
      */
-    public void setMessage(CharSequence message)
-    {
-        if (message != null && message.length() > 0)
-        {
+    public void setMessage(CharSequence message) {
+        if (message != null && message.length() > 0) {
             view.findViewById(R.id.message).setVisibility(View.VISIBLE);
-            TextView txt = (TextView)view. findViewById(R.id.message);
+            TextView txt = (TextView) view.findViewById(R.id.message);
             txt.setText(message);
             txt.invalidate();
         }

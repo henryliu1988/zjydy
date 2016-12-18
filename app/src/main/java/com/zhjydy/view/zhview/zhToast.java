@@ -9,8 +9,7 @@ import com.zhjydy.app.zhjApplication;
  */
 public class zhToast {
 
-    public static void showToast(String text)
-    {
+    public static void showToast(String text) {
         Toast.makeText(zhjApplication.getInstance().getContext(), text, Toast.LENGTH_SHORT).show();
     }
 

@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhjydy.R;
-import com.zhjydy.model.data.AppData;
+import com.zhjydy.model.data.UserData;
 import com.zhjydy.presenter.contract.ChatRecordContract;
 import com.zhjydy.presenter.presenterImp.ChatRecordPresenterImp;
 import com.zhjydy.util.DateUtil;
@@ -78,7 +78,6 @@ public class DocChatRecordFragment extends PageImpBaseFragment implements ChatRe
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
@@ -88,28 +87,28 @@ public class DocChatRecordFragment extends PageImpBaseFragment implements ChatRe
     }
 
     @Override
-    public void setChatMsgs(List<Map<String, Object>> msg,String expertPhoto) {
+    public void setChatMsgs(List<Map<String, Object>> msg, String expertPhoto) {
         for (Map<String, Object> item : msg) {
             String sendId = Utils.toString(item.get("sendid"));
-            String userId = AppData.getInstance().getToken().getId();
+            String userId = UserData.getInstance().getToken().getId();
             boolean isUser = (!TextUtils.isEmpty(userId) && userId.equals(sendId));
             View view;
             String photoUrl;
             if (isUser) {
-                view =  LayoutInflater.from(getContext()).inflate(R.layout.chat_record_right, null);
-                photoUrl = AppData.getInstance().getToken().getPhotoUrl();
+                view = LayoutInflater.from(getContext()).inflate(R.layout.chat_record_right, null);
+                photoUrl = UserData.getInstance().getToken().getPhotoUrl();
             } else {
-                view =  LayoutInflater.from(getContext()).inflate(R.layout.chat_record_left, null);
+                view = LayoutInflater.from(getContext()).inflate(R.layout.chat_record_left, null);
                 photoUrl = expertPhoto;
             }
-            ImageView photImage = (ImageView)view.findViewById(R.id.photo);
-            TextView timeTv = (TextView)view.findViewById(R.id.time);
-            TextView contentTv = (TextView)view.findViewById(R.id.msg);
+            ImageView photImage = (ImageView) view.findViewById(R.id.photo);
+            TextView timeTv = (TextView) view.findViewById(R.id.time);
+            TextView contentTv = (TextView) view.findViewById(R.id.msg);
 
             if (TextUtils.isEmpty(photoUrl)) {
-                ImageUtils.getInstance().displayFromDrawable(R.mipmap.photo,photImage);
+                ImageUtils.getInstance().displayFromDrawable(R.mipmap.photo, photImage);
             } else {
-                ImageUtils.getInstance().displayFromRemote(photoUrl,photImage);
+                ImageUtils.getInstance().displayFromRemote(photoUrl, photImage);
             }
             timeTv.setText(DateUtil.getTimeDiffDayCurrent(Utils.toLong(item.get("addtime"))));
             contentTv.setText(Utils.toString(item.get("content")));

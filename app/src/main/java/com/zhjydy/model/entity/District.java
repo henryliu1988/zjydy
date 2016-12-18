@@ -10,8 +10,6 @@ public class District {
     String parentid = "";
 
 
-
-
     public String getParentid() {
         return parentid;
     }

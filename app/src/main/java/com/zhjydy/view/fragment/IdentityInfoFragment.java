@@ -13,7 +13,6 @@ import com.zhjydy.presenter.contract.IdentityInfoContract;
 import com.zhjydy.presenter.presenterImp.IdentityInfoPresenterImp;
 import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.ScreenUtils;
-import com.zhjydy.util.UserEvent;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.zhview.ViewUtil;
@@ -24,7 +23,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016/9/26 0026.
@@ -107,40 +105,42 @@ public class IdentityInfoFragment extends PageImpBaseFragment implements Identit
     private void initInfoImage() {
         int size = path.size();
         if (size == 1) {
-            ImageUtils.getInstance().displayFromRemote(path.get(0),photo1);
+            ImageUtils.getInstance().displayFromRemote(path.get(0), photo1);
         } else if (size > 1) {
-            ImageUtils.getInstance().displayFromRemote(path.get(0),photo1);
-            ImageUtils.getInstance().displayFromRemote(path.get(1),photo2);
+            ImageUtils.getInstance().displayFromRemote(path.get(0), photo1);
+            ImageUtils.getInstance().displayFromRemote(path.get(1), photo2);
         }
 
     }
+
     private void initStatusView() {
         stepUpload.setText("未上传");
         stepWaitVerify.setText("未审核");
         stepWait.setText("审核中");
         stepVerify.setText("审核\n结果");
-        int strokWidth =  ScreenUtils.getScreenWidth()/100;
-        ViewUtil.setOverViewDrawbleBg(stepUpload,"#CCCCCC","#EEEEEE", strokWidth);
-        ViewUtil.setOverViewDrawbleBg(stepWaitVerify,"#CCCCCC","#EEEEEE", strokWidth);
-        ViewUtil.setOverViewDrawbleBg(stepWait,"#CCCCCC","#EEEEEE",strokWidth);
-        ViewUtil.setOverViewDrawbleBg(stepVerify,"#CCCCCC","#EEEEEE", strokWidth);
-        if (status >1){
+        int strokWidth = ScreenUtils.getScreenWidth() / 100;
+        ViewUtil.setOverViewDrawbleBg(stepUpload, "#CCCCCC", "#EEEEEE", strokWidth);
+        ViewUtil.setOverViewDrawbleBg(stepWaitVerify, "#CCCCCC", "#EEEEEE", strokWidth);
+        ViewUtil.setOverViewDrawbleBg(stepWait, "#CCCCCC", "#EEEEEE", strokWidth);
+        ViewUtil.setOverViewDrawbleBg(stepVerify, "#CCCCCC", "#EEEEEE", strokWidth);
+        if (status > 1) {
             stepUpload.setText("上传" + "\n" + "成功");
             stepWaitVerify.setText("等待\n审核");
             stepWait.setText("等待中");
-            ViewUtil.setOverViewDrawbleBg(stepUpload,"#FFAD0E","#FFE3B9", strokWidth);
-            ViewUtil.setOverViewDrawbleBg(stepWaitVerify,"#FFAD0E","#FFE3B9", strokWidth);
-            ViewUtil.setOverViewDrawbleBg(stepWait,"#FFAD0E","#FFE3B9", strokWidth);
+            ViewUtil.setOverViewDrawbleBg(stepUpload, "#FFAD0E", "#FFE3B9", strokWidth);
+            ViewUtil.setOverViewDrawbleBg(stepWaitVerify, "#FFAD0E", "#FFE3B9", strokWidth);
+            ViewUtil.setOverViewDrawbleBg(stepWait, "#FFAD0E", "#FFE3B9", strokWidth);
         }
-        if (status>2) {
+        if (status > 2) {
             if (status == 3) {
                 stepVerify.setText("审核\n失败");
-            } else{
+            } else {
                 stepVerify.setText("审核\n通过");
             }
-            ViewUtil.setOverViewDrawbleBg(stepVerify,"#FFAD0E","#FFE3B9", strokWidth);
+            ViewUtil.setOverViewDrawbleBg(stepVerify, "#FFAD0E", "#FFE3B9", strokWidth);
         }
     }
+
     @Override
     public void setPresenter(IdentityInfoContract.Presenter presenter) {
         mPresenter = presenter;

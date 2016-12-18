@@ -1,10 +1,8 @@
 package com.zhjydy.view.fragment;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Layout;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +19,9 @@ import android.widget.ViewSwitcher;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
-import com.readystatesoftware.viewbadger.BadgeView;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.zhjydy.R;
 import com.zhjydy.model.data.DicData;
-import com.zhjydy.presenter.RefreshKey;
-import com.zhjydy.presenter.RefreshManager;
 import com.zhjydy.presenter.contract.MainHomeContract;
 import com.zhjydy.presenter.presenterImp.MainHomePresenterImp;
 import com.zhjydy.util.ActivityUtils;
@@ -37,7 +33,6 @@ import com.zhjydy.view.adapter.MainHomeInfoListAdapter;
 import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.MainTabsActivity;
 import com.zhjydy.view.avtivity.PagerImpActivity;
-import com.zhjydy.view.zhview.BadgImage;
 import com.zhjydy.view.zhview.ImageTipsView;
 import com.zhjydy.view.zhview.ListViewForScrollView;
 import com.zhjydy.view.zhview.ScoreView;
@@ -116,7 +111,7 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
             public View makeView() {
                 final TextView tv = new TextView(getActivity());
                 tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                tv.setPadding(0,0,0,0);
+                tv.setPadding(0, 0, 0, 0);
                 tv.setLines(1);
                 return tv;
 
@@ -206,9 +201,9 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
             if (score < 0) {
                 score = 0;
             }
-            scroreView.setScore(score,100);
+            scroreView.setScore(score, 100);
 
-            ImageUtils.getInstance().displayFromRemote(photoUrl, imageView);
+            ImageUtils.getInstance().displayFromRemoteOver(photoUrl, imageView);
             nameTv.setText(name);
             hospitalTv.setText(DicData.getInstance().getHospitalById(hospitaId).getHospital());
             officeTv.setText(DicData.getInstance().getOfficeById(officeId).getName());

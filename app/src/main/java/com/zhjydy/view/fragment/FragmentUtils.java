@@ -39,15 +39,15 @@ public class FragmentUtils {
     }
 
 
-    public static void refreshFragments(FragmentActivity context,int[] fragkey) {
+    public static void refreshFragments(FragmentActivity context, int[] fragkey) {
         FragmentManager fManager = context.getSupportFragmentManager();
         if (fragkey.length > 0) {
-            for (int i = 0 ; i < fragkey.length; i ++) {
+            for (int i = 0; i < fragkey.length; i++) {
                 String key = FragKey.FragMap.get(fragkey[i]);
                 if (!TextUtils.isEmpty(key)) {
                     Fragment fragment = fManager.findFragmentByTag(key);
                     if (fragment != null && fragment instanceof StatedFragment) {
-                        StatedFragment statedFragment = (StatedFragment)fragment;
+                        StatedFragment statedFragment = (StatedFragment) fragment;
                         statedFragment.refreshView();
                     }
                 }

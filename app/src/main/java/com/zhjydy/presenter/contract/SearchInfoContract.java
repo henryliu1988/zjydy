@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public interface SearchInfoContract {
     interface View extends BaseView<Presenter> {
-        void updateInfoList(List<Map<String,Object>> list);
+        void updateInfoList(List<Map<String, Object>> list);
     }
 
     interface Presenter extends BasePresenter {

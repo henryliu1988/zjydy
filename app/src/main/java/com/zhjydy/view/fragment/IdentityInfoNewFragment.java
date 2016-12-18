@@ -12,13 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhjydy.R;
-import com.zhjydy.presenter.contract.AccountSafeContract;
 import com.zhjydy.presenter.contract.IdentityInfoNewContract;
-import com.zhjydy.presenter.presenterImp.AccountSafePresenterImp;
 import com.zhjydy.presenter.presenterImp.IdentityInfoNewPresenterImp;
 import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.Utils;
-import com.zhjydy.util.ViewKey;
 import com.zhjydy.view.ActivityResultView;
 import com.zhjydy.view.zhview.zhToast;
 
@@ -96,11 +93,9 @@ public class IdentityInfoNewFragment extends PageImpBaseFragment implements Iden
                 selectImg();
             }
         });
-        identify1.setOnClickListener(new View.OnClickListener()
-        {
+        identify1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 imgPos = 1;
                 selectImg();
 
@@ -109,18 +104,16 @@ public class IdentityInfoNewFragment extends PageImpBaseFragment implements Iden
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mImageMap.size() < 2){
+                if (mImageMap.size() < 2) {
                     zhToast.showToast("请检查身份证正面和背面是否都已经上传");
                     return;
                 }
                 mPresenter.submitIdentifymsg(mImageMap);
             }
         });
-        identify2.setOnClickListener(new View.OnClickListener()
-        {
+        identify2.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 imgPos = 0;
                 selectImg();
             }
@@ -129,7 +122,7 @@ public class IdentityInfoNewFragment extends PageImpBaseFragment implements Iden
 
     @Override
     public void onSubmitSuccess(boolean status) {
-        if (status){
+        if (status) {
             zhToast.showToast("上传认证信息成功");
             int fragKey[] = {FragKey.identify_info_fragment};
             back(fragKey);
@@ -180,7 +173,7 @@ public class IdentityInfoNewFragment extends PageImpBaseFragment implements Iden
         switch (requestCode) {
             //从相册选择
             case SELECT_PICTURE:
-                if(data != null) {
+                if (data != null) {
                     Uri uri = data.getData();
                     String path = Utils.getPath(uri);
                     updateImageMap(path);
@@ -202,11 +195,9 @@ public class IdentityInfoNewFragment extends PageImpBaseFragment implements Iden
     @Override
     public void onPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         List<String> permissionList = Arrays.asList(permissions);
-        if (permissionList.contains(Manifest.permission.CAMERA))
-        {
+        if (permissionList.contains(Manifest.permission.CAMERA)) {
             toGetCameraImage();
-        } else if (permissionList.contains(Manifest.permission.WRITE_EXTERNAL_STORAGE))
-        {
+        } else if (permissionList.contains(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             toGetLocalImage();
         }
     }

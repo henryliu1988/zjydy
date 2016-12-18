@@ -11,13 +11,12 @@ import java.util.Map;
  */
 public interface ChatRecordContract {
 
-    interface View extends BaseView<Presenter>
-    {
-        void setChatMsgs(List<Map<String,Object>> msg,String expertPhoto);
+    interface View extends BaseView<Presenter> {
+        void setChatMsgs(List<Map<String, Object>> msg, String expertPhoto);
+
         void updateExpertName(String name);
     }
 
-    interface Presenter extends BasePresenter
-    {
+    interface Presenter extends BasePresenter {
     }
 }

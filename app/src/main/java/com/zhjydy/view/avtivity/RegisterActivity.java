@@ -16,7 +16,6 @@ import com.zhjydy.R;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.presenter.contract.RegisterContract;
-import com.zhjydy.presenter.presenterImp.LoginPresenterImp;
 import com.zhjydy.presenter.presenterImp.RegisterPresenterImp;
 import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.MD5;
@@ -33,7 +32,7 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/9/29 0029.
  */
-public class RegisterActivity extends BaseActivity implements RegisterContract.View{
+public class RegisterActivity extends BaseActivity implements RegisterContract.View {
 
     @BindView(R.id.title_back)
     ImageView titleBack;
@@ -59,6 +58,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
     private MyCountTimer mCountTimer;
 
     private String mConfirSmsCode;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +67,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
         titleCenterTv.setText("注册");
         legend.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         new RegisterPresenterImp(this);
-        mCountTimer = new MyCountTimer(confirmCodeGet,0xff658dff,0xff658dff);
+        mCountTimer = new MyCountTimer(confirmCodeGet, 0xff658dff, 0xff658dff);
 
     }
 
@@ -94,7 +94,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
             zhToast.showToast("请输入手机号");
             return;
         }
-        if(!Utils.isPhone(phoneNum)) {
+        if (!Utils.isPhone(phoneNum)) {
             zhToast.showToast("请输入正确的手机号");
             return;
         }
@@ -108,33 +108,34 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
             zhToast.showToast("请输入密码");
             return;
         }
-        if(passoword.length() <6) {
+        if (passoword.length() < 6) {
             zhToast.showToast("密码长度太短");
             return;
         }
-        if(passoword.length() > 19) {
+        if (passoword.length() > 19) {
             zhToast.showToast("密码长度太长");
             return;
         }
-        HashMap<String,Object> param = new HashMap<>();
-        param.put("mobile",phoneNum);
+        HashMap<String, Object> param = new HashMap<>();
+        param.put("mobile", phoneNum);
         param.put("password", MD5.GetMD5Code(passoword));
-        param.put("yanzheng",confirmCode);
+        param.put("yanzheng", confirmCode);
 
         mPresenter.register(param);
     }
+
     private void tryGetConfirmCode() {
         String phoneNum = phonenumEdit.getText().toString();
         if (TextUtils.isEmpty(phoneNum)) {
             zhToast.showToast("请输入手机号");
             return;
         }
-        if(!Utils.isPhone(phoneNum)) {
+        if (!Utils.isPhone(phoneNum)) {
             zhToast.showToast("请输入正确的手机号");
             return;
         }
         if (mPresenter != null) {
-            mPresenter.getConfirmCode(phoneNum).subscribe(new BaseSubscriber<WebResponse>(this,"") {
+            mPresenter.getConfirmCode(phoneNum).subscribe(new BaseSubscriber<WebResponse>(this, "") {
                 @Override
                 public void onNext(WebResponse webResponse) {
                     mConfirSmsCode = webResponse.getData();
@@ -148,7 +149,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
     @Override
     public void registerOK(String msg) {
         zhToast.showToast("注册成功");
-        ActivityUtils.transActivity(this,LoginActivity.class,true);
+        ActivityUtils.transActivity(this, LoginActivity.class, true);
     }
 
     @Override

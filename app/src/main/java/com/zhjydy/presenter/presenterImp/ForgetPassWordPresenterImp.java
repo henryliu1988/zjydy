@@ -6,7 +6,6 @@ import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.presenter.contract.ForgetPassWordContract;
-import com.zhjydy.presenter.contract.RegisterContract;
 import com.zhjydy.view.zhview.zhToast;
 
 import java.util.HashMap;
@@ -40,14 +39,15 @@ public class ForgetPassWordPresenterImp implements ForgetPassWordContract.Presen
 
     @Override
     public Observable<WebResponse> getConfirmCode(String phoneNum) {
-        HashMap<String,Object> params  = new HashMap<>();
-        params.put("mobile",phoneNum);
-        params.put("type",2);
-        return WebCall.getInstance().call(WebKey.func_sendSms,params);
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("mobile", phoneNum);
+        params.put("type", 2);
+        return WebCall.getInstance().call(WebKey.func_sendSms, params);
     }
+
     @Override
     public void resetPassWord(HashMap<String, Object> params) {
-        WebCall.getInstance().call(WebKey.func_reset,params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"请稍后，正在提交数据") {
+        WebCall.getInstance().call(WebKey.func_reset, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), "请稍后，正在提交数据") {
             @Override
             public void onNext(WebResponse webResponse) {
                 boolean status = WebUtils.getWebStatus(webResponse);

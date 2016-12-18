@@ -119,6 +119,7 @@ public class TitleBarView extends RelativeLayout {
         this.title = title;
         titleTv.setText(title);
     }
+
     /**
      * 定义按钮点击接口，实现回调机制，通过映射的接口对象调用接口中的方法
      * 而不用去考虑如何实现，具体实现由调用者去创建

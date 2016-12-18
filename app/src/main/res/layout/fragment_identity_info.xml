@@ -158,21 +158,21 @@
             android:padding="2dp"
             android:scaleType="fitCenter"
             android:background="@mipmap/camera_outline"
-            android:src="@mipmap/photo"
-            android:layout_weight="4"/>
+            android:layout_weight="4" />
+
         <View
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
+
         <ImageView
             android:id="@+id/photo2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@mipmap/camera_outline"
             android:padding="2dp"
-            android:src="@mipmap/photo"
             android:scaleType="fitCenter"
-            android:layout_weight="4"/>
+            android:layout_weight="4" />
 
     </LinearLayout>
 

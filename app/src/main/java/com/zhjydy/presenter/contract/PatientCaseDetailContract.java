@@ -3,7 +3,6 @@ package com.zhjydy.presenter.contract;
 import com.zhjydy.presenter.BasePresenter;
 import com.zhjydy.presenter.BaseView;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,13 +10,11 @@ import java.util.Map;
  */
 public interface PatientCaseDetailContract {
 
-    interface View extends BaseView<Presenter>
-    {
-        void updateInfo(Map<String,Object> info);
+    interface View extends BaseView<Presenter> {
+        void updateInfo(Map<String, Object> info);
     }
 
-    interface Presenter extends BasePresenter
-    {
+    interface Presenter extends BasePresenter {
         void refreshData();
     }
 }

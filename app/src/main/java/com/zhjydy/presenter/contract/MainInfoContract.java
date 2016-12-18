@@ -8,13 +8,11 @@ import com.zhjydy.presenter.BaseView;
  */
 public interface MainInfoContract {
 
-    interface MainInfoView extends BaseView<MainInfoPresenter>
-    {
+    interface MainInfoView extends BaseView<MainInfoPresenter> {
         void updateFavInfoCount(int count);
 
     }
 
-    interface MainInfoPresenter extends BasePresenter
-    {
+    interface MainInfoPresenter extends BasePresenter {
     }
 }

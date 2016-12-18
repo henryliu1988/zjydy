@@ -11,12 +11,10 @@ import java.util.Map;
  */
 public interface PatientCaseContract {
 
-    interface View extends BaseView<Presenter>
-    {
-        void updatePatient(List<Map<String,Object>> list);
+    interface View extends BaseView<Presenter> {
+        void updatePatient(List<Map<String, Object>> list);
     }
 
-    interface Presenter extends BasePresenter
-    {
+    interface Presenter extends BasePresenter {
     }
 }

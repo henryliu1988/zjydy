@@ -18,7 +18,7 @@ android {
             signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug{
+        debug {
             minifyEnabled false
             signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -58,6 +58,7 @@ dependencies {
     compile project(':lib:calendarcomponent')
     compile project(':lib:dropdownmenu')
     compile project(':lib:FlycoTabLayout_Lib')
+    compile project(':lib:photoView')
     compile 'com.bigkoo:pickerview:2.1.1'
     compile 'com.jakewharton:butterknife:8.2.1'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
@@ -71,6 +72,10 @@ dependencies {
     compile 'com.shizhefei:MVCHelper-Library:1.0.8'
     compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.shizhefei:MVCHelper-Pullrefresh:1.0.8'
+    compile 'com.bm.photoview:library:1.4.1'
+    compile 'com.soundcloud.android:android-crop:1.0.1@aar'
+
+    //   compile 'com.jph.takephoto:takephoto_library:4.0.2'
     compile files('libs/umeng_social_api.jar')
     compile files('libs/umeng_social_net.jar')
     compile files('libs/SocialSDK_WeChat_Simplify.jar')

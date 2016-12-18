@@ -28,6 +28,7 @@ public abstract class ListViewAdapter<T> extends android.widget.BaseAdapter {
         this.mDatas = datas;
         this.notifyDataSetChanged();
     }
+
     @Override
     public int getCount() {
         return mDatas.size();

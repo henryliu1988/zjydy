@@ -35,7 +35,7 @@ public class PatientData {
     public void loadPatientData() {
         mAllPatient = null;
         HashMap<String, Object> params = new HashMap<>();
-        params.put("id", AppData.getInstance().getToken().getId());
+        params.put("id", UserData.getInstance().getToken().getId());
         WebCall.getInstance().call(WebKey.func_getPatientList, params).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
             public void onNext(WebResponse webResponse) {
@@ -46,7 +46,7 @@ public class PatientData {
 
     public Observable<List<Map<String, Object>>> getAllPatientList() {
         HashMap<String, Object> params = new HashMap<>();
-        params.put("id", AppData.getInstance().getToken().getId());
+        params.put("id", UserData.getInstance().getToken().getId());
         return WebCall.getInstance().callCache(WebKey.func_getPatientList, params, mAllPatient).map(new Func1<WebResponse, List<Map<String, Object>>>() {
             @Override
             public List<Map<String, Object>> call(WebResponse webResponse) {
@@ -55,8 +55,8 @@ public class PatientData {
                     mAllPatient = webResponse;
                     return Utils.parseObjectToListMapString(webResponse.getData());
                 } else {
-                    List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
-                    return  list;
+                    List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+                    return list;
                 }
             }
         });

@@ -9,6 +9,7 @@ public class DistricPickViewData implements IPickerViewData {
 
 
     private District district;
+
     public DistricPickViewData(District district) {
         this.district = district;
     }

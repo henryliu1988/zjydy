@@ -13,8 +13,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.TimePickerView;
 import com.zhjydy.R;
-import com.zhjydy.model.data.AppData;
 import com.zhjydy.model.data.DicData;
+import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.entity.DistricPickViewData;
 import com.zhjydy.model.entity.District;
 import com.zhjydy.model.entity.HosipitalPickViewData;
@@ -149,8 +149,8 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
 
     }
 
-    private void initView(){
-        if (mEditList== null || mEditList.size() < 1){
+    private void initView() {
+        if (mEditList == null || mEditList.size() < 1) {
             return;
         }
         String realName = Utils.toString(mEditList.get("realname"));
@@ -164,19 +164,19 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
         long ageLong = Utils.toLong(mEditList.get("age"));
         String birth = "";
         if (ageLong > 0) {
-            birth = DateUtil.dateToString(DateUtil.getDateBySeconds(ageLong),DateUtil.LONG_DATE_FORMAT);
+            birth = DateUtil.dateToString(DateUtil.getDateBySeconds(ageLong), DateUtil.LONG_DATE_FORMAT);
         }
         String distrcit = "";
         String hospital = "";
         String depart = "";
         String disCode = Utils.toString(mEditList.get("address"));
-        String hosCode =  Utils.toString(mEditList.get("hospital"));
+        String hosCode = Utils.toString(mEditList.get("hospital"));
         String depCode = Utils.toString(mEditList.get("office"));
 
         if (!TextUtils.isEmpty(disCode)) {
             List<District> list = DicData.getInstance().getDistrictById(disCode);
-            if (list.size() > 0){
-                for (int i = list.size()-1;i>=0;i--) {
+            if (list.size() > 0) {
+                for (int i = list.size() - 1; i >= 0; i--) {
                     distrcit += list.get(i).getName() + " ";
                 }
             }
@@ -190,12 +190,12 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
         }
 
         nameValue.setText(realName);
-        sexValue.setMap(sexId,sexName);
+        sexValue.setMap(sexId, sexName);
         telValue.setText(phoneNum);
         birthValue.setText(birth);
-        domainValue.setMap(disCode,distrcit);
-        hospitalValue.setMap(hosCode,hospital);
-        departValue.setMap(depCode,depart);
+        domainValue.setMap(disCode, distrcit);
+        hospitalValue.setMap(hosCode, hospital);
+        departValue.setMap(depCode, depart);
         docValue.setText(doctor);
 
         sickValue.setText(name);
@@ -228,7 +228,7 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
                 String sexName = mSexPickViewData.get(options1).getName();
                 String sexId = mSexPickViewData.get(options1).getId();
 
-                sexValue.setMap(sexId,sexName);
+                sexValue.setMap(sexId, sexName);
             }
         });
     }
@@ -248,16 +248,16 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
                 if (mCityPickViewData.size() > options1 && mCityPickViewData.get(options1).size() > option2) {
                     city = mCityPickViewData.get(options1).get(option2).getDistrict();
                 }
-                if (mQuPickViewData.size() > options1 && mQuPickViewData.get(options1).size() > option2 && mQuPickViewData.get(options1).get(option2).size() > options3){
+                if (mQuPickViewData.size() > options1 && mQuPickViewData.get(options1).size() > option2 && mQuPickViewData.get(options1).get(option2).size() > options3) {
                     qu = mQuPickViewData.get(options1).get(option2).get(options3).getDistrict();
                 }
                 if (pro == null) {
                     return;
                 } else if (city == null) {
-                    domainValue.setMap(pro.getId(),pro.getName());
-                } else if (qu == null ) {
-                    domainValue.setMap(city.getId(),pro.getName() + " " + city.getName());
-                } else{
+                    domainValue.setMap(pro.getId(), pro.getName());
+                } else if (qu == null) {
+                    domainValue.setMap(city.getId(), pro.getName() + " " + city.getName());
+                } else {
                     domainValue.setMap(qu.getId(), pro.getName() + " " + city.getName() + " " + qu.getName());
                 }
                 mHospitalPickViewData.clear();
@@ -387,24 +387,23 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
         */
 
 
-
-        Map<String,Object> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         if (mEditList != null && mEditList.size() > 0) {
             params.putAll(mEditList);
         }
-        params.put("realname",reacName);
-        params.put("sex",sex);
-        params.put("mobile",phone);
-        params.put("age",DateUtil.getDiffOfBaseTime(date,DateUtil.LONG_DATE_FORMAT));
-        params.put("address",districtId);
-        params.put("hospital",hosId);
-        params.put("address",districtId);
-        params.put("office",officeId);
-        params.put("doctor",docName);
-        params.put("name",patientName);
-        params.put("comment",comment);
-        params.put("condition",discript);
-        params.put("memberid",AppData.getInstance().getToken().getId());
+        params.put("realname", reacName);
+        params.put("sex", sex);
+        params.put("mobile", phone);
+        params.put("age", DateUtil.getDiffOfBaseTime(date, DateUtil.LONG_DATE_FORMAT));
+        params.put("address", districtId);
+        params.put("hospital", hosId);
+        params.put("address", districtId);
+        params.put("office", officeId);
+        params.put("doctor", docName);
+        params.put("name", patientName);
+        params.put("comment", comment);
+        params.put("condition", discript);
+        params.put("memberid", UserData.getInstance().getToken().getId());
       /*
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(sex) || TextUtils.isEmpty(phone)) {
             return;

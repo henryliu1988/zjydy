@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.zhjydy.R;
-import com.zhjydy.model.data.AppData;
 import com.zhjydy.model.data.DicData;
 import com.zhjydy.model.entity.District;
 import com.zhjydy.util.DateUtil;
@@ -16,20 +15,19 @@ import com.zhjydy.view.zhview.ViewHolder;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.OnClick;
-
 /**
  * Created by Administrator on 2016/9/22 0022.
  */
 public class PatientCaseListAdapter extends ListViewAdapter<Map<String, Object>> {
 
 
-    private Map<String,Object> mSelectItem;
+    private Map<String, Object> mSelectItem;
     private boolean canSelect = false;
 
     public void setIsSelect(boolean canSelect) {
-        canSelect  = canSelect;
+        canSelect = canSelect;
     }
+
     public PatientCaseListAdapter(Context context, List<Map<String, Object>> datas) {
         super(context, datas, R.layout.listview_patient_case_item);
     }
@@ -46,19 +44,19 @@ public class PatientCaseListAdapter extends ListViewAdapter<Map<String, Object>>
         if (ageLong >= 0) {
             age = ageLong + "岁";
         }
-        String nameSexAge =realName + " " +sexName + " " + age;
+        String nameSexAge = realName + " " + sexName + " " + age;
 
         String distrcit = "";
         String hospital = "";
         String depart = "";
         String disCode = Utils.toString(comment.get("address"));
-        String hosCode =  Utils.toString(comment.get("hospital"));
+        String hosCode = Utils.toString(comment.get("hospital"));
         String depCode = Utils.toString(comment.get("office"));
 
         if (!TextUtils.isEmpty(disCode)) {
             List<District> list = DicData.getInstance().getDistrictById1(disCode);
-            if (list.size() > 0){
-                for (int i = list.size()-1;i>=0;i--) {
+            if (list.size() > 0) {
+                for (int i = list.size() - 1; i >= 0; i--) {
                     distrcit += list.get(i).getName() + " ";
                 }
             }
@@ -69,7 +67,7 @@ public class PatientCaseListAdapter extends ListViewAdapter<Map<String, Object>>
         if (!TextUtils.isEmpty(depCode)) {
             depart = DicData.getInstance().getOfficeById(depCode).getName();
         }
-        String domain =distrcit + " " +hospital + " " +depart;
+        String domain = distrcit + " " + hospital + " " + depart;
 
         if (canSelect) {
             holder.getView(R.id.item_check).setVisibility(View.VISIBLE);
