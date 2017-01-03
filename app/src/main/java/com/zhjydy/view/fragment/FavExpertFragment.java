@@ -77,7 +77,7 @@ public class FavExpertFragment extends PageImpBaseFragment implements FavExpertC
     protected void afterViewCreate() {
         initExpertList();
         new FaveExpertPresenterImp(this);
-        titleSearchEdit.setHint("搜索专家");
+        titleSearchEdit.setHint("搜索收藏的专家");
         titleSearchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

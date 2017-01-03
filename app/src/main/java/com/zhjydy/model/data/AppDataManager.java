@@ -25,6 +25,7 @@ public class AppDataManager {
 
     public void initLoginSucData() {
         MsgData.getInstance().loadData();
+        UserData.getInstance().loadUserData();
     }
 
 

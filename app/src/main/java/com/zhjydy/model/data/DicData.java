@@ -4,8 +4,10 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.zhjydy.model.cache.SPUtils;
 import com.zhjydy.model.entity.DistricPickViewData;
 import com.zhjydy.model.entity.District;
+import com.zhjydy.model.entity.HosipitalPickViewData;
 import com.zhjydy.model.entity.HospitalDicItem;
 import com.zhjydy.model.entity.NormalDicItem;
 import com.zhjydy.model.entity.NormalItem;
@@ -13,7 +15,6 @@ import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
-import com.zhjydy.model.cache.SPUtils;
 import com.zhjydy.util.Utils;
 
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+import rx.functions.Func2;
+import rx.observables.GroupedObservable;
 import rx.schedulers.Schedulers;
 
 /**
@@ -376,7 +379,7 @@ public class DicData {
                                 while (itQu.hasNext()) {
                                     District qu = itQu.next();
                                     if (!TextUtils.isEmpty(qu.getParentid()) && qu.getParentid().equals(city.getId())) {
-                                        quPickList.add(new DistricPickViewData(itQu.next()));
+                                        quPickList.add(new DistricPickViewData(qu));
                                         itQu.remove();
                                     }
                                 }
@@ -401,6 +404,112 @@ public class DicData {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+
+    public Observable<Map<String, ArrayList>> getCityAndHospitalForPicker() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("page", 1);
+        params.put("pagesize", Utils.toString(1000000000));
+        WebResponse momery = new WebResponse();
+        if (!TextUtils.isEmpty(hospitalListData)){
+            momery.setData(hospitalListData);
+        }
+        Observable<Map<String, ArrayList<HosipitalPickViewData>>> hosOb = WebCall.getInstance().callCacheThree(WebKey.func_getHospital, params, momery, "hospital_dic").map(new Func1<WebResponse, Map<String, ArrayList<HosipitalPickViewData>>>() {
+            @Override
+            public Map<String, ArrayList<HosipitalPickViewData>> call(WebResponse webResponse) {
+                String data = webResponse.getData();
+                hospitalListData = data;
+                SPUtils.put("hospital_dic", data);
+                List<HospitalDicItem> list = new ArrayList<>();
+                list = JSON.parseObject(hospitalListData, new TypeReference<List<HospitalDicItem>>() {
+                });
+                final Map<String, ArrayList<HosipitalPickViewData>> hosMap = new HashMap<>();
+                Observable.from(list).groupBy(new Func1<HospitalDicItem, String>() {
+                    @Override
+                    public String call(HospitalDicItem hospitalDicItem) {
+                        return hospitalDicItem.getAddress();
+                    }
+                }).subscribe(new BaseSubscriber<GroupedObservable<String, HospitalDicItem>>() {
+                    @Override
+                    public void onNext(GroupedObservable<String, HospitalDicItem> group) {
+                        final String addressId = group.getKey();
+                        group.subscribe(new BaseSubscriber<HospitalDicItem>() {
+                            @Override
+                            public void onNext(HospitalDicItem hospitalDicItem) {
+                                if (hosMap.containsKey(addressId)) {
+                                    ArrayList<HosipitalPickViewData> list = hosMap.get(addressId);
+                                    list.add(new HosipitalPickViewData(hospitalDicItem));
+                                } else {
+                                    ArrayList<HosipitalPickViewData> list = new ArrayList<HosipitalPickViewData>();
+                                    list.add((new HosipitalPickViewData(hospitalDicItem)));
+                                    hosMap.put(addressId, list);
+                                }
+                            }
+                        });
+                    }
+                });
+                return hosMap;
+            }
+        });
+        WebResponse momeryCity = new WebResponse();
+        if (!TextUtils.isEmpty(cityListData)) {
+            momeryCity.setData(cityListData);
+        }
+        Observable<List<District>> disOb = WebCall.getInstance().callCacheThree(WebKey.func_getCity, new HashMap<String, Object>(), momeryCity, "city_dic").map(new Func1<WebResponse, List<District>>() {
+            @Override
+            public List<District> call(WebResponse webResponse) {
+                String data = webResponse.getData();
+                cityListData = data;
+                SPUtils.put("city_dic", data);
+                mCityList = JSON.parseObject(data, new TypeReference<List<District>>() {
+                });
+                return mCityList;
+            }
+        });
+        return Observable.zip(hosOb, disOb, new Func2<Map<String, ArrayList<HosipitalPickViewData>>, List<District>, Map<String, ArrayList>>() {
+            @Override
+            public Map<String, ArrayList> call(Map<String, ArrayList<HosipitalPickViewData>> hosMap, List<District> citys) {
+                Map<String, ArrayList> pickers = new HashMap<String, ArrayList>();
+                ArrayList<DistricPickViewData> cityList = new ArrayList<DistricPickViewData>();
+                District allCity = new District();
+                allCity.setId("");
+                allCity.setName("全部");
+                cityList.add(new DistricPickViewData(allCity));
+
+                ArrayList<ArrayList<HosipitalPickViewData>> hosList = new ArrayList<ArrayList<HosipitalPickViewData>>();
+                HospitalDicItem hos0 = new HospitalDicItem();
+                hos0.setAddress("");
+                hos0.setId("");
+                hos0.setHospital("全部");
+                ArrayList<HosipitalPickViewData> hosList0 = new ArrayList<HosipitalPickViewData>();
+                hosList0.add(new HosipitalPickViewData(hos0));
+                hosList.add(hosList0);
+
+                for (Map.Entry<String, ArrayList<HosipitalPickViewData>> entry : hosMap.entrySet()) {
+                    String addressId = entry.getKey();
+                    if (TextUtils.isEmpty(addressId)) {
+                        continue;
+                    }
+                    for (District c : citys) {
+                        if (addressId.equals(c.getId())) {
+                            cityList.add(new DistricPickViewData(c));
+                            ArrayList<HosipitalPickViewData> cityHos = new ArrayList<HosipitalPickViewData>();
+                            HospitalDicItem hospital = new HospitalDicItem();
+                            hospital.setId("");
+                            hospital.setHospital("全部");
+                            hospital.setAddress(addressId);
+                            cityHos.add(new HosipitalPickViewData(hospital));
+                            cityHos.addAll(entry.getValue());
+                            hosList.add(cityHos);
+                        }
+                    }
+                }
+                pickers.put("city",cityList);
+                pickers.put("hospital",hosList);
+                return pickers;
+            }
+        });
+    }
+
     private void loadOffice() {
         WebCall.getInstance().call(WebKey.func_getoffice, new HashMap<String, Object>()).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
@@ -416,6 +525,22 @@ public class DicData {
         });
     }
 
+
+    public Observable<List<NormalDicItem>> getOfficeObserver() {
+        WebResponse memoryResponse = new WebResponse();
+        memoryResponse.setData(officeListData);
+        return WebCall.getInstance().callCacheThree(WebKey.func_getoffice, new HashMap<String, Object>(), memoryResponse, "office_dic").map(new Func1<WebResponse, List<NormalDicItem>>() {
+            @Override
+            public List<NormalDicItem> call(WebResponse webResponse) {
+                String data = webResponse.getData();
+                officeListData = data;
+                SPUtils.put("office_dic", data);
+
+                List<NormalDicItem> list = getOffice();
+                return list;
+            }
+        });
+    }
 
     private void loadBusiness() {
         WebCall.getInstance().call(WebKey.func_getbusiness, new HashMap<String, Object>()).subscribe(new BaseSubscriber<WebResponse>() {

@@ -97,7 +97,7 @@ public class InfoDetailFragment extends PageImpBaseFragment implements InfoDetai
 
     private void initShareAction() {
         mShareAction = new ShareAction(getActivity())
-                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.SINA).withText("分享资讯")
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
                 .setCallback(new UMShareListener() {
                     @Override
                     public void onResult(SHARE_MEDIA share_media) {
@@ -113,7 +113,7 @@ public class InfoDetailFragment extends PageImpBaseFragment implements InfoDetai
                     public void onCancel(SHARE_MEDIA share_media) {
 
                     }
-                });
+                }).withText("分享资讯");
 
     }
 
@@ -136,7 +136,8 @@ public class InfoDetailFragment extends PageImpBaseFragment implements InfoDetai
                 return super.shouldOverrideUrlLoading(view, url);
             }
         });
-
+        String title =  Utils.toString(info.get("title"));
+        mShareAction.withTargetUrl(url).withTitle(title);
     }
 
     @Override

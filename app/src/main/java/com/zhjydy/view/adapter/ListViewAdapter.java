@@ -15,7 +15,7 @@ public abstract class ListViewAdapter<T> extends android.widget.BaseAdapter {
     protected Context mContext;
     protected List<T> mDatas;
     protected LayoutInflater mInflater;
-    private int layoutId; //不同的ListView的item布局肯能不同，所以要把布局单独提取出来
+    protected int layoutId; //不同的ListView的item布局肯能不同，所以要把布局单独提取出来
 
     public ListViewAdapter(Context context, List<T> datas, int layoutId) {
         this.mContext = context;

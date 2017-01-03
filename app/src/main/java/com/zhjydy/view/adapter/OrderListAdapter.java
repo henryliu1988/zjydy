@@ -51,7 +51,7 @@ public class OrderListAdapter extends ListViewAdapter<Map<String, Object>> {
     public void convert(ViewHolder holder, final Map<String, Object> map) {
         String photoUrl = Utils.toString(map.get("experturl"));
         if (!TextUtils.isEmpty(photoUrl)) {
-            ImageUtils.getInstance().displayFromRemote(photoUrl, (ImageView) holder.getView(R.id.photo));
+            ImageUtils.getInstance().displayFromRemoteOver(photoUrl, (ImageView) holder.getView(R.id.photo));
         }
         ((TextView) holder.getView(R.id.doc_name)).setText(Utils.toString(map.get("expertname")));
         ((TextView) holder.getView(R.id.serialNum)).setText("预约单号：" + Utils.toString(map.get("orderid")));

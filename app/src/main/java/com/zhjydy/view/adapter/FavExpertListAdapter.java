@@ -53,7 +53,7 @@ public class FavExpertListAdapter extends ListViewAdapter<Map<String, Object>> {
         ((TextView) holder.getView(R.id.score)).setText("推荐分数：" + score + "分");
         starView.setScore(score, 100);
 
-        ImageUtils.getInstance().displayFromRemote(Utils.toString(info.get("path")), (ImageView) holder.getView(R.id.photo));
+        ImageUtils.getInstance().displayFromRemoteOver(Utils.toString(info.get("path")), (ImageView) holder.getView(R.id.photo));
         TextView cancel = (TextView) holder.getView(R.id.fave_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override

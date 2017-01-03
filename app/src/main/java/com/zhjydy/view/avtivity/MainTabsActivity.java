@@ -12,6 +12,7 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.zhjydy.R;
 import com.zhjydy.model.data.UserData;
+import com.zhjydy.model.entity.NormalDicItem;
 import com.zhjydy.presenter.contract.MainTabsContract;
 import com.zhjydy.presenter.presenterImp.MainTabsPrensenter;
 import com.zhjydy.util.ActivityUtils;
@@ -24,6 +25,7 @@ import com.zhjydy.view.zhview.NoScrollViewPager;
 import com.zhjydy.view.zhview.zhToast;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -142,8 +144,18 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
             return;
         }
         mainTabs.setCurrentTab(index);
+        mainViewpager.setCurrentItem(index);
     }
-
+    public void gotoTabCondition(int index, Map<String,NormalDicItem> condition) {
+        if (index > VIEW_SIZE - 1) {
+            return;
+        }
+        mainTabs.setCurrentTab(index);
+        mainViewpager.setCurrentItem(index);
+        if (index == VIEW_SECOND) {
+            mSecondFragment.refreshViewWidthCondition( condition);
+        }
+    }
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }

@@ -1,6 +1,9 @@
 package com.zhjydy.model.net;
 
 
+import android.text.TextUtils;
+
+import com.zhjydy.util.LGImgCompressor;
 import com.zhjydy.util.Utils;
 import com.zhjydy.util.ViewKey;
 
@@ -45,7 +48,7 @@ public class FileUpLoad {
         return fileUpload;
     }
 
-    private static final int TIME_OUT = 10 * 1000;   //超时时间
+    private static final int TIME_OUT = 30 * 1000;   //超时时间
     private static final String CHARSET = "UTF-8"; //设置编码
 
     public static Observable<List<Map<String, Object>>> uploadFiles(List<Map<String, Object>> files) {
@@ -105,7 +108,13 @@ public class FileUpLoad {
         return Observable.create(new Observable.OnSubscribe<Map<String, Object>>() {
             @Override
             public void call(final Subscriber<? super Map<String, Object>> subscriber) {
-                Map<String, Object> result = uploadFileService(file, params);
+                LGImgCompressor.CompressResult compressResult = LGImgCompressor.getInstance().compressSync(file.getPath(),700,480,1024);
+                File fileUpload = file;
+                if (compressResult != null && compressResult.getStatus() == LGImgCompressor.CompressResult.RESULT_OK && !TextUtils.isEmpty(compressResult.getOutPath())){
+                    String fileUpPath = compressResult.getOutPath();
+                    fileUpload = new File(fileUpPath);
+                }
+                Map<String, Object> result = uploadFileService(fileUpload, params);
                 if (result.size() > 0 && Utils.toBoolean(result.get("status"))) {
                     subscriber.onNext(result);
                 } else {
@@ -126,8 +135,9 @@ public class FileUpLoad {
         try {
             URL url = new URL(RequestURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(TIME_OUT);
-            conn.setConnectTimeout(TIME_OUT);
+            conn.setChunkedStreamingMode(51200);
+           // conn.setReadTimeout(TIME_OUT);
+           // conn.setConnectTimeout(TIME_OUT);
             conn.setDoInput(true); // 允许输入流
             conn.setDoOutput(true); // 允许输出流
             conn.setUseCaches(false); // 不允许使用缓存

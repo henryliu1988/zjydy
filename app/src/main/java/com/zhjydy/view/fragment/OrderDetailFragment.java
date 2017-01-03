@@ -119,9 +119,9 @@ public class OrderDetailFragment extends PageImpBaseFragment implements OrderDet
 
         String experturl = Utils.toString(info.get("experturl"));
         if (TextUtils.isEmpty(experturl)) {
-            ImageUtils.getInstance().displayFromDrawable(R.mipmap.photo, dicPhoto);
+            ImageUtils.getInstance().displayFromDrawableOver(R.mipmap.photo, dicPhoto);
         } else {
-            ImageUtils.getInstance().displayFromRemote(experturl, dicPhoto);
+            ImageUtils.getInstance().displayFromRemoteOver(experturl, dicPhoto);
         }
         docName.setText(Utils.toString(info.get("expertname")));
         String docHosId = Utils.toString(info.get("hospital"));

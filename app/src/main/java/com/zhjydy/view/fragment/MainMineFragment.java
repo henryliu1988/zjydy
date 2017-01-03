@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.zhjydy.R;
 import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.entity.TokenInfo;
+import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.presenter.contract.MainMineContract;
 import com.zhjydy.presenter.presenterImp.MainMinePresenterImp;
 import com.zhjydy.util.ActivityUtils;
@@ -174,17 +175,22 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
     }
 
     private void loadIdentifyInfo() {
+
         if (mPresenter != null) {
-            Map<String, Object> map = mPresenter.getIdentifyInfo(getContext());
-            if (map == null) {
-                return;
-            }
-            if (map.size() < 1) {
-                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.identify_new_fragment, null, false);
-            } else {
-                String info = JSONObject.toJSONString(map);
-                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.identify_info_fragment, info, false);
-            }
+            mPresenter.getIdentifyInfo(getContext()).subscribe(new BaseSubscriber<Map<String, Object>>() {
+                @Override
+                public void onNext(Map<String, Object> map) {
+                    if (map == null) {
+                        return;
+                    }
+                    if (map.size() < 1) {
+                        ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.identify_new_fragment, null, false);
+                    } else {
+                        String info = JSONObject.toJSONString(map);
+                        ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.identify_info_fragment, info, false);
+                    }
+                }
+            });
         }
     }
 

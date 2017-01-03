@@ -16,6 +16,8 @@ import com.shizhefei.mvc.MVCHelper;
 import com.zhjydy.R;
 import com.zhjydy.model.entity.DistricPickViewData;
 import com.zhjydy.model.entity.District;
+import com.zhjydy.model.entity.HosipitalPickViewData;
+import com.zhjydy.model.entity.HospitalDicItem;
 import com.zhjydy.model.entity.NormalDicItem;
 import com.zhjydy.model.entity.NormalPickViewData;
 import com.zhjydy.model.pageload.PageLoadDataSource;
@@ -62,15 +64,20 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
     PullToRefreshListView mList;
 
 
-    private OptionsPickerView mDistricePicker;
+    // private OptionsPickerView mDistricePicker;
     private OptionsPickerView mBusinessPicker;
     private OptionsPickerView mOfficePicker;
+    private OptionsPickerView mCityAndHosPicker;
 
-    private ArrayList<DistricPickViewData> mProPickViewData = new ArrayList<>();
-    private ArrayList<ArrayList<DistricPickViewData>> mCityPickViewData = new ArrayList<>();
-    private ArrayList<ArrayList<ArrayList<DistricPickViewData>>> mQuPickViewData = new ArrayList<>();
+    // private ArrayList<DistricPickViewData> mProPickViewData = new ArrayList<>();
+    // private ArrayList<ArrayList<DistricPickViewData>> mCityPickViewData = new ArrayList<>();
+    // private ArrayList<ArrayList<ArrayList<DistricPickViewData>>> mQuPickViewData = new ArrayList<>();
     private ArrayList<NormalPickViewData> mDepartPickViewData = new ArrayList<>();
     private ArrayList<NormalPickViewData> mBusinessPickViewData = new ArrayList<>();
+
+
+    private ArrayList<DistricPickViewData> mCityPickViewData1 = new ArrayList<>();
+    private ArrayList<ArrayList<HosipitalPickViewData>> mHospiatalPickViewData = new ArrayList<>();
 
     protected MainExpertContract.MainExpertPresenter mPresenter;
     protected MainExpertListAdapter mExpertListAdapter;
@@ -98,9 +105,10 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
         titleSearchText.setText("搜索专家");
         rightLImg.setImageResource(R.mipmap.shoucang);
         rightImg.setImageResource(R.mipmap.title_msg);
-        mDistricePicker = new OptionsPickerView<DistricPickViewData>(getContext());
+        //   mDistricePicker = new OptionsPickerView<DistricPickViewData>(getContext());
         mBusinessPicker = new OptionsPickerView<NormalDicItem>(getContext());
         mOfficePicker = new OptionsPickerView<NormalDicItem>(getContext());
+        mCityAndHosPicker = new OptionsPickerView(getContext());
         new MainExpertPresenterImp(this, mList, mExpertListAdapter);
     }
 
@@ -117,6 +125,26 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
             }
         });
 
+    }
+
+    public void refreshViewWidthCondition(Map<String, NormalDicItem> condition) {
+        if (condition == null || condition.size() < 1) {
+            return;
+        }
+        filterDisTv.setMap("", "全部地区");
+        filterBusinessTv.setMap("", "职称");
+        filterOfficeTv.setMap("", "科室");
+
+        if (condition.containsKey("address")) {
+            filterDisTv.setMap(condition.get("address").getId(), condition.get("address").getName());
+        }
+        if (condition.containsKey("office")) {
+            filterOfficeTv.setMap(condition.get("office").getId(), condition.get("office").getName());
+        }
+        if (condition.containsKey("business")) {
+            filterBusinessTv.setMap(condition.get("business").getId(), condition.get("business").getName());
+        }
+        mPresenter.reloadExperts();
     }
 
     @Override
@@ -152,17 +180,48 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
     }
 
     @Override
+    public void updateCityAndHos(Map<String, ArrayList> data) {
+        mCityPickViewData1 = (ArrayList<DistricPickViewData>) data.get("city");
+        mHospiatalPickViewData = (ArrayList<ArrayList<HosipitalPickViewData>>) data.get("hospital");
+        mCityAndHosPicker.setPicker(mCityPickViewData1, mHospiatalPickViewData, true);
+        initCityAndHospicker();
+    }
+
+    private void initCityAndHospicker() {
+        mCityAndHosPicker.setCyclic(false);
+        mCityAndHosPicker.setCancelable(true);
+        mCityAndHosPicker.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3) {
+                District city = mCityPickViewData1.get(options1).getDistrict();
+                HospitalDicItem hos = mHospiatalPickViewData.get(options1).get(option2).getHospitalDicItem();
+                filterDisTv.clear();
+                if (hos != null && !TextUtils.isEmpty(hos.getId())) {
+                    filterDisTv.setMap(hos.getId(), hos.getHospital());
+                    filterDisTv.setMoreMap(city.getId(),city.getName());
+                } else if (city != null && !TextUtils.isEmpty(city.getId())) {
+                    filterDisTv.setMoreMap(city.getId(), city.getName());
+                } else {
+                    filterDisTv.setMoreMap("", "全部地区");
+                }
+                mPresenter.reloadExperts();
+            }
+        });
+
+    }
+
+    @Override
     public void updateDistrict(Map<String, ArrayList> distrctData) {
+        /*
         mProPickViewData = (ArrayList<DistricPickViewData>) distrctData.get("pro");
         mCityPickViewData = (ArrayList<ArrayList<DistricPickViewData>>) distrctData.get("city");
         mQuPickViewData = (ArrayList<ArrayList<ArrayList<DistricPickViewData>>>) distrctData.get("qu");
         mDistricePicker.setPicker(mProPickViewData, mCityPickViewData, mQuPickViewData, true);
-        initDistricePicker();
-
+        initDistricePicker();*/
     }
 
     private void initDistricePicker() {
-        mDistricePicker.setCyclic(false);
+        /*
         mDistricePicker.setCancelable(true);
         mDistricePicker.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
             @Override
@@ -180,6 +239,7 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
                 mPresenter.reloadExperts();
             }
         });
+        */
     }
 
     @Override
@@ -230,12 +290,16 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
 
     @Override
     public Map<String, Object> getFilterConditions() {
-        String disId = filterDisTv.getTextId();
+        String hosId = filterDisTv.getTextId();
+        String cityId= filterDisTv.getMoreTextId();
         String officeId = filterOfficeTv.getTextId();
         String businessId = filterBusinessTv.getTextId();
         Map<String, Object> params = new HashMap<>();
-        if (!TextUtils.isEmpty(disId)) {
-            params.put("address", disId);
+        if (!TextUtils.isEmpty(hosId)) {
+            params.put("hospital", hosId);
+        }
+        if (!TextUtils.isEmpty(cityId)) {
+            params.put("address", cityId);
         }
         if (!TextUtils.isEmpty(officeId)) {
             params.put("office", officeId);
@@ -271,9 +335,8 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
                 }
                 break;
             case R.id.filter_dis_tv:
-                if (mProPickViewData != null && mCityPickViewData != null && mQuPickViewData != null
-                        && mProPickViewData.size() > 0 && mCityPickViewData.size() > 0 && mQuPickViewData.size() > 0) {
-                    mDistricePicker.show();
+                if (mCityPickViewData1.size() > 0) {
+                    mCityAndHosPicker.show();
                 }
                 break;
             case R.id.filter_office_tv:

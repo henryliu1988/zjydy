@@ -76,7 +76,7 @@ public class FaveInfoFragment extends PageImpBaseFragment implements FavInfoCont
 
     @Override
     protected void afterViewCreate() {
-        titleSearchEdit.setHint("搜索资讯");
+        titleSearchEdit.setHint("搜索收藏的资讯");
         titleSearchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

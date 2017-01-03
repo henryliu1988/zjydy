@@ -18,6 +18,9 @@ import com.zhjydy.util.Utils;
 import java.util.HashMap;
 import java.util.Map;
 
+import rx.Observable;
+import rx.functions.Func1;
+
 /**
  * Created by Administrator on 2016/12/18 0018.
  */
@@ -25,6 +28,7 @@ public class UserData {
     private static UserData userData = new UserData();
     private TokenInfo mToken;
 
+    private WebResponse mIdentifyWeb;
     public UserData() {
     }
 
@@ -119,6 +123,53 @@ public class UserData {
             return false;
         }
         return true;
+    }
+
+
+
+    public void loadUserData() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("id", UserData.getInstance().getToken().getId());
+        WebCall.getInstance().call(WebKey.func_patient, params).subscribe(new BaseSubscriber<WebResponse>() {
+            @Override
+            public void onNext(WebResponse webResponse) {
+                mIdentifyWeb = webResponse;
+                RefreshManager.getInstance().refreshData(RefreshKey.IDENTIFY_MSG_UPDATE);
+
+            }
+        });
+    }
+
+    public Observable<Integer> getIdentifyState() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("id", getToken().getId());
+        return WebCall.getInstance().callCache(WebKey.func_patient, params,mIdentifyWeb).map(new Func1<WebResponse, Integer>() {
+            @Override
+            public Integer call(WebResponse webResponse) {
+                boolean status = WebUtils.getWebStatus(mIdentifyWeb);
+                if (status) {
+                    Map<String, Object> identifyMsg = Utils.parseObjectToMapString(mIdentifyWeb.getData());
+                    int msgInt = Utils.toInteger(identifyMsg.get("msg"));
+                    return msgInt;
+                }
+                return -1;
+            }
+        });
+    }
+    public Observable<Map<String,Object>> getIdentifyMsg() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("id", getToken().getId());
+        return WebCall.getInstance().callCache(WebKey.func_patient, params,mIdentifyWeb).map(new Func1<WebResponse, Map<String,Object>>() {
+            @Override
+            public Map<String,Object> call(WebResponse webResponse) {
+                boolean status = WebUtils.getWebStatus(mIdentifyWeb);
+                if (status) {
+                    Map<String, Object> identifyMsg = Utils.parseObjectToMapString(mIdentifyWeb.getData());
+                    return identifyMsg;
+                }
+                return new HashMap<String, Object>();
+            }
+        });
     }
 
 }

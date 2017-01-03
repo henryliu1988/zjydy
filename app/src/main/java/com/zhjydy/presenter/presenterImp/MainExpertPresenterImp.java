@@ -58,8 +58,17 @@ public class MainExpertPresenterImp extends PageLoadDataSource implements MainEx
         loadOfficeData();
         loadBusinessData();
         loadExpertsFavNum();
+        loadCityAndHospital();
     }
 
+    private void loadCityAndHospital() {
+        DicData.getInstance().getCityAndHospitalForPicker().subscribe(new BaseSubscriber<Map<String, ArrayList>>() {
+            @Override
+            public void onNext(Map<String, ArrayList> map) {
+                mView.updateCityAndHos(map);
+            }
+        });
+    }
     private void loadOfficeData() {
         ArrayList<NormalPickViewData> officeData = new ArrayList<>();
         NormalDicItem itemDefualt = new NormalDicItem();

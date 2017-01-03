@@ -25,8 +25,7 @@ public class zhjApplication extends Application {
     }
 
     {
-        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
-        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad");
+        PlatformConfig.setWeixin("wx82bb63a1065fc8a0", "0072626f46d0bca81968ce5752950fbf");
         PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
     }
 
@@ -35,7 +34,6 @@ public class zhjApplication extends Application {
         super.onCreate();
         init();
         UMShareAPI.get(this);
-
     }
 
     @Override

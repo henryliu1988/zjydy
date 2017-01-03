@@ -106,9 +106,9 @@ public class DocChatRecordFragment extends PageImpBaseFragment implements ChatRe
             TextView contentTv = (TextView) view.findViewById(R.id.msg);
 
             if (TextUtils.isEmpty(photoUrl)) {
-                ImageUtils.getInstance().displayFromDrawable(R.mipmap.photo, photImage);
+                ImageUtils.getInstance().displayFromDrawableOver(R.mipmap.photo, photImage);
             } else {
-                ImageUtils.getInstance().displayFromRemote(photoUrl, photImage);
+                ImageUtils.getInstance().displayFromRemoteOver(photoUrl, photImage);
             }
             timeTv.setText(DateUtil.getTimeDiffDayCurrent(Utils.toLong(item.get("addtime"))));
             contentTv.setText(Utils.toString(item.get("content")));

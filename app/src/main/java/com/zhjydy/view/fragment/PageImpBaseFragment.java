@@ -3,6 +3,7 @@ package com.zhjydy.view.fragment;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -10,7 +11,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
+import com.zhjydy.app.zhjApplication;
 import com.zhjydy.model.data.UserData;
 import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.DateUtil;
@@ -54,8 +58,20 @@ public abstract class PageImpBaseFragment extends StatedFragment {
             FragmentUtils.changeFragment(getActivity(), this, newFragment, tag, getViewId());
         }
     }
-
-
+    /**
+     * 弹出软键盘
+     */
+    private void showKeyBoard(EditText editText) {
+        InputMethodManager imm = (InputMethodManager) zhjApplication.getInstance().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+    }
+    /**
+     * 收起软键盘
+     */
+    public static void closeKeyBoard(EditText editText) {
+        InputMethodManager inputMethodManager = (InputMethodManager) zhjApplication.getInstance().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
     protected void gotoFragment(int key, Bundle bundle) {
         List<Integer> noUserFragList = Arrays.asList(FragKey.NO_NEED_USER_FRAG);
         if (!noUserFragList.contains(key) && !UserData.getInstance().isLogin()) {

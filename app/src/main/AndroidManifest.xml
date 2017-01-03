@@ -35,9 +35,7 @@
         <activity
             android:name=".view.avtivity.InitLoaderActivity"
             android:screenOrientation="portrait"
-            android:launchMode="singleTask"
-
-            >
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

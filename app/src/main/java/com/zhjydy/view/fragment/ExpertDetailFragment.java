@@ -248,12 +248,22 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
                     return;
                 }
                 mPresenter.makeNewComment(commentNew);
+                closeKeyBoard(commentMakeEdit);
                 break;
             case R.id.title_back:
                 back();
                 break;
             case R.id.subscribe_expert:
-                trySubsribExpert();
+                UserData.getInstance().getIdentifyState().subscribe(new BaseSubscriber<Integer>() {
+                    @Override
+                    public void onNext(Integer state) {
+                        if (state < 4) {
+                            zhToast.showToast("尚未进行认证或者认证尚未通过审核，请认证审核通过后，预约专家");
+                            return;
+                        }
+                        trySubsribExpert();
+                    }
+                });
         }
     }
 }

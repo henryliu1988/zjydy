@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.zhjydy.R;
+import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.util.ViewKey;
 import com.zhjydy.view.adapter.GridViewAdapter;
@@ -26,7 +27,6 @@ public class ItemImageAddView extends BaseItemView {
     private GridViewAdapter mAdapter;
     private Context context;
     private boolean isShowDelete = false;
-    private ImageViewPopWindow mPopView;
 
     public List<String> getAddFileList() {
         List<String> list = new ArrayList<>();
@@ -104,7 +104,6 @@ public class ItemImageAddView extends BaseItemView {
         LayoutInflater.from(context).inflate(R.layout.image_add_view, this);
         mGirdView = (GridView) this.findViewById(R.id.add_image_gridview);
         mAdapter = new GridViewAdapter(context, items);
-        mPopView = new ImageViewPopWindow(context);
 
         mGirdView.setAdapter(mAdapter);
         mGirdView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -116,7 +115,7 @@ public class ItemImageAddView extends BaseItemView {
                     mAdapter.setIsShowDelete(isShowDelete);
                 } else {
 
-                    showPopWindow(position);
+                    showImageFullScreen(position);
                     mAdapter.notifyDataSetChanged();
                 }
             }
@@ -136,37 +135,10 @@ public class ItemImageAddView extends BaseItemView {
     }
 
 
-    private void showPopWindow(int position) {
-        if (mPopView != null && mPopView.isShowing()) {
-            mPopView.dismiss();
-            return;
-        }
 
-        Map<String, Object> item = (Map<String, Object>) mAdapter.getItem(position);
-        if (item != null) {
-            if (mPopView == null) {
-                mPopView = new ImageViewPopWindow(context);
-            }
-            if (Utils.toInteger(item.get(ViewKey.FILE_KEY_TYPE)) == ViewKey.TYPE_FILE_URL) {
-                String url = Utils.toString(item.get(ViewKey.FILE_KEY_URL));
-                ImageViewPopWindow.ItemData itemDataTitle = new ImageViewPopWindow.ItemData("创建人", Utils.toString(item.get("create_person_name")));
-                ImageViewPopWindow.ItemData itemDataMsg = new ImageViewPopWindow.ItemData("创建时间", Utils.toString(item.get("create_time")));
-                List<ImageViewPopWindow.ItemData> items = new ArrayList<ImageViewPopWindow.ItemData>();
-                items.add(itemDataTitle);
-                items.add(itemDataMsg);
-                mPopView.setUrlType(ViewKey.TYPE_FILE_URL);
-                mPopView.setUrl(url);
-                mPopView.setInfos(items);
-            } else {
-                String url = Utils.toString(item.get(ViewKey.FILE_KEY_URL));
-                mPopView.setUrlType(ViewKey.TYPE_FILE_PATH);
-                mPopView.setUrl(url);
-            }
-
-            mPopView.showPopupWindow(getRootView());
-        }
+    private void showImageFullScreen(int position) {
+        ActivityUtils.showImageBrowse(context,getAllFileList(),position);
     }
-
 
     public void refreshView() {
         if (mAdapter != null) {

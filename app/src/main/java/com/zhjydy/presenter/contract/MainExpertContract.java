@@ -23,6 +23,7 @@ public interface MainExpertContract {
 
         void updateFavExpertCount(int count);
 
+        void updateCityAndHos(Map<String, ArrayList> data);
     }
 
     interface MainExpertPresenter extends BasePresenter {

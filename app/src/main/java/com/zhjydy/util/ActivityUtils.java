@@ -121,7 +121,7 @@ public class ActivityUtils {
         context.startActivity(intent);
     }
 
-    public static void showImageBrowse(Activity context, List<Map<String,Object>> images,int position) {
+    public static void showImageBrowse(Context context, List<Map<String,Object>> images,int position) {
         Bundle bundle = new Bundle();
         bundle.putInt(IntentKey.IMAGE_POS,position);
         String imageStr = JSON.toJSONString(images);

@@ -156,7 +156,12 @@ public class ImageUtils {
         ImageLoader.getInstance().displayImage("drawable://" + imageId,
                 imageView);
     }
-
+    public void displayFromDrawableOver(int imageId, ImageView imageView) {
+        // String imageUri = "drawable://" + R.drawable.image; // from drawables
+        // (only images, non-9patch)
+        ImageLoader.getInstance().displayImage("drawable://" + imageId,
+                imageView,getOverOptions());
+    }
     public void displayFromSdcardOver(String uri, ImageView imageView) {
         ImageLoader.getInstance().displayImage("file://" + uri, imageView,getOverOptions());
     }

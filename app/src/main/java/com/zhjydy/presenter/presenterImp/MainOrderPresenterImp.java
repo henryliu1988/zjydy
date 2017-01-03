@@ -1,5 +1,7 @@
 package com.zhjydy.presenter.presenterImp;
 
+import android.content.Context;
+
 import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
@@ -33,13 +35,13 @@ public class MainOrderPresenterImp implements MainOrderContract.MainOrderPresent
 
     @Override
     public void start() {
-        loadOrders();
+        loadOrders(null);
     }
 
-    private void loadOrders() {
+    private void loadOrders(Context context) {
         HashMap<String, Object> params = new HashMap<>();
         params.put("memberid", UserData.getInstance().getToken().getId());
-        WebCall.getInstance().call(WebKey.func_getOrders, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), true) {
+        WebCall.getInstance().call(WebKey.func_getOrders, params).subscribe(new BaseSubscriber<WebResponse>(context,true) {
             @Override
             public void onNext(WebResponse webResponse) {
                 String data = webResponse.getData();
@@ -62,11 +64,11 @@ public class MainOrderPresenterImp implements MainOrderContract.MainOrderPresent
 
     @Override
     public void reloadOrders() {
-        loadOrders();
+        loadOrders(mView.getContext());
     }
 
     @Override
     public void onRefreshWithKey(int key) {
-        loadOrders();
+        loadOrders(null);
     }
 }

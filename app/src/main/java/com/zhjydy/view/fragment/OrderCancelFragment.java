@@ -99,10 +99,12 @@ public class OrderCancelFragment extends PageImpBaseFragment implements OrderCan
         String cancelId = cancelReasonValue.getTextId();
         if (TextUtils.isEmpty(cancelId)) {
             zhToast.showToast("请选择取消原因");
+            return;
         }
         String commentStr = commentEditValue.getText().toString();
         if (commentStr.length() > 30) {
             zhToast.showToast("备注长度超过30！");
+            return;
         }
 
         mPresenter.confirmCancel(cancelId, commentStr);

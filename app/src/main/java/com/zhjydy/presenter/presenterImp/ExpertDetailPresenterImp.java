@@ -11,10 +11,12 @@ import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.presenter.contract.ExpertDetailContract;
+import com.zhjydy.util.ListMapComparator;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.zhview.zhToast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +32,6 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
     private ExpertDetailContract.View mView;
 
     private String expertId;
-
-
     private Map<String, Object> mExpertInfo = new HashMap<>();
     private List<Map<String, Object>> mComments = new ArrayList<>();
 
@@ -86,7 +86,18 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
             @Override
             public void onNext(List<Map<String, Object>> maps) {
                 mComments = maps;
-                mView.updateComments(maps);
+                ListMapComparator comp = new ListMapComparator("addtime", 0);
+                Collections.sort(mComments, comp);
+                List<Map<String,Object>> userComment = new ArrayList<Map<String, Object>>();
+                for (Map<String, Object> m : mComments) {
+                    String sendId = Utils.toString(m.get("sendid"));
+                    String getId = Utils.toString(m.get("getid"));
+                    String userId = Utils.toString(UserData.getInstance().getToken().getId());
+                    if (userId != null && (userId.equals(sendId) || userId.equals(getId))){
+                        userComment.add(m);
+                    }
+                }
+                mView.updateComments(userComment);
             }
         });
     }
