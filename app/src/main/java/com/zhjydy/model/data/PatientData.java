@@ -5,6 +5,8 @@ import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.net.WebUtils;
+import com.zhjydy.presenter.RefreshKey;
+import com.zhjydy.presenter.RefreshManager;
 import com.zhjydy.util.Utils;
 
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ public class PatientData {
             @Override
             public void onNext(WebResponse webResponse) {
                 mAllPatient = webResponse;
+                RefreshManager.getInstance().refreshData(RefreshKey.PATIENT_CASE_LIST_CHANGE);
             }
         });
     }

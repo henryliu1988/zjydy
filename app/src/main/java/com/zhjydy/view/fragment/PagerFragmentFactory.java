@@ -66,6 +66,12 @@ public class PagerFragmentFactory {
                 return new OrderCancelFragment();
             case FragKey.mine_name_change_fragment:
                 return new MineNameChangeFragment();
+            case FragKey.about_app_main_fragment:
+                return new AboutFragment();
+            case FragKey.about_app_kefu_fragment:
+                return new AboutKefuFragment();
+            case FragKey.about_app_advice_fragment:
+                return new AboutAdviceFragment();
 
         }
         return null;

@@ -141,7 +141,7 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
 
                 break;
             case R.id.mine_about_layout:
-                //ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.common_fragment,null,false);
+                ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.about_app_main_fragment,null,false);
 
                 break;
         }

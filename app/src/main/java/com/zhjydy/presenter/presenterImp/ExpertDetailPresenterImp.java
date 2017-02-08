@@ -54,7 +54,7 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
 
     private void loadExpertInfo(String id) {
         HashMap<String, Object> params = new HashMap<>();
-        params.put("zid", id);
+        params.put("expertid", id);
         WebCall.getInstance().call(WebKey.func_getExpert, params).map(new Func1<WebResponse, Map<String, Object>>() {
             @Override
             public Map<String, Object> call(WebResponse webResponse) {
@@ -76,6 +76,8 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
     private void loadComments(String id) {
         HashMap<String, Object> params = new HashMap<>();
         params.put("expertid", id);
+        params.put("type", 1);
+
         WebCall.getInstance().call(WebKey.func_getCommentList, params).map(new Func1<WebResponse, List<Map<String, Object>>>() {
             @Override
             public List<Map<String, Object>> call(WebResponse webResponse) {
@@ -137,6 +139,8 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
         if (!TextUtils.isEmpty(mark)) {
             params.put("mark", mark);
         }
+        params.put("type", 1);
+
         WebCall.getInstance().call(WebKey.func_addComment, params).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
             public void onNext(WebResponse webResponse) {

@@ -65,7 +65,7 @@ public class OrderConfirmPresenterImp implements OrderConfirmContract.Presenter 
         String patientId = Utils.toString(mPatientInfo.get("id"));
         String experturl = Utils.toString(mExpertInfo.get("path"));
         String expertName = Utils.toString(mExpertInfo.get("realname"));
-        String expertid = Utils.toString(mExpertInfo.get("id"));
+        String expertid = Utils.toString(mExpertInfo.get("memberid"));
         String hos = Utils.toString(mPatientInfo.get("hospital"));
         String name = Utils.toString(mPatientInfo.get("realname"));
         String memberId = UserData.getInstance().getToken().getId();

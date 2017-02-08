@@ -6,6 +6,9 @@ import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
+import com.zhjydy.presenter.RefreshKey;
+import com.zhjydy.presenter.RefreshManager;
+import com.zhjydy.presenter.RefreshWithKey;
 import com.zhjydy.presenter.contract.MsgAllListContract;
 import com.zhjydy.util.ListMapComparator;
 import com.zhjydy.util.Utils;
@@ -23,13 +26,14 @@ import rx.functions.Func2;
 /**
  * Created by Administrator on 2016/9/20 0020.
  */
-public class MsgAllListPresenterImp implements MsgAllListContract.Presenter {
+public class MsgAllListPresenterImp implements MsgAllListContract.Presenter,RefreshWithKey{
 
     private MsgAllListContract.View mView;
 
     public MsgAllListPresenterImp(MsgAllListContract.View view) {
         this.mView = view;
         view.setPresenter(this);
+        RefreshManager.getInstance().addNewListener(RefreshKey.NEW_COMMENT_DATA_READ,this);
         start();
     }
 
@@ -141,5 +145,14 @@ public class MsgAllListPresenterImp implements MsgAllListContract.Presenter {
     @Override
     public void finish() {
 
+    }
+
+    @Override
+    public void onRefreshWithKey(int key) {
+        switch (key) {
+            case RefreshKey.NEW_COMMENT_DATA_READ:
+                initCommentList();
+                break;
+        }
     }
 }

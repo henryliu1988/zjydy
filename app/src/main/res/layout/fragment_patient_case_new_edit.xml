@@ -107,10 +107,9 @@
                     android:id="@+id/hospital_title"
                     android:text="所在医院"
                     style="@style/item_info_read_singleline_title" />
-
-                <com.zhjydy.view.zhview.MapTextView
+                <EditText
                     android:id="@+id/hospital_value"
-                    style="@style/item_info_read_click_singleline_value" />
+                    style="@style/item_info_edit_singleline_value" />
             </LinearLayout>
 
             <View style="@style/item_info_div_line" />

@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -35,6 +36,7 @@
         <activity
             android:name=".view.avtivity.InitLoaderActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/Splash"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,22 +55,22 @@
         <activity
             android:name=".view.avtivity.ForgetPassWordActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.avtivity.RegisterActivity"
             android:launchMode="singleTask"
 
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.avtivity.PagerImpActivity"
             android:launchMode="singleTask"
 
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.avtivity.ImageBrowsActivity"
             android:launchMode="singleTask"
 
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
 
 
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
@@ -100,7 +102,7 @@
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="58456d5107fe657ac60015f9"></meta-data>
+            android:value="58456d5107fe657ac60015f9"/>
 
     </application>
 

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.widget.Toast;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -26,6 +27,8 @@ import com.zhjydy.view.zhview.zhToast;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,16 +54,17 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
     private MainOrderFragment mFourthFragment = null;
     private MainMineFragment mFifthFragment = null;
 
+    private boolean mBackKeyPressed = false;
 
     private MainTabsContract.Presenter mPresenter;
     private int lastIndex;
-    private String[] tabTitles = {"首页", "专家", "资讯", "订单","个人"};
+    private String[] tabTitles = {"首页", "专家", "资讯", "订单", "个人"};
     private int[] mIconUnselectIds = {
-            R.mipmap.main_tab_home_off, R.mipmap.main_tab_expert_off, R.mipmap.main_tab_info_off, R.mipmap.main_tab_order_off,R.mipmap.main_tab_mine_off
+            R.mipmap.main_tab_home_off, R.mipmap.main_tab_expert_off, R.mipmap.main_tab_info_off, R.mipmap.main_tab_order_off, R.mipmap.main_tab_mine_off
     };
 
     private int[] mIconSelectIds = {
-            R.mipmap.main_tab_home_on, R.mipmap.main_tab_expert_on, R.mipmap.main_tab_info_on, R.mipmap.main_tab_order_on,R.mipmap.main_tab_mine_on
+            R.mipmap.main_tab_home_on, R.mipmap.main_tab_expert_on, R.mipmap.main_tab_info_on, R.mipmap.main_tab_order_on, R.mipmap.main_tab_mine_on
     };
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
@@ -74,28 +78,43 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
         initView();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (!mBackKeyPressed) {
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            mBackKeyPressed = true;
+            new Timer().schedule(new TimerTask() {//延时两秒，如果超出则擦错第一次按键记录
+                @Override
+                public void run() {
+                    mBackKeyPressed = false;
+                }
+
+            }, 2000);
+        } else {
+            super.onBackPressed();
+        }
+
+    }
+
     private void initView() {
         mFirstFragment = MainHomeFragment.instance();
         mSecondFragment = MainExpertFragment.instance();
         mThirdFragment = MainInfoFragment.instance();
         mFourthFragment = MainOrderFragment.instance();
         mFifthFragment = MainMineFragment.instance();
-        for (int i = 0; i < VIEW_SIZE; i++)
-        {
+        for (int i = 0; i < VIEW_SIZE; i++) {
             mTabEntities.add(new TabEntity(tabTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }
         mainViewpager.setOffscreenPageLimit(VIEW_SIZE);
         mainTabs.setTabData(mTabEntities);
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
         mainViewpager.setAdapter(adapter);
-        mainTabs.setOnTabSelectListener(new OnTabSelectListener()
-        {
+        mainTabs.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
-            public void onTabSelect(int position)
-            {
+            public void onTabSelect(int position) {
                 if (position == VIEW_FOURTH || position == VIEW_FIVE) {
                     if (!UserData.getInstance().isLogin()) {
-                        ActivityUtils.showLogin(MainTabsActivity.this,false);
+                        ActivityUtils.showLogin(MainTabsActivity.this, false);
                         if (lastIndex == VIEW_FIRST || lastIndex == VIEW_SECOND || lastIndex == VIEW_THIRD) {
                             mainTabs.setCurrentTab(lastIndex);
                         } else {
@@ -110,27 +129,22 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
             }
 
             @Override
-            public void onTabReselect(int position)
-            {
+            public void onTabReselect(int position) {
 
             }
         });
-        mainViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
-        {
+        mainViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
-            {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
 
             @Override
-            public void onPageSelected(int position)
-            {
+            public void onPageSelected(int position) {
             }
 
             @Override
-            public void onPageScrollStateChanged(int state)
-            {
+            public void onPageScrollStateChanged(int state) {
 
             }
         });
@@ -146,16 +160,18 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
         mainTabs.setCurrentTab(index);
         mainViewpager.setCurrentItem(index);
     }
-    public void gotoTabCondition(int index, Map<String,NormalDicItem> condition) {
+
+    public void gotoTabCondition(int index, Map<String, NormalDicItem> condition) {
         if (index > VIEW_SIZE - 1) {
             return;
         }
         mainTabs.setCurrentTab(index);
         mainViewpager.setCurrentItem(index);
         if (index == VIEW_SECOND) {
-            mSecondFragment.refreshViewWidthCondition( condition);
+            mSecondFragment.refreshViewWidthCondition(condition);
         }
     }
+
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
@@ -203,7 +219,7 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
         return this;
     }
 
-    public class FragmentAdapter extends FragmentPagerAdapter{
+    public class FragmentAdapter extends FragmentPagerAdapter {
 
         public FragmentAdapter(FragmentManager fm) {
             super(fm);
@@ -216,7 +232,7 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
                     case VIEW_FIRST:
                         if (null == mFirstFragment)
                             mFirstFragment = MainHomeFragment.instance();
-                        return  mFirstFragment;
+                        return mFirstFragment;
                     case VIEW_SECOND:
                         if (null == mSecondFragment)
                             mSecondFragment = MainExpertFragment.instance();
@@ -268,34 +284,30 @@ public class MainTabsActivity extends BaseActivity implements ViewPager.OnPageCh
             return null;
         }
     }
-    class TabEntity implements CustomTabEntity
-    {
+
+    class TabEntity implements CustomTabEntity {
         public String title;
         public int selectedIcon;
         public int unSelectedIcon;
 
-        public TabEntity(String title, int selectedIcon, int unSelectedIcon)
-        {
+        public TabEntity(String title, int selectedIcon, int unSelectedIcon) {
             this.title = title;
             this.selectedIcon = selectedIcon;
             this.unSelectedIcon = unSelectedIcon;
         }
 
         @Override
-        public String getTabTitle()
-        {
+        public String getTabTitle() {
             return title;
         }
 
         @Override
-        public int getTabSelectedIcon()
-        {
+        public int getTabSelectedIcon() {
             return selectedIcon;
         }
 
         @Override
-        public int getTabUnselectedIcon()
-        {
+        public int getTabUnselectedIcon() {
             return unSelectedIcon;
         }
     }

@@ -68,11 +68,14 @@ public class WebKey {
     public static final int func_getRecommend = 1052;  //
     public static final int func_updateCommentStatus = 1053;  //
     public static final int func_getSysMsg = 1054;  //
+    public static final int func_addidear = 1055;  //
 
 
     public static final Map<Integer, String> WEBKEY_FUNC_COMMON_MAP = new HashMap<Integer, String>();
 
     static {
+
+        WEBKEY_FUNC_COMMON_MAP.put(func_addidear, "addidear");
         WEBKEY_FUNC_COMMON_MAP.put(func_getComment, "getComment");
         WEBKEY_FUNC_COMMON_MAP.put(func_getNewCommentList, "getNewCommentList");
         WEBKEY_FUNC_COMMON_MAP.put(func_cancelCollectExpert, "cancelCollectExpert");

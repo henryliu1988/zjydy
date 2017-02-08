@@ -73,7 +73,7 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
     @BindView(R.id.hospital_title)
     TextView hospitalTitle;
     @BindView(R.id.hospital_value)
-    MapTextView hospitalValue;
+    EditText hospitalValue;
     @BindView(R.id.depart_title)
     TextView departTitle;
     @BindView(R.id.depart_value)
@@ -182,9 +182,11 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
             }
             mPresenter.updateHospitalList(disCode);
         }
+        /*
         if (!TextUtils.isEmpty(hosCode)) {
             hospital = DicData.getInstance().getHospitalById(hosCode).getHospital();
         }
+        */
         if (!TextUtils.isEmpty(depCode)) {
             depart = DicData.getInstance().getOfficeById(depCode).getName();
         }
@@ -194,7 +196,8 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
         telValue.setText(phoneNum);
         birthValue.setText(birth);
         domainValue.setMap(disCode, distrcit);
-        hospitalValue.setMap(hosCode, hospital);
+      //  hospitalValue.setMap(hosCode, hospital);
+        hospitalValue.setText(hosCode);
         departValue.setMap(depCode, depart);
         docValue.setText(doctor);
 
@@ -313,7 +316,7 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
             @Override
             public void onOptionsSelect(int options1, int option2, int options3) {
                 HospitalDicItem hos = hosData.get(options1).getHospitalDicItem();
-                hospitalValue.setMap(hos.getId(), hos.getHospital());
+               // hospitalValue.setMap(hos.getId(), hos.getHospital());
             }
         });
     }
@@ -342,7 +345,7 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
         String phone = telValue.getText().toString();
         String date = birthValue.getText().toString();
         String districtId = domainValue.getTextId();
-        String hosId = hospitalValue.getTextId();
+        String hosId = hospitalValue.getText().toString();
         String officeId = departValue.getTextId();
         String docName = docValue.getText().toString();
         String patientName = sickValue.getText().toString();

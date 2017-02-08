@@ -138,9 +138,14 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
             mPresenter.getConfirmCode(phoneNum).subscribe(new BaseSubscriber<WebResponse>(this, "") {
                 @Override
                 public void onNext(WebResponse webResponse) {
-                    mConfirSmsCode = webResponse.getData();
-                    zhToast.showToast(mConfirSmsCode);
-                    mCountTimer.start();
+                    int errot = webResponse.getError();
+                    if (errot == 0) {
+                        mConfirSmsCode = webResponse.getData();
+                        zhToast.showToast(mConfirSmsCode);
+                        mCountTimer.start();
+                    } else {
+                        zhToast.showToast(webResponse.getInfo());
+                    }
                 }
             });
         }

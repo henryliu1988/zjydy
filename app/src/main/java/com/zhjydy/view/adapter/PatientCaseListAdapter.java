@@ -71,8 +71,11 @@ public class PatientCaseListAdapter extends ListViewAdapter<Map<String, Object>>
 
         if (canSelect) {
             holder.getView(R.id.item_check).setVisibility(View.VISIBLE);
+            holder.getView(R.id.check_layout).setVisibility(View.VISIBLE);
         } else {
             holder.getView(R.id.item_check).setVisibility(View.GONE);
+            holder.getView(R.id.check_layout).setVisibility(View.GONE);
+
         }
         ((TextView) holder.getView(R.id.item_name_sex_age)).setText(nameSexAge);
         //((TextView) holder.getView(R.id.star)).setText(info.getStar());

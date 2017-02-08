@@ -170,19 +170,20 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
     @Override
     public void updateOfficeList(List<NormalDicItem> items) {
         if (items != null && items.size() > 0) {
-        }
-        horizontalScrollView.initDatas(items);
-        horizontalScrollView.setOnItemClickListener(new HorizontalOfficeHomeView.onItemClickListener() {
-            @Override
-            public void onItemClick(NormalDicItem item) {
-                if (item == null || TextUtils.isEmpty(item.getId())) {
-                    return;
+            horizontalScrollView.initDatas(items);
+            horizontalScrollView.setOnItemClickListener(new HorizontalOfficeHomeView.onItemClickListener() {
+                @Override
+                public void onItemClick(NormalDicItem item) {
+                    if (item == null || TextUtils.isEmpty(item.getId())) {
+                        return;
+                    }
+                    Map<String, NormalDicItem> condition = new HashMap<String, NormalDicItem>();
+                    condition.put("office", item);
+                    ((MainTabsActivity) getActivity()).gotoTabCondition(MainTabsActivity.VIEW_SECOND, condition);
                 }
-                Map<String, NormalDicItem> condition = new HashMap<String, NormalDicItem>();
-                condition.put("office", item);
-                ((MainTabsActivity) getActivity()).gotoTabCondition(MainTabsActivity.VIEW_SECOND, condition);
-            }
-        });
+            });
+
+        }
     }
 
     @Override
@@ -210,7 +211,7 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
                 String hospitaId = Utils.toString(item.get("hospital"));
                 String officeId = Utils.toString(item.get("office"));
                 String professId = Utils.toString(item.get("business"));
-                String id = Utils.toString(item.get("id"));
+                String id = Utils.toString(item.get("memberid"));
                 childView.setTag(id);
                 ImageView imageView = ViewFindUtils.find(childView, R.id.image);
                 TextView nameTv = ViewFindUtils.find(childView, R.id.name);
@@ -247,7 +248,7 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
                 if (i < endIndex - 1) {
                     View view = new View(getContext());
                     view.setBackgroundColor(getContext().getResources().getColor(R.color.gray_bg));
-                    view.setLayoutParams(new ViewGroup.LayoutParams(1, ViewGroup.LayoutParams.MATCH_PARENT));
+                    view.setLayoutParams(new ViewGroup.LayoutParams(2, ViewGroup.LayoutParams.MATCH_PARENT));
                     pageLayout.addView(view);
                 }
             }

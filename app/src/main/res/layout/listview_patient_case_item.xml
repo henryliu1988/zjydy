@@ -9,6 +9,7 @@
     android:paddingTop="10dp">
 
     <RelativeLayout
+        android:id="@+id/check_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -30,6 +31,7 @@
         android:id="@+id/content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
         android:layout_weight="9"
         android:gravity="center_vertical">
 

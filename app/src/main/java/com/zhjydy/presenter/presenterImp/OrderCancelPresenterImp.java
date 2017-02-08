@@ -81,7 +81,7 @@ public class OrderCancelPresenterImp implements OrderCancelContract.Presenter {
         HashMap<String, Object> params = new HashMap<>();
         params.put("id", mOrderId);
         params.put("reason", reason);
-        params.put("comment", reason);
+        params.put("comment", comment);
         WebCall.getInstance().call(WebKey.func_cancelOrder, params).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
             public void onNext(WebResponse webResponse) {

@@ -30,6 +30,7 @@ public class RefreshKey {
 
 
     public static final int LOGIN_RESULT_BACK = 13;
+    public static final int PATIENT_CASE_LIST_CHANGE  = 14;
 
 
 }

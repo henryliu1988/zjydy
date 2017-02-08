@@ -114,8 +114,6 @@ public class MsgData {
                 String data = webResponse.getData();
                 mCommentNewData = webResponse;
                 mNewCommentList = Utils.parseObjectToListMapString(data);
-                RefreshManager.getInstance().refreshData(RefreshKey.NEW_COMMENT_DATA_LIST);
-                RefreshManager.getInstance().refreshData(RefreshKey.NEW_COMMENT_DATA_READ);
                 return mNewCommentList;
             }
         });

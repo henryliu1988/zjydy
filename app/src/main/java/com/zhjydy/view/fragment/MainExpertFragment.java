@@ -119,8 +119,8 @@ public class MainExpertFragment extends StatedFragment implements MainExpertCont
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Map<String, Object> info = (Map<String, Object>) adapterView.getAdapter().getItem(i);
-                if (info != null && !TextUtils.isEmpty(Utils.toString(info.get("id")))) {
-                    ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.detail_expert_fragment, Utils.toString(info.get("id")), false);
+                if (info != null && !TextUtils.isEmpty(Utils.toString(info.get("memberid")))) {
+                    ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.detail_expert_fragment, Utils.toString(info.get("memberid")), false);
                 }
             }
         });
