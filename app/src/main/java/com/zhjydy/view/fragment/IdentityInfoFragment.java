@@ -123,22 +123,39 @@ public class IdentityInfoFragment extends PageImpBaseFragment implements Identit
         ViewUtil.setOverViewDrawbleBg(stepWaitVerify, "#CCCCCC", "#EEEEEE", strokWidth);
         ViewUtil.setOverViewDrawbleBg(stepWait, "#CCCCCC", "#EEEEEE", strokWidth);
         ViewUtil.setOverViewDrawbleBg(stepVerify, "#CCCCCC", "#EEEEEE", strokWidth);
-        if (status > 1) {
+        if (status == 1) {
             stepUpload.setText("上传" + "\n" + "成功");
             stepWaitVerify.setText("等待\n审核");
             stepWait.setText("等待中");
+            stepVerify.setText("审核\n通过");
+
             ViewUtil.setOverViewDrawbleBg(stepUpload, "#FFAD0E", "#FFE3B9", strokWidth);
             ViewUtil.setOverViewDrawbleBg(stepWaitVerify, "#FFAD0E", "#FFE3B9", strokWidth);
             ViewUtil.setOverViewDrawbleBg(stepWait, "#FFAD0E", "#FFE3B9", strokWidth);
-        }
-        if (status > 2) {
-            if (status == 3) {
-                stepVerify.setText("审核\n失败");
-            } else {
-                stepVerify.setText("审核\n通过");
-            }
             ViewUtil.setOverViewDrawbleBg(stepVerify, "#FFAD0E", "#FFE3B9", strokWidth);
+        } else if (status == 2) {
+            stepUpload.setText("上传" + "\n" + "成功");
+            stepWaitVerify.setText("等待\n审核");
+            stepWait.setText("等待中");
+            stepVerify.setText("审核\n结果");
+            ViewUtil.setOverViewDrawbleBg(stepUpload, "#FFAD0E", "#FFE3B9", strokWidth);
+            ViewUtil.setOverViewDrawbleBg(stepWaitVerify, "#FFAD0E", "#FFE3B9", strokWidth);
+            ViewUtil.setOverViewDrawbleBg(stepWait, "#FFAD0E", "#FFE3B9", strokWidth);
+        } else  if (status == 3) {
+
+        } else if (status == 4) {
+
+            stepUpload.setText("上传" + "\n" + "成功");
+            stepWaitVerify.setText("等待\n审核");
+            stepWait.setText("等待中");
+            stepVerify.setText("审核\n失败");
+            ViewUtil.setOverViewDrawbleBg(stepUpload, "#FFAD0E", "#FFE3B9", strokWidth);
+            ViewUtil.setOverViewDrawbleBg(stepWaitVerify, "#FFAD0E", "#FFE3B9", strokWidth);
+            ViewUtil.setOverViewDrawbleBg(stepWait, "#FFAD0E", "#FFE3B9", strokWidth);
+            ViewUtil.setOverViewDrawbleBg(stepVerify, "#FFAD0E", "#FFE3B9", strokWidth);
+
         }
+
     }
 
     @Override

@@ -2,11 +2,9 @@ package com.zhjydy.presenter.presenterImp;
 
 import android.text.TextUtils;
 
-import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.cache.SPUtils;
+import com.zhjydy.model.data.UserData;
 import com.zhjydy.presenter.RefreshKey;
-import com.zhjydy.presenter.RefreshManager;
-import com.zhjydy.presenter.RefreshWithData;
 import com.zhjydy.presenter.contract.LoginContract;
 import com.zhjydy.util.Utils;
 
@@ -15,14 +13,13 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016/10/30 0030.
  */
-public class LoginPresenterImp implements LoginContract.Presenter, RefreshWithData {
+public class LoginPresenterImp implements LoginContract.Presenter {
 
     private LoginContract.View mView;
 
     public LoginPresenterImp(LoginContract.View view) {
         this.mView = view;
         start();
-        RefreshManager.getInstance().addNewListener(RefreshKey.LOGIN_RESULT_BACK, this);
         mView.setPresenter(this);
 
     }

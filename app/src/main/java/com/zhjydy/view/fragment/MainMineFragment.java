@@ -152,18 +152,17 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
         mineConfirmMsgStatus.setVisibility(View.VISIBLE);
         String text = "";
         switch (status) {
-            case 0:
             case 1:
-                text = "未认证";
+                text = "已认证";
                 break;
             case 2:
                 text = "认证审核中";
                 break;
             case 3:
-                text = "审核未通过";
+                text = "未上传";
                 break;
             case 4:
-                text = "已认证";
+                text = "审核未通过";
                 break;
         }
         mineConfirmMsgStatus.setText(text);

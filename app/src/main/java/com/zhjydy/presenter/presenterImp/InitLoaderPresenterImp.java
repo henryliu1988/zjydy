@@ -15,13 +15,12 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016/12/17 0017.
  */
-public class InitLoaderPresenterImp implements InitLoaderContract.Presenter, RefreshWithData {
+public class InitLoaderPresenterImp implements InitLoaderContract.Presenter {
 
     private InitLoaderContract.View mView;
 
     public InitLoaderPresenterImp(InitLoaderContract.View view) {
         this.mView = view;
-        RefreshManager.getInstance().addNewListener(RefreshKey.LOGIN_RESULT_BACK, this);
         start();
     }
 

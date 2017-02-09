@@ -18,5 +18,6 @@ public interface LoginContract {
 
     interface Presenter extends BasePresenter {
         void tryLogin(String phoneNum, String password);
+        void onRefreshWithData(int key, Object data);
     }
 }
