@@ -14,6 +14,7 @@ public class WebKey {
     public static final String WEBKEY_BASE = "http://59.110.24.36/yiduyi/";
     public static final String WEBKEY_URL_RES = "http://59.110.24.36/yiduyi/index.php?s=App/Common/imgUpload";
 
+    public static final String TYPE_KEY = "1";
 
     public static final int func_login = 1001;   //登录
     public static final int func_checkMobile = 1002;  //检查手机号是否被注册
