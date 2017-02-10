@@ -17,6 +17,8 @@ import com.zhjydy.view.zhview.ViewUtil;
 import java.util.List;
 import java.util.Map;
 
+import static android.R.attr.data;
+
 /**
  * Created by Administrator on 2016/9/22 0022.
  */
@@ -70,13 +72,14 @@ public class OrderMsgListAdapter extends PageLoadListAdapter {
 
                 break;
             case 9:
-                imageRecId = R.mipmap.order_back_suc;
-                statusName = "订单退款成功";
-                textCorlor = "#60D700";
-                break;
-            case 10:
                 imageRecId = R.mipmap.order_back_fail;
                 statusName = "订单退款失败";
+                textCorlor = "#60D700";
+                break;
+
+            case 10:
+                imageRecId = R.mipmap.order_back_suc;
+                statusName = "订单退款成功";
                 textCorlor = "#60D700";
                 break;
             case 11:
@@ -92,14 +95,13 @@ public class OrderMsgListAdapter extends PageLoadListAdapter {
         }
         if (!TextUtils.isEmpty(statusName)) {
             ((TextView) holder.getView(R.id.order_status)).setText(statusName);
+            ((TextView) holder.getView(R.id.order_status)).setTextColor(Color.parseColor(textCorlor));
         }
         if (imageRecId > 0) {
             ImageUtils.getInstance().displayFromDrawable(imageRecId, ((ImageView) holder.getView(R.id.status_image)));
         }
-        if (!TextUtils.isEmpty(textCorlor) && textCorlor.length() > 1) {
-            ((TextView) holder.getView(R.id.content)).setText("订单详情内容");
-            ((TextView) holder.getView(R.id.content)).setTextColor(Color.parseColor(textCorlor));
-        }
+        ((TextView) holder.getView(R.id.content)).setText("订单详情内容");
+
         int isUnread = Utils.toInteger(data.get("status"));
         if (isUnread == 0) {
             View unReadFlag = holder.getView(R.id.unread_flag);
