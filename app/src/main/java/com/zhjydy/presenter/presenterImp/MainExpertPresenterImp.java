@@ -1,7 +1,5 @@
 package com.zhjydy.presenter.presenterImp;
 
-import android.text.TextUtils;
-
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.shizhefei.mvc.RequestHandle;
 import com.shizhefei.mvc.ResponseSender;
@@ -136,13 +134,9 @@ public class MainExpertPresenterImp extends PageLoadDataSource implements MainEx
     }
 
     private void loadExpertsFavNum() {
-        String collect = UserData.getInstance().getToken().getCollectExperts();
-        int count = 0;
-        if (!TextUtils.isEmpty(collect) && collect.length() > 0) {
-            count = Utils.getCountOfString(collect, ",");
-            count += 1;
-        }
+        List<String> list = UserData.getInstance().getToken().getCollectExpertList();
         if (mView != null) {
+            int count = list.size();
             mView.updateFavExpertCount(count);
         }
     }

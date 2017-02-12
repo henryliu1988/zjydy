@@ -29,4 +29,16 @@ public interface MainExpertContract {
     interface MainExpertPresenter extends BasePresenter {
         void reloadExperts();
     }
+
+
+    interface TabView extends BaseView<TabPresenter> {
+
+        Map<String, Object> getFilterConditions();
+
+    }
+
+    interface TabPresenter extends BasePresenter {
+        void reloadExperts();
+    }
+
 }

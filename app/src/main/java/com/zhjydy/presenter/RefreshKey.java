@@ -24,7 +24,7 @@ public class RefreshKey {
     public static final int IDENTIFY_MSG_UPDATE = 10;
 
 
-    public static final int ORDET_LIST_CHANGE = 11;
+    public static final int ORDET_MSG_CHANGE = 11;
 
     public static final int TOKEN_MSG_SEX = 12;
 

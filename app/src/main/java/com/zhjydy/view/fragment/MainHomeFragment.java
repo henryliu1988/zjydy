@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
@@ -177,9 +178,13 @@ public class MainHomeFragment extends StatedFragment implements MainHomeContract
                     if (item == null || TextUtils.isEmpty(item.getId())) {
                         return;
                     }
-                    Map<String, NormalDicItem> condition = new HashMap<String, NormalDicItem>();
-                    condition.put("office", item);
-                    ((MainTabsActivity) getActivity()).gotoTabCondition(MainTabsActivity.VIEW_SECOND, condition);
+                    Map<String, Object> condition = new HashMap<String, Object>();
+                    condition.put("id", item.getId());
+                    condition.put("name", item.getName());
+                    String infp = JSONObject.toJSONString(condition);
+                    ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class,FragKey.expert_office_list_fragment, infp, false);
+
+                    // ((MainTabsActivity) getActivity()).gotoTabCondition(MainTabsActivity.VIEW_SECOND, condition);
                 }
             });
 

@@ -19,6 +19,7 @@ public class MainTabsPrensenter implements MainTabsContract.Presenter, RefreshWi
         RefreshManager.getInstance().addNewListener(RefreshKey.ORDER_DATA_READ, this);
         RefreshManager.getInstance().addNewListener(RefreshKey.NEW_COMMENT_DATA_READ, this);
         RefreshManager.getInstance().addNewListener(RefreshKey.ORDER_DATA_LIST, this);
+        RefreshManager.getInstance().addNewListener(RefreshKey.ORDET_MSG_CHANGE, this);
         start();
     }
 
@@ -49,6 +50,7 @@ public class MainTabsPrensenter implements MainTabsContract.Presenter, RefreshWi
         switch (key) {
             case RefreshKey.ORDER_DATA_READ:
             case RefreshKey.NEW_COMMENT_DATA_READ:
+            case RefreshKey.ORDET_MSG_CHANGE:
                 loadMsgCount();
                 break;
             case RefreshKey.ORDER_DATA_LIST:

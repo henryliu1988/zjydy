@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhjydy.R;
@@ -57,7 +58,11 @@ public class OrderDetailFragment extends PageImpBaseFragment implements OrderDet
     ImageView dicPhoto;
     @BindView(R.id.expert_info_layout)
     LinearLayout expertInfoLayout;
-    private OrderDetailContract.Presenter mPresenter;
+    @BindView(R.id.money)
+    TextView money;
+    @BindView(R.id.money_layout)
+    RelativeLayout moneyLayout;
+    protected OrderDetailContract.Presenter mPresenter;
 
     @Override
     public void setPresenter(OrderDetailContract.Presenter presenter) {
@@ -109,7 +114,7 @@ public class OrderDetailFragment extends PageImpBaseFragment implements OrderDet
     }
 
     @Override
-    public void update(Map<String, Object> info) {
+    public void updateOrder(Map<String, Object> info) {
         int status = Utils.toInteger(info.get("status"));
         patientName.setText("患者：" + Utils.toString(info.get("patientname")));
         patientHospital.setText("患者所在医院：" + Utils.toString(info.get("patienthospital")));
@@ -117,20 +122,6 @@ public class OrderDetailFragment extends PageImpBaseFragment implements OrderDet
         patientSerialNum.setText("预约单号：" + Utils.toString(info.get("orderid")));
         patientTime.setText("预约时间：" + DateUtil.getFullTimeDiffDayCurrent(Utils.toLong(info.get("showtime"))));
 
-        String experturl = Utils.toString(info.get("experturl"));
-        if (TextUtils.isEmpty(experturl)) {
-            ImageUtils.getInstance().displayFromDrawableOver(R.mipmap.photo, dicPhoto);
-        } else {
-            ImageUtils.getInstance().displayFromRemoteOver(experturl, dicPhoto);
-        }
-        docName.setText(Utils.toString(info.get("expertname")));
-        String docHosId = Utils.toString(info.get("hospital"));
-        String docOfficeId = Utils.toString(info.get("office"));
-        String docBusId = Utils.toString(info.get("business"));
-
-        docHospital.setText(DicData.getInstance().getHospitalById(docHosId).getHospital());
-        docDepart.setText(Utils.toString(DicData.getInstance().getOfficeById(docOfficeId).getName()));
-        docProfession.setText(Utils.toString(DicData.getInstance().getBusinessById(docBusId).getName()));
         String statuText = "";
         String textColorBg = "#FFFFFF";
         switch (status) {
@@ -186,6 +177,38 @@ public class OrderDetailFragment extends PageImpBaseFragment implements OrderDet
         }
         this.status.setText(statuText);
         ViewUtil.setCornerViewDrawbleBg(this.status, textColorBg);
+        moneyLayout.setVisibility(View.GONE);
+        Map<String, Object> huiComment = Utils.parseObjectToMapString(info.get("hui_comment"));
+        String moneyValue = Utils.toString(huiComment.get("money"));
+        if (huiComment != null && huiComment.size() > 0 && !TextUtils.isEmpty(moneyValue)) {
+            money.setText("￥" + moneyValue + "元");
+            moneyLayout.setVisibility(View.VISIBLE);
+        }
+
+        if(status == 2) {
+            titleCenterTv.setText("立即支付");
+
+        }
+
+
+    }
+
+    @Override
+    public void updateExpert(Map<String, Object> info) {
+        String experturl = Utils.toString(info.get("path"));
+        if (TextUtils.isEmpty(experturl)) {
+            ImageUtils.getInstance().displayFromDrawableOver(R.mipmap.photo, dicPhoto);
+        } else {
+            ImageUtils.getInstance().displayFromRemoteOver(experturl, dicPhoto);
+        }
+        docName.setText(Utils.toString(info.get("realname")));
+        String docHosId = Utils.toString(info.get("hospital"));
+        String docOfficeId = Utils.toString(info.get("office"));
+        String docBusId = Utils.toString(info.get("business"));
+
+        docHospital.setText(DicData.getInstance().getHospitalById(docHosId).getHospital());
+        docDepart.setText(Utils.toString(DicData.getInstance().getOfficeById(docOfficeId).getName()));
+        docProfession.setText(Utils.toString(DicData.getInstance().getBusinessById(docBusId).getName()));
     }
 
     @Override

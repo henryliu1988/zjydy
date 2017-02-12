@@ -7,6 +7,55 @@
 
     <include layout="@layout/titlebar_layout_back" />
 
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+            <TextView
+                android:id="@+id/money_all"
+                android:layout_width="0dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:layout_height="wrap_content"
+                android:background="@color/white_bg"
+                android:textColor="@color/black_text2"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/pay_comfirm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#A2A2A2"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+
+                android:textColor="@color/white_text"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:text="马上付款"
+                android:layout_weight="1" />
+
+
+        </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_layout"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="30dp"
+        >
     <TextView
         android:id="@+id/status"
         android:layout_width="match_parent"
@@ -147,13 +196,13 @@
                     android:textSize="13sp" />
 
             </LinearLayout>
+
             <TextView
                 android:id="@+id/doc_profession"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black_text2"
                 android:textSize="13sp" />
-
 
         </LinearLayout>
 
@@ -180,4 +229,102 @@
             android:layout_alignParentRight="true"
             />
     </RelativeLayout>
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="10dp"
+        android:text="保险信息"
+        android:textColor="@color/black_text2"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="3dp"
+        android:id="@+id/safe_info_layout"
+        android:background="@color/white_bg"
+       >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp">
+
+            <RelativeLayout
+                android:layout_width="30dp"
+                android:layout_height="30dp">
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/checkbox_safe"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_vertical" />
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/black_text1"
+                    android:text="XXXX意外保险" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/black_text2"
+                    android:layout_marginTop="10dp"
+                    android:text="由XXXX保险公司提供保障" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#47ACF2"
+            android:layout_marginLeft="50dp"
+            android:text="手术全程无忧，有保险有保障！ \n保单即时生成，方便快捷! \n百万保金保障，放心！" />
+    </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/div_line"/>
+
+        <RelativeLayout
+            android:id="@+id/safe_money_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white_bg"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/safe_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/black_text1"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    </ScrollView>
+
+    </RelativeLayout>
+
 </LinearLayout>

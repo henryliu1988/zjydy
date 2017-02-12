@@ -44,10 +44,16 @@ public class FragKey {
     public static final int about_app_main_fragment = 1031;
     public static final int about_app_kefu_fragment = 1032;
     public static final int about_app_advice_fragment = 1033;
+    public static final int order_pay_detail_fragment = 1034;
+    public static final int expert_office_list_fragment = 1035;
 
     public static final Map<Integer, String> FragMap = new HashMap<>();
 
     static {
+        FragMap.put(expert_office_list_fragment, "expert_office_list_fragment");
+
+        FragMap.put(order_pay_detail_fragment, "order_pay_detail_fragment");
+
         FragMap.put(about_app_main_fragment, "about_app_main_fragment");
         FragMap.put(about_app_kefu_fragment, "about_app_kefu_fragment");
         FragMap.put(about_app_advice_fragment, "about_app_advice_fragment");

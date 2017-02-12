@@ -28,7 +28,7 @@ public class MainOrderPresenterImp implements MainOrderContract.MainOrderPresent
     public MainOrderPresenterImp(MainOrderContract.MainOrderView view) {
         this.mView = view;
         view.setPresenter(this);
-        RefreshManager.getInstance().addNewListener(RefreshKey.ORDET_LIST_CHANGE, this);
+        RefreshManager.getInstance().addNewListener(RefreshKey.ORDET_MSG_CHANGE, this);
         RefreshManager.getInstance().addNewListener(RefreshKey.LOGIN_RESULT_BACK, this);
         start();
     }

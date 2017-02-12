@@ -116,7 +116,7 @@ public class FavExpertFragment extends PageImpBaseFragment implements FavExpertC
                 Map<String, Object> info = (Map<String, Object>) adapterView.getAdapter().getItem(i);
                 if (info != null) {
                     Bundle bundle = new Bundle();
-                    bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("id")));
+                    bundle.putString(IntentKey.FRAG_INFO, Utils.toString(info.get("memberid")));
                     // ActivityUtils.transActivity(getActivity(), PagerImpActivity.class, bundle, false);
                     gotoFragment(FragKey.detail_expert_fragment, bundle);
                 }

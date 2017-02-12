@@ -59,7 +59,7 @@ public class FavExpertListAdapter extends ListViewAdapter<Map<String, Object>> {
             @Override
             public void onClick(View view) {
                 if (presenter != null) {
-                    presenter.cancelFavExpert(Utils.toString(info.get("id")));
+                    presenter.cancelFavExpert(Utils.toString(info.get("memberid")));
                 }
             }
         });

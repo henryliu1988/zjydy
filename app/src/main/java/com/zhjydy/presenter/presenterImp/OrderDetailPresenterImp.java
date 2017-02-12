@@ -12,6 +12,8 @@ import com.zhjydy.util.Utils;
 import java.util.HashMap;
 import java.util.Map;
 
+import rx.functions.Func1;
+
 /**
  * Created by Administrator on 2016/9/20 0020.
  */
@@ -39,15 +41,32 @@ public class OrderDetailPresenterImp implements OrderDetailContract.Presenter {
     }
 
     private void loadOrderContent(String id) {
-        HashMap<String, Object> params = new HashMap<>();
-        params.put("id", id);
-        WebCall.getInstance().call(WebKey.func_getOrdersById, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), true) {
+        HashMap<String, Object> param1s = new HashMap<>();
+        param1s.put("id", id);
+        WebCall.getInstance().call(WebKey.func_getOrdersById, param1s).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(), true) {
             @Override
             public void onNext(WebResponse webResponse) {
                 String data = webResponse.getData();
                 Map<String, Object> order = Utils.parseObjectToMapString(data);
                 orderInfo = order;
-                mView.update(order);
+                mView.updateOrder(order);
+                String expertId = getExpertId();
+                HashMap<String, Object> params = new HashMap<>();
+                params.put("expertid", expertId);
+                WebCall.getInstance().call(WebKey.func_getExpert, params).map(new Func1<WebResponse, Map<String, Object>>() {
+                    @Override
+                    public Map<String, Object> call(WebResponse webResponse) {
+                        String data = webResponse.getData();
+                        Map<String, Object> map = Utils.parseObjectToMapString(data);
+                        return map;
+                    }
+                }).subscribe(new BaseSubscriber<Map<String, Object>>(mView.getContext(), true) {
+                    @Override
+                    public void onNext(Map<String, Object> map) {
+                        mView.updateExpert(map);
+                    }
+                });
+
             }
         });
     }

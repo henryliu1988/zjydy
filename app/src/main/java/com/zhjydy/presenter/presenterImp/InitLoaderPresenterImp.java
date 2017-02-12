@@ -2,8 +2,8 @@ package com.zhjydy.presenter.presenterImp;
 
 import android.text.TextUtils;
 
-import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.cache.SPUtils;
+import com.zhjydy.model.data.UserData;
 import com.zhjydy.presenter.RefreshKey;
 import com.zhjydy.presenter.RefreshManager;
 import com.zhjydy.presenter.RefreshWithData;
@@ -15,21 +15,23 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016/12/17 0017.
  */
-public class InitLoaderPresenterImp implements InitLoaderContract.Presenter {
+public class InitLoaderPresenterImp implements InitLoaderContract.Presenter,RefreshWithData {
 
     private InitLoaderContract.View mView;
 
     public InitLoaderPresenterImp(InitLoaderContract.View view) {
         this.mView = view;
+        mView.setPresenter(this);
         start();
+        RefreshManager.getInstance().addNewListener(RefreshKey.LOGIN_RESULT_BACK, this);
     }
 
     @Override
     public void start() {
         tryLogInBackGroud();
     }
-
-    private void tryLogInBackGroud() {
+    @Override
+    public void tryLogInBackGroud() {
 
         String phoneNum = Utils.toString(SPUtils.get("login_phoneNum", ""));
         String passoword = Utils.toString(SPUtils.get("login_password", ""));
@@ -45,7 +47,7 @@ public class InitLoaderPresenterImp implements InitLoaderContract.Presenter {
 
     @Override
     public void finish() {
-
+        RefreshManager.getInstance().removeListner(RefreshKey.LOGIN_RESULT_BACK, this);
     }
 
     @Override

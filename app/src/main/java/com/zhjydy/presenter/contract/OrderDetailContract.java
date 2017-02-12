@@ -11,7 +11,8 @@ import java.util.Map;
 public interface OrderDetailContract {
 
     interface View extends BaseView<Presenter> {
-        void update(Map<String, Object> info);
+        void updateOrder(Map<String, Object> info);
+        void updateExpert(Map<String, Object> expert);
     }
 
     interface Presenter extends BasePresenter {

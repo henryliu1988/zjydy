@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -83,22 +82,7 @@ public class MsgData {
             @Override
             public List<Map<String, Object>> call(WebResponse webResponse) {
                 mOrderMsgData = webResponse;
-                String data = webResponse.getData();
-                mOrderList = Utils.parseObjectToListMapString(data);
-                ListMapComparator comp = new ListMapComparator("addtime", 0);
-                Collections.sort(mOrderList, comp);
-                Integer statusGroup[] = {2, 3, 4, 5, 6, 7, 9, 10, 11, 12};
-
-                Iterator<Map<String, Object>> it = mOrderList.iterator();
-                List<Integer> statusList = Arrays.asList(statusGroup);
-                while (it.hasNext()) {
-                    Map<String, Object> qu = it.next();
-                    if (!statusList.contains(Utils.toInteger(qu.get("orderstatus")))) {
-                        it.remove();
-                    }
-                }
-                RefreshManager.getInstance().refreshData(RefreshKey.ORDER_DATA_READ);
-                RefreshManager.getInstance().refreshData(RefreshKey.ORDER_DATA_LIST);
+                mOrderList = parseOrderDataToNewMsg(webResponse.getData());
                 return mOrderList;
             }
         });
@@ -148,25 +132,27 @@ public class MsgData {
             public void onNext(WebResponse webResponse) {
                 String data = webResponse.getData();
                 mOrderMsgData = webResponse;
-                mOrderList = Utils.parseObjectToListMapString(data);
-                ListMapComparator comp = new ListMapComparator("addtime", 0);
-                Collections.sort(mOrderList, comp);
-                Integer statusGroup[] = {2, 3, 4, 5, 6, 7, 9, 10, 11, 12};
-
-                Iterator<Map<String, Object>> it = mOrderList.iterator();
-                List<Integer> statusList = Arrays.asList(statusGroup);
-                while (it.hasNext()) {
-                    Map<String, Object> qu = it.next();
-                    if (!statusList.contains(Utils.toInteger(qu.get("orderstatus")))) {
-                        it.remove();
-                    }
-                }
-
-                RefreshManager.getInstance().refreshData(RefreshKey.ORDER_DATA_LIST);
-                RefreshManager.getInstance().refreshData(RefreshKey.ORDER_DATA_READ);
-
+                mOrderList = parseOrderDataToNewMsg(data);
+                RefreshManager.getInstance().refreshData(RefreshKey.ORDET_MSG_CHANGE);
             }
         });
+    }
+
+    public List<Map<String, Object>> parseOrderDataToNewMsg(String data) {
+        List<Map<String, Object>> msgList = new ArrayList<>();
+        List<Map<String, Object>> allList = Utils.parseObjectToListMapString(data);
+        Integer statusGroup[] = {2, 5, 7, 8, 9, 10, 11, 12};
+        if (allList.size() < 1) {
+            return msgList;
+        }
+        ListMapComparator comp = new ListMapComparator("addtime", 0);
+        Collections.sort(allList, comp);
+        List<Integer> statusList = Arrays.asList(statusGroup);
+        for (Map<String, Object> msgData : allList)
+            if (statusList.contains(Utils.toInteger(msgData.get("orderstatus")))) {
+                msgList.add(msgData);
+            }
+        return msgList;
     }
 
     public void loadNewCommentList() {

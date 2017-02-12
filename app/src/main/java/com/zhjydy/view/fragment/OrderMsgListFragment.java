@@ -67,13 +67,14 @@ public class OrderMsgListFragment extends PageImpBaseFragment implements OrderMs
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Map<String, Object> order = (Map<String, Object>) parent.getAdapter().getItem(position);
-                if (order != null) {
+                Map<String, Object> msg = (Map<String, Object>) parent.getAdapter().getItem(position);
+                if (msg != null) {
 
-                    String orderId = Utils.toString(order.get("orderid"));
-                    int status = Utils.toInteger(order.get("status"));
+                    String orderId = Utils.toString(msg.get("orderid"));
+                    String msgId = Utils.toString(msg.get("id"));
+                    int status = Utils.toInteger(msg.get("status"));
                     if (mPresenter != null && status == 0) {
-                        mPresenter.readOrder(orderId);
+                        mPresenter.readOrder(msgId);
                     }
                     Bundle bundle = new Bundle();
                     bundle.putString(IntentKey.FRAG_INFO, orderId);

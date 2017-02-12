@@ -83,7 +83,6 @@ public class OrderConfirmPresenterImp implements OrderConfirmContract.Presenter 
                 if (WebUtils.getWebStatus(webResponse)) {
                     mView.subsribExpertResult(true, "成功预约专家");
                     MsgData.getInstance().loadOrderMsgData();
-                    RefreshManager.getInstance().refreshData(RefreshKey.ORDET_LIST_CHANGE);
                 } else {
                     mView.subsribExpertResult(false, "预约失败  " + WebUtils.getWebMsg(webResponse));
                 }

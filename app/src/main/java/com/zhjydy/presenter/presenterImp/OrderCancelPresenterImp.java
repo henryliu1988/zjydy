@@ -3,14 +3,13 @@ package com.zhjydy.presenter.presenterImp;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.zhjydy.model.data.DicData;
+import com.zhjydy.model.data.MsgData;
 import com.zhjydy.model.entity.NormalDicItem;
 import com.zhjydy.model.entity.NormalPickViewData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
-import com.zhjydy.presenter.RefreshKey;
-import com.zhjydy.presenter.RefreshManager;
 import com.zhjydy.presenter.contract.OrderCancelContract;
 import com.zhjydy.util.Utils;
 
@@ -89,7 +88,7 @@ public class OrderCancelPresenterImp implements OrderCancelContract.Presenter {
                 Map<String, Object> map = Utils.parseObjectToMapString(returnData);
                 boolean status = Utils.toBoolean(map.get("status"));
                 if (status) {
-                    RefreshManager.getInstance().refreshData(RefreshKey.ORDET_LIST_CHANGE);
+                    MsgData.getInstance().loadOrderMsgData();
                 }
                 mView.cancelResult(status);
             }

@@ -20,6 +20,7 @@ import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.DateUtil;
 import com.zhjydy.util.ImageUtils;
 import com.zhjydy.view.ActivityResultView;
+import com.zhjydy.view.avtivity.IntentKey;
 import com.zhjydy.view.avtivity.PagerImpActivity;
 import com.zhjydy.view.zhview.zhToast;
 
@@ -86,7 +87,18 @@ public abstract class PageImpBaseFragment extends StatedFragment {
             FragmentUtils.changeFragment(getActivity(), this, newFragment, tag, getViewId());
         }
     }
-
+    protected void gotoFragment(int key, String info)
+    {
+        String tag = FragKey.FragMap.get(key);
+        PageImpBaseFragment newFragment = PagerFragmentFactory.createFragment(key);
+        if (!TextUtils.isEmpty(tag) && newFragment != null)
+        {
+            Bundle bundle = new Bundle();
+            bundle.putString(IntentKey.FRAG_INFO,info);
+            newFragment.setArguments(bundle);
+            FragmentUtils.changeFragment(getActivity(), this, newFragment, tag, getViewId());
+        }
+    }
     protected void back() {
         Activity activity = getActivity();
         if (!(activity instanceof PagerImpActivity)) {

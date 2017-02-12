@@ -8,6 +8,9 @@ import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.net.WebUtils;
+import com.zhjydy.presenter.RefreshKey;
+import com.zhjydy.presenter.RefreshManager;
+import com.zhjydy.presenter.RefreshWithKey;
 import com.zhjydy.presenter.contract.FavExpertContract;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.zhview.zhToast;
@@ -22,13 +25,14 @@ import rx.functions.Func1;
 /**
  * Created by Administrator on 2016/9/20 0020.
  */
-public class FaveExpertPresenterImp implements FavExpertContract.Presenter {
+public class FaveExpertPresenterImp implements FavExpertContract.Presenter,RefreshWithKey {
 
     private FavExpertContract.View mView;
 
     public FaveExpertPresenterImp(FavExpertContract.View view) {
         this.mView = view;
         view.setPresenter(this);
+        RefreshManager.getInstance().addNewListener(RefreshKey.KEY_FAV_EXPERT,this);
         start();
     }
 
@@ -105,5 +109,10 @@ public class FaveExpertPresenterImp implements FavExpertContract.Presenter {
                 mView.updateExperts(list);
             }
         });
+    }
+
+    @Override
+    public void onRefreshWithKey(int key) {
+        loadExperts();
     }
 }

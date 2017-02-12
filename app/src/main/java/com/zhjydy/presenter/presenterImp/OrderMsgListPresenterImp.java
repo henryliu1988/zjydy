@@ -9,6 +9,9 @@ import com.zhjydy.model.net.WebKey;
 import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.model.net.WebUtils;
 import com.zhjydy.model.pageload.PageLoadDataSource;
+import com.zhjydy.presenter.RefreshKey;
+import com.zhjydy.presenter.RefreshManager;
+import com.zhjydy.presenter.RefreshWithKey;
 import com.zhjydy.presenter.contract.OrderMsgListContract;
 import com.zhjydy.util.ListMapComparator;
 
@@ -20,7 +23,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016/9/20 0020.
  */
-public class OrderMsgListPresenterImp extends PageLoadDataSource implements OrderMsgListContract.Presenter {
+public class OrderMsgListPresenterImp extends PageLoadDataSource implements OrderMsgListContract.Presenter,RefreshWithKey {
 
     private OrderMsgListContract.View mView;
 
@@ -28,6 +31,7 @@ public class OrderMsgListPresenterImp extends PageLoadDataSource implements Orde
     public OrderMsgListPresenterImp(OrderMsgListContract.View view) {
         this.mView = view;
         view.setPresenter(this);
+        RefreshManager.getInstance().addNewListener(RefreshKey.ORDET_MSG_CHANGE,this);
         start();
     }
 
@@ -67,7 +71,7 @@ public class OrderMsgListPresenterImp extends PageLoadDataSource implements Orde
             @Override
             public void onNext(WebResponse webResponse) {
                 if (WebUtils.getWebStatus(webResponse)) {
-                    loadOrderList();
+                    MsgData.getInstance().loadOrderMsgData();
                 }
             }
         });
@@ -76,5 +80,12 @@ public class OrderMsgListPresenterImp extends PageLoadDataSource implements Orde
     @Override
     public RequestHandle loadListData(ResponseSender<List<Map<String, Object>>> sender, int page) {
         return null;
+    }
+
+    @Override
+    public void onRefreshWithKey(int key) {
+        if (key == RefreshKey.ORDET_MSG_CHANGE) {
+            loadOrderList();
+        }
     }
 }

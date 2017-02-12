@@ -17,8 +17,6 @@ import com.zhjydy.view.zhview.ViewUtil;
 import java.util.List;
 import java.util.Map;
 
-import static android.R.attr.data;
-
 /**
  * Created by Administrator on 2016/9/22 0022.
  */
@@ -42,6 +40,11 @@ public class OrderMsgListAdapter extends PageLoadListAdapter {
         String statusName = "";
         String textCorlor = "#FFFFFFFF";
         switch (orderStatus) {
+            case 1:
+                imageRecId = R.mipmap.order_confirm;
+                statusName = "患者提交订单";
+                textCorlor = "#60D700";
+                break;
             case 2:
                 imageRecId = R.mipmap.order_confirm;
                 statusName = "已确认预约";

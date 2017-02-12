@@ -1,6 +1,9 @@
 package com.zhjydy.presenter.presenterImp;
 
+import android.text.TextUtils;
+
 import com.zhjydy.model.data.UserData;
+import com.zhjydy.model.entity.TokenInfo;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
@@ -12,6 +15,7 @@ import com.zhjydy.presenter.RefreshWithKey;
 import com.zhjydy.presenter.contract.IdentityInfoContract;
 import com.zhjydy.util.Utils;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +36,7 @@ public class IdentityInfoPresenterImp implements IdentityInfoContract.Presenter,
 
     public void loadIdentifyInfo() {
 
-        HashMap<String, Object> params = new HashMap<>();
+        final HashMap<String, Object> params = new HashMap<>();
         params.put("id", UserData.getInstance().getToken().getId());
         WebCall.getInstance().call(WebKey.func_patient, params).subscribe(new BaseSubscriber<WebResponse>() {
             @Override
@@ -42,6 +46,14 @@ public class IdentityInfoPresenterImp implements IdentityInfoContract.Presenter,
                     Map<String, Object> identifyMsg = Utils.parseObjectToMapString(webResponse.getData());
                     int msgInt = Utils.toInteger(identifyMsg.get("msg"));
                     List<String> path = Utils.parseObjectToListString(identifyMsg.get("path"));
+                    if (path == null || path.size() < 1) {
+                        TokenInfo info = UserData.getInstance().getToken();
+                        String idCards = info.getIdcard();
+                        if (!TextUtils.isEmpty(idCards)) {
+                            List<String> cardList = Arrays.asList(idCards.split(","));
+                            path = cardList;
+                        }
+                    }
                     if (mView != null) {
                         mView.updateIdentifyInfo(msgInt, path);
                     }
@@ -52,7 +64,7 @@ public class IdentityInfoPresenterImp implements IdentityInfoContract.Presenter,
 
     @Override
     public void start() {
-
+        loadIdentifyInfo();
     }
 
 

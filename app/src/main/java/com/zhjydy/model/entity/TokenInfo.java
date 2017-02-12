@@ -6,7 +6,6 @@ import com.zhjydy.presenter.RefreshKey;
 import com.zhjydy.presenter.RefreshManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -132,8 +131,14 @@ public class TokenInfo {
         String collect = getCollectExperts();
         List<String> coList = new ArrayList<String>();
         if (!TextUtils.isEmpty(collect)) {
-            coList = Arrays.asList(collect.split(","));
+            String[] coArray = collect.split(",");
+            for (int i =0 ; i< coArray.length; i ++) {
+                if (!coList.contains(coArray[i])) {
+                    coList.add(coArray[i]);
+                }
+            }
         }
+
         return coList;
     }
 
@@ -141,7 +146,12 @@ public class TokenInfo {
         String news = getCollectNews();
         List<String> list = new ArrayList<String>();
         if (!TextUtils.isEmpty(news)) {
-            list = Arrays.asList(news.split(","));
+            String[] coArray = news.split(",");
+            for (int i =0 ; i< coArray.length; i ++) {
+                if (!list.contains(coArray[i])) {
+                    list.add(coArray[i]);
+                }
+            }
         }
         return list;
     }

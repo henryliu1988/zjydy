@@ -72,7 +72,10 @@ public class PagerFragmentFactory {
                 return new AboutKefuFragment();
             case FragKey.about_app_advice_fragment:
                 return new AboutAdviceFragment();
-
+            case FragKey.order_pay_detail_fragment:
+                return new OrderPayDetailFragment();
+            case FragKey.expert_office_list_fragment:
+                return new ExpertOfficeListFragment();
         }
         return null;
     }

@@ -258,7 +258,7 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
                 UserData.getInstance().getIdentifyState().subscribe(new BaseSubscriber<Integer>() {
                     @Override
                     public void onNext(Integer state) {
-                        if (state < 0) {
+                        if (state != 1) {
                             zhToast.showToast("尚未进行认证或者认证尚未通过审核，请认证审核通过后，预约专家");
                             return;
                         }

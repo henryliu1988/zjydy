@@ -130,8 +130,8 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
                     case OrderListAdapter.OPERATE_CANCEL:
                         ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.order_cancel_fragment, id, false);
                         break;
-
                     case OrderListAdapter.OPERATE_PAY:
+                        ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.order_pay_detail_fragment, id, false);
                         break;
 
                 }
