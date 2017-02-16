@@ -9,8 +9,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhjydy.R;
+import com.zhjydy.model.data.AppDataManager;
+import com.zhjydy.model.net.BaseSubscriber;
+import com.zhjydy.model.net.WebResponse;
 import com.zhjydy.presenter.contract.CommonContract;
 import com.zhjydy.presenter.presenterImp.CommonPresenterImp;
+import com.zhjydy.view.zhview.zhToast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -80,6 +84,14 @@ public class CommonFragment extends PageImpBaseFragment implements CommonContrac
                 back();
                 break;
             case R.id.clear_layout:
+                AppDataManager.getInstance().clearDataCache().subscribe(new BaseSubscriber<WebResponse>(getContext(),"请稍后，请在删除缓存")
+                {
+                    @Override
+                    public void onNext(WebResponse response)
+                    {
+                        zhToast.showToast("清除缓存成功");
+                    }
+                });
                 break;
         }
     }

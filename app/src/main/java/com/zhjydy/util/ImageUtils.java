@@ -27,13 +27,12 @@ import java.io.File;
  */
 public class ImageUtils {
 
-
-
     File cacheDir = StorageUtils.getOwnCacheDirectory(zhjApplication.getInstance().getContext(), "zhj121/imagecache");
 
 
     private DisplayImageOptions mSimpleOptions;
     private DisplayImageOptions mOverOptions;
+
     private ImageUtils() {
     }
 
@@ -41,28 +40,29 @@ public class ImageUtils {
 
     public void initImageLoader() {
         DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .cacheInMemory()  //缓存在内存中
-                .cacheOnDisc()  //磁盘缓存
+                .cacheInMemory(true)  //缓存在内存中
+                .cacheOnDisk(true)  //磁盘缓存
                 .build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration
                 .Builder(zhjApplication.getInstance().getContext())
                 .memoryCacheExtraOptions(480, 800) // max width, max height，即保存的每个缓存文件的最大长宽
-              //  .discCacheExtraOptions(480, 800, CompressFormat.JPEG, 75, null) // Can slow ImageLoader, use it carefully (Better don't use it)/设置缓存的详细信息，最好不要设置这个
+                //  .discCacheExtraOptions(480, 800, CompressFormat.JPEG, 75, null) // Can slow ImageLoader, use it carefully (Better don't use it)/设置缓存的详细信息，最好不要设置这个
                 .threadPoolSize(5)//线程池内加载的数量
                 .threadPriority(Thread.NORM_PRIORITY - 2)
                 .denyCacheImageMultipleSizesInMemory()
                 .memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024)) // You can pass your own memory cache implementation/你可以通过自己的内存缓存实现
                 .memoryCacheSize(2 * 1024 * 1024)
-                .discCacheFileNameGenerator(new Md5FileNameGenerator())//将保存的时候的URI名称用MD5 加密
+                .diskCacheFileNameGenerator(new Md5FileNameGenerator())//将保存的时候的URI名称用MD5 加密
+                .diskCacheFileCount(10000)
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
-                .discCacheFileCount(100) //缓存的文件数量
-              //  .discCache(new UnlimitedDiscCache(cacheDir))//自定义缓存路径
+                .diskCacheSize(1024 * 1024 * 1024)
                 .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
                 .imageDownloader(new BaseImageDownloader(zhjApplication.getInstance().getContext(), 5 * 1000, 30 * 1000)) // connectTimeout (5 s), readTimeout (30 s)超时时间
                 .writeDebugLogs() // Remove for release app
                 .build();//开始构建          ImageLoader.getInstance().init(config);
         ImageLoader.getInstance().init(config);
     }
+
 
     private DisplayImageOptions getSimpleOptions() {
         if (mSimpleOptions == null) {
@@ -76,6 +76,8 @@ public class ImageUtils {
                     .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
                     .considerExifParams(true)
                     .bitmapConfig(Bitmap.Config.RGB_565)//设置图片的解码类型
+                    .cacheInMemory(true)  //缓存在内存中
+                    .cacheOnDisk(true)
                     .build();//构建完成
 
         }
@@ -83,7 +85,7 @@ public class ImageUtils {
     }
 
 
-    private  DisplayImageOptions getOverOptions() {
+    private DisplayImageOptions getOverOptions() {
         if (mOverOptions == null) {
             mOverOptions = new DisplayImageOptions.Builder()
                     //.showStubImage(R.drawable.ic_stub)
@@ -94,11 +96,14 @@ public class ImageUtils {
                     .cacheOnDisc(true)
                     .bitmapConfig(Bitmap.Config.RGB_565)   //设置图片的解码类型
                     .displayer(new Displayer(0))
+                    .cacheInMemory(true)  //缓存在内存中
+                    .cacheOnDisk(true)
                     .build();
 
         }
         return mOverOptions;
     }
+
     public static synchronized ImageUtils getInstance() {
         if (instance == null) {
             instance = new ImageUtils();
@@ -106,6 +111,12 @@ public class ImageUtils {
         return instance;
     }
 
+    public static void cleanMemotyCache() {
+        ImageLoader.getInstance().clearMemoryCache();
+    }
+    public static void cleanDiskCache() {
+        ImageLoader.getInstance().clearDiskCache();
+    }
     /**
      * 从内存卡中异步加载本地图片
      *
@@ -156,19 +167,23 @@ public class ImageUtils {
         ImageLoader.getInstance().displayImage("drawable://" + imageId,
                 imageView);
     }
+
     public void displayFromDrawableOver(int imageId, ImageView imageView) {
         // String imageUri = "drawable://" + R.drawable.image; // from drawables
         // (only images, non-9patch)
         ImageLoader.getInstance().displayImage("drawable://" + imageId,
-                imageView,getOverOptions());
+                imageView, getOverOptions());
     }
+
     public void displayFromSdcardOver(String uri, ImageView imageView) {
-        ImageLoader.getInstance().displayImage("file://" + uri, imageView,getOverOptions());
+        ImageLoader.getInstance().displayImage("file://" + uri, imageView, getOverOptions());
     }
+
     public void displayFromRemoteOver(String imageurl, ImageView imageView) {
         String encodedUrl = WebKey.WEBKEY_BASE + transition(imageurl);
         ImageLoader.getInstance().displayImage(encodedUrl, imageView, getOverOptions());
     }
+
     public void displayFromRemote(String imageurl, ImageView imageView) {
         String encodedUrl = WebKey.WEBKEY_BASE + transition(imageurl);
         ImageLoader.getInstance().displayImage(encodedUrl, imageView, getSimpleOptions());
@@ -197,7 +212,7 @@ public class ImageUtils {
         if (sdCardExist) {
             // 这里可以修改为你的路径
             sdDir = new File(Environment.getExternalStorageDirectory()
-                    + "/zhjydy");
+                    + "/zhj121_doc");
             if (!sdDir.exists()) {
                 sdDir.mkdir();
             }

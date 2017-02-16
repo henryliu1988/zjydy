@@ -1,5 +1,15 @@
 package com.zhjydy.model.data;
 
+import com.zhjydy.app.zhjApplication;
+import com.zhjydy.model.net.WebResponse;
+import com.zhjydy.util.DataCleanManager;
+import com.zhjydy.util.ImageUtils;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 /**
  * Created by Administrator on 2016/11/8 0008.
  */
@@ -27,6 +37,19 @@ public class AppDataManager {
         MsgData.getInstance().loadData();
         UserData.getInstance().loadUserData();
     }
-
+    public Observable<WebResponse> clearDataCache() {
+        return Observable.create(new Observable.OnSubscribe<WebResponse>() {
+            @Override
+            public void call(Subscriber<? super WebResponse> subscriber) {
+                DataCleanManager.cleanApplicationData(zhjApplication.getInstance().getContext());
+                ImageUtils.getInstance().cleanDiskCache();
+                WebResponse result = new WebResponse();
+                result.setError(0);
+                subscriber.onNext(result);
+                subscriber.onCompleted();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 
 }
