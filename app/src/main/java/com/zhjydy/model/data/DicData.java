@@ -76,8 +76,7 @@ public class DicData {
         if (TextUtils.isEmpty(officeListData)) {
             return new ArrayList<>();
         }
-        list = JSON.parseObject(officeListData, new TypeReference<List<NormalDicItem>>() {
-        });
+        list = partNormalDicJson(officeListData);
         return list;
 
     }
@@ -90,9 +89,7 @@ public class DicData {
         if (TextUtils.isEmpty(businessListData)) {
             return new ArrayList<>();
         }
-        list = JSON.parseObject(businessListData, new TypeReference<List<NormalDicItem>>() {
-
-        });
+        list = partNormalDicJson(businessListData);
         return list;
 
     }
@@ -106,8 +103,7 @@ public class DicData {
         if (TextUtils.isEmpty(hospitalListData)) {
             return new ArrayList<>();
         }
-        list = JSON.parseObject(hospitalListData, new TypeReference<List<HospitalDicItem>>() {
-        });
+        list = partHospitalDicJson(hospitalListData);
         return list;
     }
 
@@ -115,8 +111,7 @@ public class DicData {
     public List<District> getAllPros() {
         if (mProList == null || mProList.size() < 1) {
             prosListData = (String) SPUtils.get("pro_dic", "");
-            mProList = JSON.parseObject(prosListData, new TypeReference<List<District>>() {
-            });
+            mProList = parseDistrictJson(prosListData);
         }
         return mProList;
     }
@@ -124,8 +119,7 @@ public class DicData {
     public List<District> getAllCities() {
         if (mCityList == null || mCityList.size() < 1) {
             cityListData = (String) SPUtils.get("city_dic", "");
-            mCityList = JSON.parseObject(cityListData, new TypeReference<List<District>>() {
-            });
+            mCityList = parseDistrictJson(cityListData);
         }
         return mCityList;
     }
@@ -134,8 +128,7 @@ public class DicData {
     public List<District> getAllQus() {
         if (mQuList == null || mQuList.size() < 1) {
             quListData = (String) SPUtils.get("qu_dic", "");
-            mQuList = JSON.parseObject(quListData, new TypeReference<List<District>>() {
-            });
+            mQuList = parseDistrictJson(quListData);
         }
         return mQuList;
     }
@@ -145,8 +138,7 @@ public class DicData {
 
         if (mProList == null || mProList.size() < 1) {
             prosListData = (String) SPUtils.get("pro_dic", "");
-            mProList = JSON.parseObject(prosListData, new TypeReference<List<District>>() {
-            });
+            mProList = parseDistrictJson(prosListData);
         }
         for (District p : mProList) {
             map.put(p.getId(), p);
@@ -158,8 +150,7 @@ public class DicData {
         Map<String, District> map = new HashMap<>();
         if (mCityList == null || mCityList.size() < 1) {
             cityListData = (String) SPUtils.get("city_dic", "");
-            mCityList = JSON.parseObject(cityListData, new TypeReference<List<District>>() {
-            });
+            mCityList = parseDistrictJson(cityListData);
         }
         for (District c : mCityList) {
             map.put(c.getId(), c);
@@ -174,8 +165,7 @@ public class DicData {
 
         if (mQuList == null || mQuList.size() < 1) {
             quListData = (String) SPUtils.get("qu_dic", "");
-            qus = JSON.parseObject(quListData, new TypeReference<List<District>>() {
-            });
+            qus = parseDistrictJson(quListData);
         }
         for (District q : qus) {
             map.put(q.getId(), q);
@@ -406,11 +396,11 @@ public class DicData {
 
 
     public Observable<Map<String, ArrayList>> getCityAndHospitalForPicker() {
-        HashMap<String, Object> params = new HashMap<>();
+        final HashMap<String, Object> params = new HashMap<>();
         params.put("page", 1);
         params.put("pagesize", Utils.toString(1000000000));
         WebResponse momery = new WebResponse();
-        if (!TextUtils.isEmpty(hospitalListData)){
+        if (!TextUtils.isEmpty(hospitalListData)) {
             momery.setData(hospitalListData);
         }
         Observable<Map<String, ArrayList<HosipitalPickViewData>>> hosOb = WebCall.getInstance().callCacheThree(WebKey.func_getHospital, params, momery, "hospital_dic").map(new Func1<WebResponse, Map<String, ArrayList<HosipitalPickViewData>>>() {
@@ -420,8 +410,7 @@ public class DicData {
                 hospitalListData = data;
                 SPUtils.put("hospital_dic", data);
                 List<HospitalDicItem> list = new ArrayList<>();
-                list = JSON.parseObject(hospitalListData, new TypeReference<List<HospitalDicItem>>() {
-                });
+                list = partHospitalDicJson(hospitalListData);
                 final Map<String, ArrayList<HosipitalPickViewData>> hosMap = new HashMap<>();
                 Observable.from(list).groupBy(new Func1<HospitalDicItem, String>() {
                     @Override
@@ -460,8 +449,7 @@ public class DicData {
                 String data = webResponse.getData();
                 cityListData = data;
                 SPUtils.put("city_dic", data);
-                mCityList = JSON.parseObject(data, new TypeReference<List<District>>() {
-                });
+                mCityList = parseDistrictJson(cityListData);
                 return mCityList;
             }
         });
@@ -503,8 +491,8 @@ public class DicData {
                         }
                     }
                 }
-                pickers.put("city",cityList);
-                pickers.put("hospital",hosList);
+                pickers.put("city", cityList);
+                pickers.put("hospital", hosList);
                 return pickers;
             }
         });
@@ -518,9 +506,7 @@ public class DicData {
                 officeListData = data;
                 SPUtils.put("office_dic", data);
                 List<NormalDicItem> list = new ArrayList<NormalDicItem>();
-                list = JSON.parseObject(data, new TypeReference<List<NormalDicItem>>() {
-                        }
-                );
+                list = partNormalDicJson(data);
             }
         });
     }
@@ -550,9 +536,7 @@ public class DicData {
                 businessListData = data;
                 SPUtils.put("business_dic", data);
                 List<NormalDicItem> list = new ArrayList<NormalDicItem>();
-                list = JSON.parseObject(data, new TypeReference<List<NormalDicItem>>() {
-                        }
-                );
+                list = partNormalDicJson(data);
             }
         });
     }
@@ -564,8 +548,7 @@ public class DicData {
                 String data = webResponse.getData();
                 SPUtils.put("pro_dic", data);
                 prosListData = data;
-                mProList = JSON.parseObject(data, new TypeReference<List<District>>() {
-                });
+                mProList = parseDistrictJson(data);
                 return mProList;
             }
         }).subscribe(new BaseSubscriber<List<District>>() {
@@ -580,8 +563,7 @@ public class DicData {
                 String data = webResponse.getData();
                 cityListData = data;
                 SPUtils.put("city_dic", data);
-                mCityList = JSON.parseObject(data, new TypeReference<List<District>>() {
-                });
+                mCityList = parseDistrictJson(data);
                 ;
                 return mCityList;
             }
@@ -597,8 +579,7 @@ public class DicData {
                 String data = webResponse.getData();
                 quListData = data;
                 SPUtils.put("qu_dic", data);
-                mQuList = JSON.parseObject(data, new TypeReference<List<District>>() {
-                });
+                mQuList = parseDistrictJson(data);
                 return mQuList;
             }
         }).subscribe(new BaseSubscriber<List<District>>() {
@@ -620,8 +601,7 @@ public class DicData {
                 hospitalListData = data;
                 SPUtils.put("hospital_dic", data);
                 List<HospitalDicItem> list = new ArrayList<>();
-                list = JSON.parseObject(hospitalListData, new TypeReference<List<HospitalDicItem>>() {
-                });
+                list = partHospitalDicJson(hospitalListData);
             }
         });
     }
@@ -713,4 +693,39 @@ public class DicData {
         }
         return "";
     }
+
+
+    public List<District> parseDistrictJson(String json) {
+        List<District> list = new ArrayList<>();
+        try {
+            list = JSON.parseObject(json, new TypeReference<List<District>>() {
+            });
+        } catch (Exception e) {
+
+        }
+        return list;
+    }
+
+    public List<HospitalDicItem> partHospitalDicJson(String json) {
+        List<HospitalDicItem> list = new ArrayList<>();
+        try {
+            list = JSON.parseObject(json, new TypeReference<List<HospitalDicItem>>() {
+            });
+        } catch (Exception e) {
+
+        }
+        return list;
+    }
+
+    public List<NormalDicItem> partNormalDicJson(String json) {
+        List<NormalDicItem> list = new ArrayList<>();
+        try {
+            list = JSON.parseObject(json, new TypeReference<List<NormalDicItem>>() {
+            });
+        } catch (Exception e) {
+
+        }
+        return list;
+    }
 }
+

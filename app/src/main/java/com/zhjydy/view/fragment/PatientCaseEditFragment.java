@@ -49,8 +49,8 @@ public class PatientCaseEditFragment extends PageImpBaseFragment implements Pati
     @BindView(R.id.title_back)
     ImageView titleBack;
     @BindView(R.id.title_center_tv)
-    TextView titleCenterTv;
-    @BindView(R.id.name_title)
+    TextView titleCenterTv;    @BindView(R.id.name_title)
+
     TextView nameTitle;
     @BindView(R.id.name_value)
     EditText nameValue;

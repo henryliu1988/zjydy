@@ -29,12 +29,12 @@ public class ExperDetaiCommentListAdapter extends ListViewAdapter<Map<String, Ob
         String expertId = Utils.toString(comment.get("expertid"));
         String sendName = Utils.toString(comment.get("sendname"));
         String sendId = Utils.toString(comment.get("sendid"));
-        if (!TextUtils.isEmpty(expertId) && expertId.equals(sendId)) {
+        if (!TextUtils.isEmpty(expertId) && expertId.equals(sendId) ) {
             holder.getView(R.id.reply_tv).setVisibility(View.VISIBLE);
         } else {
             holder.getView(R.id.reply_tv).setVisibility(View.GONE);
         }
-
+        holder.getView(R.id.reply_tv).setVisibility(View.VISIBLE);
         ((TextView) holder.getView(R.id.name)).setText(sendName);
         ((TextView) holder.getView(R.id.content)).setText(Utils.toString(comment.get("content")));
         ((TextView) holder.getView(R.id.time)).setText(DateUtil.getTimeDiffDayCurrent(Utils.toLong(comment.get("addtime"))));
