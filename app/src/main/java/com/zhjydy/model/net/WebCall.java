@@ -34,7 +34,7 @@ public class WebCall {
 
 
     public Observable<WebResponse> call(int methodId, HashMap<String, Object> params) {
-        if (!WebKey.WEBKEY_FUNC_COMMON_MAP.containsKey(methodId) && !WebKey.WEBKEY_FUNC_HUAN_MAP.containsKey(methodId)) {
+        if (!WebKey.WEBKEY_FUNC_COMMON_MAP.containsKey(methodId) && !WebKey.WEBKEY_FUNC_HUAN_MAP.containsKey(methodId) && !WebKey.WEBKEY_FUNC_PAY_MAP.containsKey(methodId)) {
             WebResponse response = new WebResponse(1, "没有此接口", null);
             return Observable.just(response);
         }

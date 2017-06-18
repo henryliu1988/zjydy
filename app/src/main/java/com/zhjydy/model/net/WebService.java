@@ -38,9 +38,15 @@ public class WebService {
         if (WebKey.WEBKEY_FUNC_COMMON_MAP.containsKey(methodId)) {
             methodName = WebKey.WEBKEY_FUNC_COMMON_MAP.get(methodId);
             url = WebKey.WEBKEY_URL_COMMON;
-        } else {
+        } else if (WebKey.WEBKEY_FUNC_HUAN_MAP.containsKey(methodId)){
             methodName = WebKey.WEBKEY_FUNC_HUAN_MAP.get(methodId);
             url = WebKey.WEBKEY_URL_HUAN;
+        } else if (WebKey.WEBKEY_FUNC_PAY_MAP.containsKey(methodId)) {
+            methodName = WebKey.WEBKEY_FUNC_PAY_MAP.get(methodId);
+            url = WebKey.WEBKEY_URL_ALIPAY;
+        } else {
+            methodName = "";
+            url = "";
         }
         method = methodName;
         // 创建HttpTransportSE对象，传递WebService服务器地址

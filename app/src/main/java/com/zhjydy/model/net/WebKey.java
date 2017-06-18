@@ -14,6 +14,8 @@ public class WebKey {
     public static final String WEBKEY_BASE = "http://59.110.24.36/yiduyi/";
     public static final String WEBKEY_URL_RES = "http://59.110.24.36/yiduyi/index.php?s=App/Common/imgUpload";
 
+    public static final String WEBKEY_URL_ALIPAY = "http://www.zhuanjiayiduiyi.com/alipay/index.php";
+
     public static final String TYPE_KEY = "1";
 
     public static final int func_login = 1001;   //登录
@@ -70,7 +72,10 @@ public class WebKey {
     public static final int func_updateCommentStatus = 1053;  //
     public static final int func_getSysMsg = 1054;  //
     public static final int func_addidear = 1055;  //
+    public static final int func_getalipayresult = 1056;  //
 
+
+    public static final int func_ydypay = 2001;
 
     public static final Map<Integer, String> WEBKEY_FUNC_COMMON_MAP = new HashMap<Integer, String>();
 
@@ -134,5 +139,12 @@ public class WebKey {
         WEBKEY_FUNC_HUAN_MAP.put(func_updateMobile, "updateMobile");
         WEBKEY_FUNC_HUAN_MAP.put(func_updateMember, "updateMember");
         WEBKEY_FUNC_HUAN_MAP.put(func_searchCollectExpert, "searchCollectExpert");
+        WEBKEY_FUNC_HUAN_MAP.put(func_getalipayresult, "getalipayresult");
+
     }
+    public static final Map<Integer, String> WEBKEY_FUNC_PAY_MAP = new HashMap<Integer, String>();
+    static {
+        WEBKEY_FUNC_PAY_MAP.put(func_ydypay,"ydypay");
+    }
+
 }

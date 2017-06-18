@@ -63,7 +63,7 @@ public class OrderDetailFragment extends PageImpBaseFragment implements OrderDet
     @BindView(R.id.money_layout)
     RelativeLayout moneyLayout;
     protected OrderDetailContract.Presenter mPresenter;
-
+    protected String mOrderId = "";
     @Override
     public void setPresenter(OrderDetailContract.Presenter presenter) {
         this.mPresenter = presenter;
@@ -93,11 +93,10 @@ public class OrderDetailFragment extends PageImpBaseFragment implements OrderDet
             }
         });
         titleCenterTv.setText("订单详情");
-        String orderId = "";
         if (getArguments() != null && !TextUtils.isEmpty(getArguments().getString(IntentKey.FRAG_INFO))) {
-            orderId = getArguments().getString(IntentKey.FRAG_INFO);
+            mOrderId = getArguments().getString(IntentKey.FRAG_INFO);
         }
-        new OrderDetailPresenterImp(this, orderId);
+        new OrderDetailPresenterImp(this, mOrderId);
         expertInfoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,8 +110,12 @@ public class OrderDetailFragment extends PageImpBaseFragment implements OrderDet
                 gotoFragment(FragKey.detail_expert_fragment, bundle);
             }
         });
+        initOperateDetail();
     }
 
+    public void initOperateDetail() {
+
+    }
     @Override
     public void updateOrder(Map<String, Object> info) {
         int status = Utils.toInteger(info.get("status"));
