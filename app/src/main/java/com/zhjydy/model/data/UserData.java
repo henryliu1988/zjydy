@@ -117,6 +117,8 @@ public class UserData {
 
     public void logOut() {
         SPUtils.put("login_auto", false);
+        mToken = null;
+        mIdentifyWeb = null;
     }
     public boolean isLogin(){
         if (mToken == null || TextUtils.isEmpty(mToken.getId())) {

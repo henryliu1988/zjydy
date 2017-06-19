@@ -31,62 +31,77 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/10/21 0021.
  */
-public abstract class PageImpBaseFragment extends StatedFragment {
+public abstract class PageImpBaseFragment extends StatedFragment
+{
 
     public static final int SELECT_PICTURE = 1;
     public static final int SELECT_CAMER = 0;
 
 
-    protected int getViewId() {
+    protected int getViewId()
+    {
         Activity activity = getActivity();
-        if (!(activity instanceof PagerImpActivity)) {
+        if (!(activity instanceof PagerImpActivity))
+        {
             return -1;
         }
         return ((PagerImpActivity) activity).getFragmentViewId();
     }
 
 
-    protected void gotoFragment(int key) {
+    protected void gotoFragment(int key)
+    {
         List<Integer> noUserFragList = Arrays.asList(FragKey.NO_NEED_USER_FRAG);
-        if (!noUserFragList.contains(key) && !UserData.getInstance().isLogin()) {
-            ActivityUtils.showLogin(getActivity(),false);
+        if (!noUserFragList.contains(key) && !UserData.getInstance().isLogin())
+        {
+            ActivityUtils.showLogin(getActivity(), false);
             zhToast.showToast("请先登录");
             return;
         }
         String tag = FragKey.FragMap.get(key);
         PageImpBaseFragment newFragment = PagerFragmentFactory.createFragment(key);
-        if (!TextUtils.isEmpty(tag) && newFragment != null) {
+        if (!TextUtils.isEmpty(tag) && newFragment != null)
+        {
             FragmentUtils.changeFragment(getActivity(), this, newFragment, tag, getViewId());
         }
     }
+
     /**
      * 弹出软键盘
      */
-    private void showKeyBoard(EditText editText) {
+    private void showKeyBoard(EditText editText)
+    {
         InputMethodManager imm = (InputMethodManager) zhjApplication.getInstance().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
+
     /**
      * 收起软键盘
      */
-    public static void closeKeyBoard(EditText editText) {
+    public static void closeKeyBoard(EditText editText)
+    {
         InputMethodManager inputMethodManager = (InputMethodManager) zhjApplication.getInstance().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
-    protected void gotoFragment(int key, Bundle bundle) {
+
+    protected void gotoFragment(int key, Bundle bundle)
+    {
         List<Integer> noUserFragList = Arrays.asList(FragKey.NO_NEED_USER_FRAG);
-        if (!noUserFragList.contains(key) && !UserData.getInstance().isLogin()) {
-            ActivityUtils.showLogin(getActivity(),false);
+        if (!noUserFragList.contains(key) && !UserData.getInstance().isLogin())
+        {
+            ActivityUtils.showLogin(getActivity(), false);
             zhToast.showToast("请先登录");
             return;
         }
         String tag = FragKey.FragMap.get(key);
         PageImpBaseFragment newFragment = PagerFragmentFactory.createFragment(key);
-        if (!TextUtils.isEmpty(tag) && newFragment != null) {
+        if (!TextUtils.isEmpty(tag) && newFragment != null)
+        {
             newFragment.setArguments(bundle);
             FragmentUtils.changeFragment(getActivity(), this, newFragment, tag, getViewId());
         }
     }
+
     protected void gotoFragment(int key, String info)
     {
         String tag = FragKey.FragMap.get(key);
@@ -94,49 +109,61 @@ public abstract class PageImpBaseFragment extends StatedFragment {
         if (!TextUtils.isEmpty(tag) && newFragment != null)
         {
             Bundle bundle = new Bundle();
-            bundle.putString(IntentKey.FRAG_INFO,info);
+            bundle.putString(IntentKey.FRAG_INFO, info);
             newFragment.setArguments(bundle);
             FragmentUtils.changeFragment(getActivity(), this, newFragment, tag, getViewId());
         }
     }
-    protected void back() {
+
+    protected void back()
+    {
         Activity activity = getActivity();
-        if (!(activity instanceof PagerImpActivity)) {
+        if (!(activity instanceof PagerImpActivity))
+        {
             return;
         }
         FragmentUtils.back((PagerImpActivity) activity);
     }
 
-    protected void back(int step) {
-        while (step > 0) {
+    protected void back(int step)
+    {
+        while (step > 0)
+        {
             back();
             step--;
         }
     }
 
-    protected void back(int step, int[] fragkey) {
-        while (step > 0) {
+    protected void back(int step, int[] fragkey)
+    {
+        while (step > 0)
+        {
             back();
             step--;
         }
         Activity activity = getActivity();
-        if (!(activity instanceof PagerImpActivity)) {
+        if (!(activity instanceof PagerImpActivity))
+        {
             return;
         }
         FragmentUtils.refreshFragments((PagerImpActivity) activity, fragkey);
     }
 
-    protected void back(int[] fragkey) {
+    protected void back(int[] fragkey)
+    {
         Activity activity = getActivity();
-        if (!(activity instanceof PagerImpActivity)) {
+        if (!(activity instanceof PagerImpActivity))
+        {
             return;
         }
         FragmentUtils.back((PagerImpActivity) activity);
         FragmentUtils.refreshFragments((PagerImpActivity) activity, fragkey);
     }
 
-    protected void addOnActivityResultView(ActivityResultView view) {
-        if (!(getActivity() instanceof PagerImpActivity)) {
+    protected void addOnActivityResultView(ActivityResultView view)
+    {
+        if (!(getActivity() instanceof PagerImpActivity))
+        {
             return;
         }
         PagerImpActivity activity = (PagerImpActivity) getActivity();
@@ -144,21 +171,41 @@ public abstract class PageImpBaseFragment extends StatedFragment {
     }
 
 
-    protected void selectImg() {
+    public boolean checkLogin()
+    {
+        if (!UserData.getInstance().isLogin())
+        {
+            zhToast.showToast("请先登录");
+            ActivityUtils.showLogin(getActivity(), false);
+            return false;
+        }
+        return true;
+    }
+
+    protected void selectImg()
+    {
         final CharSequence[] items = {"拍照上传", "从相册选择"};
         new AlertDialog.Builder(getContext()).setTitle("选择图片来源")
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == SELECT_PICTURE) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                .setItems(items, new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        if (which == SELECT_PICTURE)
+                        {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                            {
                                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, SELECT_PICTURE);
-                            } else {
+                            } else
+                            {
                                 toGetLocalImage();
                             }
-                        } else {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        } else
+                        {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                            {
                                 requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, SELECT_CAMER);
-                            } else {
+                            } else
+                            {
                                 toGetCameraImage();
                             }
                             //
@@ -170,11 +217,13 @@ public abstract class PageImpBaseFragment extends StatedFragment {
     /**
      * 选择本地图片
      */
-    public void toGetLocalImage() {
+    public void toGetLocalImage()
+    {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        if (getActivity() != null) {
+        if (getActivity() != null)
+        {
             getActivity().startActivityForResult(intent, SELECT_PICTURE);
         }
 
@@ -186,15 +235,18 @@ public abstract class PageImpBaseFragment extends StatedFragment {
     /**
      * 照相选择图片
      */
-    public void toGetCameraImage() {
+    public void toGetCameraImage()
+    {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE, null);
         String time = DateUtil.getCurrent();
         File path = ImageUtils.getInstance().getAppImageFilePath(time + ".jpg");
-        if (path == null) {
+        if (path == null)
+        {
             zhToast.showToast("创建路径失败");
         }
         mCameraPath = path;
-        if (getActivity() != null) {
+        if (getActivity() != null)
+        {
             Uri uri = Uri.fromFile(mCameraPath);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
             getActivity().startActivityForResult(intent, SELECT_CAMER);

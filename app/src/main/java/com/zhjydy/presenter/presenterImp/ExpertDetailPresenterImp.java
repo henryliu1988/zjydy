@@ -136,12 +136,14 @@ public class ExpertDetailPresenterImp implements ExpertDetailContract.Presenter 
         params.put("content", content);
         params.put("expertid", expertId);
 
+        /*
         if (!TextUtils.isEmpty(mark)) {
             params.put("mark", mark);
         }
+        */
         params.put("type", 1);
 
-        WebCall.getInstance().call(WebKey.func_addComment, params).subscribe(new BaseSubscriber<WebResponse>() {
+        WebCall.getInstance().call(WebKey.func_addComment, params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"") {
             @Override
             public void onNext(WebResponse webResponse) {
                 if (WebUtils.getWebStatus(webResponse)) {
