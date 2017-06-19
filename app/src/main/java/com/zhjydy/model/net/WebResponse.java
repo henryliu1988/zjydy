@@ -45,6 +45,9 @@ public class WebResponse {
     }
 
     public void setData(String data) {
+        if (TextUtils.isEmpty(data)) {
+            return;
+        }
         String tmp = data.replace("\r", "\\r");
         tmp = tmp.replace("\n", "\\n");
         this.mData = tmp;
