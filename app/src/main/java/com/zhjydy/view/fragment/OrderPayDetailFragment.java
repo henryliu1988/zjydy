@@ -72,7 +72,7 @@ public class OrderPayDetailFragment extends OrderDetailFragment {
 
     private void confirmAlipay() {
         HashMap<String, Object> params = new HashMap<>();
-        params.put("out_trade_no", mOrderId);
+        params.put("outtradeno", mOrderId);
         params.put("money", "0.1");
         WebCall.getInstance().call(WebKey.func_ydypay, params).subscribe(new BaseSubscriber<WebResponse>(getContext(),"") {
             @Override
@@ -112,8 +112,6 @@ public class OrderPayDetailFragment extends OrderDetailFragment {
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                             zhToast.showToast("支付失败");
-
-
                         }
                     }
                     break;
