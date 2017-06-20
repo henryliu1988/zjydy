@@ -91,11 +91,10 @@ public class FragKey {
         FragMap.put(patient_case_edit_attach_fragment, "patient_case_edit_attach_fragment");
         FragMap.put(search_home_fragment, "search_home_fragment");
         FragMap.put(mine_name_change_fragment, "mine_name_change_fragment");
-
     }
 
 
     public static final Integer[] NO_NEED_USER_FRAG = {
-            search_expert_fragment,search_info_fragment,detail_expert_fragment,detail_info_fragment,common_fragment,search_home_fragment
+            search_expert_fragment,search_info_fragment,detail_expert_fragment,detail_info_fragment,common_fragment,search_home_fragment,expert_office_list_fragment
     };
 }

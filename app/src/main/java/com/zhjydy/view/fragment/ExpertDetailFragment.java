@@ -17,6 +17,7 @@ import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.presenter.contract.ExpertDetailContract;
 import com.zhjydy.presenter.presenterImp.ExpertDetailPresenterImp;
+import com.zhjydy.util.ActivityUtils;
 import com.zhjydy.util.ImageUtils;
 import com.zhjydy.util.Utils;
 import com.zhjydy.view.adapter.ExperDetaiCommentListAdapter;
@@ -183,6 +184,9 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
             saveLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (!checkLogin()) {
+                        return;
+                    }
                     mPresenter.cancelSaveExpert();
                 }
             });
@@ -192,6 +196,9 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
             saveLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (!checkLogin()) {
+                        return;
+                    }
                     mPresenter.saveExpert();
                 }
             });
@@ -215,7 +222,7 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
 
 
     private void trySubsribExpert() {
-        mPresenter.getAllPatientCase().subscribe(new BaseSubscriber<List<Map<String, Object>>>() {
+        mPresenter.getAllPatientCase().subscribe(new BaseSubscriber<List<Map<String, Object>>>(getContext(),"获取患者列表") {
             @Override
             public void onNext(List<Map<String, Object>> maps) {
                 if (maps == null || maps.size() < 1) {
@@ -243,6 +250,9 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.comment_make_btn:
+                if (!checkLogin()) {
+                    return;
+                }
                 String commentNew = commentMakeEdit.getText().toString();
                 if (TextUtils.isEmpty(commentNew)) {
                     zhToast.showToast("留言内容不能为空");
@@ -255,7 +265,10 @@ public class ExpertDetailFragment extends PageImpBaseFragment implements ExpertD
                 back();
                 break;
             case R.id.subscribe_expert:
-                UserData.getInstance().getIdentifyState().subscribe(new BaseSubscriber<Integer>() {
+                if (!checkLogin()) {
+                    return;
+                }
+                UserData.getInstance().getIdentifyState().subscribe(new BaseSubscriber<Integer>(getContext(),"获取认证信息") {
                     @Override
                     public void onNext(Integer state) {
                         if (state != 1) {
