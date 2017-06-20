@@ -93,10 +93,11 @@ public class OrderDetailFragment extends PageImpBaseFragment implements OrderDet
             }
         });
         titleCenterTv.setText("订单详情");
+        String id = "";
         if (getArguments() != null && !TextUtils.isEmpty(getArguments().getString(IntentKey.FRAG_INFO))) {
-            mOrderId = getArguments().getString(IntentKey.FRAG_INFO);
+            id = getArguments().getString(IntentKey.FRAG_INFO);
         }
-        new OrderDetailPresenterImp(this, mOrderId);
+        new OrderDetailPresenterImp(this, id);
         expertInfoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,7 +125,7 @@ public class OrderDetailFragment extends PageImpBaseFragment implements OrderDet
 
         patientSerialNum.setText("预约单号：" + Utils.toString(info.get("orderid")));
         patientTime.setText("预约时间：" + DateUtil.getFullTimeDiffDayCurrent(Utils.toLong(info.get("showtime"))));
-
+        mOrderId = Utils.toString(info.get("orderid"));
         String statuText = "";
         String textColorBg = "#FFFFFF";
         switch (status) {
@@ -191,9 +192,8 @@ public class OrderDetailFragment extends PageImpBaseFragment implements OrderDet
         if(status == 2) {
             titleCenterTv.setText("立即支付");
 
+
         }
-
-
     }
 
     @Override

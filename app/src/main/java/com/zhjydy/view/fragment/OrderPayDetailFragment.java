@@ -74,7 +74,7 @@ public class OrderPayDetailFragment extends OrderDetailFragment {
         HashMap<String, Object> params = new HashMap<>();
         params.put("out_trade_no", mOrderId);
         params.put("money", "0.1");
-        WebCall.getInstance().call(WebKey.func_ydypay, params).subscribe(new BaseSubscriber<WebResponse>() {
+        WebCall.getInstance().call(WebKey.func_ydypay, params).subscribe(new BaseSubscriber<WebResponse>(getContext(),"") {
             @Override
             public void onNext(WebResponse webResponse) {
                 String data = webResponse.getReturnData();
