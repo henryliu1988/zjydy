@@ -18,5 +18,6 @@ public interface OrderDetailContract {
 
     interface Presenter extends BasePresenter {
         String getExpertId();
+        void onPayResult(String orderId,String money,String status);
     }
 }

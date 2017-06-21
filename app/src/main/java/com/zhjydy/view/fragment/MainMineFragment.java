@@ -95,7 +95,7 @@ public class MainMineFragment extends StatedFragment implements MainMineContract
             return;
         }
         if (!TextUtils.isEmpty(tokenInfo.getPhotoUrl())) {
-            ImageUtils.getInstance().displayFromRemote(tokenInfo.getPhotoUrl(), mineImage);
+            ImageUtils.getInstance().displayFromRemoteOver(tokenInfo.getPhotoUrl(), mineImage);
         }
         if (!TextUtils.isEmpty(tokenInfo.getNickname())) {
             mineStatus.setText(tokenInfo.getNickname());

@@ -151,6 +151,12 @@ public class OrderPayDetailFragment extends OrderDetailFragment {
         }
         if(status == 2) {
             titleCenterTv.setText("立即支付");
+            bottomLayout.setVisibility(View.VISIBLE);
+            safeInfoLayout.setVisibility(View.VISIBLE);
+        } else {
+            titleCenterTv.setText("订单详情");
+            bottomLayout.setVisibility(View.INVISIBLE);
+            safeInfoLayout.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -228,21 +234,7 @@ public class OrderPayDetailFragment extends OrderDetailFragment {
                     String resultInfo = payResult.getResult();// 同步返回需要验证的信息
 
                     String resultStatus = payResult.getResultStatus();
-                    // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
-                    if (TextUtils.equals(resultStatus, "9000")) {
-                        zhToast.showToast("支付成功");
-                    } else {
-                        // 判断resultStatus 为非"9000"则代表可能支付失败
-                        // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
-                        if (TextUtils.equals(resultStatus, "8000")) {
-                            zhToast.showToast("支付结果确认中");
-
-
-                        } else {
-                            // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
-                            zhToast.showToast("支付失败");
-                        }
-                    }
+                    onPayResult(resultStatus);
                     break;
                 }
                 default:
@@ -273,8 +265,25 @@ public class OrderPayDetailFragment extends OrderDetailFragment {
 
     }
 
-    private void onPayOk() {
-
+    private void onPayResult(String resultStatus) {
+        String status = "0";
+        if (TextUtils.equals(resultStatus, "9000")) {
+            zhToast.showToast("支付成功");
+            status = "1";
+        } else {
+            // 判断resultStatus 为非"9000"则代表可能支付失败
+            // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
+            if (TextUtils.equals(resultStatus, "8000")) {
+                zhToast.showToast("支付结果确认中");
+                status = "0";
+            } else {
+                // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
+                zhToast.showToast("支付失败");
+                status = "2";
+            }
+        }
+        String money = moneyAll.getTag().toString();
+        mPresenter.onPayResult(mOrderId,money,status);
     }
 
     @Override

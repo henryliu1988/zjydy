@@ -2,6 +2,7 @@ package com.zhjydy.presenter.presenterImp;
 
 import android.text.TextUtils;
 
+import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
 import com.zhjydy.model.net.WebKey;
@@ -100,5 +101,21 @@ public class OrderDetailPresenterImp implements OrderDetailContract.Presenter {
             return expertId;
         }
         return null;
+    }
+
+    @Override
+    public void onPayResult(String tradeno, String money, String status) {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("outtradeno", tradeno);
+        params.put("money", money);
+        params.put("status",status);
+        params.put("userid", UserData.getInstance().getToken().getId());
+        WebCall.getInstance().call(WebKey.func_getalipayresult,params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"") {
+            @Override
+            public void onNext(WebResponse webResponse) {
+                String data = webResponse.getData();
+                loadOrderContent(orderId);
+            }
+        });
     }
 }
