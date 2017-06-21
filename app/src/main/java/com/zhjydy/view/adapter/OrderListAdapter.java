@@ -69,7 +69,6 @@ public class OrderListAdapter extends ListViewAdapter<Map<String, Object>> {
         String backGroudColor = "#527EFA";
         String statusColor = "#383838";
         String statusText = "";
-        int operateType = 0;
         switch (status) {
             case 1: //预约中，操作为取消预约
                 isOperateVisible = true;
@@ -77,7 +76,6 @@ public class OrderListAdapter extends ListViewAdapter<Map<String, Object>> {
                 backGroudColor = "#F8B500";
                 statusColor = "#F8B500";
                 statusText = "预约中";
-                operateType = OPERATE_CANCEL;
                 break;
             case 2:  //专家确认状态，可以马上支付
                 isOperateVisible = true;
@@ -85,7 +83,6 @@ public class OrderListAdapter extends ListViewAdapter<Map<String, Object>> {
                 backGroudColor = "#60D700";
                 statusColor = "#60D700";
                 statusText = "待支付";
-                operateType = OPERATE_PAY;
                 break;
 
             case 3:
@@ -100,7 +97,6 @@ public class OrderListAdapter extends ListViewAdapter<Map<String, Object>> {
                 backGroudColor = "#FF2500";
                 statusColor = "#FF2500";
                 statusText = "退款中";
-                operateType = OPERATE_DETAIL;
                 break;
             case 5:
                 isOperateVisible = false;
@@ -109,11 +105,9 @@ public class OrderListAdapter extends ListViewAdapter<Map<String, Object>> {
                 break;
             case 6:
                 statusText = "预约取消";
-                operateType = OPERATE_DETAIL;
                 break;
             case 7:
                 statusText = "预约取消";
-                operateType = OPERATE_DETAIL;
                 break;
             case 9:
                 isOperateVisible = false;
@@ -140,17 +134,9 @@ public class OrderListAdapter extends ListViewAdapter<Map<String, Object>> {
             operateTv.setText(operateText);
             ViewUtil.setCornerViewDrawbleBg(operateTv, backGroudColor);
         }
-        operateTv.setTag(operateType);
 
 
-        operateTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mOperateListener != null) {
-                    mOperateListener.onOperate(map, Utils.toInteger(view.getTag()));
-                }
-            }
-        });
+
 
     }
 }

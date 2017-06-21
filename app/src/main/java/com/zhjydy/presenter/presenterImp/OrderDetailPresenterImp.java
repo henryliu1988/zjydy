@@ -53,6 +53,7 @@ public class OrderDetailPresenterImp implements OrderDetailContract.Presenter {
                 String expertId = getExpertId();
                 HashMap<String, Object> params = new HashMap<>();
                 params.put("expertid", expertId);
+                loadSafeCom();
                 WebCall.getInstance().call(WebKey.func_getExpert, params).map(new Func1<WebResponse, Map<String, Object>>() {
                     @Override
                     public Map<String, Object> call(WebResponse webResponse) {
@@ -71,6 +72,22 @@ public class OrderDetailPresenterImp implements OrderDetailContract.Presenter {
         });
     }
 
+    private  void loadSafeCom() {
+        WebCall.getInstance().call(WebKey.func_getsafecom, new HashMap<String, Object>()).map(new Func1<WebResponse, Map<String, Object>>() {
+            @Override
+            public Map<String, Object> call(WebResponse webResponse) {
+                String data = webResponse.getData();
+                Map<String, Object> map = Utils.parseObjectToMapString(data);
+                return map;
+            }
+        }).subscribe(new BaseSubscriber<Map<String, Object>>(mView.getContext(), true) {
+            @Override
+            public void onNext(Map<String, Object> map) {
+                mView.updateSafeCom(map);
+            }
+        });
+
+    }
     @Override
     public void finish() {
     }

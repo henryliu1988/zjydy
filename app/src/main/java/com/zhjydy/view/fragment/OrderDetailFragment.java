@@ -121,7 +121,7 @@ public class OrderDetailFragment extends PageImpBaseFragment implements OrderDet
     public void updateOrder(Map<String, Object> info) {
         int status = Utils.toInteger(info.get("status"));
         patientName.setText("患者：" + Utils.toString(info.get("patientname")));
-        patientHospital.setText("患者所在医院：" + Utils.toString(info.get("patienthospital")));
+        patientHospital.setText("患者所在医院：" + DicData.getInstance().getHospitalById(Utils.toString(info.get("patienthospital"))).getHospital());
 
         patientSerialNum.setText("预约单号：" + Utils.toString(info.get("orderid")));
         patientTime.setText("预约时间：" + DateUtil.getFullTimeDiffDayCurrent(Utils.toLong(info.get("showtime"))));
@@ -188,11 +188,8 @@ public class OrderDetailFragment extends PageImpBaseFragment implements OrderDet
             money.setText("￥" + moneyValue + "元");
             moneyLayout.setVisibility(View.VISIBLE);
         }
-
         if(status == 2) {
             titleCenterTv.setText("立即支付");
-
-
         }
     }
 
@@ -212,6 +209,11 @@ public class OrderDetailFragment extends PageImpBaseFragment implements OrderDet
         docHospital.setText(DicData.getInstance().getHospitalById(docHosId).getHospital());
         docDepart.setText(Utils.toString(DicData.getInstance().getOfficeById(docOfficeId).getName()));
         docProfession.setText(Utils.toString(DicData.getInstance().getBusinessById(docBusId).getName()));
+    }
+
+    @Override
+    public void updateSafeCom(Map<String, Object> safe) {
+
     }
 
     @Override

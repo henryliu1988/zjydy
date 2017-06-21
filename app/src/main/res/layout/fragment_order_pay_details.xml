@@ -246,9 +246,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="3dp"
+        android:visibility="invisible"
         android:id="@+id/safe_info_layout"
-        android:background="@color/white_bg"
-       >
+        android:background="@color/white_bg">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -260,6 +260,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp">
             <CheckBox
+                android:id="@+id/safe_info_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@drawable/checkbox_safe"
@@ -272,18 +273,19 @@
                 android:layout_marginLeft="10dp"
                 android:orientation="vertical">
                 <TextView
+                    android:id="@+id/safe_info_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:textColor="@color/black_text1"
-                    android:text="XXXX意外保险" />
+                    android:textColor="@color/black_text1" />
                 <TextView
+                    android:id="@+id/safe_info_companu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textColor="@color/black_text2"
                     android:layout_marginTop="10dp"
-                    android:text="由XXXX保险公司提供保障" />
+                   />
 
             </LinearLayout>
 

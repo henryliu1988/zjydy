@@ -115,28 +115,22 @@ public class MainOrderFragment extends StatedFragment implements MainOrderContra
                 Map<String, Object> item = (Map<String, Object>) adapterView.getAdapter().getItem(i);
                 if (item != null && item.size() > 0) {
                     String id = Utils.toString(item.get("id"));
-                    ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.detail_order_fragment, id, false);
+                    int status = Utils.toInteger(Utils.toString(item.get("status")));
+                    switch (status) {
+                        case 2:
+                            ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.order_pay_detail_fragment, id, false);
+                            break;
+                        case 1:
+                            ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.order_cancel_fragment, id, false);
+                            break;
+                        default:
+                            ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.detail_order_fragment, id, false);
+                            break;
+                    }
                 }
             }
         });
-        mAdapter.setOperateListener(new OrderListAdapter.OperateListener() {
-            @Override
-            public void onOperate(Map<String, Object> item, int operate) {
-                String id = Utils.toString(item.get("id"));
-                switch (operate) {
-                    case OrderListAdapter.OPERATE_DETAIL:
-                        ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.detail_order_fragment, id, false);
-                        break;
-                    case OrderListAdapter.OPERATE_CANCEL:
-                        ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.order_cancel_fragment, id, false);
-                        break;
-                    case OrderListAdapter.OPERATE_PAY:
-                        ActivityUtils.transToFragPagerActivity(getActivity(), PagerImpActivity.class, FragKey.order_pay_detail_fragment, id, false);
-                        break;
 
-                }
-            }
-        });
     }
 
 

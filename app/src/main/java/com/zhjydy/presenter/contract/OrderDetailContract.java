@@ -13,6 +13,7 @@ public interface OrderDetailContract {
     interface View extends BaseView<Presenter> {
         void updateOrder(Map<String, Object> info);
         void updateExpert(Map<String, Object> expert);
+        void updateSafeCom(Map<String,Object> safe);
     }
 
     interface Presenter extends BasePresenter {

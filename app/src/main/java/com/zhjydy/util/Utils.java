@@ -72,7 +72,18 @@ public class Utils {
             }
         }
     }
+    public static double toDouble(Object ob) {
 
+        if (ob == null) {
+            return 0.0;
+        } else {
+            try {
+                return Double.parseDouble(toString(ob));
+            } catch (NumberFormatException e) {
+                return 0.0;
+            }
+        }
+    }
     public static Long toLong(Object ob) {
 
         if (ob == null) {
