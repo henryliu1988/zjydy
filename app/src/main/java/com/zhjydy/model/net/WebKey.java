@@ -74,6 +74,7 @@ public class WebKey {
     public static final int func_addidear = 1055;  //
     public static final int func_getalipayresult = 1056;  //
     public static final int func_getsafecom  = 1057;  //
+    public static final int func_backOrder = 1058;  //
 
 
     public static final int func_ydypay = 2001;
@@ -120,6 +121,7 @@ public class WebKey {
         WEBKEY_FUNC_COMMON_MAP.put(func_getSysMsg, "getSysMsg");
         WEBKEY_FUNC_COMMON_MAP.put(func_getsafecom, "getsafecom");
 
+
     }
 
     public static final Map<Integer, String> WEBKEY_FUNC_HUAN_MAP = new HashMap<Integer, String>();
@@ -143,6 +145,7 @@ public class WebKey {
         WEBKEY_FUNC_HUAN_MAP.put(func_updateMember, "updateMember");
         WEBKEY_FUNC_HUAN_MAP.put(func_searchCollectExpert, "searchCollectExpert");
         WEBKEY_FUNC_HUAN_MAP.put(func_getalipayresult, "getalipayresult");
+        WEBKEY_FUNC_HUAN_MAP.put(func_backOrder, "backOrder");
 
     }
     public static final Map<Integer, String> WEBKEY_FUNC_PAY_MAP = new HashMap<Integer, String>();

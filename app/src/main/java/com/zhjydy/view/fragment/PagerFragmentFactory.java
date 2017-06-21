@@ -76,6 +76,8 @@ public class PagerFragmentFactory {
                 return new OrderPayDetailFragment();
             case FragKey.expert_office_list_fragment:
                 return new ExpertOfficeListFragment();
+            case FragKey.order_back_fragment:
+                return  new OrderBackFragment();
         }
         return null;
     }

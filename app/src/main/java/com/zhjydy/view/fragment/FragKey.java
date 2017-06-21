@@ -46,6 +46,7 @@ public class FragKey {
     public static final int about_app_advice_fragment = 1033;
     public static final int order_pay_detail_fragment = 1034;
     public static final int expert_office_list_fragment = 1035;
+    public static final int order_back_fragment = 1036;
 
     public static final Map<Integer, String> FragMap = new HashMap<>();
 
@@ -60,6 +61,7 @@ public class FragKey {
 
         FragMap.put(patient_case_select_fragment, "patient_case_select_fragment");
         FragMap.put(order_cancel_fragment, "order_cancel_fragment");
+        FragMap.put(order_back_fragment, "order_back_fragment");
 
         FragMap.put(order_confirm_fragment, "order_confirm_fragment");
         FragMap.put(detail_order_fragment, "detail_order_fragment");

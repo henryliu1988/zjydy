@@ -28,6 +28,7 @@ public class OrderListAdapter extends ListViewAdapter<Map<String, Object>> {
     public static final int OPERATE_DETAIL = 0;
     public static final int OPERATE_CANCEL = 1;
     public static final int OPERATE_PAY = 2;
+    public static final int OPERATE_BACK = 3;
 
     public OrderListAdapter(Context context, List<Map<String, Object>> datas) {
         super(context, datas, R.layout.order_list_item);
@@ -69,6 +70,7 @@ public class OrderListAdapter extends ListViewAdapter<Map<String, Object>> {
         String backGroudColor = "#527EFA";
         String statusColor = "#383838";
         String statusText = "";
+        int operateType = 0;
         switch (status) {
             case 1: //预约中，操作为取消预约
                 isOperateVisible = true;
@@ -76,6 +78,7 @@ public class OrderListAdapter extends ListViewAdapter<Map<String, Object>> {
                 backGroudColor = "#F8B500";
                 statusColor = "#F8B500";
                 statusText = "预约中";
+                operateType = OPERATE_CANCEL;
                 break;
             case 2:  //专家确认状态，可以马上支付
                 isOperateVisible = true;
@@ -83,13 +86,24 @@ public class OrderListAdapter extends ListViewAdapter<Map<String, Object>> {
                 backGroudColor = "#60D700";
                 statusColor = "#60D700";
                 statusText = "待支付";
+                operateType = OPERATE_PAY;
                 break;
 
             case 3:
+                isOperateVisible = true;
+                operateText = "退款";
+                backGroudColor = "#F8B500";
+                statusColor = "#F8B500";
+                statusText = "支付成功";
+                operateType = OPERATE_BACK;
+                break;
+
             case 11: //
                 isOperateVisible = false;
                 statusColor = "#527EFA";
                 statusText = "会诊中";
+                operateType = OPERATE_DETAIL;
+
                 break;
 
             case 4:
@@ -97,17 +111,23 @@ public class OrderListAdapter extends ListViewAdapter<Map<String, Object>> {
                 backGroudColor = "#FF2500";
                 statusColor = "#FF2500";
                 statusText = "退款中";
+                operateType = OPERATE_DETAIL;
+
                 break;
             case 5:
                 isOperateVisible = false;
                 statusColor = "#6C00BF";
                 statusText = "已完成";
+                operateType = OPERATE_DETAIL;
+
                 break;
             case 6:
                 statusText = "预约取消";
+                operateType = OPERATE_DETAIL;
                 break;
             case 7:
                 statusText = "预约取消";
+                operateType = OPERATE_DETAIL;
                 break;
             case 9:
                 isOperateVisible = false;
@@ -134,9 +154,16 @@ public class OrderListAdapter extends ListViewAdapter<Map<String, Object>> {
             operateTv.setText(operateText);
             ViewUtil.setCornerViewDrawbleBg(operateTv, backGroudColor);
         }
+        operateTv.setTag(operateType);
 
-
-
+        operateTv.setOnClickListener(new View.OnClickListener() {
+             @Override
+            public void onClick(View view) {
+                                if (mOperateListener != null) {
+                                      mOperateListener.onOperate(map, Utils.toInteger(view.getTag()));
+                                   }
+                          }
+        });
 
     }
 }

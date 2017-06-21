@@ -2,6 +2,7 @@ package com.zhjydy.presenter.presenterImp;
 
 import android.text.TextUtils;
 
+import com.zhjydy.model.data.MsgData;
 import com.zhjydy.model.data.UserData;
 import com.zhjydy.model.net.BaseSubscriber;
 import com.zhjydy.model.net.WebCall;
@@ -106,14 +107,19 @@ public class OrderDetailPresenterImp implements OrderDetailContract.Presenter {
     @Override
     public void onPayResult(String tradeno, String money, String status) {
         HashMap<String, Object> params = new HashMap<>();
-        params.put("outtradeno", tradeno);
+        params.put("out_trado_no", tradeno);
         params.put("money", money);
         params.put("status",status);
         params.put("userid", UserData.getInstance().getToken().getId());
         WebCall.getInstance().call(WebKey.func_getalipayresult,params).subscribe(new BaseSubscriber<WebResponse>(mView.getContext(),"") {
             @Override
             public void onNext(WebResponse webResponse) {
-                String data = webResponse.getData();
+                String returnData = webResponse.getReturnData();
+                Map<String, Object> map = Utils.parseObjectToMapString(returnData);
+                boolean status = Utils.toBoolean(map.get("status"));
+                if (status) {
+                    MsgData.getInstance().loadOrderMsgData();
+                }
                 loadOrderContent(orderId);
             }
         });
